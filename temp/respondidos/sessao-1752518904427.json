@@ -1,0 +1,23 @@
+{
+  "session_id": "sessao-1752518904427",
+  "nome": "marcile",
+  "email": "gustavo_poc@hotmail.com",
+  "respostas": [
+    4,
+    6,
+    4,
+    6,
+    6,
+    4,
+    6,
+    4,
+    6,
+    4,
+    6,
+    4
+  ],
+  "tipoRelatorio": null,
+  "payment_id": null,
+  "status_pagamento": "pendente",
+  "criado_em": "2025-07-14T18:48:24.427Z"
+}

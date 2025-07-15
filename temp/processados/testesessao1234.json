@@ -1,0 +1,15 @@
+{
+  "nome": "Usuário Teste",
+  "email": "teste@email.com",
+  "tipoRelatorio": "completo",
+  "frutos": [],
+  "gatilho_tatil": "vento",
+  "gatilho_olfato": "terra",
+  "gatilho_audicao": "vento leve",
+  "gatilho_visao": "aurora",
+  "gatilho_paladar": "néctar",
+  "emailSecundario": "teste@gmail.com",
+  "emailSecundarioConfirmado": true,
+  "pdfGerado": true,
+  "dataGeracao": "2025-07-09T14:35:15.100Z"
+}

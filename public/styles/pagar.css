@@ -1,0 +1,9 @@
+#carrosselDiagnostico {
+  margin-bottom: 1.5rem; /* ou mb-6 se usar Tailwind */
+}
+
+.swiper {
+  height: auto !important;
+  max-height: 380px; /* limite responsivo */
+  margin-bottom: 0; /* força colar no próximo bloco */
+}

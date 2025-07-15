@@ -1,0 +1,26 @@
+{
+  "session_id": "sessao-1752525250524",
+  "nome": "Gustsavo",
+  "email": "gustavo_poc@hotmail.com",
+  "respostas": [
+    4,
+    6,
+    5,
+    7,
+    6,
+    5,
+    6,
+    5,
+    6,
+    7,
+    5,
+    6
+  ],
+  "tipoRelatorio": "basico",
+  "payment_id": 118084576291,
+  "status_pagamento": "confirmado",
+  "criado_em": "2025-07-14T20:34:10.525Z",
+  "data_confirmacao": "2025-07-14T20:34:38.127Z",
+  "pdfGerado": true,
+  "dataGeracao": "2025-07-14T20:37:04.628Z"
+}

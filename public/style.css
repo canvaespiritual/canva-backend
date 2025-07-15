@@ -1,0 +1,44 @@
+/* pagar.css */
+
+body {
+  background-color: #f8fafc;
+  font-family: 'Helvetica', sans-serif;
+  color: #1f2937;
+}
+
+/* Swiper personalizado */
+.swiper-slide img {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
+}
+
+/* Loader personalizado */
+#loader .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #a7f3d0;
+  border-top: 4px solid #059669;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Diagnóstico Buttons */
+.botao-diagnostico {
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.botao-diagnostico:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}

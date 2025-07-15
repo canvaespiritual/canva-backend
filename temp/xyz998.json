@@ -1,0 +1,11 @@
+{
+  "nome": "Teste Premium",
+  "email": "teste@email.com",
+  "tipoRelatorio": "premium",
+  "frutos": [],
+  "gatilho_tatil": "brisa",
+  "gatilho_olfato": "incenso",
+  "gatilho_audicao": "cítara",
+  "gatilho_visao": "aurora",
+  "gatilho_paladar": "mel espiritual"
+}

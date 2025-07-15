@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escolha seu Diagnóstico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="./styles/pagar.css" />
+</head>
+
+<body class="bg-white text-gray-800 font-sans  mt-10">
+
+
+<div class="max-w-3xl mx-auto px-4 text-center text-gray-800 mt-10 mb-6">
+  <p class="text-gray-700 mt-2 leading-relaxed">
+    🙏 <strong id="nomeUsuarioIntro">Buscador</strong>, se você chegou até aqui com sinceridade, já percebeu:
+    <strong>há uma batalha silenciosa acontecendo dentro de nós</strong>.
+    E hoje, você deu um passo real para vencê-la — você se olhou por dentro. 🌱
+  </p>
+
+  <p class="text-gray-700 mt-2 italic">
+    “O Reino dos Céus está dentro de vós.”
+  </p>
+
+  <div class="w-full max-w-2xl mx-auto text-center text-gray-800 mt-6 mb-6 px-4 leading-relaxed">
+  <p class="text-base mb-2">
+    🌱 <strong>Acreditamos que algo já começou a florescer em seu interior.</strong>
+  </p>
+  <p class="text-base mb-2">
+    Veja agora <strong>o elo mais forte</strong> e <strong>o ponto mais frágil</strong> da sua alma — expressos claramente na sua vibração atual.
+  </p>
+  <p class="text-base italic text-gray-700">
+    🧭 Que este seja mais um passo na sua jornada de autoconhecimento.
+  </p>
+</div>
+
+</div>
+
+
+<div id="previewDiagnostico" class="w-full max-w-md bg-white rounded-lg shadow-md p-4 mx-auto mb-6 hidden">
+  <p class="font-medium text-gray-800 mb-2">🔎 Vislumbre do seu diagnóstico vibracional:</p>
+
+  <!-- Ponto de atenção -->
+  <p class="text-sm text-red-600 font-semibold">
+    🔴 Ponto de atenção: <span id="pontoAtencaoNome">...</span>
+  </p>
+  <div class="w-full h-2 bg-gray-200 rounded mb-1">
+    <div id="pontoAtencaoBarra" class="h-full bg-red-500 rounded" style="width: 0%;"></div>
+  </div>
+  <p id="pontoAtencaoValor" class="text-xs text-red-600 mb-3">0%</p>
+
+  <!-- Ponto de luz -->
+  <p class="text-sm text-blue-600 font-semibold">
+    🔵 Ponto de luz: <span id="pontoLuzNome">...</span>
+  </p>
+  <div class="w-full h-2 bg-gray-200 rounded mb-1">
+    <div id="pontoLuzBarra" class="h-full bg-blue-500 rounded" style="width: 0%;"></div>
+  </div>
+  <p id="pontoLuzValor" class="text-xs text-blue-600">0%</p>
+</div>
+
+
+<div class="w-full max-w-md mx-auto text-center mb-4">
+  <p class="text-sm text-center text-gray-700 mt-6 mb-4">
+  ✨ <strong>As 3 opções abaixo são espelhos de aprofundamento</strong>,  
+  para você continuar essa construção espiritual —  
+  que só você pode fazer por si,  
+  mas <strong>nunca mais precisará caminhar sozinho</strong>. 🤝
+</p>
+
+  <p class="mt-2 font-semibold text-green-700">
+    🧭 Escolha abaixo o diagnóstico que mais se conecta com seu momento.
+  </p>
+</div>
+
+
+  <!-- BLOCO 3 – Botões de Diagnóstico -->
+  <!-- Planos de Diagnóstico Espiritual -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 px-2 max-w-5xl mx-auto">
+
+  <!-- Plano 1 -->
+  <div class="bg-white shadow-lg rounded-lg p-5 border border-green-600">
+    <h3 class="text-lg font-bold text-green-700 mb-1">🧭 Mapa Base da Alma</h3>
+    <p class="text-xl font-bold text-gray-800 mb-2">R$12</p>
+    <p class="text-sm text-gray-600 mb-3">🔎 Ideal para quem busca clareza emocional e direção interior.</p>
+    <ul class="text-sm text-gray-700 space-y-1 mb-4">
+      <li>✔️ Reflexo da alma (12 espelhos principais)</li>
+      <li>✔️ Reflexo na vida familiar</li>
+      <li>✔️ Reflexo na vida social</li>
+      <li>✔️ Reflexo na vida profissional</li>
+      <li>✔️ Arquétipo dominante (técnico e simbólico)</li>
+      <li>✔️ Exercício de elevação personalizado</li>
+      <li>🎁 <strong>Aula bônus – A engenharia da desconexão espiritual</strong> <span class="text-gray-600">(🎥 Videodiagnóstico da era da distração, vício e fragmentação interior)</span></li>
+
+
+    </ul>
+    <button onclick="irParaPagamento('basico')" class="w-full py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition">Escolher Mapa Base</button>
+  </div>
+
+  <!-- Plano 2 -->
+  <div class="bg-white shadow-lg rounded-lg p-5 border border-blue-600">
+    <h3 class="text-lg font-bold text-blue-700 mb-1">🧭 Diagnóstico Interdimensional</h3>
+    <p class="text-xl font-bold text-gray-800 mb-2">R$21</p>
+    <p class="text-sm text-gray-600 mb-3">🧠 Para quem sente que há forças ao redor moldando sua alma e quer identificá-las.</p>
+    <ul class="text-sm text-gray-700 space-y-1 mb-4">
+      <li>✔️ Reflexo da alma (12 espelhos principais)</li>
+      <li>✔️ Reflexo na vida familiar</li>
+      <li>✔️ Reflexo na vida social</li>
+      <li>✔️ Reflexo na vida profissional</li>
+      <li>✔️ Arquétipo dominante (técnico e simbólico)</li>
+      <li>✔️ Exercício de elevação personalizado</li>
+      <li>🔓 <strong>Gatilhos sensoriais</strong> (olfato, visão, tato, paladar, audição)</li>
+      <li>🔓 <strong>Mapa da Alma</strong> (12 faces e 12 níveis)</li>
+      <li>🔓 <strong>Reflexo espiritual personalizado</strong></li>
+      <li>🎁 <strong>Aula bônus – A engenharia da desconexão espiritual</strong> <span class="text-gray-600">(🎥 Videodiagnóstico da era da distração, vício e fragmentação interior)</span></li>
+
+
+    </ul>
+    <button onclick="irParaPagamento('intermediario')" class="w-full py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition">Escolher Diagnóstico Interdimensional</button>
+  </div>
+
+  <!-- Plano 3 -->
+   
+  <div class="border border-purple-500 rounded-lg p-4 bg-white shadow-md">
+    <h3 class="text-lg font-bold text-purple-700 mb-1">🧭 Diagnóstico Corpo-Mente-Espírito</h3>
+    <p class="text-xl font-bold text-gray-800 mb-2">R$40</p>
+    <p class="text-sm text-gray-600 mb-3">🌈 Para quem busca alinhamento total entre essência, saúde e propósito.</p>
+    <ul class="text-sm text-gray-700 space-y-1 mb-4">
+      <li>✔️ Reflexo da alma (12 espelhos principais)</li>
+      <li>✔️ Reflexo na vida familiar</li>
+      <li>✔️ Reflexo na vida social</li>
+      <li>✔️ Reflexo na vida profissional</li>
+      <li>✔️ Arquétipo dominante (técnico e simbólico)</li>
+      <li>✔️ Exercício de elevação personalizado</li>
+      <li>🔓 <strong>Gatilhos sensoriais</strong> (olfato, visão, tato, paladar, audição)</li>
+      <li>🔓 <strong>Mapa da Alma</strong> (12 faces e 12 níveis)</li>
+      <li>🔓 <strong>Reflexo espiritual personalizado</strong></li>
+      <li>🔐 <strong>Mapa do Espírito</strong> (10 faces e 13 níveis)</li>
+      <li>🔐 <strong>Sinais físicos e comportamentais</strong></li>
+      <li>🔐 <strong>Predisposição fisiológica</strong> (curto e longo prazo)</li>
+      <li>🔐 <strong>Predisposição saúde mental</strong> (curto e longo prazo)</li>
+      <li>🎁 <strong>Aula bônus – A engenharia da desconexão espiritual</strong> <span class="text-gray-600">(🎥 Videodiagnóstico da era da distração, vício e fragmentação interior)</span></li>
+
+
+    </ul>
+    <button onclick="irParaPagamento('completo')" class="w-full py-2 bg-purple-600 text-white rounded font-medium hover:bg-purple-700 transition">Escolher Diagnóstico Completo</button>
+  </div>
+</div>
+<p class="text-center text-xs text-gray-500 italic mt-6 mb-10">
+  ⏳ <span class="font-semibold text-gray-600">Atenção:</span>
+  O tempo é sagrado: por razões técnicas, esta leitura da alma permanece ativa por
+  <span id="tempoRestante" class="font-bold text-gray-800">17:00</span>.
+  Após esse período, será necessário refazer o diagnóstico.
+</p>
+</div>
+<!-- Título do Carrossel -->
+<div class="w-full max-w-md mx-auto text-center mt-10 mb-4">
+  <h2 class="text-lg font-bold text-gray-800">📖 Trechos reais do seu Relatório Espiritual</h2>
+  <p class="text-sm text-gray-600 italic mt-1">
+    Essas imagens foram geradas exclusivamente a partir da sua vibração.
+  </p>
+</div>
+
+
+  <!-- BLOCO 4 – Carrossel de Imagens Preview -->
+   <div id="loader" class="hidden"></div>
+  <div id="carrosselDiagnostico" class="hidden w-full max-w-xs mx-auto mb-10">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper" id="swiperWrapper">
+        <!-- Slides com imagens do gráfico/frutos serão adicionados aqui -->
+      </div>
+      <div class="swiper-pagination mt-1"></div>
+    </div>
+  </div>
+  <!-- BLOCO – DEPOIMENTOS -->
+<div class="max-w-5xl mx-auto mt-16 px-4">
+  <h2 class="text-xl font-bold text-center mb-8">🔮 Relatos de quem se viu por dentro:</h2>
+  <div class="grid md:grid-cols-3 gap-6 text-sm text-gray-700">
+
+    <!-- Depoimento 1 – Natália -->
+    <div class="bg-white p-5 rounded-lg shadow text-center">
+      <img src="./img/depoimentos/nat.png" alt="Natália Oliveira" class="w-20 h-20 rounded-full mx-auto mb-3 border border-gray-300" />
+      <p class="italic">“Sinceramente, achei que era só mais um teste genérico. Mas me surpreendi com a precisão. Foi direto ao ponto, me descreveu como se tivesse convivido comigo.Nunca vi nada assim. Uso até como guia pessoal.”</p>
+      <p class="mt-3 font-semibold text-gray-800">— Natália Oliveira<br><span class="text-xs font-normal text-gray-500">Agente Policial</span></p>
+    </div>
+
+    <!-- Depoimento 2 – Marielle -->
+    <div class="bg-white p-5 rounded-lg shadow text-center">
+      <img src="./img/depoimentos/marielle.png" alt="Marielle" class="w-20 h-20 rounded-full mx-auto mb-3 border border-gray-300" />
+      <p class="italic">“Como médica, sou criteriosa com qualquer coisa que mexa com o emocional. Esse diagnóstico me tocou e trouxe insights terapêuticos que nunca encontrei antes. É profundo, seguro e extremamente útil”</p>
+      <p class="mt-3 font-semibold text-gray-800">— Marielle<br><span class="text-xs font-normal text-gray-500">Médica Psiquiatra Preventiva</span></p>
+    </div>
+
+    <!-- Depoimento 3 – Gerson -->
+    <div class="bg-white p-5 rounded-lg shadow text-center">
+      <img src="./img/depoimentos/gerson.png" alt="Gerson Teles" class="w-20 h-20 rounded-full mx-auto mb-3 border border-gray-300" />
+      <p class="italic">“Já vivi muita coisa, mas nunca tinha parado para olhar com tanta clareza para dentro. Esse relatório me revelou raízes que ainda influenciavam minha vida hoje. Valeu por cada linha.”</p>
+      <p class="mt-3 font-semibold text-gray-800">— Gerson Teles<br><span class="text-xs font-normal text-gray-500">Empresário Aposentado</span></p>
+    </div>
+
+  </div>
+
+  <!-- BLOCO – INTRODUÇÃO AO APROFUNDAMENTO -->
+  <!-- BLOCO – Introdução Aprofundamento com Nome -->
+  <div class="max-w-2xl mx-auto mt-12 px-4 text-center text-gray-800">
+  <h2 id="tituloAprofundamento" class="text-xl font-bold mb-2">Buscador, o diagnóstico foi só o primeiro espelho.</h2>
+  <p class="text-sm text-gray-700 leading-relaxed">
+    Se você deseja compreender com profundidade suas forças internas
+    e como governá-las com consciência, veja abaixo os caminhos de aprofundamento disponíveis:
+  </p>
+  </div>
+
+  <script>
+  const dadosQuiz = JSON.parse(localStorage.getItem("dadosQuiz"));
+  if (dadosQuiz && dadosQuiz.nome) {
+    const primeiroNome = dadosQuiz.nome.split(" ")[0];
+    const titulo = document.getElementById("tituloAprofundamento");
+    if (titulo) {
+      titulo.innerHTML = `<strong>${primeiroNome}</strong>, o diagnóstico foi só o primeiro espelho.`;
+    }
+     const nomeIntro = document.getElementById("nomeUsuarioIntro");
+    if (nomeIntro) {
+      nomeIntro.textContent = primeiroNome;
+    }
+  }
+  </script>
+
+
+  <!-- BLOCO – CURSO TRAVESSIA ESPIRITUAL -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto px-4 mt-10 items-stretch">
+    <div class="border border-purple-500 rounded-lg p-4 bg-white shadow-md flex flex-col justify-between h-full">
+     <div class="max-w-4xl mx-auto mt-1 px-4">
+      <h2 class="text-xl font-bold text-center mb-4">🎓 Formação Profunda: <span class="text-purple-700">Travessia Espiritual</span></h2>
+ 
+    
+    <p class="mb-3 text-sm leading-relaxed">
+      Você já entendeu que existe uma <strong>guerra invisível entre virtudes e vícios</strong> dentro de você. <br />
+      Agora é hora de aprender a <strong>vencê-la com consciência</strong>.
+    </p>
+
+    <p class="mb-3 text-sm leading-relaxed">
+      Este curso reúne <strong>40 selos audiovisuais</strong>, com até 10 minutos cada, que ativam o seu <strong>despertar espiritual</strong> e o domínio vibracional.
+    </p>
+
+    <p class="font-semibold text-gray-700 text-sm mb-2">🔑 As 6 Chaves da Jornada:</p>
+    <ul class="list-disc text-sm pl-1 space-y-1 mb-4">
+      <li>🧿 <strong>Chave da Leitura Espiritual</strong>: a alma se revela</li>
+      <li>🧠 <strong>Chave do Autogoverno</strong>: o Eu que comanda</li>
+      <li>🔰 <strong>Chave da Blindagem Espiritual</strong>: escudo contra forças externas e recaídas</li>
+      <li>🌀 <strong>Chave da Transcendência</strong>: o voo interior</li>
+      <li>🏜️ <strong>Chave do Deserto Interior</strong>: onde o espírito é lapidado no silêncio</li>
+      <li>🌌 <strong>Chave da Cosmovisão</strong>: o Todo em você</li>
+    </ul>
+
+    <p class="text-sm italic text-gray-600 mb-2">
+      💠 São <strong>40 selos em vídeo</strong>, que podem ser assistidos no seu ritmo, ativando <em>camadas sutis do seu ser</em>.
+    </p>
+
+    <p class="text-sm italic text-gray-600 mb-2">
+      📦 <strong>Acesso imediato por 12 meses.</strong> Inclui material complementar com ebook, mapas espirituais e presentes simbólicos.
+    </p>
+
+    <p class="text-base font-semibold text-purple-700 mb-4">
+      💰 <span class="text-gray-800">R$400,00 à vista</span> ou <span class="italic">12x de R$39,70</span>
+    </p>
+
+    <a href="/produto/curso" target="_blank" class="inline-block bg-purple-600 text-white py-2 px-5 rounded hover:bg-purple-700 transition">
+      Ver detalhes do Curso
+    </a>
+  </div>
+</div>
+ 
+
+
+    <!-- EBOOK: Estudo da Alma -->
+ 
+  <div class="border border-blue-500 rounded-lg p-4 bg-white shadow-md flex flex-col justify-between h-full">
+    <div class="max-w-4xl mx-auto mt-1 px-4">
+    <h2 class="text-xl font-bold text-center mb-4">📘 Estudo Escriturado: <span class="text-blue-700">Ebook “Estudo Completo da Alma”</span></h2>
+  
+    <p class="mb-3 text-sm leading-relaxed">
+      Um material <strong>técnico, simbólico e ilustrado</strong> para quem deseja compreender profundamente os <strong>144 estados emocionais</strong>,
+      suas combinações e os <strong>pares espirituais</strong> que regem a alma.
+    </p>
+    <ul class="list-disc pl-5 text-sm space-y-1 mb-4">
+      <li>💡 144 combinações vibracionais da alma</li>
+      <li>💡 Tabelas, mapas, arquétipos e exercícios de elevação</li>
+      <li>💡 Guia para terapeutas, líderes espirituais e buscadores</li>
+    </ul>
+    <p class="text-base font-semibold text-blue-700 mb-4">
+      💰 <span class="text-gray-800">R$70,00 à vista</span> ou <span class="italic">12x de R$7,50</span>
+    </p>
+    <a href="/produto/ebook" target="_blank" class="inline-block bg-blue-600 text-white py-2 px-5 rounded hover:bg-blue-700 transition">
+      Ver detalhes do Ebook
+    </a>
+  </div>
+  </div>
+</div>
+  <section class="max-w-5xl mx-auto px-4 mt-12">
+  <div class="bg-purple-100 border border-purple-400 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-bold text-purple-800 mb-6 text-center">❓ Perguntas Frequentes</h2>
+
+    <div class="space-y-4" id="faqAccordion">
+
+      <!-- Pergunta 1 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(0)">
+          1. Quanto tempo leva para receber o diagnóstico?
+          <span class="text-xl">+</span>
+        </button>
+        <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-0">
+          ⏱️ O diagnóstico é gerado automaticamente logo após a confirmação do pagamento. Você poderá <strong>baixar o PDF diretamente na página</strong> e também o receberá <strong>por e-mail imediatamente</strong>.
+        </div>
+      </div>
+
+      <!-- Pergunta 2 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(1)">
+          2. Existe garantia de reembolso?
+          <span class="text-xl">+</span>
+        </button>
+        <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-1">
+          🔐 Sim. Você tem <strong>garantia incondicional de 7 dias</strong>. Caso deseje o reembolso dentro desse prazo, basta seguir os passos indicados na área de acesso ao diagnóstico.
+        </div>
+      </div>
+
+      <!-- Pergunta 3 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(2)">
+          3. O conteúdo do diagnóstico é confiável?
+          <span class="text-xl">+</span>
+        </button>
+        <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-2">
+          📘 Sim. O diagnóstico é fundamentado em 12 forças espirituais universais (os Frutos da Alma), com base simbólica, emocional e comportamental. Os relatórios são personalizados de forma única para refletir sua vibração atual. O sistema gera gráficos, arquétipo dominante e interpretações precisas com base em milhares de combinações possíveis.
+        </div>
+      </div>
+
+      <!-- Pergunta 4 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(3)">
+          4. Qual é a diferença entre os 3 diagnósticos?
+          <span class="text-xl">+</span>
+        </button>
+        <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-3">
+          🌿 O <strong>Mapa Base da Alma</strong> revela sua vibração atual e os reflexos principais da alma.<br>
+          🌌 O <strong>Diagnóstico Interdimensional</strong> inclui também os gatilhos sensoriais e leitura espiritual ampliada.<br>
+          🔮 O <strong>Corpo-Mente-Espírito</strong> oferece a visão mais completa, com mapas energéticos, predisposições fisiológicas e leitura integral da alma e do espírito.
+        </div>
+      </div>
+
+      <!-- Pergunta 5 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(4)">
+          5. Como o diagnóstico pode me ajudar na prática?
+          <span class="text-xl">+</span>
+        </button>
+        <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-4">
+          🧑‍🌾 Ele funciona como um <strong>espelho espiritual</strong>, revelando padrões vibracionais, desafios ocultos e pontos fortes. A partir disso, você poderá tomar decisões mais conscientes e buscar elevação interior.
+        </div>
+      </div>
+
+      <!-- Pergunta 6 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(5)">
+          6. Posso fazer outro diagnóstico depois?
+          <span class="text-xl">+</span>
+        </button>
+        <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-5">
+          ♻️ Sim. Sua vibração pode mudar ao longo da jornada. Recomendamos refazer o diagnóstico sempre que sentir que está em uma nova fase ou após momentos de transformação emocional ou espiritual.
+        </div>
+      </div>
+      <!-- Pergunta 7 -->
+      <div class="border border-purple-300 rounded">
+        <button class="w-full text-left px-4 py-3 bg-purple-200 text-purple-900 font-semibold focus:outline-none flex justify-between items-center" onclick="toggleFaq(6)">
+         7. Qual é a diferença entre este diagnóstico e outras leituras astrais ou mapas esotéricos?
+         <span class="text-xl">+</span>
+       </button>
+      <div class="hidden px-4 py-3 bg-white text-gray-800" id="faq-content-6">
+    📜 <strong>Diferente de mapas astrais e leituras esotéricas que tentam prever o seu destino com base em fórmulas genéricas</strong>, este diagnóstico é construído com você, <strong>no agora</strong>.<br><br>
+    Ele parte da sua <strong>vibração atual</strong>, revelando padrões emocionais, espirituais e energéticos que influenciam diretamente seu presente.<br><br>
+    💡 <strong>Aqui, não há previsões. Há clareza.</strong><br>
+    Você é convidado a assumir o protagonismo da sua própria jornada.<br><br>
+    Apenas você — <em>e o Criador</em> — conhecem de verdade o seu propósito.<br>
+    🧭 Nós apenas te damos o espelho e as ferramentas para reencontrá-lo.
+       </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Música de fundo -->
+<audio id="musicaAmbiente" loop autoplay>
+  <source src="/assets/audio/som-ambiente.mp3" type="audio/mpeg" />
+
+</audio>
+
+<!-- Controle de som -->
+<div id="controleSom" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500">
+  <div class="relative flex items-center justify-center">
+    <input type="range" id="volumeSlider"
+      min="0" max="1" step="0.01" value="0.1"
+      class="hidden absolute bottom-[100px] w-24 h-2 rotate-[-90deg] origin-bottom bg-gray-300 rounded-full appearance-none cursor-pointer transition-all duration-300" />
+    <button id="botaoSom"
+      class="bg-white bg-opacity-30 backdrop-blur-md shadow-lg p-3 rounded-full text-gray-700 hover:bg-opacity-60 transition">
+      🔊
+    </button>
+  </div>
+</div>
+
+<script>
+  function toggleFaq(index) {
+    const content = document.getElementById(`faq-content-${index}`);
+    content.classList.toggle("hidden");
+  }
+</script>
+
+
+
+
+  <!-- Swiper CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Script do Carrossel -->
+  <script type="module">
+    import { carregarCarrossel } from './scripts/gerarSlidesCarrossel.js';
+    carregarCarrossel();
+  </script>
+
+  <!-- Script para Nome Personalizado -->
+  <script>
+  
+    if (dadosQuiz && dadosQuiz.nome) {
+      const primeiroNome = dadosQuiz.nome.trim().split(' ')[0];
+      const titulo = document.getElementById('tituloDiagnostico');
+      if (titulo) {
+        titulo.innerHTML = `📜 Olá, <strong>${primeiroNome}</strong>! Escolha o Diagnóstico da sua Alma`;
+      }
+    }
+  </script>
+  <script>
+  let tempo = 17 * 60; // 15 minutos em segundos
+  const tempoEl = document.getElementById("tempoRestante");
+
+  function atualizarTimer() {
+    const minutos = String(Math.floor(tempo / 60)).padStart(2, "0");
+    const segundos = String(tempo % 60).padStart(2, "0");
+    tempoEl.textContent = `${minutos}:${segundos}`;
+
+    if (tempo > 0) {
+      tempo--;
+    } else {
+      tempoEl.textContent = "00:00";
+      alert("⏳ Sua sessão expirou. Será necessário refazer o diagnóstico.");
+      localStorage.clear();
+      window.location.href = "/";
+    }
+  }
+
+  setInterval(atualizarTimer, 1000);
+</script>
+
+<script type="module">
+  const reflexos = await fetch('/data/reflexos_por_fruto_final.json').then(r => r.json());
+  const frutos = ['PC', 'AL', 'PA', 'CA', 'CO', 'MA', 'MO', 'FI', 'AM', 'BE', 'BO', 'LO'];
+
+  const notas = JSON.parse(localStorage.getItem("frutos")) || [];
+  const menor = Math.min(...notas);
+  const maior = Math.max(...notas);
+
+  const iMin = notas.lastIndexOf(menor);
+  const iMax = notas.lastIndexOf(maior);
+
+  const prefixoMin = frutos[iMin];
+  const prefixoMax = frutos[iMax];
+
+  const blocoMin = reflexos[prefixoMin]?.[menor - 1];
+  const blocoMax = reflexos[prefixoMax]?.[maior - 1];
+
+  const nivelMin = blocoMin?.["Nível Emocional"] || "Desconhecido";
+  const nivelMax = blocoMax?.["Nível Emocional"] || "Desconhecido";
+
+  const pMin = Math.round(((menor - 1) / 12) * 100);
+  const pMax = Math.round(((maior - 1) / 12) * 100);
+
+  document.getElementById("pontoAtencaoNome").textContent = nivelMin;
+  document.getElementById("pontoLuzNome").textContent = nivelMax;
+
+  document.getElementById("pontoAtencaoBarra").style.width = `${pMin}%`;
+  document.getElementById("pontoLuzBarra").style.width = `${pMax}%`;
+
+  document.getElementById("pontoAtencaoValor").textContent = `${pMin}%`;
+  document.getElementById("pontoLuzValor").textContent = `${pMax}%`;
+
+
+  document.getElementById("previewDiagnostico").classList.remove("hidden");
+</script>
+<script>
+  function irParaPagamento(tipo) {
+    const sessionId = localStorage.getItem('session_id') || 'sessao-' + Date.now();
+    localStorage.setItem('session_id', sessionId);
+    window.location.href = `/pagamento-opcao.html?tipo=${tipo}&session_id=${sessionId}`;
+  }
+</script>
+
+
+
+</body>
+<script>
+  setTimeout(() => {
+    const audio = document.getElementById("musicaAmbiente");
+    const botao = document.getElementById("botaoSom");
+    const slider = document.getElementById("volumeSlider");
+    const controle = document.getElementById("controleSom");
+
+    if (audio && botao && slider && controle) {
+      audio.volume = 0.05;
+      audio.play().catch(() => {});
+      controle.classList.remove("opacity-0");
+
+      let tocando = true;
+
+      botao.addEventListener("click", () => {
+        slider.classList.toggle("hidden");
+
+        if (tocando) {
+          audio.pause();
+          botao.textContent = "🔇";
+        } else {
+          audio.play();
+          botao.textContent = "🔊";
+        }
+        tocando = !tocando;
+      });
+
+      slider.addEventListener("input", () => {
+        audio.volume = parseFloat(slider.value);
+      });
+    }
+  }, 2000);
+</script>
+<script>
+  window.addEventListener("load", () => {
+    const audio = document.getElementById("musicaAmbiente");
+    if (audio) {
+      audio.play().catch(() => {});
+    }
+  });
+</script>
+
+</html>

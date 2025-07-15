@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Processando Relatório - Canva Espiritual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      text-align: center;
+      padding: 60px 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .spinner {
+      margin: 40px auto;
+      width: 60px;
+      height: 60px;
+      border: 6px solid #eee;
+      border-top: 6px solid #28a745;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 22px;
+      color: #28a745;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🎉 Pagamento confirmado com sucesso!</h1>
+    <p>Estamos gerando seu relatório espiritual com base nas suas respostas.</p>
+    <div class="spinner"></div>
+    <p>Isso pode levar até alguns segundos...</p>
+    <p><small>Você será redirecionado automaticamente.<br>
+    Caso demore, o relatório será enviado para o seu e-mail.</small></p>
+  </div>
+
+  <script>
+    async function processarRelatorio() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get("session_id");
+
+      if (!sessionId) {
+        alert("Sessão inválida.");
+        return;
+      }
+
+      try {
+        const resposta = await fetch(`/pagamento/finalizar-pagamento?session_id=${sessionId}`);
+        const urlRedirecionada = resposta.url;
+        window.location.href = urlRedirecionada;
+      } catch (err) {
+        console.error("Erro ao finalizar pagamento:", err);
+        alert("Houve um erro ao processar seu relatório. Por favor, entre em contato com o suporte.");
+      }
+    }
+
+    processarRelatorio();
+  </script>
+
+</body>
+</html>

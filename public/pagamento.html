@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pagamento - Canva Espiritual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f2f7ff;
+      color: #2c3e50;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔒 Acesse seu Diagnóstico Completo</h1>
+  <p>Realize o pagamento simbólico de <strong>R$ 19,00</strong> para desbloquear o PDF personalizado e receber por e-mail.</p>
+
+  <button onclick="iniciarPagamento()">💳 Pagar agora</button>
+
+  <script>
+    async function iniciarPagamento() {
+      try {
+        const resposta = await fetch('/pagamento/criar-sessao-pagamento', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+
+        const dados = await resposta.json();
+        if (dados.url) {
+          window.location.href = dados.url;
+        } else {
+          alert("Erro ao redirecionar para o pagamento.");
+        }
+      } catch (err) {
+        console.error("Erro:", err);
+        alert("Ocorreu um erro. Tente novamente.");
+      }
+    }
+  </script>
+
+</body>
+</html>

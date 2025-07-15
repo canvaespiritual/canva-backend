@@ -1,0 +1,68 @@
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const { MercadoPagoConfig, Payment } = require("mercadopago");
+
+const client = new MercadoPagoConfig({
+  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
+});
+
+const router = express.Router();
+
+router.get("/status/:payment_id", async (req, res) => {
+  const { payment_id } = req.params;
+
+  try {
+    const resposta = await new Payment(client).get({ id: payment_id });
+
+    const status = resposta?.body?.status || resposta?.status;
+    const body = resposta?.body || resposta;
+
+    console.log("📥 Recebendo consulta para payment_id:", payment_id);
+    console.log("📦 pagamento.body:", body);
+
+    if (status === undefined || status === null) {
+      console.warn("⚠️ Nenhum status retornado pelo Mercado Pago");
+      return res.status(200).json({ aprovado: false, status: null });
+    }
+
+    // ✅ Se aprovado, mover JSON da pasta respondidos para pendentes
+    if (status === "approved") {
+      const sessionId = body?.metadata?.session_id;
+
+      if (sessionId) {
+        const respondidosPath = path.join(__dirname, "../../temp/respondidos", `${sessionId}.json`);
+        const pendentesPath = path.join(__dirname, "../../temp/pendentes", `${sessionId}.json`);
+
+        if (fs.existsSync(respondidosPath)) {
+          const dados = JSON.parse(fs.readFileSync(respondidosPath, "utf8"));
+
+          // Atualiza os campos
+          dados.payment_id = Number(payment_id);
+          dados.status_pagamento = "confirmado";
+          dados.tipoRelatorio = body?.metadata?.tipo || "basico";
+          dados.data_confirmacao = new Date().toISOString();
+
+          // Salva novo JSON e remove o anterior
+          fs.writeFileSync(pendentesPath, JSON.stringify(dados, null, 2), "utf8");
+          fs.unlinkSync(respondidosPath);
+
+          console.log(`📂 Sessão ${sessionId} movida para /pendentes`);
+        } else {
+          console.warn(`⚠️ Sessão ${sessionId} não encontrada em /respondidos`);
+        }
+      } else {
+        console.warn("⚠️ Metadata da sessão não encontrada no body do pagamento.");
+      }
+    }
+
+    console.log("✅ Status recebido:", status);
+    res.json({ aprovado: status === "approved", status });
+
+  } catch (error) {
+    console.error("❌ Erro ao verificar status:", error.message);
+    res.status(500).json({ erro: "Erro ao verificar status do pagamento." });
+  }
+});
+
+module.exports = router;
