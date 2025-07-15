@@ -1,5 +1,6 @@
 const fs = require('fs');
-const pdf = require('html-pdf');
+const path = require('path');
+const puppeteer = require('puppeteer');
 
 function gerarHtmlFrutos(frutos) {
   return frutos.map((f, i) => `
@@ -17,11 +18,6 @@ function gerarHtmlFrutos(frutos) {
 }
 
 async function createPdfFromHtml(data, tipo = 'essencial') {
-  // Simula demora forçada (usado para testar o modo assíncrono)
-  //await new Promise(resolve => setTimeout(resolve, 16000));
-
-
-  // Define o caminho do template com base no tipo de relatório
   let htmlPath;
   switch (tipo) {
     case 'completo':
@@ -38,30 +34,33 @@ async function createPdfFromHtml(data, tipo = 'essencial') {
 
   let html = fs.readFileSync(htmlPath, 'utf8');
 
-  // Substituição direta dos gatilhos espirituais
   html = html.replace('{{gatilho_tatil}}', data.gatilho_tatil || '');
   html = html.replace('{{gatilho_olfato}}', data.gatilho_olfato || '');
   html = html.replace('{{gatilho_audicao}}', data.gatilho_audicao || '');
   html = html.replace('{{gatilho_visao}}', data.gatilho_visao || '');
   html = html.replace('{{gatilho_paladar}}', data.gatilho_paladar || '');
 
-  // Substitui o bloco de frutos gerado manualmente
   const htmlFrutos = gerarHtmlFrutos(data.frutos || []);
   html = html.replace('{{html_frutos}}', htmlFrutos);
 
-  // Substituição de demais campos genéricos
   Object.entries(data).forEach(([chave, valor]) => {
     if (typeof valor === 'string' || typeof valor === 'number') {
       html = html.replaceAll(`{{${chave}}}`, valor);
     }
   });
 
-  return new Promise((resolve, reject) => {
-    pdf.create(html, { format: 'A4' }).toBuffer((err, buffer) => {
-      if (err) return reject(err);
-      resolve(buffer);
-    });
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
+
+  const page = await browser.newPage();
+  await page.setContent(html, { waitUntil: 'networkidle0' });
+
+  const buffer = await page.pdf({ format: 'A4' });
+
+  await browser.close();
+  return buffer;
 }
 
 module.exports = { createPdfFromHtml };

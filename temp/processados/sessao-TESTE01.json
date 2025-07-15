@@ -1,0 +1,39 @@
+{
+  "nome": "Teste Puppeteer",
+  "email": "gustavo_poc@hotmail.com",
+  "tipoRelatorio": "essencial",
+  "gatilho_tatil": "Toque suave",
+  "gatilho_olfato": "Lavanda",
+  "gatilho_audicao": "Sinos",
+  "gatilho_visao": "Luz suave",
+  "gatilho_paladar": "Mel",
+  "media_vibracional": "9.5",
+  "zona": "Virtude",
+  "chave_correspondencia": "R4Y3B5",
+  "arquétipo_tecnico": "MA09",
+  "arquétipo_simbolico": "Guardião da Alma",
+  "diagnostico_arquétipo": "Você é direto, técnico e fiel à missão.",
+  "reflexao_simbolica": "Você é farol onde outros veem sombra.",
+  "mensagem_zona": "Mantenha-se firme.",
+  "grafico_vibracional_url": "https://via.placeholder.com/600x300",
+  "grafico_percentual_url": "https://via.placeholder.com/400x200",
+  "cta_links": {
+    "ebook": "#",
+    "aula": "#",
+    "quiz_avançado": "#"
+  },
+  "frutos": [
+    {
+      "nome_emocao": "Amor",
+      "texto_resposta": "Me considero amoroso",
+      "diagnostico": "Alma conectada com o próximo",
+      "descricao_estado": "Estado elevado de empatia",
+      "vida_familiar": "Cuida e inspira",
+      "vida_social": "É referência positiva",
+      "vida_profissional": "Trabalha com propósito",
+      "exercicio": "Orar por alguém todos os dias"
+    }
+  ],
+  "pdfGerado": true,
+  "dataGeracao": "2025-07-15T14:07:39.735Z"
+}

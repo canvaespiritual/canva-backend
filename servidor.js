@@ -15,13 +15,13 @@ pastasNecessarias.forEach((pasta) => {
     console.log(`📁 Pasta criada automaticamente: ${pasta}`);
   }
 });
-const pdf = require('html-pdf');
+
 const nodemailer = require('nodemailer');
 const salvarQuizRouter = require("./src/routes/salvarQuiz");
 
 const enviarRouter = require("./routes/enviar");
 const relatorioRoutes = require('./src/routes/relatorio');
-const stripeRoutes = require('./src/routes/stripe');
+//const stripeRoutes = require('./src/routes/stripe');
 const mercadopagoRoutes = require('./src/routes/mercadopago');
 
 const pagamentoPixRoutes = require("./src/routes/pagamentoPix");
@@ -65,7 +65,7 @@ app.use('/relatorios', express.static(path.join(__dirname, 'relatorios')));
 // Rotas customizadas
 app.use("/api/enviar", enviarRouter);
 app.use('/gerar-relatorio', relatorioRoutes);
-app.use('/pagamento/stripe', stripeRoutes); 
+//app.use('/pagamento/stripe', stripeRoutes); 
 app.use('/pagamento', mercadopagoRoutes);
 
 app.use("/api/salvar-quiz", salvarQuizRouter);
@@ -166,68 +166,7 @@ app.post('/mapa/contexto', (req, res) => {
   res.send(resposta);
 });
 
-app.post('/pdf', (req, res) => {
-  const { nome, virtude, desafio, mensagem } = req.body;
 
-  let template = fs.readFileSync('relatorio.html', 'utf8');
-  template = template.replace('{{nome}}', nome);
-  template = template.replace('{{virtude}}', virtude);
-  template = template.replace('{{desafio}}', desafio);
-  template = template.replace('{{mensagem}}', mensagem);
-
-  const caminho = `./relatorios/${nome}_relatorio.pdf`;
-
-  pdf.create(template).toFile(caminho, (err, file) => {
-    if (err) return res.status(500).send('Erro ao gerar PDF.');
-    res.send(`✅ Relatório de ${nome} gerado com sucesso!`);
-  });
-});
-
-app.post('/enviar-pdf', (req, res) => {
-  const { email, nome, virtude, desafio, mensagem } = req.body;
-
-  let template = fs.readFileSync('relatorio.html', 'utf8');
-  template = template.replace('{{nome}}', nome);
-  template = template.replace('{{virtude}}', virtude);
-  template = template.replace('{{desafio}}', desafio);
-  template = template.replace('{{mensagem}}', mensagem);
-
-  const nomeArquivo = `${nome}_relatorio.pdf`;
-  const caminhoPDF = path.join(__dirname, 'relatorios', nomeArquivo);
-
-  pdf.create(template).toFile(caminhoPDF, (err, file) => {
-    if (err) return res.status(500).send('Erro ao gerar PDF.');
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-      user: process.env.EMAIL_REMETENTE,
-      pass: process.env.SENHA_EMAIL_APP
-      }
-    });
-
-    const mailOptions = {
-      from: 'seuemail@gmail.com',
-      to: email,
-      subject: `Seu Relatório Espiritual – Canva Espiritual`,
-      text: `Olá ${nome},\n\nSegue em anexo o seu diagnóstico espiritual.\n\nCom luz,`,
-      attachments: [
-        {
-          filename: nomeArquivo,
-          path: caminhoPDF
-        }
-      ]
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-        return res.status(500).send('Erro ao enviar o e-mail.');
-      }
-      res.send(`✅ Relatório enviado com sucesso para ${email}!`);
-    });
-  });
-});
 const axios = require('axios');
 
 app.post("/verificar-recaptcha", async (req, res) => {

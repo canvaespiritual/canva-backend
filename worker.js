@@ -18,7 +18,7 @@ setInterval(async () => {
       return;
     }
 
-    // Ordena por data de criação
+    // Ordena por data de criação (mais antigo primeiro)
     arquivos.sort((a, b) => {
       const statA = fs.statSync(path.join(pastaPendentes, a)).birthtimeMs;
       const statB = fs.statSync(path.join(pastaPendentes, b)).birthtimeMs;
@@ -28,25 +28,32 @@ setInterval(async () => {
     for (const arquivo of arquivos) {
       const sessionId = path.basename(arquivo, '.json');
       const jsonPath = path.join(pastaPendentes, arquivo);
+      const lockedPath = path.join(pastaPendentes, `${arquivo}.lock`);
       const pdfPath = path.join(pastaProntos, `${sessionId}.pdf`);
       const processadoPath = path.join(pastaProcessados, `${sessionId}.json`);
 
-      const session = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-      const tipo = session.tipoRelatorio || 'essencial';
-
-      console.log(`⚙️  Gerando PDF da fila: ${sessionId} (${tipo})`);
+      // Se já existe um .lock, pula esse arquivo (alguém está processando)
+      if (fs.existsSync(lockedPath)) {
+        continue;
+      }
 
       try {
+        // Cria um .lock para evitar concorrência
+        fs.renameSync(jsonPath, lockedPath);
+
+        const session = JSON.parse(fs.readFileSync(lockedPath, 'utf8'));
+        const tipo = session.tipoRelatorio || 'essencial';
+
+        console.log(`⚙️  Gerando PDF da fila: ${sessionId} (${tipo})`);
+
         const buffer = await createPdfFromHtml(session, tipo);
         fs.writeFileSync(pdfPath, buffer);
 
         session.pdfGerado = true;
         session.dataGeracao = new Date().toISOString();
 
-        // Enviar para email principal
         await enviarEmail(session.email, session.nome, pdfPath, sessionId);
 
-        // Enviar para email corrigido (se houver e ainda não foi enviado)
         if (
           session.email_corrigido &&
           session.email_corrigido !== session.email &&
@@ -57,17 +64,18 @@ setInterval(async () => {
           session.email_corrigido_enviado = true;
         }
 
-        // Atualiza JSON completo e move para processados
         fs.writeFileSync(processadoPath, JSON.stringify(session, null, 2));
-        fs.unlinkSync(jsonPath);
+        fs.unlinkSync(lockedPath);
 
         console.log(`✅ PDF pronto e salvo: ${pdfPath}`);
-
       } catch (err) {
-        console.error(`❌ Erro ao gerar o PDF de ${sessionId}:`, err.message);
+        console.error(`❌ Erro ao processar ${sessionId}:`, err.message);
+        if (fs.existsSync(lockedPath)) {
+          // Em caso de falha, devolve para a fila
+          fs.renameSync(lockedPath, jsonPath);
+        }
       }
     }
-
   } catch (erro) {
     console.error('🔥 Erro geral no worker:', erro.message);
   }
