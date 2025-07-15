@@ -32,12 +32,13 @@ const pagamentoStatus = require("./src/routes/pagamentoStatus");
 
 const statusRedirect = require("./src/routes/statusRedirect");
 
-
+const webhookRoutes = require("./src/routes/webhook");
 
 const finalizarPagamentoRoute = require('./src/routes/finalizarPagamento');
 
 const app = express();
 app.use(express.json()); // <-- Agora vem logo após o app ser criado
+app.use('/webhook', webhookRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/aguarde/:session_id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'aguarde.html'));
