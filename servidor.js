@@ -1,7 +1,20 @@
 require('dotenv').config();
 const express = require('express');
+
 const path = require('path');
 const fs = require('fs');
+const pastasNecessarias = [
+  path.join(__dirname, 'temp', 'pendentes'),
+  path.join(__dirname, 'temp', 'processados'),
+  path.join(__dirname, 'temp', 'respondidos'),
+];
+
+pastasNecessarias.forEach((pasta) => {
+  if (!fs.existsSync(pasta)) {
+    fs.mkdirSync(pasta, { recursive: true });
+    console.log(`📁 Pasta criada automaticamente: ${pasta}`);
+  }
+});
 const pdf = require('html-pdf');
 const nodemailer = require('nodemailer');
 const salvarQuizRouter = require("./src/routes/salvarQuiz");
