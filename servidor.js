@@ -30,6 +30,7 @@ const pagamentoPixRoutes = require("./src/routes/pagamentoPix");
 const pagamentoEmbed = require('./src/routes/pagamentoEmbed');
 const pagamentoStatus = require("./src/routes/pagamentoStatus");
 
+const statusRedirect = require("./src/routes/statusRedirect");
 
 
 
@@ -76,6 +77,7 @@ app.use("/pagamento", pagamentoPixRoutes);
 app.use('/pagamento', pagamentoEmbed);
 app.use("/pagamento", pagamentoStatus);
 
+app.use("/pagamento", statusRedirect);
 
 
 app.get('/', (req, res) => {
