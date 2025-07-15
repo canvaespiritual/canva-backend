@@ -204,6 +204,20 @@
   carregarInfo();
   verificarStatus();
 </script>
+<script>
+(async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionId = urlParams.get("session_id");
+
+  if (sessionId) {
+    try {
+      await fetch(`/status_redirect/${sessionId}`);
+    } catch (e) {
+      console.warn("⚠️ Falha ao verificar status redirect:", e);
+    }
+  }
+})();
+</script>
 
 </body>
 </html>
