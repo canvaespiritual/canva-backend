@@ -37,11 +37,11 @@ router.get("/criar-preferencia-embed/:tipo/:session_id", async (req, res) => {
       name: "Cliente",
       surname: "Embed",
     },
-    back_urls: {
-      success: "https://www.canvaspiritual.com/sucesso",
-      failure: "https://www.canvaspiritual.com/falha",
-      pending: "https://www.canvaspiritual.com/pendente",
-    },
+   back_urls: {
+  success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+  failure: `https://api.canvaspiritual.com/falha.html`,
+  pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+},
     auto_return: "approved",
     metadata: { session_id, tipo },
   };
