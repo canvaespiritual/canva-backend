@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const emProducao = process.env.RAILWAY_ENVIRONMENT !== undefined;
 
 const path = require('path');
 const fs = require('fs');
@@ -78,7 +79,11 @@ app.use("/pagamento", pagamentoStatus);
 
 
 app.get('/', (req, res) => {
-  res.send('✨ O Espírito está vivo em http://localhost:3000');
+  if (emProducao) {
+    res.redirect('/quiz.html');
+  } else {
+    res.send('✨ O Espírito está vivo em http://localhost:3000');
+  }
 });
 
 app.get('/fruto', (req, res) => {
