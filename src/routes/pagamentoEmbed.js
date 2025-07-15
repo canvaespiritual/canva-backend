@@ -26,6 +26,7 @@ router.get("/criar-preferencia-embed/:tipo/:session_id", async (req, res) => {
   const preferenceData = {
     items: [
       {
+        id: session_id, // reforço técnico
         title: produto.title,
         quantity: 1,
         currency_id: "BRL",
@@ -36,20 +37,23 @@ router.get("/criar-preferencia-embed/:tipo/:session_id", async (req, res) => {
       email: `${session_id}@canvaespiritual.com`,
       name: "Cliente",
       surname: "Embed",
+      identification: {
+        type: "CPF",
+        number: "12345678909"
+      }
     },
-   back_urls: {
-  success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
-  failure: `https://api.canvaspiritual.com/falha.html`,
-  pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
-},
+    back_urls: {
+      success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+      failure: `https://api.canvaspiritual.com/falha.html`,
+      pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+    },
     auto_return: "approved",
-    metadata: { session_id, tipo },
+    metadata: { session_id, tipo }
   };
 
   try {
     const resultado = await new Preference(client).create({ body: preferenceData });
 
-    // ⚠️ Loga tudo que a API respondeu:
     console.log("📦 Resposta bruta da API Mercado Pago:", resultado);
 
     const preferenceId = resultado?.id || resultado?.body?.id;

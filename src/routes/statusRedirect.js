@@ -13,13 +13,15 @@ const pastaPendentes = path.join(__dirname, "../../temp/pendentes");
 
 router.get("/status_redirect/:session_id", async (req, res) => {
   const { session_id } = req.params;
+  const emailBusca = `${session_id}@canvaespiritual.com`;
 
   try {
-    // 1. Busca o pagamento mais recente dessa sessão via Mercado Pago
+    // 1. Busca os pagamentos mais recentes associados ao e-mail da sessão
     const searchResult = await mercadopago.payment.search({
       qs: {
         sort: "date_created",
         criteria: "desc",
+        email: emailBusca
       },
       headers: {
         Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
@@ -28,11 +30,9 @@ router.get("/status_redirect/:session_id", async (req, res) => {
 
     const pagamentos = searchResult.body.results;
 
-    // 2. Localiza o pagamento com metadado correto
+    // 2. Localiza o pagamento com status aprovado
     const pagamentoValido = pagamentos.find(
-      (p) =>
-        p.metadata?.session_id === session_id &&
-        p.status === "approved"
+      (p) => p.status === "approved"
     );
 
     if (!pagamentoValido) {

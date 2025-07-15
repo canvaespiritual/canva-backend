@@ -1,0 +1,23 @@
+{
+  "session_id": "sessao-1752611131502",
+  "nome": "Ana binguinga",
+  "email": "construtoracademy@gmail.com",
+  "respostas": [
+    5,
+    5,
+    7,
+    4,
+    6,
+    7,
+    4,
+    7,
+    4,
+    6,
+    7,
+    4
+  ],
+  "tipoRelatorio": null,
+  "payment_id": null,
+  "status_pagamento": "pendente",
+  "criado_em": "2025-07-15T20:25:31.502Z"
+}
