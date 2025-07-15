@@ -4,7 +4,7 @@ const path = require("path");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const dados = req.body;
 
@@ -26,8 +26,9 @@ router.post("/", (req, res) => {
       criado_em: new Date().toISOString()
     };
 
-    fs.writeFileSync(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");
+    await fs.promises.writeFile(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");
 
+    console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
     res.status(200).send("Sessão salva com sucesso.");
   } catch (error) {
     console.error("❌ Erro ao salvar sessão:", error);
