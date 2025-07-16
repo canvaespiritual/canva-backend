@@ -26,32 +26,34 @@ router.get("/criar-preferencia-embed/:tipo/:session_id", async (req, res) => {
   const preferenceData = {
     items: [
       {
-        id: session_id, // reforço técnico
+        id: session_id,
         title: produto.title,
         quantity: 1,
         currency_id: "BRL",
         unit_price: produto.unit_price,
       }
-   ],
-        payer: {
-        email: `${session_id}@canvaespiritual.com`,
-        name: "Cliente",
-        surname: "Embed",
-        identification: {
+    ],
+    payer: {
+      email: `${session_id}@canvaespiritual.com`,
+      name: "Cliente",
+      surname: "Embed",
+      identification: {
         type: "CPF",
         number: "12345678909"
-        }
-  },
-   back_urls: {
-        success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
-        failure: `https://api.canvaspiritual.com/falha.html`,
-        pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
-  },
-   auto_return: "approved",
-        external_reference: session_id, // 🔥 ESSENCIAL para webhook localizar
-        metadata: { session_id, tipo }
-};
-
+      }
+    },
+    back_urls: {
+      success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+      failure: `https://api.canvaspiritual.com/falha.html`,
+      pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+    },
+    auto_return: "approved",
+    external_reference: session_id, // 🔥 ESSENCIAL para o webhook identificar o arquivo certo
+    metadata: {
+      session_id,
+      tipo
+    }
+  };
 
   try {
     const resultado = await new Preference(client).create({ body: preferenceData });
