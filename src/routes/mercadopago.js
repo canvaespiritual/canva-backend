@@ -39,10 +39,11 @@ router.get('/criar-pagamento/:tipo/:session_id', async (req, res) => {
         },
       ],
       back_urls: {
-        success: `http://localhost:3000/finalizar-pagamento.html?session_id=${session_id}`,
-        failure: `http://localhost:3000/falha.html`,
-        pending: `http://localhost:3000/finalizar-pagamento.html?session_id=${session_id}`,
+        success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
+        failure: `https://api.canvaspiritual.com/falha.html`,
+       pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
       },
+
       //auto_return: "approved",
       metadata: {
         session_id,
