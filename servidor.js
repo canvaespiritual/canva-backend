@@ -34,7 +34,6 @@ const statusRedirect = require("./src/routes/statusRedirect");
 
 const webhookRoutes = require("./src/routes/webhook");
 
-const finalizarPagamentoRoute = require('./src/routes/finalizarPagamento');
 
 const app = express();
 app.use(express.json()); // <-- Agora vem logo após o app ser criado
@@ -72,7 +71,7 @@ app.use('/gerar-relatorio', relatorioRoutes);
 app.use('/pagamento', mercadopagoRoutes);
 
 app.use("/api/salvar-quiz", salvarQuizRouter);
-app.use('/pagamento/finalizar-pagamento', finalizarPagamentoRoute);
+
 app.use("/pagamento", pagamentoPixRoutes);
 
 app.use('/pagamento', pagamentoEmbed);

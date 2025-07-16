@@ -41,7 +41,7 @@
   // ✅ Bloqueia loop caso pagamento já confirmado
   if (localStorage.getItem("pagamento_confirmado") === "true") {
     localStorage.removeItem("pagamento_confirmado");
-    window.location.href = `/pagamento/finalizar-pagamento?session_id=${sessionId}`;
+    window.location.href = `/aguarde.html?session_id=${sessionId}`;
   }
 
   document.getElementById("session_id").textContent = sessionId || 'N/A';
@@ -119,7 +119,7 @@
             localStorage.setItem("pagamento_confirmado", "true");
 
             setTimeout(() => {
-              window.location.href = `/pagamento/finalizar-pagamento?session_id=${sessionId}`;
+              window.location.href = `/aguarde.html?session_id=${sessionId}`;
             }, 3000);
           }
         })
