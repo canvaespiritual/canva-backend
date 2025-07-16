@@ -205,19 +205,39 @@
   verificarStatus();
 </script>
 <script>
-(async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const sessionId = urlParams.get("session_id");
-
-  if (sessionId) {
-    try {
-      await fetch(`/status_redirect/${sessionId}`);
-    } catch (e) {
-      console.warn("⚠️ Falha ao verificar status redirect:", e);
+  async function esperarJson(sessionId, tentativas = 5) {
+    for (let i = 0; i < tentativas; i++) {
+      try {
+        const resposta = await fetch(`/status_redirect/${sessionId}`);
+        if (resposta.ok) {
+          const dados = await resposta.json();
+          preencherTela(dados); // Função que atualiza os campos visuais
+          return;
+        }
+      } catch (e) {
+        console.warn(`Tentativa ${i + 1} falhou. Retentando...`);
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Espera 1 segundo
     }
+    console.error("⚠️ Não foi possível obter os dados da sessão.");
   }
-})();
+
+  function preencherTela(dados) {
+    // exemplo — adapte conforme seus elementos na tela
+    document.querySelector("#email-destino")?.value = dados.email || "";
+    document.querySelector("#nome-usuario")?.textContent = dados.nome || "Visitante";
+    // etc...
+  }
+
+  (async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get("session_id");
+    if (sessionId) {
+      await esperarJson(sessionId);
+    }
+  })();
 </script>
+
 
 </body>
 </html>
