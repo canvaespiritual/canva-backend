@@ -1,0 +1,34 @@
+# 🔒 Arquivos sensíveis e de ambiente
+.env
+.env.local
+.env.*.local
+
+# 📦 Dependências
+node_modules/
+
+# ⚙️ Build e cache
+dist/
+build/
+.cache/
+.temp/
+logs/
+*.log
+
+# 📁 PDF e relatórios temporários
+temp/
+relatorios/
+
+# 🔄 Arquivos de lock de IDEs
+*.swp
+*.swo
+
+# 🧠 IDEs e editores
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 🚀 Railway / vercel / netlify config local (se houver)
+railway.json
+.vercel/
+.netlify/

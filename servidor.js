@@ -1,5 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const session = require("express-session");
+const loginRoutes = require("./src/routes/loginRoutes");
+const painelAdmin = require("./admin/src/routes/painelAdmin");
 const emProducao = process.env.RAILWAY_ENVIRONMENT !== undefined;
 
 const path = require('path');
@@ -36,7 +39,19 @@ const webhookRoutes = require("./src/routes/webhook");
 
 
 const app = express();
+app.use(session({  // ✅ ADICIONADO
+  secret: process.env.SEGREDO_SESSAO || "canva_supersecreto",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 3 * 60 * 60 * 1000 }
+}));
 app.use(express.json()); // <-- Agora vem logo após o app ser criado
+
+app.use("/admin", loginRoutes); // login + painel protegidos
+app.use("/admin", express.static(path.join(__dirname, "admin")));
+app.use("/admin", painelAdmin);
+
+
 app.use('/webhook', webhookRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/aguarde/:session_id', (req, res) => {
