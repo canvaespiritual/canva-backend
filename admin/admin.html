@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel Administrativo - Canva Espiritual</title>
+<link rel="stylesheet" href="/admin/style.css" />
+</head>
+<body>
+  <h1>🧠 Painel Administrativo - Canva Espiritual</h1>
+
+  <!-- 🎯 Filtros -->
+  <div class="filtros">
+    <label for="filtro">🎯 Tipo:</label>
+    <select id="filtro">
+      <option value="todos">Todos</option>
+      <option value="basico">Básico</option>
+      <option value="intermediario">Intermediário</option>
+      <option value="completo">Completo</option>
+    </select>
+
+    <label for="filtro-status">📋 Status:</label>
+    <select id="filtro-status">
+      <option value="todos">Todos</option>
+      <option value="pronto">📬 PDF Pronto</option>
+      <option value="respondido">⚠️ Respondido, mas não processado</option>
+      <option value="pendente">⏳ Aguardando PDF</option>
+      <option value="travado">🛑 Travado há +30min</option>
+      <option value="concluido">✅ PDF + E-mail enviado</option>
+    </select>
+
+    <label for="busca">🔎 Buscar por e-mail ou nome:</label>
+    <input type="text" id="busca" placeholder="Digite para filtrar..." />
+
+    <button onclick="carregarStatus()">🔄 Atualizar</button>
+    <button onclick="window.location.href='/admin/exportar-xlsx'">📥 Baixar Excel (.xlsx)</button>
+    <label for="itensPorPagina">📄 Itens por página:</label>
+    <select id="itensPorPagina">
+  <option value="10">10</option>
+  <option value="25" selected>25</option>
+  <option value="50">50</option>
+  <option value="100">100</option>
+    </select>
+
+  </div>
+
+  <!-- 📊 Painel de Estatísticas -->
+  <div id="painel-resumo" class="painel-estatisticas"></div>
+
+  <!-- 📋 Tabela -->
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>Session ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Tipo</th>
+        <th>Status</th>
+        <th>Espera</th>
+        <th onclick="ordenarPor('criado_em')">📥 Respondido ⬍</th>
+        <th onclick="ordenarPor('data_confirmacao')">💳 Pagamento ⬍</th>
+        <th onclick="ordenarPor('dataGeracao')">📄 PDF Gerado ⬍</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="corpo-tabela">
+      <tr><td colspan="10"><em>Carregando...</em></td></tr>
+    </tbody>
+  </table>
+<div id="paginacao" class="paginacao">
+  <button id="paginaAnterior">⏮ Anterior</button>
+  <span id="infoPaginacao">Página 1</span>
+  <button id="paginaProxima">Próxima ⏭</button>
+</div>
+
+  <script src="/admin/admin.js"></script>
+  <div style="text-align: right; margin: 20px;">
+  <a href="/admin/logout" style="color: red; text-decoration: none; font-weight: bold;">🚪 Sair</a>
+</div>
+
+</body>
+</html>
