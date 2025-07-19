@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const pool = require('../db'); // ← IMPORTAÇÃO DO POSTGRES
 
 const router = express.Router();
 
@@ -46,8 +47,34 @@ router.post('/', async (req, res) => {
       } else {
         console.warn(`⚠️ Arquivo ${sessionId}.json não encontrado em /respondidos`);
       }
-    }
+    
+ // ✅ Atualiza o PostgreSQL com status de pagamento
+      try {
+        await pool.query(`
+          UPDATE diagnosticos
+          SET
+            status_pagamento = $1,
+            tipo_pagamento = $2,
+            data_pagamento = $3,
+            payment_id = $4,
+            tipo_relatorio = $5,
+            status_processo = $6
+          WHERE session_id = $7
+        `, [
+          'pago',
+          'cartao',
+          new Date(),
+          paymentId,
+          tipo || 'desconhecido',
+          'pago',
+          sessionId
+        ]);
 
+        console.log(`🧾 PostgreSQL atualizado com pagamento APROVADO para sessão ${sessionId}`);
+      } catch (pgError) {
+        console.error(`❌ Erro ao atualizar PostgreSQL para sessão ${sessionId}:`, pgError.message);
+      }
+    }
     res.sendStatus(200);
   } catch (erro) {
     console.error("❌ Erro no Webhook:", erro.message);

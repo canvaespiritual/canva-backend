@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { MercadoPagoConfig, Payment } = require("mercadopago");
+const pool = require('../db'); // ← IMPORTAÇÃO DO POSTGRES
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -48,6 +49,32 @@ router.get("/status/:payment_id", async (req, res) => {
           fs.unlinkSync(respondidosPath);
 
           console.log(`📂 Sessão ${sessionId} movida para /pendentes`);
+            // ✅ Atualiza o PostgreSQL com pagamento aprovado
+          try {
+            await pool.query(`
+              UPDATE diagnosticos
+              SET
+                status_pagamento = $1,
+                tipo_pagamento = $2,
+                data_pagamento = $3,
+                payment_id = $4,
+                tipo_relatorio = $5,
+                status_processo = $6
+              WHERE session_id = $7
+            `, [
+              'pago',
+              'pix',
+              new Date(),
+              payment_id,
+              dados.tipoRelatorio || 'basico',
+              'pago',
+              sessionId
+            ]);
+
+            console.log(`🧾 PostgreSQL atualizado com pagamento APROVADO para sessão ${sessionId}`);
+          } catch (pgError) {
+            console.error(`❌ Erro ao atualizar PostgreSQL para sessão ${sessionId}:`, pgError.message);
+          }
         } else {
           console.warn(`⚠️ Sessão ${sessionId} não encontrada em /respondidos`);
         }

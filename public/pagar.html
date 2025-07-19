@@ -11,7 +11,10 @@
 
 <body class="bg-white text-gray-800 font-sans  mt-10">
 
-
+<script>
+    // 🚹 Corrige bug de redirecionamento indevido após sessão anterior
+    localStorage.removeItem("pagamento_confirmado");
+  </script>
 <div class="max-w-3xl mx-auto px-4 text-center text-gray-800 mt-10 mb-6">
   <p class="text-gray-700 mt-2 leading-relaxed">
     🙏 <strong id="nomeUsuarioIntro">Buscador</strong>, se você chegou até aqui com sinceridade, já percebeu:

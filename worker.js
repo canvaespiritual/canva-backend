@@ -1,79 +1,92 @@
-const fs = require('fs');
+require('dotenv').config();
 const path = require('path');
 const nodemailer = require('nodemailer');
+const AWS = require('aws-sdk');
 const { createPdfFromHtml } = require('./src/services/relatorioPDF');
+const pool = require('./src/db'); // ← conexao com PostgreSQL
 
-const pastaPendentes = path.join(__dirname, 'temp', 'pendentes');
-const pastaProntos = path.join(__dirname, 'temp', 'prontos');
-const pastaProcessados = path.join(__dirname, 'temp', 'processados');
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION
+});
+
+const s3 = new AWS.S3();
 
 console.log('🌀 Worker iniciado. Verificando fila de relatórios a cada 10 segundos...\n');
 
 setInterval(async () => {
   try {
-    const arquivos = fs.readdirSync(pastaPendentes).filter(arq => arq.endsWith('.json'));
+    const { rows } = await pool.query(`
+      SELECT session_id FROM diagnosticos
+      WHERE status_processo = 'pago' AND pdf_url IS NULL
+      ORDER BY data_criacao ASC
+      LIMIT 3
+    `);
 
-    if (arquivos.length === 0) {
-      console.log('📭 Nenhum relatório pendente no momento.');
+    if (rows.length === 0) {
+      console.log('📭 Nenhum relatório pendente no banco no momento.');
       return;
     }
 
-    // Ordena por data de criação (mais antigo primeiro)
-    arquivos.sort((a, b) => {
-      const statA = fs.statSync(path.join(pastaPendentes, a)).birthtimeMs;
-      const statB = fs.statSync(path.join(pastaPendentes, b)).birthtimeMs;
-      return statA - statB;
-    });
-
-    for (const arquivo of arquivos) {
-      const sessionId = path.basename(arquivo, '.json');
-      const jsonPath = path.join(pastaPendentes, arquivo);
-      const lockedPath = path.join(pastaPendentes, `${arquivo}.lock`);
-      const pdfPath = path.join(pastaProntos, `${sessionId}.pdf`);
-      const processadoPath = path.join(pastaProcessados, `${sessionId}.json`);
-
-      // Se já existe um .lock, pula esse arquivo (alguém está processando)
-      if (fs.existsSync(lockedPath)) {
-        continue;
-      }
-
+    for (const { session_id } of rows) {
       try {
-        // Cria um .lock para evitar concorrência
-        fs.renameSync(jsonPath, lockedPath);
+        console.log(`⚙️  Processando sessão: ${session_id}`);
+        const session = await buscarDadosDoBanco(session_id);
+        if (!session) continue;
 
-        const session = JSON.parse(fs.readFileSync(lockedPath, 'utf8'));
-        const tipo = session.tipoRelatorio || 'essencial';
+        const buffer = await createPdfFromHtml(session, session.tipoRelatorio || 'essencial');
 
-        console.log(`⚙️  Gerando PDF da fila: ${sessionId} (${tipo})`);
+        const uploadResult = await s3.upload({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: `${session_id}.pdf`,
+          Body: buffer,
+          ContentType: 'application/pdf',
+        }).promise();
 
-        const buffer = await createPdfFromHtml(session, tipo);
-        fs.writeFileSync(pdfPath, buffer);
-
+        const s3Url = uploadResult.Location;
+        session.pdf_url = s3Url;
         session.pdfGerado = true;
         session.dataGeracao = new Date().toISOString();
 
-        await enviarEmail(session.email, session.nome, pdfPath, sessionId);
+        await enviarEmail(session.email, session.nome, session_id, s3Url);
+       if (
+       session.email_corrigido &&
+       session.email_corrigido !== session.email &&
+       !session.email_corrigido_enviado
+      ) {
+      console.log(`📤 Enviando cópia para o e-mail corrigido: ${session.email_corrigido}`);
+      await enviarEmail(session.email_corrigido, session.nome, session_id, s3Url);
 
-        if (
-          session.email_corrigido &&
-          session.email_corrigido !== session.email &&
-          !session.email_corrigido_enviado
-        ) {
-          console.log(`📤 Enviando cópia para o e-mail corrigido: ${session.email_corrigido}`);
-          await enviarEmail(session.email_corrigido, session.nome, pdfPath, sessionId);
-          session.email_corrigido_enviado = true;
-        }
+      // ✅ Atualiza o banco para registrar que já foi enviado
+      await pool.query(`
+     UPDATE diagnosticos
+      SET email_corrigido_enviado = true
+      WHERE session_id = $1
+     `, [session_id]);
+}
 
-        fs.writeFileSync(processadoPath, JSON.stringify(session, null, 2));
-        fs.unlinkSync(lockedPath);
+        await pool.query(`
+          UPDATE diagnosticos
+          SET
+            status_processo = $1,
+            data_envio_relatorio = $2,
+            modelo_pdf = $3,
+            tipo_relatorio = $4,
+            pdf_url = $5
+          WHERE session_id = $6
+        `, [
+          'enviado',
+          new Date(),
+          'modelo_padrao',
+          session.tipoRelatorio || 'essencial',
+          s3Url,
+          session_id
+        ]);
 
-        console.log(`✅ PDF pronto e salvo: ${pdfPath}`);
+        console.log(`✅ Relatório da sessão ${session_id} enviado com sucesso!`);
       } catch (err) {
-        console.error(`❌ Erro ao processar ${sessionId}:`, err.message);
-        if (fs.existsSync(lockedPath)) {
-          // Em caso de falha, devolve para a fila
-          fs.renameSync(lockedPath, jsonPath);
-        }
+        console.error(`❌ Erro ao processar sessão ${session_id}:`, err.message);
       }
     }
   } catch (erro) {
@@ -81,9 +94,53 @@ setInterval(async () => {
   }
 
   console.log('🔁 Aguardando próxima verificação...\n');
-}, 10000); // a cada 10 segundos
+}, 10000);
 
-async function enviarEmail(destinatario, nome, pdfPath, sessionId) {
+// 🔍 Função auxiliar para montar objeto completo de sessão com dados do banco
+async function buscarDadosDoBanco(sessionId) {
+  const { rows: [diagnostico] } = await pool.query(
+  `SELECT session_id, nome, email, email_corrigido, email_corrigido_enviado, tipo_relatorio, codigo_arquetipo, respostas_codificadas
+   FROM diagnosticos WHERE session_id = $1`,
+  [sessionId]
+);
+  if (!diagnostico) return null;
+
+  // Carregar arquétipo com base no código da chave de correspondência
+  const arquetipo = diagnostico.codigo_arquetipo
+    ? await pool.query(`SELECT * FROM arquetipos WHERE chave_correspondencia = $1`, [diagnostico.codigo_arquetipo])
+    : { rows: [] };
+
+  const dados = {
+    nome: diagnostico.nome,
+    email: diagnostico.email,
+    email_corrigido: diagnostico.email_corrigido,
+    tipoRelatorio: diagnostico.tipo_relatorio || 'essencial',
+    codigo_arquetipo: diagnostico.codigo_arquetipo,
+    respostas_codificadas: diagnostico.respostas_codificadas,
+    session_id: diagnostico.session_id,
+  };
+
+  if (arquetipo.rows.length > 0) {
+    Object.assign(dados, {
+      tecnico: arquetipo.rows[0].tecnico,
+      simbolico: arquetipo.rows[0].simbolico,
+      diagnostico: arquetipo.rows[0].diagnostico,
+      simbolico_texto: arquetipo.rows[0].simbolico_texto,
+      mensagem: arquetipo.rows[0].mensagem,
+      gatilho_tatil: arquetipo.rows[0].gatilho_tatil,
+      gatilho_olfato: arquetipo.rows[0].gatilho_olfativo,
+      gatilho_audicao: arquetipo.rows[0].gatilho_auditivo,
+      gatilho_visao: arquetipo.rows[0].gatilho_visual,
+      gatilho_paladar: arquetipo.rows[0].gatilho_paladar
+    });
+  }
+
+  return dados;
+}
+
+
+// 📧 Função de envio de e-mail com link do PDF
+async function enviarEmail(destinatario, nome, sessionId, pdfUrl) {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -97,17 +154,24 @@ async function enviarEmail(destinatario, nome, pdfPath, sessionId) {
       from: process.env.EMAIL_REMETENTE,
       to: destinatario,
       subject: `Seu Relatório Espiritual – Canva Espiritual`,
-      text: `Olá ${nome},\n\nSegue em anexo o seu diagnóstico espiritual solicitado.\n\nCom luz,`,
-      attachments: [
-        {
-          filename: `${sessionId}.pdf`,
-          path: pdfPath
-        }
-      ]
+      html: `
+        <p>Olá <strong>${nome}</strong>,</p>
+        <p>Seu diagnóstico espiritual está pronto!</p>
+        <p><a href="${pdfUrl}" target="_blank" style="
+            background-color: #0d6efd;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+          ">📥 Baixar Relatório</a></p>
+        <br>
+        <p>Com luz,<br><em>Equipe Canva Espiritual</em></p>
+      `
     };
 
     await transporter.sendMail(mailOptions);
-    console.log(`📨 E-mail enviado com sucesso para ${destinatario}`);
+    console.log(`📨 Link enviado com sucesso para ${destinatario}`);
   } catch (error) {
     console.error(`❌ Erro ao enviar e-mail para ${destinatario}:`, error.message);
   }

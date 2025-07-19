@@ -153,8 +153,12 @@
       if (data.pronto) {
         document.getElementById("status").textContent = "✅ Seu relatório está pronto!";
         const link = document.getElementById("baixar");
-        link.href = `/relatorios/${sessionId}.pdf`;
-        link.style.display = "inline-block";
+       
+           // 🆕 Link direto para o PDF da Amazon S3 (ou local se não houver)
+          link.href = data.pdf_url || `/relatorios/${sessionId}.pdf`;
+        link.target = "_blank";
+         link.style.display = "inline-block";
+
 
         document.getElementById("email-confirmado").style.display = "block";
         document.getElementById("email-final").textContent = document.getElementById("email").value;

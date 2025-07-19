@@ -3,58 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <title>Seu relatório está sendo preparado...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
+      background-color: #fff;
       text-align: center;
       padding: 40px 20px;
+      color: #333;
     }
 
     h1 {
+      font-size: 22px;
       color: #333;
-      font-size: 24px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .mensagem {
-      margin: 0 auto 40px auto;
       max-width: 600px;
+      margin: 0 auto 30px auto;
       font-size: 16px;
-      color: #444;
       line-height: 1.6;
     }
 
     .email-box {
-      margin-top: 30px;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .email-box label {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 15px;
-      color: #333;
+      margin-top: 20px;
     }
 
     input[type="email"] {
       padding: 12px;
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       font-size: 16px;
+      margin-top: 8px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 5px;
       color: #333;
     }
 
     button {
-      padding: 12px 20px;
+      padding: 10px 20px;
+      margin-top: 10px;
       font-size: 16px;
       background-color: #007bff;
       color: white;
@@ -73,15 +62,16 @@
     #baixar {
       display: none;
       margin-top: 20px;
-      padding: 16px 32px;
-      font-size: 18px;
+      padding: 14px 16px;
+      font-size: 16px;
       background-color: #28a745;
       color: white;
       border: none;
       border-radius: 8px;
       text-decoration: none;
-      width: 100%;
-      max-width: 400px;
+      width: 90%;
+      max-width: 360px;
+      box-sizing: border-box;
       font-weight: bold;
     }
 
@@ -90,22 +80,6 @@
       font-size: 14px;
       color: #333;
       margin-top: 20px;
-    }
-
-    @media (max-width: 480px) {
-      .email-box {
-        flex-direction: column;
-      }
-
-      input[type="email"],
-      button {
-        width: 100%;
-        max-width: 300px;
-      }
-
-      #baixar {
-        font-size: 17px;
-      }
     }
   </style>
 </head>
@@ -118,126 +92,91 @@
   </div>
 
   <div class="email-box">
-    <label for="email">📬 Também enviaremos o relatório para este e-mail:</label>
+    <p>📬 Também enviaremos o relatório para este e-mail:</p>
     <input type="email" id="email" placeholder="Seu e-mail" />
+    <br />
     <button onclick="confirmarEmail()">Confirmar ou Corrigir</button>
   </div>
 
   <div id="status">⌛ Aguardando geração do relatório...</div>
 
-  <a id="baixar" href="#" download>📄 Baixar Relatório</a>
+  <a id="baixar" href="#" target="_blank">📄 Baixar Relatório</a>
 
   <p id="email-confirmado">
-    📩 Relatório também enviado para: <span id="email-final"></span><br>
+    📩 Relatório também enviado para: <span id="email-final"></span><br />
     🔎 Verifique sua caixa de entrada e também a pasta de spam.
   </p>
 
   <script>
-  const sessionId = new URLSearchParams(window.location.search).get("session_id");
+    const sessionId = new URLSearchParams(window.location.search).get("session_id");
 
-  if (!sessionId) {
-    document.getElementById('mensagem-usuario').innerHTML = "❌ Sessão inválida.";
-    throw new Error("session_id ausente na URL");
-  }
-
-  async function carregarInfo() {
-    try {
-      const res = await fetch(`/info/${sessionId}`);
-      const data = await res.json();
-
-      document.getElementById('mensagem-usuario').innerHTML = `
-        🙏 Obrigado pela sua compra, <strong>${data.nome}</strong>.<br>
-        Você nos abençoou hoje — e esperamos que as sementes que encontrará neste relatório floresçam para sempre na sua alma.<br>
-        🌱 Que essa leitura seja uma porta viva para algo eterno.<br><br>
-        <em>Com fé, sabedoria e propósito — Canva Espiritual</em>
-      `;
-
-      document.getElementById('email').value = data.email || '';
-    } catch (err) {
-      console.error('Erro ao carregar dados do usuário:', err);
+    if (!sessionId) {
+      document.getElementById('mensagem-usuario').innerHTML = "❌ Sessão inválida.";
+      throw new Error("session_id ausente na URL");
     }
-  }
 
-  async function verificarStatus() {
-    try {
-      const res = await fetch(`/status/${sessionId}`);
-      const data = await res.json();
-
-      if (data.pronto) {
-        document.getElementById('status').textContent = '✅ Seu relatório está pronto!';
-        const link = document.getElementById('baixar');
-        link.href = `/relatorios/${sessionId}.pdf`;
-        link.style.display = 'inline-block';
-
-        // Exibe aviso de envio
-        document.getElementById('email-confirmado').style.display = 'block';
-        document.getElementById('email-final').textContent = document.getElementById('email').value;
-      } else {
-        setTimeout(verificarStatus, 5000);
-      }
-    } catch (err) {
-      console.error('Erro ao verificar status:', err);
-      setTimeout(verificarStatus, 7000);
-    }
-  }
-
-  function confirmarEmail() {
-    const email = document.getElementById('email').value;
-
-    fetch(`/confirmar-email/${sessionId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.mensagem || 'E-mail confirmado!');
-      document.getElementById('email').disabled = true;
-      document.querySelector('.email-box button').disabled = true;
-    })
-    .catch(err => {
-      console.error('Erro ao confirmar e-mail:', err);
-      alert('Erro ao salvar o e-mail. Tente novamente.');
-    });
-  }
-
-  carregarInfo();
-  verificarStatus();
-</script>
-<script>
-  async function esperarJson(sessionId, tentativas = 5) {
-    for (let i = 0; i < tentativas; i++) {
+    async function carregarInfo() {
       try {
-        const resposta = await fetch(`/status_redirect/${sessionId}`);
-        if (resposta.ok) {
-          const dados = await resposta.json();
-          preencherTela(dados); // Função que atualiza os campos visuais
-          return;
-        }
-      } catch (e) {
-        console.warn(`Tentativa ${i + 1} falhou. Retentando...`);
+        const res = await fetch(`/info/${sessionId}`);
+        const data = await res.json();
+
+        document.getElementById('mensagem-usuario').innerHTML = `
+          🙏 Obrigado pela sua compra, <strong>${data.nome}</strong>.<br>
+          Você nos abençoou hoje — e esperamos que as sementes que encontrará neste relatório floresçam para sempre na sua alma.<br>
+          🌱 Que essa leitura seja uma porta viva para algo eterno.<br><br>
+          <em>Com fé, sabedoria e propósito — Canva Espiritual</em>
+        `;
+
+        document.getElementById('email').value = data.email || '';
+      } catch (err) {
+        console.error('Erro ao carregar dados do usuário:', err);
       }
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Espera 1 segundo
     }
-    console.error("⚠️ Não foi possível obter os dados da sessão.");
-  }
 
-  function preencherTela(dados) {
-    // exemplo — adapte conforme seus elementos na tela
-    document.querySelector("#email-destino")?.value = dados.email || "";
-    document.querySelector("#nome-usuario")?.textContent = dados.nome || "Visitante";
-    // etc...
-  }
+    async function verificarStatus() {
+      try {
+        const res = await fetch(`/status/${sessionId}`);
+        const data = await res.json();
 
-  (async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get("session_id");
-    if (sessionId) {
-      await esperarJson(sessionId);
+        if (data.pronto && data.pdf_url) {
+          document.getElementById('status').textContent = '✅ Seu relatório está pronto!';
+          const link = document.getElementById('baixar');
+          link.href = data.pdf_url;
+          link.style.display = 'inline-block';
+
+          document.getElementById('email-confirmado').style.display = 'block';
+          document.getElementById('email-final').textContent = document.getElementById('email').value;
+        } else {
+          setTimeout(verificarStatus, 5000);
+        }
+      } catch (err) {
+        console.error('Erro ao verificar status:', err);
+        setTimeout(verificarStatus, 7000);
+      }
     }
-  })();
-</script>
 
+    function confirmarEmail() {
+      const email = document.getElementById('email').value;
 
+      fetch(`/confirmar-email/${sessionId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.mensagem || 'E-mail confirmado!');
+        document.getElementById('email').disabled = true;
+        document.querySelector('.email-box button').disabled = true;
+      })
+      .catch(err => {
+        console.error('Erro ao confirmar e-mail:', err);
+        alert('Erro ao salvar o e-mail. Tente novamente.');
+      });
+    }
+
+    carregarInfo();
+    verificarStatus();
+  </script>
 </body>
 </html>
