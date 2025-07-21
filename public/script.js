@@ -353,7 +353,7 @@ setTimeout(() => {
 }
 
 // Verifica e-mail com MailboxLayer
-const emailValido = await verificarEmailComCamada(email);
+const emailValido = await verificarEmail(email);
 if (!emailValido) {
   document.getElementById("mensagem").textContent = "⚠️ E-mail inválido. Verifique e tente novamente.";
   return;
