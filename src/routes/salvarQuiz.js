@@ -5,6 +5,20 @@ const pool = require("../db"); // ajuste o caminho conforme sua estrutura
 
 const router = express.Router();
 
+// Função para calcular média
+function calcularMedia(respostas) {
+  const soma = respostas.reduce((acc, val) => acc + val, 0);
+  return parseFloat((soma / respostas.length).toFixed(2));
+}
+
+// Função para definir zona
+function definirZona(respostas) {
+  const media = calcularMedia(respostas);
+  if (media >= 9) return "virtude";
+  if (media >= 5) return "transição";
+  return "degradação";
+}
+
 router.post("/", async (req, res) => {
   try {
     const dados = req.body;
@@ -34,56 +48,66 @@ router.post("/", async (req, res) => {
     const respostasCodificadas = dados.respostas.map((valor, index) => {
       return codigosPorPergunta[index][valor - 1];
     });
-      // Cálculo automático da chave de correspondência (R, Y, B)
-let R = 0, Y = 0, B = 0;
-for (const nota of dados.respostas) {
-  if (nota >= 8) R++;
-  else if (nota >= 5) Y++;
-  else B++;
-}
-const codigoArquetipo = `R${R}Y${Y}B${B}`;
+
+    let R = 0, Y = 0, B = 0;
+    for (const nota of dados.respostas) {
+      if (nota >= 8) R++;
+      else if (nota >= 5) Y++;
+      else B++;
+    }
+    const codigoArquetipo = `R${R}Y${Y}B${B}`;
+    const media = calcularMedia(dados.respostas);
+    const zona = definirZona(dados.respostas);
+
     const dadosCompletos = {
       session_id: dados.session_id,
       nome: dados.nome,
       email: dados.email,
       respostas: dados.respostas,
       respostas_codificadas: respostasCodificadas,
+      media_vibracional: media,
+      zona_predominante: zona,
+      codigo_arquetipo: codigoArquetipo,
       tipoRelatorio: null,
       payment_id: null,
       status_pagamento: "pendente",
       criado_em: new Date().toISOString()
     };
 
-   // Gravação no PostgreSQL PRIMEIRO
-try {
-  await pool.query(`
-    INSERT INTO diagnosticos (
-      session_id, nome, email, respostas_numericas, respostas_codificadas,
-      status_pagamento, status_processo, criado_em
-    ) VALUES (
-      $1, $2, $3, $4, $5,
-      $6, $7, $8
-    )
-  `, [
-    dadosCompletos.session_id,
-    dadosCompletos.nome,
-    dadosCompletos.email,
-    JSON.stringify(dadosCompletos.respostas),
-    JSON.stringify(dadosCompletos.respostas_codificadas),
-    "pendente",
-    "iniciado",
-    new Date()
-  ]);
+    // Gravação no PostgreSQL
+    try {
+      await pool.query(`
+        INSERT INTO diagnosticos (
+          session_id, nome, email, respostas_numericas, respostas_codificadas,
+          status_pagamento, status_processo, criado_em,
+          media_vibracional, zona_predominante, codigo_arquetipo
+        ) VALUES (
+          $1, $2, $3, $4, $5,
+          $6, $7, $8,
+          $9, $10, $11
+        )
+      `, [
+        dadosCompletos.session_id,
+        dadosCompletos.nome,
+        dadosCompletos.email,
+        JSON.stringify(dadosCompletos.respostas),
+        JSON.stringify(dadosCompletos.respostas_codificadas),
+        "pendente",
+        "iniciado",
+        new Date(),
+        media,
+        zona,
+        codigoArquetipo
+      ]);
 
-  console.log(`📥 Diagnóstico ${dadosCompletos.session_id} registrado no PostgreSQL.`);
-} catch (erroPg) {
-  console.error("❌ Falha ao gravar no PostgreSQL. Abandonando fluxo:", erroPg);
-  return res.status(500).send("Erro ao salvar no banco de dados.");
-}
+      console.log(`📥 Diagnóstico ${dadosCompletos.session_id} registrado no PostgreSQL.`);
+    } catch (erroPg) {
+      console.error("❌ Falha ao gravar no PostgreSQL. Abandonando fluxo:", erroPg);
+      return res.status(500).send("Erro ao salvar no banco de dados.");
+    }
 
-// Só grava o JSON depois que o banco confirmou
-await fs.promises.writeFile(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");
-
+    // Só grava o JSON após sucesso no banco
+    await fs.promises.writeFile(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");
 
     console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
     res.status(200).send("Sessão salva com sucesso.");
