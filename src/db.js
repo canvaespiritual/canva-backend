@@ -1,11 +1,9 @@
 const { Pool } = require('pg');
+const isProduction = process.env.NODE_ENV === "production";
 
 const pool = new Pool({
-  user: 'canvaespiritual',
-  host: 'localhost',
-  database: 'canva',
-  password: 'Crailgra272@',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
 module.exports = pool;
