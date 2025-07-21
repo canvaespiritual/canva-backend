@@ -170,9 +170,25 @@ async function enviarEmail(destinatario, nome, sessionId, pdfUrl) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
     console.log(`📨 Link enviado com sucesso para ${destinatario}`);
+
+    // ✅ Marca o horário real do envio de e-mail
+    await pool.query(`
+      UPDATE diagnosticos
+      SET email_enviado_em = NOW(),
+          email_erro = NULL
+      WHERE session_id = $1
+    `, [sessionId]);
+
   } catch (error) {
     console.error(`❌ Erro ao enviar e-mail para ${destinatario}:`, error.message);
+
+    // ❌ Registra o erro de envio no banco
+    await pool.query(`
+      UPDATE diagnosticos
+      SET email_erro = $2
+      WHERE session_id = $1
+    `, [sessionId, error.message]);
   }
 }

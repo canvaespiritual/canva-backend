@@ -35,6 +35,8 @@ module.exports = async function getStatusFromDB() {
     status_processo,
     data_quiz,
     pdf_url
+    email_enviado_em,
+    email_erro
   FROM diagnosticos
   ORDER BY criado_em DESC
 `;
@@ -61,7 +63,9 @@ module.exports = async function getStatusFromDB() {
     pronto: !!row.dataGeracao,
     pendente: row.status_processo === "pendente",
     travado: alerta.includes("Travado"),
-    pdf_url: row.pdf_url || null
+    pdf_url: row.pdf_url || null,
+    email_enviado_em: row.email_enviado_em || null,
+    email_erro: row.email_erro || null
   };
 });
 

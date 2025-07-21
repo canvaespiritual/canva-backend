@@ -122,8 +122,15 @@ document.addEventListener("DOMContentLoaded", () => {
         <td ${alertaStyle}>${item.alerta}</td>
         <td>${item.minutosAguardando ? item.minutosAguardando + " min" : "—"}</td>
         <td>${formatarData(item.criado_em)}</td>
-        <td>${formatarData(item.data_confirmacao)}</td>
+        <td>${
+  item.pdf_url
+    ? `<a href="${item.pdf_url}" target="_blank" style="color: green; font-weight: bold;">📄 Abrir</a>`
+    : "—"
+}</td>
+
         <td>${formatarData(item.dataGeracao)}</td>
+        <td>${formatarData(item.email_enviado_em)}</td>
+        <td>${item.email_erro ? `<span style="color: red;">${item.email_erro}</span>` : "—"}</td>
         <td>${botoes}</td>
       `;
 
