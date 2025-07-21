@@ -4,7 +4,7 @@ const path = require("path");
 const XLSX = require("xlsx");
 const router = express.Router();
 
-const gerarRelatorioDeStatus = require("../../utils/statusChecker");
+const getStatusFromDB = require("../services/getStatusFromDB");
 const protegerRota = require("../middlewares/authMiddleware");
 
 const basePath = path.join(__dirname, "..", "..", "temp");
@@ -44,10 +44,16 @@ router.get("/admin.html", protegerRota, (req, res) => {
 });
 
 // 📊 Dados de status
-router.get("/status-completo", protegerRota, (req, res) => {
-  const lista = gerarRelatorioDeStatus();
-  res.json(lista);
+router.get("/status-completo", protegerRota, async (req, res) => {
+  try {
+    const lista = await getStatusFromDB();
+    res.json(lista);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: "Erro ao buscar dados do banco" });
+  }
 });
+
 
 // 📤 Reenviar relatório
 router.post("/reenviar/:session_id", protegerRota, (req, res) => {
