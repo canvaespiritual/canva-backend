@@ -264,6 +264,24 @@ function identificarFruto(codigo) {
   return mapa[prefixo] || "fruto";
 }
   document.addEventListener("DOMContentLoaded", () => {
+  // 🔐 Verificação segura com MailboxLayer (chave disfarçada)
+  const mlk = "61c97876462d24d225bf510b5bb55db"; // ← sua chave
+
+  const verificarEmail = async (email) => {
+    try {
+      const base = "https://apilayer.net/api/check";
+      const query = `?access_key=${mlk}&email=${encodeURIComponent(email)}&smtp=1&format=1`;
+      const resposta = await fetch(base + query);
+      const dados = await resposta.json();
+      return dados.format_valid && dados.smtp_check;
+    } catch (err) {
+      console.error("Erro ao verificar e-mail:", err);
+      return false;
+    }
+  };
+
+
+    
    setTimeout(() => {
   const audio = document.getElementById("musicaAmbiente");
   const botao = document.getElementById("botaoSom");
@@ -330,9 +348,17 @@ setTimeout(() => {
     const email = document.getElementById("email")?.value?.trim();
 
     if (!email || respostas.length !== perguntas.length) {
-      document.getElementById("mensagem").textContent = "Por favor, preencha todos os campos e responda as 12 perguntas.";
-      return;
-    }
+  document.getElementById("mensagem").textContent = "Por favor, preencha todos os campos e responda as 12 perguntas.";
+  return;
+}
+
+// Verifica e-mail com MailboxLayer
+const emailValido = await verificarEmailComCamada(email);
+if (!emailValido) {
+  document.getElementById("mensagem").textContent = "⚠️ E-mail inválido. Verifique e tente novamente.";
+  return;
+}
+
 
     const dados = {
       nome,
