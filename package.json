@@ -11,10 +11,12 @@
   "dependencies": {
     "aws-sdk": "^2.1692.0",
     "axios": "^1.10.0",
+    "bullmq": "^5.56.5",
     "csv-parser": "^3.2.0",
     "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "ioredis": "^5.6.1",
     "mercadopago": "^2.8.0",
     "nodemailer": "^7.0.3",
     "pg": "^8.16.3",
