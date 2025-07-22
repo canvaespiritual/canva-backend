@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const { MercadoPagoConfig, Payment } = require("mercadopago");
 const pool = require('../db'); // ← IMPORTAÇÃO DO POSTGRES
+const filaRelatorios = require('../queue/filaRelatorios');
+
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -70,6 +72,11 @@ router.get("/status/:payment_id", async (req, res) => {
               'pago',
               sessionId
             ]);
+
+            // ✅ Após atualizar o banco, envia para a fila:
+  await filaRelatorios.add('gerar-relatorio', { session_id: sessionId });
+
+  console.log(`📨 Job enviado para fila BullMQ: ${sessionId}`);
 
             console.log(`🧾 PostgreSQL atualizado com pagamento APROVADO para sessão ${sessionId}`);
           } catch (pgError) {
