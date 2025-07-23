@@ -171,6 +171,7 @@
 
           document.getElementById('email-confirmado').style.display = 'block';
           document.getElementById('email-final').textContent = document.getElementById('email').value;
+        iniciarContagemRevelacao();
         } else {
           setTimeout(verificarStatus, 5000);
         }
