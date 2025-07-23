@@ -29,11 +29,14 @@ const perguntas = [
       { titulo: "⏳ Como você reage aos processos que demoram e exigem perseverança?", codigos: ["LO01", "LO02", "LO03", "LO04", "LO05", "LO06", "LO07", "LO08", "LO09", "LO10", "LO11", "LO12"], opcoes: ["🕊 Longanimidade Celestial", "💚 Perseverança Serena", "🙏 Constância Amorosa", "🌿 Espera Confiante", "🌧 Esperança Ativa", "⚪ Zona Neutra", "😐 Resistência Silenciosa", "😓 Impaciência Oculta", "😞 Desânimo Recorrente", "😡 Revolta com o Tempo", "😈 Sabotagem Emocional", "❌ Desistência Espiritual"] }
     ];
 
-const caminhoImagem = {
-  virtude: "./assets/imagens/zona_virtude.png",
-  transicao: "./assets/imagens/zona_transicao.png",
-  degradacao: "./assets/imagens/zona_degradacao.png"
-};
+function gerarImagemZona(zona, classe = "w-48 h-48 mx-auto rounded") {
+  return `
+    <picture>
+      <source srcset="./assets/imagens/zona_${zona}.webp" type="image/webp" />
+      <img src="./assets/imagens/zona_${zona}.png" alt="Zona ${zona}" class="${classe}" loading="lazy" />
+    </picture>
+  `;
+}
 function calcularMedia(lista) {
   let soma = 0;
   lista.forEach(codigo => {
@@ -200,9 +203,7 @@ function gerarEspelhoAnterior(index) {
 
   const zona = determinarZona(codigo);
   const percentual = mapearPercentual(codigo);
-  const fruto = identificarFruto(codigo);
-  const imagem = `./assets/icones/${fruto}_${zona}.png`;
-
+  const fruto = identificarFruto(codigo);  
   const detalhe = detalhesFrutos[codigo];
   const mensagemZona = detalhe?.diagnostico || "⚠️ Estado emocional não encontrado.";
 
@@ -216,10 +217,13 @@ function gerarEspelhoAnterior(index) {
   };
   const iconeZona = icones[zona];
 
-  return `
+ return `
     <div id="bloco-paciencia" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-[#fefce8] border border-yellow-500 rounded-xl shadow-lg px-4 py-4 w-[90%] max-w-md text-center animate-fade">
       <div class="flex flex-col items-center justify-center space-y-2 mb-2">
-        <img src="${imagem}" class="w-20 h-20" alt="Ícone espiritual de ${fruto}">
+        <picture>
+          <source srcset="./assets/icones/${fruto}_${zona}.webp" type="image/webp" />
+          <img src="./assets/icones/${fruto}_${zona}.png" class="w-20 h-20" alt="Ícone espiritual de ${fruto}">
+        </picture>
         <p class="text-[13px] text-gray-700 font-medium">${mensagemZona}</p>
       </div>
       <p class="text-sm text-gray-800 font-semibold mt-2">Sua ${fruto} está em <span class="text-yellow-600">${percentual}%</span></p>
@@ -470,13 +474,8 @@ function mostrarFormulario() {
   else if (media <= 8) zona = "transicao";
   else zona = "degradacao";
 
-  // 2. Caminho das imagens por zona
-  const caminhoImagem = {
-    virtude: "./assets/imagens/zona_virtude.png",
-    transicao: "./assets/imagens/zona_transicao.png",
-    degradacao: "./assets/imagens/zona_degradacao.png"
-  };
-  const imagemFinal = caminhoImagem[zona];
+const imagemFinal = gerarImagemZona(zona);
+
 
   // 3. Média percentual geral da alma
   const mediaPercentual = Math.floor(((13 - media) / 12) * 100);
@@ -508,7 +507,7 @@ function mostrarFormulario() {
       <h2 class="text-xl font-bold text-gray-800">🎉 Parabéns por concluir seu Mapa da Alma</h2>
       <p class="text-gray-600">Você concluiu sua jornada de autoconhecimento.</p>
       <p class="text-gray-700 text-base">Sua frequência predominante está na zona <strong class="capitalize text-${zona === 'virtude' ? 'blue' : zona === 'transicao' ? 'yellow' : 'red'}-600">${zona}</strong>.</p>
-      <img src="${imagemFinal}" alt="Zona ${zona}" class="w-48 h-48 mx-auto rounded" />
+      ${imagemFinal}
       <p class="text-sm text-gray-500 italic">Sua análise completa será enviada por e-mail.</p>
     </div>
   `;

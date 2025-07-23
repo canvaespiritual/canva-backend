@@ -15,7 +15,12 @@
     <h1 class="text-2xl font-semibold text-[#143d59] leading-snug">
       Qual foi a última vez que você enxergou a sua alma... <span class="italic text-yellow-600">por completo?</span>
     </h1>
-    <img src="./assets/pagina-inicial.png" alt="Ilustração do estado da alma" class="w-64 max-w-[80%] mx-auto mb-2" />
+   <picture>
+  <source srcset="./assets/pagina-inicial.webp" type="image/webp" />
+  <img src="./assets/pagina-inicial.png" alt="Ilustração do estado da alma" class="w-64 max-w-[80%] mx-auto mb-2" loading="lazy" />
+</picture>
+
+
     <p class="text-gray-600 text-sm">Há correntes que só se revelam quando fechamos os olhos para fora.</p>
     <p class="text-gray-600 text-sm">Este é um momento só seu. Um espelho silencioso será revelado.</p>
     <button onclick="mostrarPergunta(0)" class="mt-3 px-6 py-3 bg-[#143d59] text-white rounded-md shadow-md hover:scale-105 transition transform duration-300 animate-pulse">
