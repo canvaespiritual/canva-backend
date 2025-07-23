@@ -81,9 +81,40 @@
       color: #333;
       margin-top: 20px;
     }
-     .video-container {
-      margin-top: 40px;
+
+    .video-container {
+      margin-top: 60px;
       display: none;
+    }
+
+    #contador {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    #tempo-restante {
+      font-size: 42px;
+      font-weight: bold;
+      color: #9333ea;
+      margin-bottom: 24px;
+    }
+
+    #video-wrapper {
+      position: relative;
+      padding-top: 56.25%; /* 16:9 */
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    #video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
 
     #botao-curso {
@@ -97,15 +128,19 @@
       border-radius: 6px;
       text-decoration: none;
     }
+
+    @media (max-width: 640px) {
+      #video-wrapper {
+        padding-top: 177.78%; /* vertical para celular */
+      }
+    }
   </style>
 </head>
 <body>
 
   <h1>⏳ Estamos gerando seu relatório espiritual...</h1>
 
-  <div class="mensagem" id="mensagem-usuario">
-    <!-- Mensagem com nome será inserida aqui via JS -->
-  </div>
+  <div class="mensagem" id="mensagem-usuario"></div>
 
   <div class="email-box">
     <p>📬 Também enviaremos o relatório para este e-mail:</p>
@@ -122,16 +157,24 @@
     📩 Relatório também enviado para: <span id="email-final"></span><br />
     🔎 Verifique sua caixa de entrada e também a pasta de spam.
   </p>
- <!-- Contagem + vídeo -->
+
+  <!-- Bloco da revelação -->
   <div class="video-container" id="video-container">
-    <p>⏳ A revelação continua…</p>
-    <p id="contador">Carregando vídeo da denúncia da alma em 20 segundos...</p>
-    <div id="video-wrapper" style="margin-top: 20px; display: none;">
-      <div style="padding:177.78% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1090623287?h=9f5dccfe7b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Convite espiritual"></iframe></div>
-      <script src="https://player.vimeo.com/api/player.js"></script>
+    <p id="contador">⏳ A revelação continua…</p>
+    <p id="tempo-restante">20</p>
+
+    <div id="video-wrapper">
+      <iframe src="https://player.vimeo.com/video/1090623287?h=9f5dccfe7b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        title="Convite espiritual">
+      </iframe>
     </div>
+
     <a href="https://pay.kiwify.com.br/KxpXn2t" id="botao-curso">🎁 Quero desbloquear minha alma agora</a>
   </div>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
   <script>
     const sessionId = new URLSearchParams(window.location.search).get("session_id");
 
@@ -171,7 +214,8 @@
 
           document.getElementById('email-confirmado').style.display = 'block';
           document.getElementById('email-final').textContent = document.getElementById('email').value;
-        iniciarContagemRevelacao();
+
+          iniciarContagemRevelacao();
         } else {
           setTimeout(verificarStatus, 5000);
         }
@@ -200,27 +244,35 @@
         alert('Erro ao salvar o e-mail. Tente novamente.');
       });
     }
-      function iniciarContagemRevelacao() {
+
+    function iniciarContagemRevelacao() {
       const videoContainer = document.getElementById('video-container');
       const contador = document.getElementById('contador');
+      const tempoRestante = document.getElementById('tempo-restante');
       const videoWrapper = document.getElementById('video-wrapper');
       const botaoCurso = document.getElementById('botao-curso');
 
       videoContainer.style.display = 'block';
       let tempo = 20;
+      tempoRestante.textContent = tempo;
+
       const intervalo = setInterval(() => {
         tempo--;
-        contador.textContent = `Carregando vídeo da denúncia da alma em ${tempo} segundos...`;
+        tempoRestante.textContent = tempo;
+
         if (tempo <= 0) {
           clearInterval(intervalo);
           contador.style.display = 'none';
+          tempoRestante.style.display = 'none';
           videoWrapper.style.display = 'block';
+
           setTimeout(() => {
             botaoCurso.style.display = 'inline-block';
           }, 30000);
         }
       }, 1000);
     }
+
     carregarInfo();
     verificarStatus();
   </script>
