@@ -1,30 +1,11 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { createTransport } = require('nodemailer');
+const enviarEmailViaBrevo = require('../utils/enviarEmailViaBrevo');
 const pool = require('../db'); // ajuste se necessário
 const router = express.Router();
 
-// Função para enviar e-mail com o link do relatório
-async function reenviarLinkPorEmail(destinatario, nome, sessionId, pdfUrl) {
-  const transporter = createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_REMETENTE,
-      pass: process.env.SENHA_EMAIL_APP
-    }
-  });
 
-  const mailOptions = {
-    from: process.env.EMAIL_REMETENTE,
-    to: destinatario,
-    subject: `Seu Relatório Espiritual – Canva Espiritual`,
-    text: `Olá ${nome},\n\nSeu diagnóstico espiritual está pronto. Acesse o relatório diretamente pelo link abaixo:\n\n${pdfUrl}\n\nCom fé, sabedoria e propósito — Canva Espiritual.`
-  };
-
-  await transporter.sendMail(mailOptions);
-  console.log(`📤 Link reenviado com sucesso para ${destinatario}`);
-}
 
 // POST /confirmar-email/:session_id
 router.post('/:session_id', async (req, res) => {
@@ -35,18 +16,16 @@ router.post('/:session_id', async (req, res) => {
     return res.status(400).json({ erro: 'E-mail inválido' });
   }
 
-  // Verifica onde está o JSON da sessão (pendente ou processado)
-  const pendentePath = path.join(__dirname, '../../temp/pendentes', `${sessionId}.json`);
-  const processadoPath = path.join(__dirname, '../../temp/processados', `${sessionId}.json`);
-  const jsonPath = fs.existsSync(pendentePath) ? pendentePath :
-                   fs.existsSync(processadoPath) ? processadoPath : null;
+ // Busca dados da sessão direto no banco
+const { rows: [session] } = await pool.query(
+  `SELECT id, nome, email, email_corrigido_enviado FROM diagnosticos WHERE session_id = $1`,
+  [sessionId]
+);
 
-  if (!jsonPath) {
-    return res.status(404).json({ erro: 'Sessão não encontrada' });
-  }
+if (!session) {
+  return res.status(404).json({ erro: 'Sessão não encontrada no banco de dados.' });
+}
 
- // Lê do JSON apenas nome e session_id
-const session = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
 // Agora busca o PDF real no banco
 const { rows } = await pool.query(
@@ -66,14 +45,21 @@ if (!pdf_url) {
     return res.status(409).json({ mensagem: 'Este e-mail já recebeu a cópia anteriormente.' });
   }
 
-  // Atualiza sessão local (JSON)
-  session.email_corrigido = novoEmail;
-  session.email_corrigido_enviado = true;
-  fs.writeFileSync(jsonPath, JSON.stringify(session, null, 2));
+  await pool.query(
+  `UPDATE diagnosticos SET email_corrigido = $1 WHERE session_id = $2`,
+  [novoEmail, sessionId]
+);
+
 
   try {
     // Envia o link por e-mail
-    await reenviarLinkPorEmail(novoEmail, session.nome, sessionId, pdf_url);
+   await enviarEmailViaBrevo({
+  email: novoEmail,
+  nome: session.nome,
+  sessionId,
+  linkPdf: pdf_url
+});
+
 
 
     // Atualiza no banco: diagnosticos
@@ -101,7 +87,11 @@ if (!pdf_url) {
       console.warn(`⚠️ Diagnóstico não encontrado no banco para sessão ${sessionId}`);
     }
 
-    res.json({ mensagem: '✅ Cópia do relatório enviada com sucesso para o novo e-mail.' });
+    res.json({
+  mensagem: '✅ Cópia do relatório enviada com sucesso para o novo e-mail.',
+  pdf_url
+});
+
 
   } catch (error) {
     console.error(`❌ Erro ao reenviar e/ou atualizar banco:`, error.message);

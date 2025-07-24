@@ -1,12 +1,12 @@
 // 📂 src/worker/workerRelatorios.js
 require('dotenv').config();
 const path = require('path');
-const nodemailer = require('nodemailer');
 const AWS = require('aws-sdk');
 const { Worker } = require('bullmq');
 const IORedis = require('ioredis');
 const { createPdfFromHtml } = require('../services/relatorioPDF');
 const pool = require('../db');
+const enviarEmailViaBrevo = require('../utils/enviarEmailViaBrevo');
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -47,7 +47,13 @@ const worker = new Worker('relatorios', async job => {
     session.pdfGerado = true;
     session.dataGeracao = new Date().toISOString();
 
-    await enviarEmail(session.email, session.nome, session_id, s3Url);
+    await enviarEmailViaBrevo({
+  email: session.email,
+  nome: session.nome,
+  sessionId: session_id,
+  linkPdf: s3Url
+});
+
 
     if (
       session.email_corrigido &&
@@ -55,7 +61,13 @@ const worker = new Worker('relatorios', async job => {
       !session.email_corrigido_enviado
     ) {
       console.log(`📤 Enviando cópia para o e-mail corrigido: ${session.email_corrigido}`);
-      await enviarEmail(session.email_corrigido, session.nome, session_id, s3Url);
+      await enviarEmailViaBrevo({
+  email: session.email_corrigido,
+  nome: session.nome,
+  sessionId: session_id,
+  linkPdf: s3Url
+});
+
 
       await pool.query(`
         UPDATE diagnosticos
