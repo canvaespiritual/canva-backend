@@ -33,11 +33,13 @@ export async function gerarImagemGrafico(dados) {
   const frutos = ['PC', 'AL', 'PA', 'CA', 'CO', 'MA', 'MO', 'FI', 'AM', 'BE', 'BO', 'LO'];
 
   // Rótulos: nomes dos níveis emocionais personalizados
-  const titulos = dados.map((nota, i) => {
-    const prefixo = frutos[i];
-    const bloco = reflexos[prefixo]?.[nota - 1];
-    return bloco?.["Nível Emocional"] || `Nível ${nota}`;
-  });
+ const titulos = dados.map((nota, i) => {
+  const prefixo = frutos[i];
+  const indiceInverso = 12 - nota;
+  const bloco = reflexos[prefixo]?.[indiceInverso];
+  return bloco?.["Nível Emocional"] || `Nível ${nota}`;
+});
+
 
   // Cria gráfico
   new Chart(ctx, {
@@ -46,10 +48,11 @@ export async function gerarImagemGrafico(dados) {
       labels: titulos,
       datasets: [{
         label: 'Nível Espiritual',
-        data: dados,
-        backgroundColor: dados.map(v =>
-          v >= 8 ? '#2563eb' : v >= 5 ? '#facc15' : '#dc2626' // azul, amarelo, vermelho
+        data: dados.map(v => 13 - v), // Inverte: 12 → 1, 1 → 12
+          backgroundColor: dados.map(v =>
+          v <= 4 ? '#2563eb' : v <= 7 ? '#facc15' : '#dc2626'
         )
+
       }]
     },
     options: {

@@ -13,7 +13,9 @@ export async function gerarImagemReflexoFruto(notas) {
   // 3. Carrega os reflexos do JSON
   const resposta = await fetch('/data/reflexos_por_fruto_final.json');
   const dadosReflexo = await resposta.json();
-  const bloco = dadosReflexo[prefixo]?.[menorNota - 1];
+  const indiceInverso = 12 - menorNota;
+const bloco = dadosReflexo[prefixo]?.[indiceInverso];
+
 
   if (!bloco) return null;
 

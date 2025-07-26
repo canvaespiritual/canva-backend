@@ -5,22 +5,25 @@ import { nomesFrutos } from './frutas.js';
 
 // Converte nota de 1 a 13 em percentual (0% a 100%)
 function notaParaPorcentagem(nota) {
-  return Math.round(((nota - 1) / 12) * 100);
+  return Math.round(((12 - nota) / 11) * 100); // 12 é virtuoso (0%), 1 é degradante (100%)
 }
+
 
 // Gera imagem com ponto mais crítico (vermelho) e mais elevado (azul)
 export function gerarImagemFrutosExtremos(notas) {
-  const menorNota = Math.min(...notas);
-  const maiorNota = Math.max(...notas);
+ const notaDegradante = Math.max(...notas); // 12 é o mais baixo
+const notaVirtuosa = Math.min(...notas);   // 1 é o mais elevado
 
-  const indiceCritico = notas.lastIndexOf(menorNota);
-  const indiceLuz = notas.indexOf(maiorNota);
+const indiceCritico = notas.lastIndexOf(notaDegradante);
+const indiceLuz = notas.indexOf(notaVirtuosa);
+
 
   const nomeCritico = nomesFrutos[indiceCritico];
   const nomeLuz = nomesFrutos[indiceLuz];
 
-  const percentualCritico = notaParaPorcentagem(menorNota);
-  const percentualLuz = notaParaPorcentagem(maiorNota);
+  const percentualCritico = notaParaPorcentagem(notaDegradante);
+const percentualLuz = notaParaPorcentagem(notaVirtuosa);
+
 
   const canvas = document.createElement('canvas');
   canvas.width = 360;
