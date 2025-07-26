@@ -1,4 +1,5 @@
 const axios = require('axios');
+const pool = require('../db'); // ✅ conexão com o banco
 
 async function enviarEmailViaBrevo({ nome, email, sessionId, linkPdf }) {
   const API_KEY = process.env.BREVO_API_KEY;
@@ -27,10 +28,22 @@ async function enviarEmailViaBrevo({ nome, email, sessionId, linkPdf }) {
     });
 
     console.log(`✅ Email enviado para ${email}`);
+    await pool.query(`
+      UPDATE diagnosticos
+      SET email_enviado_em = NOW(),
+          email_erro = NULL
+      WHERE session_id = $1
+    `, [sessionId]);
     return true;
 
   } catch (error) {
     console.error(`❌ Falha no envio para ${email}:`, error.response?.data || error.message);
+    
+    await pool.query(`
+      UPDATE diagnosticos
+      SET email_erro = $2
+      WHERE session_id = $1
+    `, [sessionId, error.message]);
     throw error;
   }
 }

@@ -23,7 +23,7 @@ function definirAlerta(row) {
 }
 
 module.exports = async function getStatusFromDB() {
-  const query = `
+const query = `
   SELECT
     session_id,
     nome,
@@ -34,12 +34,13 @@ module.exports = async function getStatusFromDB() {
     data_envio_relatorio AS "dataGeracao",
     status_processo,
     data_quiz,
-    pdf_url
+    pdf_url,
     email_enviado_em,
     email_erro
   FROM diagnosticos
   ORDER BY criado_em DESC
 `;
+
 
 
   const { rows } = await pool.query(query);
