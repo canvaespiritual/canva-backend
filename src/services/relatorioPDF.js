@@ -368,17 +368,17 @@ for (const polaridade of Object.keys(mapPolaridadePrefixo)) {
       zona = 'Neutra';
     }
 
-    htmlFinal += `
+  htmlFinal += `
   <div style="margin-bottom: 40px;">
     <h3 style="color: #1f2937; font-size: 20px;">🔸 ${polaridade.charAt(0).toUpperCase() + polaridade.slice(1)}</h3>
 
-    <div style="display: flex; align-items: flex-end; gap: 16px; margin-bottom: 16px;">
-      <!-- Barra vertical -->
-      <div style="width: 24px; height: 180px; background-color: #e5e7eb; border-radius: 12px; position: relative; overflow: hidden;">
-        <div style="position: absolute; bottom: 0; width: 100%; height: ${mediaPercentual}%; background-color: ${corBarra}; border-radius: 12px;"></div>
-      </div>
+    <div style="display: flex; align-items: center; margin-bottom: 24px;">
+      <svg width="50" height="180" style="margin-right: 16px;">
+        <rect x="20" y="0" width="12" height="180" rx="6" fill="#e5e7eb" />
+        <rect x="20" y="${180 - (mediaPercentual * 1.8)}" width="12" height="${mediaPercentual * 1.8}" rx="6" fill="${corBarra}" />
+        <text x="26" y="195" text-anchor="middle" fill="${corBarra}" font-size="12" font-weight="bold">${mediaPercentual}%</text>
+      </svg>
 
-      <!-- Texto de apoio -->
       <div>
         <p style="margin: 0;"><strong>Vibração média:</strong> ${mediaPercentual}%</p>
         <p style="color:${corBarra}; font-weight:bold; margin: 0;">🧭 Zona ${zona}</p>

@@ -24,6 +24,10 @@ const worker = new Worker('relatorios', async job => {
   const { session_id } = job.data;
   console.log(`🌀 Job recebido para sessão: ${session_id}`);
 
+  if (process.env.PAUSAR_EXECUCAO === 'true') {
+  console.log("🚫 Execução pausada por variável de ambiente.");
+  return;
+}
   try {
     // 🚧 Verifica se relatório já foi processado
     const { rows: [check] } = await pool.query(
