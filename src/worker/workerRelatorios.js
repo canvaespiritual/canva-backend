@@ -1,4 +1,3 @@
-// 📂 src/worker/workerRelatorios.js
 require('dotenv').config();
 const path = require('path');
 const AWS = require('aws-sdk');
@@ -19,22 +18,34 @@ const connection = new IORedis(process.env.REDIS_URL, {
   maxRetriesPerRequest: null
 });
 
-console.log('🧠 Worker BullMQ ativo e escutando fila de relatórios...\n');
+console.log('🧠 WORKER BullMQ ATIVO – VERSÃO SEGURA 28/07\n');
 
 const worker = new Worker('relatorios', async job => {
-
   const { session_id } = job.data;
   console.log(`🌀 Job recebido para sessão: ${session_id}`);
 
   try {
+    // 🚧 Verifica se relatório já foi processado
+    const { rows: [check] } = await pool.query(
+      `SELECT status_processo FROM diagnosticos WHERE session_id = $1`,
+      [session_id]
+    );
+    if (check?.status_processo === 'enviado') {
+  console.warn(`🔄 Sessão ${session_id} já havia sido processada. Reprocessando mesmo assim.`);
+}
+
+
+    // 🔍 Busca dados no banco
     const session = await buscarDadosDoBanco(session_id);
     if (!session) {
-      console.warn(`⚠️ Sessão ${session_id} não encontrada.`);
+      console.warn(`⚠️ Sessão ${session_id} não encontrada no banco.`);
       return;
     }
 
+    // 🛡️ Protege contra template zumbi dentro do PDF
     const buffer = await createPdfFromHtml(session, session.tipoRelatorio || 'essencial');
 
+    // ☁️ Upload para o S3
     const uploadResult = await s3.upload({
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `${session_id}.pdf`,
@@ -47,14 +58,15 @@ const worker = new Worker('relatorios', async job => {
     session.pdfGerado = true;
     session.dataGeracao = new Date().toISOString();
 
+    // 📧 Envio principal
     await enviarEmailViaBrevo({
-  email: session.email,
-  nome: session.nome,
-  sessionId: session_id,
-  linkPdf: s3Url
-});
+      email: session.email,
+      nome: session.nome,
+      sessionId: session_id,
+      linkPdf: s3Url
+    });
 
-
+    // 📤 Envio opcional para e-mail corrigido
     if (
       session.email_corrigido &&
       session.email_corrigido !== session.email &&
@@ -62,12 +74,11 @@ const worker = new Worker('relatorios', async job => {
     ) {
       console.log(`📤 Enviando cópia para o e-mail corrigido: ${session.email_corrigido}`);
       await enviarEmailViaBrevo({
-  email: session.email_corrigido,
-  nome: session.nome,
-  sessionId: session_id,
-  linkPdf: s3Url
-});
-
+        email: session.email_corrigido,
+        nome: session.nome,
+        sessionId: session_id,
+        linkPdf: s3Url
+      });
 
       await pool.query(`
         UPDATE diagnosticos
@@ -76,6 +87,7 @@ const worker = new Worker('relatorios', async job => {
       `, [session_id]);
     }
 
+    // 🗃️ Atualiza status no banco
     await pool.query(`
       UPDATE diagnosticos
       SET
@@ -94,23 +106,19 @@ const worker = new Worker('relatorios', async job => {
       session_id
     ]);
 
-    console.log(`✅ Relatório da sessão ${session_id} enviado com sucesso!`);
+    console.log(`✅ Relatório da sessão ${session_id} enviado com sucesso!\n`);
 
   } catch (error) {
     console.error(`❌ Erro ao processar relatório da sessão ${session_id}:`, error.message);
+    // (opcional) lançar erro para reprocessamento ou registrar em logs externos
   }
-},
-  {
-    connection
-  }
-
-);
+}, { connection });
 
 
-// 🔍 Função auxiliar para montar objeto completo de sessão com dados do banco
+// 🔍 Função auxiliar
 async function buscarDadosDoBanco(sessionId) {
   const { rows: [diagnostico] } = await pool.query(
-    `SELECT session_id, nome, email, email_corrigido, email_corrigido_enviado, tipo_relatorio, codigo_arquetipo, respostas_codificadas
+    `SELECT session_id, nome, email, email_corrigido, email_corrigido_enviado, tipo_relatorio, codigo_arquetipo, respostas_codificadas, respostas_numericas
      FROM diagnosticos WHERE session_id = $1`,
     [sessionId]
   );
@@ -127,8 +135,12 @@ async function buscarDadosDoBanco(sessionId) {
     tipoRelatorio: diagnostico.tipo_relatorio || 'essencial',
     codigo_arquetipo: diagnostico.codigo_arquetipo,
     respostas_codificadas: diagnostico.respostas_codificadas,
+     respostas_numericas: diagnostico.respostas_numericas, 
     session_id: diagnostico.session_id,
   };
+
+  console.log("📌 Tipo de relatório recebido:", diagnostico.tipo_relatorio);
+  console.log("📄 Template final usado:", diagnostico.tipo_relatorio || 'essencial');
 
   if (arquetipo.rows.length > 0) {
     Object.assign(dados, {
@@ -138,65 +150,12 @@ async function buscarDadosDoBanco(sessionId) {
       simbolico_texto: arquetipo.rows[0].simbolico_texto,
       mensagem: arquetipo.rows[0].mensagem,
       gatilho_tatil: arquetipo.rows[0].gatilho_tatil,
-      gatilho_olfato: arquetipo.rows[0].gatilho_olfativo,
-      gatilho_audicao: arquetipo.rows[0].gatilho_auditivo,
-      gatilho_visao: arquetipo.rows[0].gatilho_visual,
+      gatilho_olfato: arquetipo.rows[0].gatilho_olfato,
+      gatilho_audicao: arquetipo.rows[0].gatilho_audicao,
+      gatilho_visao: arquetipo.rows[0].gatilho_visao,
       gatilho_paladar: arquetipo.rows[0].gatilho_paladar
     });
   }
 
   return dados;
-}
-
-
-// 📧 Função de envio de e-mail com link do PDF
-async function enviarEmail(destinatario, nome, sessionId, pdfUrl) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_REMETENTE,
-        pass: process.env.SENHA_EMAIL_APP
-      }
-    });
-
-    const mailOptions = {
-      from: process.env.EMAIL_REMETENTE,
-      to: destinatario,
-      subject: `Seu Relatório Espiritual – Canva Espiritual`,
-      html: `
-        <p>Olá <strong>${nome}</strong>,</p>
-        <p>Seu diagnóstico espiritual está pronto!</p>
-        <p><a href="${pdfUrl}" target="_blank" style="
-            background-color: #0d6efd;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-          ">📥 Baixar Relatório</a></p>
-        <br>
-        <p>Com luz,<br><em>Equipe Canva Espiritual</em></p>
-      `
-    };
-
-    await transporter.sendMail(mailOptions);
-    console.log(`📨 Link enviado com sucesso para ${destinatario}`);
-
-    await pool.query(`
-      UPDATE diagnosticos
-      SET email_enviado_em = NOW(),
-          email_erro = NULL
-      WHERE session_id = $1
-    `, [sessionId]);
-
-  } catch (error) {
-    console.error(`❌ Erro ao enviar e-mail para ${destinatario}:`, error.message);
-
-    await pool.query(`
-      UPDATE diagnosticos
-      SET email_erro = $2
-      WHERE session_id = $1
-    `, [sessionId, error.message]);
-  }
 }

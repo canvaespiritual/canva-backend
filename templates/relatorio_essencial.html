@@ -1,112 +1,270 @@
+ <h2>✨ Sumári7o</h2>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  
   <meta charset="UTF-8">
-  <title>Relatório Espiritual - Canva Espiritual</title>
+  <title>Relatório Espiritual Completo</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    @page {
-      size: A4;
-      margin: 40px 40px 100px 40px;
-      @bottom-center {
-        content: element(footer);
-      }
+     body {
+   font-family: Arial, sans-serif;
+   padding: 60px 40px 40px 40px; /* Topo aumentado */
+   color: #111827;
+   line-height: 1.6;
     }
+    h1, h2 { color: #1f2937; }
+    ul.toc { margin-bottom: 30px; padding-left: 0; list-style: none; }
+    ul.toc li { margin: 5px 0; }
+    ul.toc a { color: #2563eb; text-decoration: none; }
+    img, canvas { max-width: 100%; margin: 20px 0; }
+    .grafico, .reflexo-fruto, .mapas, .protocolo, .gatilhos, .arquetipo, .predisposicoes, .bonus, .reflexo-espiritual { margin-bottom: 40px; }
+    .titulo-secao { margin-top: 40px; font-size: 20px; }
+    .barra-container {
+  background-color: #e5e7eb;
+  border-radius: 8px;
+  height: 16px;
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  overflow: hidden;
+    }
+  .barra-preenchida {
+  height: 100%;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  padding-right: 0px;
+  line-height: 16px;
+  color:white;;
+  }
+  .barra-vermelha { background-color: #dc2626; }
+  .barra-amarela { background-color: #facc15; }
+  .barra-azul { background-color: #2563eb; }
 
-    body {
-      font-family: Arial, sans-serif;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-
-    main {
-      padding: 40px;
-    }
-
-    h1, h2 {
-      color: #2c3e50;
-    }
-
-    .bloco {
-      border-top: 1px solid #ccc;
-      margin-top: 30px;
-      padding-top: 20px;
-    }
-
-    .chart-container {
-      text-align: center;
-      margin: 30px 0;
-    }
-
-    .footer {
-      font-size: 10px;
-      color: #666;
-      text-align: center;
-      line-height: 1.5;
-      position: running(footer);
-    }
-
-    ul {
-      margin-top: 10px;
-    }
   </style>
+  
 </head>
 <body>
+  <h1>🧭 Diagnóstico Espiritual Completo</h1>
+{{intro_metodologia}}
 
-<main>
-  <h1>📘 Diagnóstico Espiritual Essencial – {{nome}}</h1>
-    <p>🗓️ Data: {{data}}</p>
-    <p style="color: #555;">Esta é a versão <strong>essencial</strong> do relatório, com os fundamentos principais do seu diagnóstico vibracional.</p>
 
-  <h2>📊 Zona Predominante: {{zona}}</h2>
-  <p>🎯 Média Vibracional: {{media_vibracional}}</p>
-
-  <h2>🧠 Arquétipo Técnico: {{arquétipo_tecnico}}</h2>
-  <h2>🌌 Arquétipo Simbólico: {{arquétipo_simbolico}}</h2>
-  <p>💬 Mensagem-Chave: {{mensagem_zona}}</p>
-
-  <div class="chart-container">
-    <h3>📈 Vibração por Fruto</h3>
-    <img src="{{grafico_vibracional_url}}" width="600" />
-
-    <h3>📉 Média Vibracional Geral</h3>
-    <img src="{{grafico_percentual_url}}" width="400" />
-  </div>
-
-  <h2>🔍 Diagnóstico do Arquétipo</h2>
-  <p><strong>📌 Código:</strong> {{chave_correspondencia}} – {{arquétipo_tecnico}} ({{arquétipo_simbolico}})</p>
-  <p><strong>📖 Diagnóstico Técnico:</strong> {{diagnostico_arquétipo}}</p>
-  <p><strong>💭 Reflexão Simbólica:</strong> {{reflexao_simbolica}}</p>
-  <p><strong>💬 Mensagem-Chave:</strong> {{mensagem_zona}}</p>
-
-  <h2>🧠 Gatilhos Espirituais</h2>
-  <p>🖐️ Tátil: {{gatilho_tatil}}</p>
-  <p>👃 Olfato: {{gatilho_olfato}}</p>
-  <p>🎧 Audição: {{gatilho_audicao}}</p>
-  <p>👁️ Visão: {{gatilho_visao}}</p>
-  <p>👅 Paladar: {{gatilho_paladar}}</p>
-
-  <!-- Bloco de frutos injetado dinamicamente pelo backend -->
-  {{html_frutos}}
-
-  <hr>
-  <h2>📍 Continue sua jornada:</h2>
-  <ul>
-    <li>📘 <a href="{{cta_links.ebook}}">Baixe o Ebook gratuito</a></li>
-    <li>🎓 <a href="{{cta_links.aula}}">Assista à Aula Introdutória</a></li>
-    <li>🧭 <a href="{{cta_links.quiz_avançado}}">Refaça o Quiz com nova perspectiva</a></li>
+  <h2>✨ Sumário</h2>
+  <ul class="toc">
+    <li><a href="#grafico">Gráfico dos Frutos</a></li>
+    <li><a href="#reflexos">Reflexos por Fruto</a></li>
+    <li><a href="#arquetipo">Arquétipo Dominante</a></li>
+    <li><a href="#reflexo-espiritual">Reflexo Espiritual</a></li>
+    <li><a href="#gatilhos">Gatilhos Sensoriais</a></li>
+    <li><a href="#protocolo">Protocolo de Elevação</a></li>
+    <li><a href="#mapas">Mapas da Alma e do Espírito</a></li>
+    <li><a href="#predisposicoes">Predisposições Físicas e Mentais</a></li>
+    <li><a href="#bonus">Aula Bônus</a></li>
   </ul>
-</main>
 
-<!-- Rodapé institucional fixo em todas as páginas -->
-<div class="footer">
-  ⚠️ Este relatório é fruto de um autodiagnóstico simbólico e espiritual, baseado nas respostas fornecidas pelo próprio usuário.<br>
-  Ele não substitui acompanhamento médico, psicológico, psiquiátrico ou terapêutico profissional.  
-  Em caso de sintomas intensos, procure orientação especializada.<br>
-  Relatório gerado automaticamente pela plataforma <strong>Canva Espiritual</strong> –  
-  © {{data}} Canva Espiritual. Todos os direitos reservados.<br>
-  www.canvaspiritual.com
-</div>
+  <section id="grafico" class="grafico">
+    <h2>📊 Gráfico dos Frutos</h2>
+    {{intro_grafico}}
+    <canvas id="graficoFrutos" width="600" height="300"></canvas>
+    <h2>📉 Média Vibracional Geral</h2>
+  
+
+<svg width="100%" height="22" style="margin: 12px 0;">
+  <rect x="0" y="0" width="100%" height="22" fill="#e5e7eb" rx="8" ry="8"></rect>
+  <rect x="0" y="0" width="{{media_percentual}}%" height="22" fill="{{cor_media}}" rx="8" ry="8"></rect>
+  <text x="50%" y="15" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">
+    {{media_percentual}}%
+  </text>
+</svg>
+{{intro_media_geral}}
+
+<p style="color: {{cor_media}}; font-weight: bold;">🧭 Zona {{zona_media}}</p>
+
+  </section>
+
+  <section id="reflexos" class="reflexo-fruto">
+    <h2>📈 Reflexos por Fruto</h2>
+    {{intro_reflexos}}
+    {{html_frutos}}
+  </section>
+
+  <section id="arquetipo" class="arquetipo">
+    <h2>🔝 Arquétipo Dominante</h2>
+    {{intro_arquetipo}}
+    <p><strong>Nome Técnico:</strong> {{tecnico}}</p>
+    <p><strong>Nome Simbólico:</strong> {{simbolico}}</p>
+    <p>{{diagnostico}}</p>
+    <p><em>{{simbolico_texto}}</em></p>
+    <ul>
+      <li>👁 Gatilho Visual: {{gatilho_visao}}</li>
+      <li>🎧 Gatilho Auditivo: {{gatilho_audicao}}</li>
+      <li>👀 Gatilho Tátil: {{gatilho_tatil}}</li>
+      <li>🍜 Gatilho Paladar: {{gatilho_paladar}}</li>
+      <li>🌿 Gatilho Olfativo: {{gatilho_olfato}}</li>
+    </ul>
+  </section>
+
+  <section id="reflexo-espiritual" class="reflexo-espiritual">
+  <h2>🌌 Estudo Espiritual Personalizado</h2>
+  {{intro_reflexo_espiritual}}
+  {{reflexo_espiritual}}
+  </section>
+
+
+  <section id="gatilhos" class="gatilhos">
+    <h2>🔍 Gatilhos Sensoriais</h2>
+    {{intro_gatilhos}}
+    <p>Esses são os gatilhos que afetam diretamente sua vibração emocional. Use-os com consciência.</p>
+    <ul>
+      <li>🌟 Visual: {{gatilho_visao}}</li>
+      <li>🎧 Auditivo: {{gatilho_audicao}}</li>
+      <li>🤾 Tátil: {{gatilho_tatil}}</li>
+      <li>🍜 Paladar: {{gatilho_paladar}}</li>
+      <li>🌿 Olfato: {{gatilho_olfato}}</li>
+    </ul>
+  </section>
+
+  <section id="protocolo" class="protocolo">
+    <h2>✍️ Protocolo Geral de Elevação</h2>
+    {{intro_protocolo}}
+     </section>
+
+  <section id="mapas" class="mapas">
+    <h2>🌀 Mapa da Alma</h2>
+   {{intro_mapas}}
+    {{tabela_mapa_da_alma}}
+
+
+   <h2>🌌 Mapa Espiritual</h2>
+    {{tabela_mapa_espiritual}}
+  </section>
+
+   
+  <section id="predisposicoes" class="predisposicoes">
+    <h2>🩸 Predisposições Fisiológicas e de Saúde Mental</h2>
+    {{intro_predisposicoes}}
+       {{predisposicoes}}
+  </section>
+
+  <section id="bonus" class="bonus">
+    <h2>🎬 Aula Bônus, Requiz e Presente</h2>
+    <ul>
+      <li>🔗 Acesse sua aula especial: <a href="{{link_aula_bônus}}">clique aqui</a></li>
+      <li>📚 Baixar ebook de elevação: <a href="{{link_ebook}}">clique aqui</a></li>
+      <li>💼 Refaça o teste daqui 21 dias: <a href="https://canvaspiritual.com">acessar</a></li>
+    </ul>
+  </section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+  const nomesFrutos = {{nomes_frutos_json}};
+  const notasFrutos = {{notas_frutos_json}};
+  const paresForca = {{pares_forca_json}};
+  const mediaGeral = parseFloat("{{media_percentual}}");
+
+
+
+  const ctx1 = document.getElementById('graficoFrutos').getContext('2d');
+
+  new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: nomesFrutos,
+      datasets: [{
+        label: 'Nível Vibracional',
+        data: notasFrutos,
+        backgroundColor: notasFrutos.map(v => {
+  const percentual = (v / 12) * 100;
+  if (percentual <= 43) return '#dc2626'; // degradante
+  if (percentual <= 68) return '#facc15'; // neutra
+  return '#2563eb'; // virtuosa
+}),
+
+        datalabels: {
+          anchor: 'center',
+          align: 'center',
+          rotation: -90,
+          formatter: v => Math.round((v / 12) * 100) + '%',
+          color: 'white',
+          font: { weight: 'bold', size: 12 }
+        }
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            title: context => paresForca[context[0].dataIndex] || '',
+            label: context => {
+              const valor = context.raw;
+              return `Nível: ${valor} (${Math.round((valor / 12) * 100)}%)`;
+            }
+          }
+        },
+        datalabels: {
+          display: true
+        }
+      },
+            scales: {
+        x: {
+          barPercentage: 0.2,
+          categoryPercentage: 0.4
+        },
+        y: {
+          beginAtZero: true,
+          max: 12
+        }
+      }
+
+    },
+    plugins: [
+      ChartDataLabels,
+      {
+        id: 'paresForcaLabel',
+        afterDatasetsDraw(chart) {
+          const { ctx, chartArea } = chart;
+          const meta = chart.getDatasetMeta(0);
+
+          ctx.save();
+          ctx.font = "bold 11px Arial";
+          ctx.fillStyle = "#4B5563";;
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+
+          chart.data.labels.forEach((_, i) => {
+            const bar = meta.data[i];
+            if (!bar) return;
+
+            const text = paresForca[i] || '';
+            const x = bar.x - 25; // levemente à esquerda da barra
+            const y = chart.scales.y.getPixelForValue(0) -5; // base da área de plotagem
+
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(-Math.PI / 2); // texto na vertical
+            ctx.fillText(text, 0, 0);
+            ctx.restore();
+          });
+
+          ctx.restore();
+        }
+      }
+    ]
+  });
+
+  
+
+</script>
+
+<section id="fechamento">
+ 
+  {{chamada_curso_ebook}}
+</section>
+
 
 </body>
 </html>

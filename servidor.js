@@ -16,6 +16,7 @@ const pagamentoEmbed = require('./src/routes/pagamentoEmbed');
 const pagamentoStatus = require("./src/routes/pagamentoStatus");
 const statusRedirect = require("./src/routes/statusRedirect");
 const infoRoute = require('./src/routes/info');
+const testeSimulacaoRouter = require('./src/routes/testeSimulacao');
 const confirmarEmailRoute = require('./src/routes/confirmarEmail');
 const statusRoute = require('./src/routes/status');
 const rotaGerar = require('./src/routes/gerar');
@@ -102,7 +103,7 @@ app.use('/info', infoRoute);
 app.use('/confirmar-email', confirmarEmailRoute);
 app.use('/status', statusRoute);
 app.use('/gerar', rotaGerar);
-
+app.use('/api/teste', testeSimulacaoRouter);
 
 // ---------------------------
 // 🔐 Área Administrativa
@@ -134,6 +135,9 @@ app.use("/pagamento", statusRedirect);
 // ---------------------------
 app.use('/gerar-relatorio', relatorioRoutes);
 
+// ---------------------------
+// 🧪 Teste de Simulação de Sessão
+// ---------------------------
 
 // ---------------------------
 // 🧪 Diagnóstico Simples
@@ -248,4 +252,4 @@ app.get('/espelho/:nome', (req, res) => {
 app.listen(3000, () => {
   console.log('🚀 Servidor rodando em http://localhost:3000');
 });
-//require('./worker');
+
