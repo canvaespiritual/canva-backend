@@ -265,7 +265,7 @@ const blocoChamadaCurso = `
   <li>📘 Usar o livro como manual de autocura e espiritualidade prática</li>
 </ul>
 <p><strong>Então o próximo passo é seu.</strong></p>
-<p>👉 <a href="https://canvaespiritual.com/ebook" target="_blank">Acesse o Ebook ou aguarde o lançamento impresso</a></p>
+<p>👉 <a href="https://canvaspiritual.com/ebook" target="_blank">Acesse o Ebook ou aguarde o lançamento impresso</a></p>
 `;
 
 // Blocos fixos de texto do relatório
