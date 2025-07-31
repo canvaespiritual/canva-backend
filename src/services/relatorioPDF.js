@@ -368,23 +368,22 @@ for (const polaridade of Object.keys(mapPolaridadePrefixo)) {
       zona = 'Neutra';
     }
 
-  htmlFinal += `
-  <div style="margin-bottom: 40px;">
+htmlFinal += `
+  <div style="margin-bottom: 24px;">
     <h3 style="color: #1f2937; font-size: 20px;">🔸 ${polaridade.charAt(0).toUpperCase() + polaridade.slice(1)}</h3>
 
-    <div style="display: flex; align-items: center; margin-bottom: 24px;">
-      <svg width="50" height="180" style="margin-right: 16px;">
-        <rect x="20" y="0" width="12" height="180" rx="6" fill="#e5e7eb" />
-        <rect x="20" y="${180 - (mediaPercentual * 1.8)}" width="12" height="${mediaPercentual * 1.8}" rx="6" fill="${corBarra}" />
-        <text x="26" y="195" text-anchor="middle" fill="${corBarra}" font-size="12" font-weight="bold">${mediaPercentual}%</text>
-      </svg>
+    <svg width="100%" height="22" style="margin: 12px 0;">
+      <rect x="0" y="0" width="100%" height="22" fill="#e5e7eb" rx="8" ry="8"></rect>
+      <rect x="0" y="0" width="${mediaPercentual}%" height="22" fill="${corBarra}" rx="8" ry="8"></rect>
+      <text x="50%" y="15" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">
+        ${mediaPercentual}%
+      </text>
+    </svg>
 
-      <div>
-        <p style="margin: 0;"><strong>Vibração média:</strong> ${mediaPercentual}%</p>
-        <p style="color:${corBarra}; font-weight:bold; margin: 0;">🧭 Zona ${zona}</p>
-      </div>
-    </div>
+    <p style="color: ${corBarra}; font-weight: bold;">🧭 Zona ${zona}</p>
+  </div>
 `;
+
 
 
     for (const r of resultado.rows) {
@@ -535,7 +534,7 @@ function blocoUpsell(titulo, explicacao = '') {
   <div style="background-color: #fffbea; border-left: 4px solid #facc15; padding: 12px; margin: 20px 0;">
     <p><strong>🔒 ${titulo} disponível apenas no Relatório Completo.</strong></p>
     <p>${explicacao || `Para desbloquear este conteúdo, faça o diagnóstico completo ou conheça nossos produtos.`}</p>
-    <p><a href="https://api.canvaspiritual.com/quiz.html" target="_blank">Refazer diagnóstico</a> ou <a href="https://canvaespiritual.com" target="_blank">acessar cursos e ebooks</a>.</p>
+    <p><a href="https://api.canvaspiritual.com/quiz.html" target="_blank">Refazer diagnóstico</a> ou <a href="https://canvaspiritual.com" target="_blank">acessar cursos e ebooks</a>.</p>
   </div>
   `;
 
@@ -709,6 +708,9 @@ if (tipo === 'essencial') {
 if (html.includes('{{media_frutos_num}}')) {
   html = html.replace('{{media_frutos_num}}', mediaFrutosFixado.toString());
 }
+
+const dataHoraFormatada = new Date().toLocaleString('pt-BR');
+
 // Substituições dos blocos fixos de texto
 html = html.replace('{{intro_metodologia}}', blocoIntroMetodologia);
 html = html.replace('{{intro_grafico}}', blocoIntroGrafico);
@@ -726,6 +728,12 @@ html = html.replace('{{chamada_curso_ebook}}', blocoChamadaCurso);
 html = html.replaceAll('{{media_percentual}}', `${mediaPercentual}`);
 html = html.replace('{{cor_media}}', corMedia);
 html = html.replace('{{zona_media}}', zonaMedia);
+
+html = html.replaceAll('{{data_hora}}', dataHoraFormatada);
+html = html.replaceAll('{{email}}', data.email);
+html = html.replaceAll('{{session_id}}', data.session_id);
+html = html.replaceAll('{{tipo_relatorio}}', (data.tipoRelatorio || 'essencial').toUpperCase());
+html = html.replace('{{nome}}', data.nome);
 
 
 
