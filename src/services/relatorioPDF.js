@@ -3,14 +3,14 @@ const path = require('path');
 const puppeteer = require('puppeteer');
 const pool = require('../db');
 const blocoIntroMetodologia = `
-<h2>🧭 Introdução à Metodologia</h2>
+<h2>&#x1F9ED; Introdução à Metodologia</h2>
 <p><strong>Parabéns, {{nome}}!</strong></p>
 <p>Você acaba de dar um passo gigante rumo ao seu autoconhecimento. O autodiagnóstico da alma é o início do domínio próprio — a fundação da sua fortaleza interior. É a partir dessa força interior que você cumprirá seus objetivos, enfrentará seus desafios e alcançará prosperidade.</p>
 <p>Como dizem as Sagradas Escrituras:<br><em>“O Reino dos Céus está dentro de vós.”</em></p>
 <p>Saber onde estão suas vulnerabilidades é o primeiro marco da verdadeira sabedoria. Afinal, como saber para onde ir, se você não sabe onde está?</p>
 <p>Agora você vai descobrir com clareza onde se encontra no seu caminho espiritual.</p>
 
-<h3>🧩 Os 12 Vértices da Alma</h3>
+<h3>&#x1F9E9; Os 12 Vértices da Alma</h3>
 <p>Utilizamos uma metodologia exclusiva que mapeia os 12 vértices da alma humana, revelados por Paulo Apóstolo na carta aos Gálatas:</p>
 <ul>
   <li>Amor</li>
@@ -39,9 +39,9 @@ const blocoIntroGrafico = `
 <p>Abaixo você verá um gráfico com as 12 naturezas da alma. Cada barra representa o seu nível de vibração em cada fruto.</p>
 <p>Se você marcou, por exemplo, 55% na Paciência, isso indica que está em um nível neutro, pois:</p>
 <ul>
-  <li>🔵 Zona Virtuosa: 69% a 100%</li>
-  <li>⚪ Zona Neutra: 43% a 68%</li>
-  <li>🔴 Zona Degradante: 0% a 42%</li>
+  <li>&#x1F535; Zona Virtuosa: 69% a 100%</li>
+  <li>&#x26AA; Zona Neutra: 43% a 68%</li>
+  <li>&#x1F534; Zona Degradante: 0% a 42%</li>
 </ul>
 <p>Estar na zona virtuosa é como irradiar luz. Estar na zona degradante é, mesmo em silêncio, emitir uma vibração densa que impacta o ambiente.</p>
 <p>Este é seu espelho atual, e a partir dele você pode se guiar.</p>
@@ -58,10 +58,10 @@ const blocoIntroReflexos = `
 <p>Cada fruto que você escolheu manifesta um determinado estado vibracional — e esse estado não se limita à emoção sentida, mas transborda para o comportamento, o corpo, os relacionamentos e até o seu ambiente espiritual.</p>
 <p>Nesta seção, você terá acesso a:</p>
 <ul>
-  <li>🔁 Reflexo comportamental: como essa vibração tende a se expressar nas suas ações e reações.</li>
-  <li>💠 Sinais físicos: como seu corpo pode estar somatizando essa vibração.</li>
-  <li>👥 Impacto social e profissional: como sua vibração afeta sua convivência, seus ciclos, suas oportunidades.</li>
-  <li>🧭 Reflexo espiritual: como essa vibração se alinha com bênçãos ou maldições sutis que o universo te devolve.</li>
+  <li>&#x1F501; Reflexo comportamental: como essa vibração tende a se expressar nas suas ações e reações.</li>
+  <li>&#x1F4A0; Sinais físicos: como seu corpo pode estar somatizando essa vibração.</li>
+  <li>&#x1F465; Impacto social e profissional: como sua vibração afeta sua convivência, seus ciclos, suas oportunidades.</li>
+  <li>&#x1F9ED; Reflexo espiritual: como essa vibração se alinha com bênçãos ou maldições sutis que o universo te devolve.</li>
 </ul>
 <p>Você está prestes a compreender a dança interna das suas emoções — e como cada uma delas ecoa para fora como uma onda invisível, moldando sua realidade.</p>
 `;
@@ -71,9 +71,9 @@ const blocoIntroArquetipo = `
 <p>Cada vértice da alma que você marcou em determinada zona (azul, branca ou vermelha) ajudou a formar uma geometria simbólica, que revelamos agora como seu estado arquetípico momentâneo.</p>
 <p>Esse arquétipo é um espelho vivo, uma narrativa condensada que mostra como a sua alma está se expressando no mundo neste instante. Ele pode representar:</p>
 <ul>
-  <li>🌟 Um estado elevado de luz, como o Guardião, o Curador ou o Pacificador;</li>
-  <li>⚪ Um estado em transição, como o Sobrevivente, o Espectador ou o Contratado;</li>
-  <li>🔴 Um estado de desequilíbrio, como o Usurpador, o Iludido ou o Sedutor.</li>
+  <li>&#x1F31F; Um estado elevado de luz, como o Guardião, o Curador ou o Pacificador;</li>
+  <li>&#x26AA; Um estado em transição, como o Sobrevivente, o Espectador ou o Contratado;</li>
+  <li>&#x1F534; Um estado de desequilíbrio, como o Usurpador, o Iludido ou o Sedutor.</li>
 </ul>
 <p>Todos esses nomes são simbólicos — não são rótulos, mas mapas vivos, que podem mudar conforme sua vibração evolui.</p>
 <p>Este é o retrato atual do personagem invisível que você está encarnando. Olhe com sinceridade e acolhimento.</p>
@@ -91,13 +91,13 @@ const blocoIntroReflexoEspiritual = `
 <p>Cada vibração interna atrai uma resposta espiritual externa. Isso não é castigo. É correspondência. É frequência.</p>
 <p>Nesta seção, revelamos como está seu reflexo espiritual com base em pares de forças universais como:</p>
 <ul>
-  <li>🌿 Benção vs Maldição</li>
-  <li>⚖️ Vida vs Morte</li>
-  <li>🕊️ Fé vs Descrença</li>
-  <li>📜 Obediência vs Pecado</li>
-  <li>🎯 Servidão ao Propósito vs Escravidão às Ilusões</li>
-  <li>🔍 Verdade vs Mentira</li>
-  <li>🧠 Sabedoria vs Ignorância</li>
+  <li>&#x1F33F; Benção vs Maldição</li>
+<li>&#x2696;&#xFE0F; Vida vs Morte</li>
+<li>&#x1F54A;&#xFE0F; Fé vs Descrença</li>
+<li>&#x1F4DC; Obediência vs Pecado</li>
+<li>&#x1F3AF; Servidão ao Propósito vs Escravidão às Ilusões</li>
+<li>&#x1F50D; Verdade vs Mentira</li>
+<li>&#x1F9E0; Sabedoria vs Ignorância</li>
 </ul>
 <p>Essas forças não são apenas conceitos religiosos. Elas são leis espirituais operando em silêncio.</p>
 <p>E quanto mais a sua média vibracional se aproxima de zonas degradantes, mais você se afasta da Graça — e adentra zonas de desordem, confusão, estagnação e sofrimento.</p>
@@ -110,16 +110,16 @@ const blocoProtocoloIntro = `
 <p>Essas práticas não são mágicas, mas despertam o sagrado que habita em você.</p>
 <p>Você será guiado por:</p>
 <ul>
-  <li>🧘 Meditações vibracionais</li>
-  <li>🌿 Dietas prânicas e energéticas</li>
-  <li>🤫 Rituais de silêncio, solitude e escuta interior</li>
-  <li>🧺 Atos simples e intencionais como arrumar a cama, limpar a casa, abençoar o alimento, cuidar do corpo com consciência</li>
+  <li>&#x1F9D8; Meditações vibracionais</li>
+  <li>&#x1F33F; Dietas prânicas e energéticas</li>
+  <li>&#x1F92B; Rituais de silêncio, solitude e escuta interior</li>
+  <li>&#x1F9FA; Atos simples e intencionais como arrumar a cama, limpar a casa, abençoar o alimento, cuidar do corpo com consciência</li>
 </ul>
 <p>Nosso objetivo aqui é restituir sua presença sagrada, até que o seu momento favorito do dia seja aquele que você passa sozinho com você mesmo.</p>
 <p>A verdadeira paz não é o fim do barulho, mas a harmonia que nasce quando o silêncio se torna sagrado.</p>
 <p><strong>Um plano sagrado e prático para restaurar sua vibração, romper pactos invisíveis e ouvir a voz do Espírito.</strong></p>
 
-<h3>☀️ 1. Ao Acordar: Início Sagrado do Dia</h3>
+<h3>&#x2600;&#xFE0F; 1. Ao Acordar: Início Sagrado do Dia</h3>
 <p><strong>Objetivo:</strong> alinhar a frequência antes de qualquer contato com o mundo exterior.</p>
 <p><strong>Prática (5 a 10 min):</strong></p>
 <ul>
@@ -128,9 +128,9 @@ const blocoProtocoloIntro = `
   <li>Respire fundo 3 vezes e declare: “Sou grato(a) por mais um dia. Hoje, a paz é meu ponto de partida.”</li>
   <li>Coloque uma música de alta vibração (veja abaixo) e permaneça presente por 2 minutos.</li>
 </ul>
-<p>🌀 Evite redes sociais, mensagens ou ruídos externos nos primeiros 15 minutos.</p>
+<p>&#x1F300; Evite redes sociais, mensagens ou ruídos externos nos primeiros 15 minutos.</p>
 
-<h4>🎵 Sugestões Musicais Matinais</h4>
+<h4>&#x1F3B5; Sugestões Musicais Matinais</h4>
 <ul>
   <li>Gayatri Mantra – Deva Premal</li>
   <li>Weightless – Marconi Union</li>
@@ -138,9 +138,9 @@ const blocoProtocoloIntro = `
   <li>Natureza ao fundo – Sons de floresta, chuva ou vento suave</li>
 </ul>
 
-<h3>🍲 2. Hora do Almoço: Sintonizar com a Vitalidade</h3>
+<h3>&#x1F372; 2. Hora do Almoço: Sintonizar com a Vitalidade</h3>
 <p><strong>Objetivo:</strong> nutrir corpo e alma com alimentos de luz.</p>
-<h4>🌿 Tabela Prânica</h4>
+<h4>&#x1F33F; Tabela Prânica</h4>
 <table border="1" cellspacing="0" cellpadding="6" style="border-collapse: collapse;">
   <thead>
     <tr><th>Alta Vibração</th><th>Neutra</th><th>Densificante</th></tr>
@@ -159,7 +159,7 @@ const blocoProtocoloIntro = `
   <li>Coma em silêncio. Mastigue devagar. Ouça seu corpo.</li>
 </ul>
 
-<h3>🌙 3. Antes de Dormir: A Entrega</h3>
+<h3>&#x1F319; 3. Antes de Dormir: A Entrega</h3>
 <p><strong>Objetivo:</strong> purificar, agradecer e liberar.</p>
 <p><strong>Prática:</strong></p>
 <ul>
@@ -169,7 +169,7 @@ const blocoProtocoloIntro = `
   <li>Ouça. E anote o que surgir, mesmo que pareça sutil.</li>
 </ul>
 
-<h3>🔁 Ciclo de Restauração Vibracional</h3>
+<h3>&#x1F501; Ciclo de Restauração Vibracional</h3>
 <p><strong>Objetivo:</strong> romper padrões antigos, ativar virtudes adormecidas e abrir espaço para o propósito.</p>
 <table border="1" cellspacing="0" cellpadding="6" style="border-collapse: collapse;">
   <thead>
@@ -190,19 +190,19 @@ const blocoProtocoloIntro = `
   <li>Mantenha um diário breve: pensamentos, mudanças e visões.</li>
   <li>Observe se novas respostas surgem para velhas perguntas.</li>
 </ul>
-<p>✍️ Às vezes, a resposta que você esperava há anos chega no silêncio de um dia sem distrações.</p>
+<p>&#x270D;&#xFE0F; Às vezes, a resposta que você esperava há anos chega no silêncio de um dia sem distrações.</p>
 
-<h3>📖 Desafio de Leitura e Consagração Mental</h3>
+<h3>&#x1F4D6; Desafio de Leitura e Consagração Mental</h3>
 <p><strong>Objetivo:</strong> restaurar o templo da mente e abrir janelas espirituais.</p>
 <p>Durante o ciclo, escolha uma dessas leituras para praticar 10 a 15 minutos por dia:</p>
 <ul>
-  <li>📖 Escrituras sagradas (Salmos, Provérbios, Evangelhos, Gálatas)</li>
-  <li>📖 Literaturas clássicas espirituais (Confúcio, Agostinho, Teresa D’Ávila, Santo Antão)</li>
-  <li>📖 Textos elevados sobre alma, virtudes e sabedoria universal</li>
+  <li>&#x1F4D6; Escrituras sagradas (Salmos, Provérbios, Evangelhos, Gálatas)</li>
+  <li>&#x1F4D6; Literaturas clássicas espirituais (Confúcio, Agostinho, Teresa D’Ávila, Santo Antão)</li>
+  <li>&#x1F4D6; Textos elevados sobre alma, virtudes e sabedoria universal</li>
 </ul>
 <blockquote>“A alma que lê, afina sua frequência com a eternidade.”</blockquote>
 
-<h3>💔 Exercício do Perdão Profundo</h3>
+<h3>&#x1F494; Exercício do Perdão Profundo</h3>
 <p><strong>Objetivo:</strong> libertar-se das correntes invisíveis que aprisionam há anos.</p>
 <p>Durante o ciclo:</p>
 <ul>
@@ -212,7 +212,7 @@ const blocoProtocoloIntro = `
 </ul>
 <p>Comece também com você mesmo.<br>“Eu me perdoo por não ter sabido antes.<br>Agora eu sei. E com isso eu subo.”</p>
 
-<h3>🌿 Conclusão</h3>
+<h3>&#x1F33F; Conclusão</h3>
 <p>Este protocolo não é uma fórmula. É um acordo íntimo com sua alma.</p>
 <p>Quanto mais você se oferece ao invisível, mais respostas surgem no visível.<br>
 Quanto mais você renuncia ao ruído, mais clara é a direção.<br>
@@ -228,10 +228,10 @@ const blocoIntroMapas = `
 <p>Esses mapas são o seu <strong>manual pessoal de leitura vibracional</strong>.</p>
 <p>Eles te ajudam a:</p>
 <ul>
-  <li>📍 Diagnosticar em tempo real onde você está</li>
-  <li>🔄 Correlacionar estados emocionais com reflexos espirituais</li>
-  <li>🧰 Aplicar ferramentas específicas de transmutação ou proteção</li>
-  <li>📝 Registrar sua evolução com clareza</li>
+  <li>&#x1F4CD; Diagnosticar em tempo real onde você está</li>        
+  <li>&#x1F501; Correlacionar estados emocionais com reflexos espirituais</li> 
+  <li>&#x1F9F0; Aplicar ferramentas específicas de transmutação ou proteção</li>
+  <li>&#x1F4DD; Registrar sua evolução com clareza</li>                
 </ul>
 <p><strong>Imprima. Estude. Medite.</strong><br>
 Esses mapas não apenas te mostram o que está acontecendo, mas te dão a <strong>chave da liberdade interior</strong>.</p>
@@ -241,11 +241,12 @@ const blocoIntroPredisposicoes = `
 <p>Estados vibracionais mantidos por muito tempo se tornam hábitos emocionais crônicos, que passam a se manifestar como sintomas físicos, posturas, alterações hormonais e até predisposições a doenças específicas.</p>
 <p>Nesta seção, com base em um estudo cruzado entre:</p>
 <ul>
-  <li>🌪️ Vibrações emocionais</li>
-  <li>📊 Padrões clínicos</li>
-  <li>🧠 Gatilhos neurofisiológicos</li>
-  <li>📚 Estudos científicos e psicossomáticos</li>
+  <li>&#x1F32A;&#xFE0F; Vibrações emocionais</li>        
+  <li>&#x1F4CA; Padrões clínicos</li>                    
+  <li>&#x1F9E0; Gatilhos neurofisiológicos</li>          
+  <li>&#x1F4DA; Estudos científicos e psicossomáticos</li> 
 </ul>
+
 <p>…apresentamos suas predisposições físicas e mentais atuais, tanto de curto quanto de longo prazo.</p>
 <p><strong>Não se trata de um diagnóstico médico.</strong><br>
 É um alerta sutil. Um farol espiritual.</p>
@@ -253,17 +254,18 @@ const blocoIntroPredisposicoes = `
 E que tudo aquilo que você transmuta, vira cura.</p>
 `;
 const blocoChamadaCurso = `
-<h2>📖 Ebook e Livro Canva Espiritual</h2>
+<h2>&#x1F4D6; Ebook e Livro Canva Espiritual</h2>
 <blockquote>“Se o espelho já te revelou algo, imagina mergulhar no universo inteiro.”</blockquote>
 <p>Este relatório tem entre 20 e 35 páginas, mas o <strong>Ebook/Livro Canva Espiritual</strong> carrega mais de 200 páginas de sabedoria vibracional, com tabelas, arquétipos, exercícios, mapas, escalas, reflexões e doutrina espiritual integradas.</p>
 <p>Se você deseja:</p>
 <ul>
-  <li>🔎 Aprofundar cada fruto e seu oposto</li>
-  <li>⏳ Conhecer os ciclos, leis herméticas e intervenções vibracionais</li>
-  <li>📘 Usar o livro como manual de autocura e espiritualidade prática</li>
+  <li>&#x1F50E; Aprofundar cada fruto e seu oposto</li>        
+  <li>&#x23F3; Conhecer os ciclos, leis herméticas e intervenções vibracionais</li> 
+  <li>&#x1F4D8; Usar o livro como manual de autocura e espiritualidade prática</li> 
 </ul>
+
 <p><strong>Então o próximo passo é seu.</strong></p>
-<p>👉 <a href="https://canvaespiritual.com/ebook" target="_blank">Acesse o Ebook ou aguarde o lançamento impresso</a></p>
+<p>&#x1F449; <a href="https://canvaespiritual.com/ebook" target="_blank">Acesse o Ebook ou aguarde o lançamento impresso</a></p>
 `;
 
 // Blocos fixos de texto do relatório
@@ -300,16 +302,16 @@ function gerarHtmlFrutos(frutos) {
         </svg>
 
         <p style="color:${corZona}; font-weight:bold; margin-bottom: 10px;">
-          🧭 Isso significa que você está na Zona ${zona} para essa natureza emocional.
+          &#x1F9ED; Isso significa que você está na Zona ${zona} para essa natureza emocional.
         </p>
 
         <p><strong>Reflexo detectado:</strong> ${f.texto_resposta}</p>
         <p><strong>Diagnóstico:</strong> ${f.diagnostico}</p>
         <p><strong>Descrição do estado da alma:</strong> ${f.descricao_estado}</p>
-        <p><strong>🏠 Vida Familiar:</strong> ${f.vida_familiar}</p>
-        <p><strong>👥 Vida Social:</strong> ${f.vida_social}</p>
-        <p><strong>💼 Vida Profissional:</strong> ${f.vida_profissional}</p>
-        <p><strong>🧘 Exercício de Elevação:</strong> ${f.exercicio}</p>
+        <p><strong>&#x1F3E0; Vida Familiar:</strong> ${f.vida_familiar}</p>
+        <p><strong>&#x1F465; Vida Social:</strong> ${f.vida_social}</p>
+        <p><strong>&#x1F4BC; Vida Profissional:</strong> ${f.vida_profissional}</p>
+        <p><strong>&#x1F9D8; Exercício de Elevação:</strong> ${f.exercicio}</p>
       </div>
     `;
   }).join('\n');
@@ -366,7 +368,7 @@ for (const polaridade of Object.keys(mapPolaridadePrefixo)) {
 
     htmlFinal += `
       <div style="margin-bottom: 40px;">
-        <h3 style="color: #1f2937; font-size: 20px;">🔸 ${polaridade.charAt(0).toUpperCase() + polaridade.slice(1)}</h3>
+        <h3 style="color: #1f2937; font-size: 20px;">&#x1F538; ${polaridade.charAt(0).toUpperCase() + polaridade.slice(1)}</h3>
 
         <svg width="100%" height="20" style="margin: 6px 0 12px;">
           <rect x="0" y="0" width="100%" height="20" fill="#e5e7eb" rx="8" ry="8"></rect>
@@ -374,7 +376,7 @@ for (const polaridade of Object.keys(mapPolaridadePrefixo)) {
           <text x="50%" y="14" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">${mediaPercentual}%</text>
         </svg>
 
-        <p style="color:${corBarra}; font-weight:bold;">🧭 Zona ${zona}</p>
+        <p style="color:${corBarra}; font-weight:bold;">&#x1F9ED; Zona ${zona}</p>
     `;
 
     for (const r of resultado.rows) {
@@ -382,10 +384,10 @@ for (const polaridade of Object.keys(mapPolaridadePrefixo)) {
         <div style="margin-top: 15px; padding-left: 12px; border-left: 4px solid ${corBarra};">
           <h4 style="margin: 6px 0;">Nível ${r.codigo} – ${r.nivel_estado}</h4>
           <p><strong>Sinal Comportamental:</strong> ${r.sinal_comportamental}</p>
-          <p><strong>🏠 Familiar:</strong> ${r.esfera_familiar}</p>
-          <p><strong>👥 Social:</strong> ${r.esfera_social}</p>
-          <p><strong>💼 Profissional:</strong> ${r.esfera_profissional}</p>
-          <p><strong>🧘 Individual:</strong> ${r.esfera_individual}</p>
+          <p><strong>&#x1F3E0; Familiar:</strong> ${r.esfera_familiar}</p>
+          <p><strong>&#x1F465; Social:</strong> ${r.esfera_social}</p>
+          <p><strong>&#x1F4BC; Profissional:</strong> ${r.esfera_profissional}</p>
+          <p><strong>&#x1F9D8; Individual:</strong> ${r.esfera_individual}</p>
         </div>
       `;
     }
@@ -503,7 +505,7 @@ function gerarTabelaPredisposicoes(predisposicoes) {
 
   return `
     <div class="predisposicoes">
-      <h2>📉 Predisposições Fisiológicas e Psicológicas</h2>
+      <h2>&#x1F4C9; Predisposições Fisiológicas e Psicológicas</h2>
       <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; font-size:12px; width:100%;">
         <thead style="background:#f3f4f6;">
           <tr>
@@ -523,7 +525,7 @@ function gerarTabelaPredisposicoes(predisposicoes) {
 function blocoUpsell(titulo, explicacao = '') {
   return `
   <div style="background-color: #fffbea; border-left: 4px solid #facc15; padding: 12px; margin: 20px 0;">
-    <p><strong>🔒 ${titulo} disponível apenas no Relatório Completo.</strong></p>
+    <p><strong>&#x1F512; ${titulo} disponível apenas no Relatório Completo.</strong></p>
     <p>${explicacao || `Para desbloquear este conteúdo, faça o diagnóstico completo ou conheça nossos produtos.`}</p>
     <p><a href="https://api.canvaspiritual.com/quiz.html" target="_blank">Refazer diagnóstico</a> ou <a href="https://canvaespiritual.com" target="_blank">acessar cursos e ebooks</a>.</p>
   </div>
@@ -531,7 +533,7 @@ function blocoUpsell(titulo, explicacao = '') {
 
 }
 async function createPdfFromHtml(data, tipo = 'essencial') {
-  console.log("🚀 Tipo de relatório solicitado:", tipo);
+  console.log("&#x1F680; Tipo de relatório solicitado:", tipo);
 
   let htmlPath;
   switch (tipo) {
