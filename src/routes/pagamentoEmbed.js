@@ -7,9 +7,9 @@ const client = new MercadoPagoConfig({
 });
 
 const PRODUTOS = {
-  basico: { title: "Mapa Base da Alma", unit_price: 1 },
-  intermediario: { title: "Diagnóstico Interdimensional", unit_price: 1.1 },
-  completo: { title: "Diagnóstico Corpo-Mente-Espírito", unit_price: 1.2 },
+  basico: { title: "Mapa Base da Alma", unit_price: 12 },
+  intermediario: { title: "Diagnóstico Interdimensional", unit_price: 21 },
+  completo: { title: "Diagnóstico Corpo-Mente-Espírito", unit_price: 40 },
 };
 
 // ROTA: /pagamento/criar-preferencia-embed/:tipo/:session_id

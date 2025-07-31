@@ -318,9 +318,11 @@ function gerarHtmlFrutos(frutos) {
 }
 
 async function gerarHtmlReflexoEspiritual(mediaPercentual) {
-  const escala13 = (mediaPercentual / 100) * 12 + 1;
-  const nivelInferior = Math.floor(escala13);
-  const nivelSuperior = Math.ceil(escala13);
+  const nivelReal = 14 - ((mediaPercentual / 100) * 12);  // 14 - escala inverte a lógica
+const nivelInferior = Math.floor(nivelReal);
+const nivelSuperior = Math.ceil(nivelReal);
+
+
 
   const mapPolaridadePrefixo = {
   "Benção x maldição": "BC",
@@ -367,17 +369,23 @@ for (const polaridade of Object.keys(mapPolaridadePrefixo)) {
     }
 
     htmlFinal += `
-      <div style="margin-bottom: 40px;">
-        <h3 style="color: #1f2937; font-size: 20px;">🔸 ${polaridade.charAt(0).toUpperCase() + polaridade.slice(1)}</h3>
+  <div style="margin-bottom: 40px;">
+    <h3 style="color: #1f2937; font-size: 20px;">🔸 ${polaridade.charAt(0).toUpperCase() + polaridade.slice(1)}</h3>
 
-        <svg width="100%" height="20" style="margin: 6px 0 12px;">
-          <rect x="0" y="0" width="100%" height="20" fill="#e5e7eb" rx="8" ry="8"></rect>
-          <rect x="0" y="0" width="${mediaPercentual}%" height="20" fill="${corBarra}" rx="8" ry="8"></rect>
-          <text x="50%" y="14" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">${mediaPercentual}%</text>
-        </svg>
+    <div style="display: flex; align-items: flex-end; gap: 16px; margin-bottom: 16px;">
+      <!-- Barra vertical -->
+      <div style="width: 24px; height: 180px; background-color: #e5e7eb; border-radius: 12px; position: relative; overflow: hidden;">
+        <div style="position: absolute; bottom: 0; width: 100%; height: ${mediaPercentual}%; background-color: ${corBarra}; border-radius: 12px;"></div>
+      </div>
 
-        <p style="color:${corBarra}; font-weight:bold;">🧭 Zona ${zona}</p>
-    `;
+      <!-- Texto de apoio -->
+      <div>
+        <p style="margin: 0;"><strong>Vibração média:</strong> ${mediaPercentual}%</p>
+        <p style="color:${corBarra}; font-weight:bold; margin: 0;">🧭 Zona ${zona}</p>
+      </div>
+    </div>
+`;
+
 
     for (const r of resultado.rows) {
       htmlFinal += `
