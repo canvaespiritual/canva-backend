@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const puppeteer = require('puppeteer');
 const pool = require('../db');
+const twemoji = require('twemoji');
+
 const blocoIntroMetodologia = `
 <h2>🧭 Introdução à Metodologia</h2>
 <p><strong>Parabéns, {{nome}}!</strong></p>
@@ -731,6 +733,14 @@ html = html.replace('{{zona_media}}', zonaMedia);
   });
 
   const page = await browser.newPage();
+  // Converte os emojis do HTML em imagens usando Twemoji (formato SVG)
+html = twemoji.parse(html, {
+  folder: 'svg',
+  ext: '.svg',
+  className: 'emoji'
+});
+
+
   await page.setContent(html, { waitUntil: 'networkidle0' });
 
   const buffer = await page.pdf({
