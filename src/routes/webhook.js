@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
             data_pagamento = $3,
             payment_id = $4,
             tipo_relatorio = $5,
-            status_processo = $6
+            status_processo = $6,
             brevo_sincronizado = false
           WHERE session_id = $7
         `, [

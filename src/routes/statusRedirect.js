@@ -53,7 +53,7 @@ router.get("/status_redirect/:session_id", async (req, res) => {
             tipo_pagamento = $2,
             data_pagamento = $3,
             payment_id = $4,
-            status_processo = $5
+            status_processo = $5,
             brevo_sincronizado = false
           WHERE session_id = $6
         `, [
