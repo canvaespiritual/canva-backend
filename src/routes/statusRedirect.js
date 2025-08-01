@@ -8,6 +8,7 @@ const pool = require("../db"); // ← IMPORTAÇÃO DO POSTGRES
 const filaRelatorios = require('../queue/filaRelatorios');
 
 
+
 const router = express.Router();
 const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN });
 
@@ -38,6 +39,9 @@ router.get("/status_redirect/:session_id", async (req, res) => {
     if (pagamento.status === "approved") {
       dados.status_pagamento = "approved";
       fs.writeFileSync(destinoPath, JSON.stringify(dados, null, 2));
+
+
+
       fs.unlinkSync(origemPath);
       console.log(`✅ Pagamento confirmado por ID: ${paymentId} | Sessão: ${session_id}`);
        // ✅ Atualiza o PostgreSQL
@@ -50,6 +54,7 @@ router.get("/status_redirect/:session_id", async (req, res) => {
             data_pagamento = $3,
             payment_id = $4,
             status_processo = $5
+            brevo_sincronizado = false
           WHERE session_id = $6
         `, [
           'pago',
@@ -59,6 +64,8 @@ router.get("/status_redirect/:session_id", async (req, res) => {
           'pago',
           session_id
         ]);
+
+         
         // ✅ Após atualizar o banco, envia para a fila:
   await filaRelatorios.add('gerar-relatorio', { session_id: sessionId });
 

@@ -6,6 +6,7 @@ const pool = require('../db'); // ← IMPORTAÇÃO DO POSTGRES
 const filaRelatorios = require('../queue/filaRelatorios');
 
 
+
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -46,6 +47,8 @@ router.post('/', async (req, res) => {
         fs.writeFileSync(destino, JSON.stringify(dados, null, 2), 'utf8');
         fs.unlinkSync(origem);
         console.log(`✅ JSON movido para pendentes: ${sessionId}`);
+
+
       } else {
         console.warn(`⚠️ Arquivo ${sessionId}.json não encontrado em /respondidos`);
       }
@@ -61,6 +64,7 @@ router.post('/', async (req, res) => {
             payment_id = $4,
             tipo_relatorio = $5,
             status_processo = $6
+            brevo_sincronizado = false
           WHERE session_id = $7
         `, [
           'pago',
@@ -71,6 +75,8 @@ router.post('/', async (req, res) => {
           'pago',
           sessionId
         ]);
+
+         
 
         // ✅ Após atualizar o banco, envia para a fila:
   await filaRelatorios.add('gerar-relatorio', { session_id: sessionId });

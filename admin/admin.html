@@ -48,23 +48,25 @@
 
   <!-- 📋 Tabela -->
   <table id="tabela">
-    <thead>
-      <tr>
-        <th>Session ID</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Tipo</th>
-        <th>Status</th>
-        <th>Espera</th>
-        <th onclick="ordenarPor('criado_em')">📥 Respondido ⬍</th>
-        <th onclick="ordenarPor('data_confirmacao')">💳 Pagamento ⬍</th>
-        <th onclick="ordenarPor('dataGeracao')">📄 PDF Gerado ⬍</th>
-        <th>📧 E-mail Enviado</th>
-        <th>⚠️ Erro de envio</th>
-
-        <th>Ações</th>
-      </tr>
-    </thead>
+ <thead>
+  <tr>
+    <th>Session ID</th>
+    <th>Nome</th>
+    <th>Email</th>
+    <th>Tipo</th>
+    <th>Status</th>
+    <th>Espera</th>
+    <th onclick="ordenarPor('criado_em')">📥 Respondido ⬍</th>
+    <th onclick="ordenarPor('data_confirmacao')">💳 Pagamento ⬍</th>
+    <th onclick="ordenarPor('dataGeracao')">📄 PDF Gerado ⬍</th>
+    <th>📧 Enviado</th>
+    <th>📬 Entregue</th>
+    <th>👁️ Aberto</th>
+    <th>🔗 Clicado</th>
+    <th>⚠️ Erro</th>
+    <th>Ações</th>
+  </tr>
+</thead>
     <tbody id="corpo-tabela">
       <tr><td colspan="10"><em>Carregando...</em></td></tr>
     </tbody>

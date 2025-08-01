@@ -22,6 +22,10 @@ const statusRoute = require('./src/routes/status');
 const rotaGerar = require('./src/routes/gerar');
 const webhookRoutes = require("./src/routes/webhook");
 const webhookSesRoutes = require("./src/routes/webhookSes");
+const brevoRoutes = require("./src/routes/brevo"); // ✅ novo
+const pingSincronizar = require("./src/routes/ping/sincronizar");
+
+
 
 
 const emProducao = process.env.RAILWAY_ENVIRONMENT !== undefined;
@@ -104,6 +108,8 @@ app.use('/confirmar-email', confirmarEmailRoute);
 app.use('/status', statusRoute);
 app.use('/gerar', rotaGerar);
 app.use('/api/teste', testeSimulacaoRouter);
+app.use('/api/brevo', brevoRoutes);
+app.use('/ping/sincronizar', pingSincronizar);
 
 // ---------------------------
 // 🔐 Área Administrativa

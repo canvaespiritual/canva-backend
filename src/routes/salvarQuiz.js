@@ -4,6 +4,7 @@ const path = require("path");
 const pool = require("../db"); // ajuste o caminho conforme sua estrutura
 
 const router = express.Router();
+const cadastrarLeadNoBrevo = require("../utils/cadastrarLeadNoBrevo");
 
 // Função para calcular média
 function calcularMedia(respostas) {
@@ -101,6 +102,16 @@ router.post("/", async (req, res) => {
       ]);
 
       console.log(`📥 Diagnóstico ${dadosCompletos.session_id} registrado no PostgreSQL.`);
+    await cadastrarLeadNoBrevo({
+  email: dadosCompletos.email,
+  nome: dadosCompletos.nome,
+  atributos: {
+    QUIZ: true
+  }
+});
+
+
+
     } catch (erroPg) {
       console.error("❌ Falha ao gravar no PostgreSQL. Abandonando fluxo:", erroPg);
       return res.status(500).send("Erro ao salvar no banco de dados.");

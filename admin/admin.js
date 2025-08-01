@@ -130,6 +130,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <td>${formatarData(item.dataGeracao)}</td>
         <td>${formatarData(item.email_enviado_em)}</td>
+         <td>${item.email_entregue ? '✅' : '—'}</td>
+        <td>${item.email_aberto ? '👁️' : '—'}</td>
+        <td>${item.email_clicado ? '🔗' : '—'}</td>
         <td>${item.email_erro ? `<span style="color: red;">${item.email_erro}</span>` : "—"}</td>
         <td>${botoes}</td>
       `;

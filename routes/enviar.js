@@ -6,6 +6,9 @@ const fs = require("fs");
 const path = require("path");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid"); // para gerar id 
+const cadastrarLeadNoBrevo = require("../src/utils/cadastrarLeadNoBrevo");
+
+
 
 router.post("/", async (req, res) => {
   const { nome, email, telefone, token, respostas } = req.body;
@@ -27,6 +30,15 @@ router.post("/", async (req, res) => {
     const caminho = path.join(pastaTemp, `${session_id}.json`);
     const dadosParaSalvar = { nome, email, telefone, respostas };
     fs.writeFileSync(caminho, JSON.stringify(dadosParaSalvar, null, 2), "utf8");
+
+   await cadastrarLeadNoBrevo({
+  email,
+  nome,
+  atributos: {
+    QUIZ: true
+  }
+});
+
 
     // Retorna o session_id para ser usado na próxima etapa (pagamento)
     res.json({ session_id });
