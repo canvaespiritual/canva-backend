@@ -1,13 +1,15 @@
 {
   "name": "canva-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
+  "description": "API Canva Espiritual (Asaas nativo, painéis afiliado/vendedor)",
+  "main": "servidor.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node servidor.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "aws-sdk": "^2.1692.0",
     "axios": "^1.11.0",
@@ -28,5 +30,5 @@
     "uuid": "^11.1.0",
     "xlsx": "^0.18.5"
   },
-  "description": ""
+  "license": "ISC"
 }
