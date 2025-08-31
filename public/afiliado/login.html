@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login do Afiliado — Canva Spiritual</title>
+  <link rel="stylesheet" href="/afiliado.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="brand__logo"></div>
+        <div class="brand__title">Canva Spiritual · Programa de Afiliados</div>
+      </div>
+      <a class="badge" href="/afiliado/cadastro.html">Criar conta</a>
+    </header>
+
+    <section class="card" style="max-width:560px;margin:0 auto;">
+      <h1>Entrar</h1>
+      <p class="sub">Acesse seu painel com seu e-mail e senha.</p>
+
+      <form id="form-login" class="form-grid mt-16">
+        <div class="col-12">
+          <label>E-mail</label>
+          <input class="input" name="email" type="email" required />
+        </div>
+        <div class="col-12">
+          <label>Senha</label>
+          <input class="input" name="password" type="password" required />
+        </div>
+        <div class="col-12">
+          <button class="btn full" type="submit">Entrar</button>
+        </div>
+
+        <!-- Link para recuperação de senha -->
+        <div class="col-12" style="text-align:center; margin-top: 12px;">
+          <a href="/afiliado/esqueci.html">Esqueci minha senha</a>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="/scripts/afiliado.js"></script>
+</body>
+</html>

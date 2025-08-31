@@ -14,6 +14,7 @@ const mercadopagoRoutes = require('./src/routes/mercadopago');
 const pagamentoPixRoutes = require("./src/routes/pagamentoPix");
 const pagamentoEmbed = require('./src/routes/pagamentoEmbed');
 const pagamentoStatus = require("./src/routes/pagamentoStatus");
+const pagamentoStart = require("./src/routes/pagamentoStart");
 const statusRedirect = require("./src/routes/statusRedirect");
 const infoRoute = require('./src/routes/info');
 const testeSimulacaoRouter = require('./src/routes/testeSimulacao');
@@ -24,24 +25,150 @@ const webhookRoutes = require("./src/routes/webhook");
 const webhookSesRoutes = require("./src/routes/webhookSes");
 const brevoRoutes = require("./src/routes/brevo"); // ✅ novo
 const pingSincronizar = require("./src/routes/ping/sincronizar");
+// 👇 Painel do Afiliado (frontend + API)
+const affiliatesRoutes = require("./src/routes/affiliates");
 
+// 🔌 Rotas de teste Asaas (sandbox)
+const asaasTestRoutes = require("./src/routes/asaasTest");      // GET /dev/asaas/smoke
+const asaasWebhookRoutes = require("./src/routes/webhookAsaas"); // POST /webhooks/asaas
+// Afiliado: subconta/status Asaas e método de saque
+const affiliatesAsaasRoutes = require("./src/routes/affiliatesAsaas");   // cria subconta, status etc.
+const affiliatesPayoutRoutes = require("./src/routes/affiliatesPayout"); // configura PIX/banco e teste
+const asaasSubaccountService = require("./src/services/asaasSubaccountService");
+const pagamentoStatusSessao = require("./src/routes/pagamentoStatusSessao");
+const vendorsRoutes = require("./src/routes/vendors");
+const debugRoutes = require("./src/routes/debug"); // ← ADD
+
+
+// ⬇️ adicione esta linha
+const pool = require("./src/db");
+const cookieParser = require('cookie-parser');
 
 
 
 const emProducao = process.env.RAILWAY_ENVIRONMENT !== undefined;
 const app = express();
 
-
+app.set("trust proxy", true);
 // ---------------------------
 // 🔐 Sessão + JSON
+// normaliza /algo.html/ -> /algo.html (preserva querystring)
+app.use((req, res, next) => {
+  if (req.path.endsWith(".html/")) {
+    const clean = req.path.replace(/\/+$/, ""); // remove barra(s) finais
+    const qs = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
+    return res.redirect(301, clean + qs);
+  }
+  next();
+});
+
 // ---------------------------
 app.use(session({
   secret: process.env.SEGREDO_SESSAO || "canva_supersecreto",
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 3 * 60 * 60 * 1000 }
+  proxy: true, // importante quando usa trust proxy
+  cookie: {
+    maxAge: 3 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: emProducao // em produção, só envia por HTTPS
+  }
 }));
+
 app.use(express.json());
+
+// 🧪 DEV | Asaas Sandbox (smoke test)
+app.use("/dev", asaasTestRoutes);
+// topo do arquivo:
+// 🧪 DEV | Debug de split/ledger
+app.use("/debug", debugRoutes); // ← ADD
+
+app.use(cookieParser());
+
+// ⬇️ Captura ?aff= ou ?ref= e salva cookie + sessão (90 dias)
+app.use((req, res, next) => {
+  const emProducao = process.env.RAILWAY_ENVIRONMENT !== undefined; // já existe acima no seu código
+  const aff = (req.query.aff || req.query.ref || '').trim();
+
+  if (aff) {
+    res.cookie('aff_ref', aff, {
+      maxAge: 90 * 24 * 60 * 60 * 1000,
+      httpOnly: false,     // front pode ler se precisar
+      sameSite: 'lax',
+      secure: emProducao
+    });
+    req.session.aff_ref = aff;
+  } else if (!req.session.aff_ref && req.cookies?.aff_ref) {
+    req.session.aff_ref = req.cookies.aff_ref;
+  }
+  next();
+});
+// === [ADD] Atribuição de sessão para links do VENDEDOR (rede) ==================
+// Se entrar com ?aff=CODE de affiliate_links, gravamos attribution(session -> link)
+// Observação: ?ref=<affiliate_id> (afiliado direto 30%) continua como está (cookie/sessão),
+// não criamos attribution para ?ref, pois não é link do vendedor.
+app.use(async (req, res, next) => {
+  try {
+    const code = (req.query.aff || "").trim();      // só consideramos ?aff aqui
+    if (!code) return next();
+
+    // procura o link do vendedor
+    const { rows } = await pool.query(
+      "SELECT id FROM affiliate_links WHERE code = $1 AND active = TRUE LIMIT 1",
+      [code]
+    );
+    if (rows.length === 0) return next(); // não é link de vendedor, segue o fluxo normal (?ref pode estar presente)
+
+    const linkId = rows[0].id;
+    const sessionId = req.sessionID;
+
+    // upsert attribution (1 registro por sessão)
+    await pool.query(
+      `INSERT INTO attribution (session_id, affiliate_link_id)
+       VALUES ($1, $2)
+       ON CONFLICT (session_id)
+       DO UPDATE SET affiliate_link_id = EXCLUDED.affiliate_link_id`,
+      [sessionId, linkId]
+    );
+
+    // (opcional) incrementa cliques do link; coloque debounce via redis depois, se quiser
+    await pool.query(
+      `UPDATE affiliate_links SET clicks = clicks + 1 WHERE id = $1`,
+      [linkId]
+    );
+
+    return next();
+  } catch (e) {
+    console.error("[attrib vendor link] erro:", e);
+    return next(); // não quebra a navegação se algo falhar
+  }
+});
+// [ADD] Captura ?vend=<vendor_id> para vendas diretas do vendedor (30%)
+app.use(async (req, res, next) => {
+  try {
+    const vend = (req.query.vend || "").trim();
+    if (!vend) return next();
+
+    // valida se existe um afiliado com esse id e role vendor (se tiver coluna role)
+    const { rows } = await pool.query(
+      `SELECT id FROM affiliates WHERE id = $1 AND role IN ('vendor','supervisor') LIMIT 1`,
+      [vend]
+    );
+    if (!rows.length) return next();
+
+    req.session.vendor_ref = vend; // guarda na sessão (vamos enviar ao PSP como metadata também)
+    next();
+  } catch (e) {
+    console.error("[vend capture] error:", e);
+    next();
+  }
+});
+
+// ⤵️ atalhos de link amigáveis (se alguém usar /a/MEUAFILIADO, etc)
+app.get(['/a/:aff', '/r/:aff', '/quiz/:aff', '/quiz.html/:aff'], (req, res) => {
+  return res.redirect(`/quiz.html?aff=${encodeURIComponent(req.params.aff)}`);
+});
 
 
 // ---------------------------
@@ -74,6 +201,10 @@ pastasNecessarias.forEach((pasta) => {
 // ---------------------------
 app.use('/webhook', webhookRoutes);
 app.use('/webhook/ses', webhookSesRoutes);
+// 🔔 Webhook do Asaas (sandbox/prod)
+// No painel do Asaas, aponte para: https://SEU_DOMINIO/webhooks/asaas
+app.use("/webhooks/asaas", asaasWebhookRoutes);
+
 app.post("/verificar-recaptcha", async (req, res) => {
   const token = req.body.token;
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -110,6 +241,109 @@ app.use('/gerar', rotaGerar);
 app.use('/api/teste', testeSimulacaoRouter);
 app.use('/api/brevo', brevoRoutes);
 app.use('/ping/sincronizar', pingSincronizar);
+// ★ HARD OVERRIDE: status da subconta (DB-first) — destrava o dashboard
+// ★ OVERRIDE ÚNICO de status: DB-first + auto-enable do link
+app.get("/affiliates/me/asaas/status", async (req, res) => {
+  try {
+    const aff = req.session?.aff;
+    if (!aff?.id) return res.status(401).json({ error: "Não autenticado" });
+
+    const { rows } = await pool.query(
+      `SELECT
+         asaas_wallet_id,
+         asaas_account_id,
+         link_enabled,
+         payout_method,
+         pix_key_value,
+         bank_number, bank_agency, bank_account, bank_account_digit
+       FROM affiliates
+       WHERE id = $1
+       LIMIT 1`,
+      [aff.id]
+    );
+
+    const r = rows[0] || {};
+
+    // Geral: aprovado se subconta existe (wallet + account)
+    const hasSub = !!r.asaas_wallet_id && !!r.asaas_account_id;
+    const general = hasSub ? "APPROVED" : "MISSING";
+
+    // Bancário: aprovado se PIX com chave OU conta bancária completa
+    const pixOK  = r.payout_method === "pix" &&
+                   !!String(r.pix_key_value || "").trim();
+    const bankOK = r.payout_method === "bank" &&
+                   !!r.bank_number && !!r.bank_agency &&
+                   !!r.bank_account && !!r.bank_account_digit;
+
+    const bank = (pixOK || bankOK) ? "APPROVED" : "PENDING";
+
+    let linkEnabled = !!r.link_enabled;
+
+    // 🔒 Auto-enable somente quando os dois estiverem aprovados
+    if (!linkEnabled && general === "APPROVED" && bank === "APPROVED") {
+      await pool.query(
+        `UPDATE affiliates
+           SET link_enabled = TRUE,
+               updated_at   = NOW()
+         WHERE id = $1`,
+        [aff.id]
+      );
+      linkEnabled = true;
+      console.log("[STATUS] link_enabled -> TRUE (auto)");
+    }
+
+    return res.json({
+      ok: true,
+      status: { general, bank },
+      link_enabled: linkEnabled,
+      wallet_id: r.asaas_wallet_id || null,
+    });
+  } catch (e) {
+    console.error("[/affiliates/me/asaas/status override] error:", e);
+    return res.status(500).json({ ok: false, error: "Erro ao consultar status" });
+  }
+});
+
+
+app.use('/affiliates/asaas', asaasSubaccountService);
+app.use('/affiliates/me/asaas', asaasSubaccountService);
+// 👇 Endpoints do Afiliado (cadastro, login, me)
+app.use('/affiliates', affiliatesRoutes);
+
+// 👇 Asaas: subconta/status + método de saque (D+7 controlado no dashboard)
+app.use('/affiliates', affiliatesAsaasRoutes);
+app.use('/affiliates', affiliatesPayoutRoutes);
+// === [ADD] endpoint genérico de identidade ===
+// Permite ao front descobrir o "role" pós-login e redirecionar para o dashboard certo.
+app.get("/me", (req, res) => {
+  const me = req.session?.aff;
+  if (!me) return res.status(401).json({ error: "Não autenticado" });
+  // me já inclui: { id, email, name, role } (role vem do /affiliates/login)
+  res.json(me);
+});
+// === [OPTIONAL ADD] aliases para rotas de vendedor reaproveitando as de afiliado ===
+// 1) Identidade básica (me)
+app.get("/vendors/me", (req, res) => {
+  if (!req.session?.aff) return res.status(401).json({ error: "Não autenticado" });
+  // mantemos o mesmo shape que o afiliado usa
+  res.json({ me: req.session.aff });
+});
+
+ app.get("/vendors/me/status", (req, res) => {
+   // encaminha para o endpoint já existente de forma segura
+   res.redirect(307, "/affiliates/me/asaas/status");
+ });
+
+// 3) Link pessoal do vendedor (se preferir responder “stub” agora)
+app.get("/vendors/me/personal-link", (req, res) => {
+  if (!req.session?.aff?.id) return res.status(401).json({ error: "Não autenticado" });
+  // Se você ainda não tem link pessoal separado p/ vendedor, retorne null por enquanto.
+  // (O vendor-dashboard.js trata ausência sem quebrar)
+  res.json({ url: null });
+});
+
+app.use("/vendors", vendorsRoutes);
+
 
 // ---------------------------
 // 🔐 Área Administrativa
@@ -129,11 +363,13 @@ app.use("/api/salvar-quiz", salvarQuizRouter);
 // ---------------------------
 // 💳 Pagamentos
 // ---------------------------
+app.use("/pagamento", pagamentoStart);
 app.use('/pagamento', mercadopagoRoutes);
 app.use("/pagamento", pagamentoPixRoutes);
 app.use('/pagamento', pagamentoEmbed);
 app.use("/pagamento", pagamentoStatus);
 app.use("/pagamento", statusRedirect);
+app.use("/pagamento", pagamentoStatusSessao);
 
 
 // ---------------------------
@@ -255,7 +491,7 @@ app.get('/espelho/:nome', (req, res) => {
 // ---------------------------
 // 🛠️ Iniciar o servidor
 // ---------------------------
-app.listen(3000, () => {
-  console.log('🚀 Servidor rodando em http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
 });
-

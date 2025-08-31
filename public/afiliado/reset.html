@@ -1,0 +1,29 @@
+<!doctype html><html lang="pt-br"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Redefinir senha — Afiliado</title>
+<link rel="stylesheet" href="/afiliado.css"/>
+</head><body><div class="container">
+<section class="card" style="max-width:560px;margin:0 auto;">
+  <h1>Redefinir senha</h1>
+  <form id="f-reset" class="form-grid mt-16">
+    <div class="col-12">
+      <label>Nova senha</label>
+      <input class="input" name="password" type="password" required/>
+    </div>
+    <div class="col-12"><button class="btn full">Salvar nova senha</button></div>
+  </form>
+</section>
+</div>
+<script>
+const params=new URLSearchParams(location.search);
+const token=params.get("token");
+if(!token){ alert("Token ausente."); }
+document.querySelector("#f-reset").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const fd=new FormData(e.target);
+  const r=await fetch("/affiliates/reset",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token, password:fd.get("password")})});
+  if(r.ok){ alert("Senha alterada! Faça login."); location.href="/afiliado/login.html"; }
+  else { const ejson=await r.json().catch(()=>({error:"Erro"})); alert(ejson.error||"Erro"); }
+});
+</script>
+</body></html>

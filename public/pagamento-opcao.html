@@ -34,98 +34,200 @@
   </div>
 
 <script>
-  const url = new URLSearchParams(window.location.search);
-  const tipo = url.get("tipo");
-  const sessionId = url.get("session_id");
+(function () {
+  const qs = new URLSearchParams(location.search);
+  const tipoOriginal = (qs.get('tipo') || 'basico').toLowerCase();
+const tipo = (() => {
+  if (['premium','intermediario'].includes(tipoOriginal)) return 'premium';
+  if (['completo','interdimensional'].includes(tipoOriginal)) return 'completo';
+   return 'basico';
+ })();
+  const sessionId = qs.get('session_id') || localStorage.getItem('session_id');
 
-  // ✅ Bloqueia loop caso pagamento já confirmado
-  if (localStorage.getItem("pagamento_confirmado") === "true") {
-    localStorage.removeItem("pagamento_confirmado");
-    window.location.href = `/aguarde.html?session_id=${sessionId}`;
+  // 🔎 NOVO: detectar afiliado
+  const ref = (qs.get('ref') || qs.get('aff') || '').trim();
+  const hasAffiliate = !!ref;
+
+  // elementos
+  const statusPagamento   = document.getElementById("statusPagamento");
+  const qrcode            = document.getElementById("qrcode");
+  const qrImage           = document.getElementById("qrImage");
+  const copiar_pix        = document.getElementById("copiar_pix");
+  const pixCode           = document.getElementById("pixCode");
+  const formulario_cartao = document.getElementById("formulario-cartao");
+
+  // mostra o session_id
+  const sessionSpan = document.getElementById("session_id");
+  if (sessionSpan) sessionSpan.textContent = sessionId || 'N/A';
+
+  const setStatus = (txt) => { statusPagamento.textContent = txt; };
+
+  // 🔁 utilitário: tentar redirecionar a ABA do checkout também
+  function redirectChildToAguarde(sessionId) {
+    try {
+      const winName = sessionStorage.getItem('asaasWinName') || `asaasCheckout_${sessionId}`;
+      const w = window.open('', winName); // reabre o handle por nome
+      if (w && !w.closed) {
+        // mesmo cross-origin, podemos SETAR location do filho
+        w.location.href = `/aguarde.html?session_id=${encodeURIComponent(sessionId)}`;
+      }
+    } catch (_) {}
   }
 
-  document.getElementById("session_id").textContent = sessionId || 'N/A';
+  async function iniciar() {
+    if (!sessionId) {
+      setStatus('❌ Sessão não encontrada. Volte e refaça o diagnóstico.');
+      return;
+    }
 
-  if (!tipo || !sessionId) {
-    document.getElementById("statusPagamento").textContent = "❌ Dados insuficientes para iniciar pagamento.";
-  } else {
-    iniciarPagamento(tipo, sessionId);
-  }
+    setStatus('🔎 Preparando seu checkout...');
+    try {
+      // 🔵 NOVO: enviar também "ref" para o backend
+      const resp = await fetch('/pagamento/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo, session_id: sessionId, ref })
+      });
+      if (!resp.ok) throw new Error(await resp.text() || `HTTP ${resp.status}`);
+      const start = await resp.json();
+      console.log('[pagamento/start] =>', start);
 
-  function iniciarPagamento(tipo, sessionId) {
-    // 1. PIX
-    fetch(`/pagamento/criar-pix/${tipo}/${encodeURIComponent(sessionId)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.qr_code) {
-          document.getElementById("qrcode").classList.remove("hidden");
-          document.getElementById("qrImage").src = `data:image/png;base64,${data.qr_code_base64}`;
-          document.getElementById("copiar_pix").classList.remove("hidden");
-          document.getElementById("pixCode").value = data.qr_code;
-          monitorarStatus(data.payment_id, sessionId);
-        } else {
-          document.getElementById("statusPagamento").innerHTML = `❌ Não foi possível carregar o QR Code.<br />Tente novamente.`;
+      if (start.alreadyPaid && start.redirect) {
+        setStatus('✅ Pagamento já aprovado. Redirecionando…');
+        // redireciona também a outra aba, se existir
+        redirectChildToAguarde(sessionId);
+        window.location.href = start.redirect;
+        return;
+      }
+
+      const urlAsaas = start.checkout_url || start.invoice_url;
+
+      // ✅ Só usa ASAAS se for afiliado E o backend retornou Asaas
+      if (hasAffiliate && start.gateway === 'asaas' && urlAsaas) {
+        setStatus('🔒 Abrindo checkout seguro do Asaas…');
+
+        // Reaproveita a aba pré-aberta no pagar.html (se existir)
+        const winName = sessionStorage.getItem('asaasWinName') || `asaasCheckout_${sessionId}`;
+        let w = null;
+        try { w = window.open('', winName); } catch (_) {}
+        if (w && !w.closed) {
+          try { w.location = urlAsaas; } catch (_) {}
+          sessionStorage.removeItem('asaasWinName');
+          monitorarStatusSessao(sessionId); // usa /status-por-sessao do backend
+          return;
         }
-      })
-      .catch(err => {
-        console.error("❌ Erro ao iniciar PIX:", err);
-        document.getElementById("statusPagamento").textContent = "❌ Falha ao gerar pagamento via PIX.";
-      });
 
-    // 2. Cartão Embed
-    fetch(`/pagamento/criar-preferencia-embed/${tipo}/${sessionId}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log("🔎 Resposta da preferência:", data);
-        if (!data.preferenceId) throw new Error("preferenceId ausente");
+        // tenta abrir em nova aba
+        const popup = window.open(urlAsaas, '_blank');
+        if (popup) {
+          monitorarStatusSessao(sessionId);
+          return;
+        }
 
-        const mp = new MercadoPago("APP_USR-491a3716-8f57-4a13-ab92-fa375fe8cc1c");
-        mp.bricks().create("wallet", "wallet_container", {
-          initialization: {
-            preferenceId: data.preferenceId
-          },
-          customization: {
-            texts: { valueProp: 'security_safety' }
-          }
-        });
-        document.getElementById("formulario-cartao").classList.remove("hidden");
-      })
-      .catch(err => {
-        console.warn("⚠️ Cartão indisponível:", err);
-        document.getElementById("statusPagamento").textContent = "⚠️ Cartão indisponível no momento.";
-      });
+        // fallback: sem popup, vai nesta aba
+        location.replace(urlAsaas);
+        return;
+      }
+
+      // 🔁 Caso contrário: força Mercado Pago (fluxo direto)
+      iniciarMP();
+
+    } catch (e) {
+      console.error('[pagamento-opcao] falha no start:', e);
+      setStatus('⚠️ Falha ao iniciar gateway principal. Indo pelo Mercado Pago…');
+      iniciarMP(true);
+    }
   }
 
-  function copiarCodigo() {
-    const codigo = document.getElementById("pixCode");
-    codigo.select();
-    codigo.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    alert("✅ Código PIX copiado!");
+  // ===== Polling por sessão (Asaas) — backend retorna "pago" em /status-por-sessao =====
+  function monitorarStatusSessao(sessionId) {
+    setStatus("⏳ Aguardando confirmação do pagamento…");
+    const it = setInterval(async () => {
+      try {
+        const r = await fetch(`/pagamento/status-por-sessao/${encodeURIComponent(sessionId)}`);
+        const j = await r.json();
+        if (j?.aprovado) {
+          clearInterval(it);
+          localStorage.setItem("pagamento_confirmado", "true");
+          setStatus("✅ Pagamento aprovado! Gerando seu relatório…");
+          // redireciona a outra aba também
+          redirectChildToAguarde(sessionId);
+          setTimeout(() => {
+            location.href = `/aguarde.html?session_id=${encodeURIComponent(sessionId)}`;
+          }, 1200);
+        }
+      } catch (_) { /* ignora falhas momentâneas */ }
+    }, 4000);
   }
 
-  function monitorarStatus(paymentId, sessionId) {
-    const intervalo = setInterval(() => {
-      console.log("🔁 Verificando status do pagamento:", paymentId);
-      fetch(`/pagamento/status/${paymentId}`)
-        .then(res => res.json())
-        .then(data => {
-          console.log("📦 Resposta da API:", data);
-          if (data.aprovado) {
-            clearInterval(intervalo);
-            document.getElementById("statusPagamento").textContent = "✅ Pagamento aprovado! Gerando seu relatório...";
-            
-            // ✅ Salva flag para evitar retorno a esta página
-            localStorage.setItem("pagamento_confirmado", "true");
+  // ===== FLUXO MERCADO PAGO =====
+async function iniciarMP(isFallback = false) {
+  setStatus(isFallback ? '⚠️ Fallback ativado: Mercado Pago.' : '💳 Preparando Mercado Pago…');
 
-            setTimeout(() => {
-              window.location.href = `/aguarde.html?session_id=${sessionId}`;
-            }, 3000);
-          }
-        })
-        .catch(err => console.error("Erro ao verificar status:", err));
+  // MP espera: basico | intermediario | completo
+  // (aceita "premium" => "intermediario" e "interdimensional" => "completo")
+  const t = String(tipo || '').toLowerCase();
+  const tipoForMP =
+    t === 'premium' || t === 'intermediario' ? 'intermediario' :
+    t === 'completo' || t === 'interdimensional' ? 'completo' :
+    'basico';
+
+  // 1) PIX
+  try {
+    const rPix = await fetch(`/pagamento/criar-pix/${encodeURIComponent(tipoForMP)}/${encodeURIComponent(sessionId)}`);
+    const data = await rPix.json();
+    if (data?.qr_code) {
+      qrcode.classList.remove('hidden');
+      qrImage.src = `data:image/png;base64,${data.qr_code_base64}`;
+      copiar_pix.classList.remove('hidden');
+      pixCode.value = data.qr_code;
+      monitorarStatusMP(data.payment_id, sessionId);
+    }
+  } catch (e) {
+    console.warn('[MP] erro ao criar PIX:', e);
+  }
+
+  // 2) Cartão (Wallet/Bricks)
+  try {
+    const rPref = await fetch(`/pagamento/criar-preferencia-embed/${encodeURIComponent(tipoForMP)}/${encodeURIComponent(sessionId)}`);
+    const pref = await rPref.json();
+    if (pref?.preferenceId) {
+      const mp = new MercadoPago("APP_USR-491a3716-8f57-4a13-ab92-fa375fe8cc1c");
+      mp.bricks().create("wallet", "wallet_container", {
+        initialization: { preferenceId: pref.preferenceId },
+        customization: { texts: { valueProp: 'security_safety' } }
+      });
+      formulario_cartao.classList.remove('hidden');
+    }
+    setStatus('⏳ Aguardando pagamento (Mercado Pago)…');
+  } catch (e) {
+    console.warn('[MP] erro ao inicializar Wallet:', e);
+    setStatus("⚠️ Cartão indisponível no momento.");
+  }
+}
+
+
+  function monitorarStatusMP(paymentId, sessionId) {
+    const intervalo = setInterval(async () => {
+      try {
+        const r = await fetch(`/pagamento/status/${encodeURIComponent(paymentId)}`);
+        const data = await r.json();
+        if (data.aprovado) {
+          clearInterval(intervalo);
+          statusPagamento.textContent = "✅ Pagamento aprovado! Gerando seu relatório...";
+          localStorage.setItem("pagamento_confirmado", "true");
+          // redireciona a outra aba também (caso tenha sido pré-aberta)
+          redirectChildToAguarde(sessionId);
+          setTimeout(() => {
+            window.location.href = `/aguarde.html?session_id=${encodeURIComponent(sessionId)}`;
+          }, 3000);
+        }
+      } catch (_) {}
     }, 5000);
   }
+
+  document.addEventListener('DOMContentLoaded', iniciar);
+})();
 </script>
 
 </body>

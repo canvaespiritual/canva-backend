@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Painel do Vendedor — Canva Espiritual</title>
+  <link rel="stylesheet" href="/afiliado.css"/>
+</head>
+<body>
+  <div id="dashboard-app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand__logo"></div>
+        <div class="brand__title">Canva Espiritual · Vendedores</div>
+      </div>
+
+      <nav class="nav">
+        <a href="#inicio"      class="nav-link active" data-target="#view-home">Início</a>
+        <a href="#verificacao" class="nav-link" data-target="#view-verify">Verificação & Recebimento</a>
+        <a href="#links"       class="nav-link" data-target="#view-links">Meus Links</a>
+        <a href="#cadastro"   class="nav-link" data-target="#view-profile">Cadastro</a>
+        <a href="#materiais"   class="nav-link" data-target="#view-materials">Materiais</a>
+        <a href="#vendas"      class="nav-link" data-target="#view-sales">Vendas & Comissões</a>
+        <a href="#treinamento" class="nav-link" data-target="#view-training">Treinamento</a>
+        <div class="sep"></div>
+        <a href="#suporte"     class="nav-link" data-target="#view-support">Suporte</a>
+        <a href="#sair" id="navLogout" class="nav-link">Sair</a>
+      </nav>
+    </aside>
+    <div id="scrim" class="scrim" aria-hidden="true"></div>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <button id="btnMenu" aria-label="Abrir menu">☰</button>
+        <div class="brand"><div class="brand__title">Painel do Vendedor</div></div>
+        <button id="btnLogout" class="badge">Sair</button>
+      </header>
+
+      <div class="content">
+
+        <!-- VIEW: INÍCIO -->
+        <section id="view-home" class="view active">
+          <section class="card">
+            <h1>Bem-vindo(a)!</h1>
+            <p class="sub">Acompanhe a <strong>verificação da conta</strong> e comece a vender com seu link pessoal (30%) ou criar links para seus afiliados.</p>
+            <div class="sep"></div>
+
+            <h3>Status da sua conta</h3>
+            <div class="kv mt-8">
+              <div>Identidade:</div><div id="stIdentityHome" class="muted">—</div>
+              <div>Dados para receber:</div><div id="stPayoutHome" class="muted">—</div>
+              <div>Links liberados:</div><div id="stLinksHome" class="muted">—</div>
+            </div>
+
+            <div class="row mt-12">
+              <a class="btn" href="#verificacao" data-target="#view-verify" title="Enviar documentos e definir PIX/conta">Configurar verificação</a>
+              <button class="btn secondary" id="btnRefreshFromHome">Atualizar status</button>
+            </div>
+          </section>
+
+          <section class="card mt-24">
+            <h2>Seus números</h2>
+            <div class="kpis">
+              <div class="kpi">
+                <div class="kpi__num" id="kpiTodayPaid">—</div>
+                <div class="kpi__label">Pagos • Hoje</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi__num" id="kpi7dPaid">—</div>
+                <div class="kpi__label">Pagos • 7 dias</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi__num" id="kpi30dPaid">—</div>
+                <div class="kpi__label">Pagos • 30 dias</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi__num" id="kpiGoalBar">—</div>
+                <div class="kpi__label">Meta do mês</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card mt-24" id="homePersonalLink" style="display:none;">
+            <h2>Seu link pessoal (30% fixos)</h2>
+            <p class="sub">Use para suas próprias vendas diretas. <span class="muted">(Comissão do vendedor é fixa em 30% neste link.)</span></p>
+            <div class="grid-2">
+              <div>
+                <div class="link-box"><span id="vendorPersonalLink">—</span></div>
+                <div class="row mt-12">
+                  <button class="btn" id="btnCopyPersonal">Copiar</button>
+                  <a class="btn secondary" id="btnOpenPersonal" target="_blank" rel="noopener">Abrir</a>
+                </div>
+              </div>
+              <div><div id="qrPersonal" class="qr" title="QR do link pessoal">QR</div></div>
+            </div>
+          </section>
+
+          <section class="card mt-24">
+            <h2>Como funciona?</h2>
+            <p class="sub">Assista ao vídeo de 2 minutos: verificação, link pessoal (30%), links de afiliados (35–50%) e meta de 50 vendas/dia.</p>
+            <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+              <iframe id="videoIntro" src="" title="Apresentação para Vendedores"
+                      style="width:100%;height:100%;border:0;"></iframe>
+            </div>
+          </section>
+        </section>
+
+        <!-- VIEW: VERIFICAÇÃO & RECEBIMENTO -->
+        <section id="view-verify" class="view">
+          <section class="card">
+            <h1>Verificação & Recebimento</h1>
+            <p class="sub">Confirme sua identidade e escolha como deseja receber suas comissões (PIX ou conta bancária).</p>
+            <div class="sep"></div>
+
+            <h3>Status</h3>
+            <div class="kv mt-8">
+              <div>Identidade:</div><div id="stIdentity" class="muted">—</div>
+              <div>Dados para receber:</div><div id="stPayout" class="muted">—</div>
+              <div>Links liberados:</div><div id="stLinks" class="muted">—</div>
+            </div>
+
+            <div class="grid-2 mt-12">
+              <div class="field">
+                <label>Tipo de pessoa</label>
+                <select id="kycPersonType" class="input">
+                  <option value="FISICA" selected>Pessoa Física</option>
+                  <option value="JURIDICA">Pessoa Jurídica (MEI/Empresa)</option>
+                </select>
+              </div>
+              <div class="field" id="boxBirth">
+                <label>Data de nascimento (PF)</label>
+                <input id="kycBirth" class="input" type="date" placeholder="AAAA-MM-DD"/>
+              </div>
+            </div>
+
+            <div class="row mt-12">
+              <button id="btnSaveKyc" class="btn ghost" title="Salvar dados de identidade">Salvar dados</button>
+              <button id="btnCreateSub" class="btn">Criar subconta</button>
+              <button id="btnCheckStatus" class="btn secondary">Atualizar status</button>
+            </div>
+          </section>
+
+          <section class="card mt-24">
+            <h2>Como quer receber?</h2>
+            <div class="row">
+              <label class="row"><input type="radio" name="pmode" value="pix" checked> PIX</label>
+              <label class="row"><input type="radio" name="pmode" value="bank"> Conta bancária</label>
+            </div>
+
+            <div id="boxPix" class="grid-2 mt-12">
+              <div class="field">
+                <label>Tipo da chave Pix</label>
+                <select id="pixType" class="input">
+                  <option value="CPF">CPF</option><option value="CNPJ">CNPJ</option>
+                  <option value="EMAIL">E-mail</option><option value="PHONE">Telefone</option><option value="EVP">EVP</option>
+                </select>
+              </div>
+              <div class="field"><label>Chave Pix</label><input id="pixValue" class="input" placeholder="Digite sua chave"/></div>
+            </div>
+
+            <div id="boxBank" class="grid-2 mt-12 hide">
+              <div class="field"><label>Nome do titular (como no banco)</label><input id="bnHolder" class="input"/></div>
+              <div class="field"><label>CPF/CNPJ do titular</label><input id="bnDoc" class="input"/></div>
+              <div class="field"><label>Nº do banco (código)</label><input id="bnNumber" class="input" placeholder="ex: 001, 237, 341"/></div>
+              <div class="field"><label>Agência</label><input id="bnAgency" class="input"/></div>
+              <div class="field"><label>Conta</label><input id="bnAccount" class="input"/></div>
+              <div class="field"><label>Dígito</label><input id="bnDigit" class="input"/></div>
+              <div class="field">
+                <label>Tipo da conta</label>
+                <select id="bnType" class="input">
+                  <option value="CHECKING_ACCOUNT">Conta corrente</option>
+                  <option value="SAVINGS_ACCOUNT">Poupança</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mt-12">
+              <button id="btnSavePayout" class="btn">Salvar método de saque</button>
+              <button id="btnTestPayout" class="btn secondary">Testar saque R$1</button>
+            </div>
+
+            <p id="msg" class="muted mt-12"></p>
+          </section>
+        </section>
+
+        <!-- VIEW: MEUS LINKS -->
+        <section id="view-links" class="view">
+          <section class="card">
+            <h1>Meus Links</h1>
+            <p class="sub">Você tem dois tipos: <strong>pessoal (30%)</strong> e <strong>para afiliados</strong> (35–50% para o afiliado, sua % é calculada automaticamente respeitando o teto de 55%).</p>
+          </section>
+
+          <!-- Link Pessoal -->
+          <section class="card mt-12">
+            <h2>Link pessoal (30% fixos)</h2>
+            <div class="grid-2">
+              <div>
+                <div class="link-box"><span id="myPersonalLink">—</span></div>
+                <div class="row mt-12">
+                  <button class="btn" id="btnCopyMyPersonal">Copiar link</button>
+                  <a class="btn secondary" id="btnOpenMyPersonal" target="_blank" rel="noopener">Abrir</a>
+                </div>
+                <p class="muted mt-8">Use este link para suas vendas diretas. Comissão fixa do vendedor: <strong>30%</strong>.</p>
+              </div>
+              <div><div class="qr" id="qrMyPersonal">QR</div></div>
+            </div>
+          </section>
+
+          <!-- Links de Afiliados -->
+          <section class="card mt-24">
+            <div class="row between">
+              <div>
+                <h2>Links de afiliados</h2>
+                <p class="sub">Crie convites com % do afiliado entre <strong>35% e 50%</strong>. Sua % é calculada automaticamente. Após criar, a % do afiliado fica <strong>fixa</strong> (alterações apenas com Supervisor).</p>
+              </div>
+              <button class="btn" id="btnOpenCreateLink">Criar link para afiliado</button>
+            </div>
+
+            <div class="table-wrap mt-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Afiliado</th>
+                    <th>% Afiliado</th>
+                    <th>% Vendedor</th>
+                    <th>% Supervisor</th>
+                    <th>Cliques</th>
+                    <th>Vendas</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="linksRows">
+                  <tr><td colspan="9" class="muted">Nenhum link criado ainda.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="muted mt-8">Teto de comissões da força de venda: <strong>55%</strong>. Bônus estratégico de até <strong>+5%</strong> pode ser aplicado pela política mensal. Comissões são calculadas sobre o valor <strong>líquido</strong> (após taxas de operação).</p>
+          </section>
+
+          <!-- Modal: Criar link afiliado -->
+          <div id="modalCreateLink" class="modal hide" aria-hidden="true">
+            <div class="modal__card">
+              <h3>Criar link para afiliado</h3>
+              <p class="sub">Defina a % do afiliado (35–50%). Sua % será calculada automaticamente respeitando o teto de 55%.</p>
+              <div class="grid-2 mt-12">
+                <div class="field">
+                  <label>E-mail do afiliado</label>
+                  <input id="affEmail" class="input" placeholder="nome@exemplo.com"/>
+                </div>
+                <div class="field">
+                  <label>% do afiliado (35–50)</label>
+                  <input id="pctAffiliate" class="input" type="number" min="35" max="50" value="40"/>
+                </div>
+              </div>
+              <div class="grid-3 mt-12">
+                <div class="field">
+                  <label>% do vendedor (auto)</label>
+                  <input id="pctVendorAuto" class="input" value="15" readonly/>
+                </div>
+                <div class="field">
+                  <label>% do supervisor</label>
+                  <input id="pctSupervisor" class="input" value="5" readonly/>
+                </div>
+                <div class="field">
+                  <label>Total (força de venda)</label>
+                  <input id="pctTotal" class="input" value="55" readonly/>
+                </div>
+              </div>
+              <div class="row mt-12">
+                <button class="btn" id="btnCreateLink">Gerar link</button>
+                <button class="btn secondary" id="btnCloseCreate">Cancelar</button>
+              </div>
+              <p class="muted mt-8">Após criar, a % do afiliado fica fixa neste link. Você pode pausar/reativar o link quando quiser.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW: MINHA EQUIPE -->
+        <section id="view-team" class="view">
+          <section class="card">
+            <div class="row between">
+              <div>
+                <h1>Minha Equipe</h1>
+                <p class="sub">Convide e acompanhe seus afiliados. O override do vendedor é aplicado automaticamente nas vendas da equipe.</p>
+              </div>
+              <button class="btn" id="btnInviteAffiliate">Convidar afiliado</button>
+            </div>
+
+            <div class="table-wrap mt-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nome/Email</th>
+                    <th>Status</th>
+                    <th>% Afiliado</th>
+                    <th>Vendas (mês)</th>
+                    <th>Seu Override (R$)</th>
+                    <th>Últimos 7d</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="teamRows">
+                  <tr><td colspan="7" class="muted">Sem afiliados ainda. Envie um convite para começar.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+<!-- VIEW: CADASTRO (somente leitura) -->
+<section id="view-profile" class="view">
+  <section class="card">
+    <h1>Cadastro (somente leitura)</h1>
+    <p class="sub">Estes são os dados informados no seu cadastro. Para solicitar alterações, fale com seu Supervisor.</p>
+    <div class="sep"></div>
+
+    <div class="kv mt-8">
+      <div>Nome:</div><div id="pf_name" class="muted">—</div>
+      <div>E-mail:</div><div id="pf_email" class="muted">—</div>
+      <div>CPF/CNPJ:</div><div id="pf_doc" class="muted">—</div>
+      <div>Telefone:</div><div id="pf_phone" class="muted">—</div>
+      <div>Endereço:</div><div id="pf_addr" class="muted">—</div>
+      <div>CEP:</div><div id="pf_cep" class="muted">—</div>
+      <div>Tipo de pessoa:</div><div id="pf_ptype" class="muted">—</div>
+      <div>Nascimento (se PF):</div><div id="pf_birth" class="muted">—</div>
+    </div>
+  </section>
+</section>
+        <!-- VIEW: MATERIAIS -->
+        <section id="view-materials" class="view">
+          <section class="card">
+            <h1>Materiais</h1>
+            <p class="sub">Baixe o kit digital, gere QR Codes dos seus links e veja sugestões de arte.</p>
+
+            <div class="row mt-12">
+              <a class="btn" id="btnDownloadKit" href="/afiliado/kit.zip">Baixar kit (ZIP)</a>
+              <button class="btn secondary" id="btnRefreshMat">Atualizar</button>
+            </div>
+
+            <div class="sep"></div>
+            <h3>QR Code do seu link pessoal</h3>
+            <div class="row mt-12">
+              <div id="qrMaterialsPersonal" class="qr">QR</div>
+              <div>
+                <p class="muted">Use este QR para vendas diretas. Comissão fixa de 30%.</p>
+                <button class="btn" id="btnCopyPersonalMat">Copiar link pessoal</button>
+              </div>
+            </div>
+
+            <div class="sep"></div>
+            <h3>Banners sugeridos</h3>
+            <div class="grid-materials" id="materialsGrid">
+              <div class="material">
+                <img src="/materials/banner1.jpg" alt="Banner 1"/>
+                <div class="p"><span>Banner 1</span><a class="btn secondary" href="/materials/banner1.jpg" download>Baixar</a></div>
+              </div>
+              <div class="material">
+                <img src="/materials/banner2.jpg" alt="Banner 2"/>
+                <div class="p"><span>Banner 2</span><a class="btn secondary" href="/materials/banner2.jpg" download>Baixar</a></div>
+              </div>
+              <div class="material">
+                <img src="/materials/banner3.jpg" alt="Banner 3"/>
+                <div class="p"><span>Banner 3</span><a class="btn secondary" href="/materials/banner3.jpg" download>Baixar</a></div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+
+        <!-- VIEW: VENDAS & COMISSÕES -->
+        <section id="view-sales" class="view">
+          <section class="card">
+            <h1>Vendas & Comissões</h1>
+            <p class="sub">Veja suas vendas diretas (link pessoal) e o override ganho com a equipe.</p>
+
+            <div class="row mt-12">
+              <div class="segmented" id="salesType">
+                <button class="btn ghost active" data-type="direct">Diretas</button>
+                <button class="btn ghost" data-type="override">Equipe (override)</button>
+              </div>
+            </div>
+            <!-- SALDO (Disponível / Pendente) + Saque -->
+            <div class="kpis mt-12">
+            <div class="kpi">
+           <div class="kpi__num" id="balAvailVend">R$ 0,00</div>
+            <div class="kpi__label">Comissões recebidas</div>
+            </div>
+            <div class="kpi">
+             <div class="kpi__num" id="balPendVend">R$ 0,00</div>
+             <div class="kpi__label">Pendente (D+7)</div>
+            </div>
+            <div class="kpi">
+            <div class="kpi__num">D+7</div>
+            <div class="kpi__label">Liberação padrão</div>
+            </div>
+            </div>
+              <div class="row mt-12">
+            <button class="btn" id="btnWithdrawVend" disabled>Sacar agora</button>
+            <p id="withdrawNoteVend" class="muted mt-8"></p>
+
+           <span id="balMsgVend" class="muted"></span>
+           </div>
+            <div class="sep"></div>
+
+            <div class="table-wrap mt-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Pedido</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    <th>Comissão</th>
+                    <th>Origem</th>
+                    <th>Gateway</th>
+                  </tr>
+                </thead>
+                <tbody id="salesRows">
+                  <tr><td colspan="7" class="muted">Carregando…</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row mt-12 pager">
+              <button class="btn ghost" id="prevSales">Anterior</button>
+              <span class="muted">Página <span id="salesPage">1</span></span>
+              <button class="btn ghost" id="nextSales">Próxima</button>
+              <span id="salesMsg" class="muted"></span>
+            </div>
+          </section>
+        </section>
+
+        <!-- VIEW: TREINAMENTO -->
+        <section id="view-training" class="view">
+          <section class="card">
+            <h1>Treinamento</h1>
+            <p class="sub">Aulas rápidas: verificação, materiais, pulverização, recrutamento e leitura do painel.</p>
+
+            <div class="grid-materials mt-12" id="trainingGrid">
+              <div class="material">
+                <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+                  <iframe src="" title="01 • Como configurar e receber" style="width:100%;height:100%;border:0;"></iframe>
+                </div>
+                <div class="p"><span>01 • Como configurar e receber</span></div>
+              </div>
+              <div class="material">
+                <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+                  <iframe src="" title="02 • Materiais & QR Codes" style="width:100%;height:100%;border:0;"></iframe>
+                </div>
+                <div class="p"><span>02 • Materiais & QR Codes</span></div>
+              </div>
+              <div class="material">
+                <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+                  <iframe src="" title="03 • Pulverização e pontos de fluxo" style="width:100%;height:100%;border:0;"></iframe>
+                </div>
+                <div class="p"><span>03 • Pulverização e pontos de fluxo</span></div>
+              </div>
+              <div class="material">
+                <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+                  <iframe src="" title="04 • Recrutar afiliados e definir %" style="width:100%;height:100%;border:0;"></iframe>
+                </div>
+                <div class="p"><span>04 • Recrutar afiliados e definir %</span></div>
+              </div>
+              <div class="material">
+                <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+                  <iframe src="" title="05 • Ler o painel e bater metas" style="width:100%;height:100%;border:0;"></iframe>
+                </div>
+                <div class="p"><span>05 • Ler o painel e bater metas</span></div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- VIEW: SUPORTE -->
+        <section id="view-support" class="view">
+          <section class="card">
+            <h1>Suporte</h1>
+            <p class="sub">Precisa de ajuda? Fale com a gente.</p>
+            <div class="kv mt-12">
+              <div>E-mail:</div><div><a href="mailto:suporte@canvaspiritual.com">suporte@canvaspiritual.com</a></div>
+              <div>Termos:</div><div><a href="/afiliado/termos.html" target="_blank">Termos do Programa</a></div>
+              <div>Privacidade:</div><div><a href="/afiliado/privacidade.html" target="_blank">Política de Privacidade</a></div>
+            </div>
+          </section>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- JS do painel do vendedor (navegação e preenchimento virão na próxima etapa) -->
+  <script src="/scripts/vendedor-dashboard.js?v=4" defer></script>
+
+
+
+</body>
+</html>

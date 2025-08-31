@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cadastro de Vendedor — Canva Espiritual</title>
+  <link rel="stylesheet" href="/afiliado.css" />
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <div class="brand">
+        <div class="brand__logo"></div>
+        <div class="brand__title">Canva Espiritual · Vendedores</div>
+      </div>
+      <!-- usa o mesmo login já existente -->
+      <a class="badge" href="/afiliado/login.html">Já tenho conta</a>
+    </header>
+
+    <section class="card">
+      <h1>Cadastro de Vendedor</h1>
+      <p class="sub">
+        Preencha seus dados para acessar o <strong>Painel do Vendedor</strong>.
+        Você poderá criar seu <strong>link pessoal (30%)</strong> e links para seus
+        <strong>afiliados (35–50%)</strong>.
+      </p>
+      <div class="sep"></div>
+
+      <!-- IMPORTANTE: name="role" fixo como vendor -->
+      <form id="frmRegister" class="grid-2" autocomplete="on" novalidate>
+        <input type="hidden" name="role" value="vendor" />
+
+        <div class="field col-12">
+          <label>Nome completo</label>
+          <input class="input" name="name" placeholder="Seu nome" required />
+        </div>
+
+        <div class="field">
+          <label>E-mail</label>
+          <input class="input" type="email" name="email" placeholder="voce@email.com" required />
+        </div>
+
+        <div class="field">
+          <label>Telefone (WhatsApp)</label>
+          <input class="input" name="phone" placeholder="(00) 90000-0000" />
+        </div>
+
+        <div class="field">
+          <label>CPF ou CNPJ</label>
+          <input class="input" name="cpf_cnpj" placeholder="Somente números" required />
+        </div>
+
+        <div class="field">
+          <label>CEP</label>
+          <input class="input" name="postal_code" placeholder="00000-000" />
+        </div>
+
+        <div class="field">
+          <label>Endereço</label>
+          <input class="input" name="address" placeholder="Rua/Av." />
+        </div>
+
+        <div class="field">
+          <label>Número</label>
+          <input class="input" name="address_number" placeholder="Nº" />
+        </div>
+
+        <div class="field">
+          <label>Bairro</label>
+          <input class="input" name="district" placeholder="Bairro" />
+        </div>
+
+        <div class="field">
+          <label>Cidade</label>
+          <input class="input" name="city" placeholder="Cidade" />
+        </div>
+
+        <div class="field">
+          <label>Estado</label>
+          <input class="input" name="state" placeholder="UF" />
+        </div>
+
+        <div class="col-12" style="margin-top: 12px;">
+          <label class="row">
+            <input type="checkbox" name="terms" required />
+            <span>Li e aceito os <a href="/afiliado/termos.html" target="_blank">Termos de Uso</a> e a
+              <a href="/afiliado/privacidade.html" target="_blank">Política de Privacidade</a>.</span>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <button class="btn full" type="submit">Criar minha conta</button>
+        </div>
+
+        <div class="col-12" style="text-align:center; margin-top:12px;">
+          <a href="/afiliado/esqueci.html">Esqueci minha senha</a>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Reaproveita o mesmo JS do afiliado (envio/validações/fluxo de e-mail) -->
+  <script src="/scripts/afiliado.js"></script>
+</body>
+</html>

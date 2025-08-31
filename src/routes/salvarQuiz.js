@@ -23,6 +23,16 @@ function definirZona(respostas) {
 router.post("/", async (req, res) => {
   try {
     const dados = req.body;
+    // 🔽 ADD: captura a referência do afiliado da sessão/cookie
+  // 🔽 Captura a referência do afiliado (várias fontes)
+const affiliateRef =
+  req.session?.aff_ref ||
+  req.cookies?.aff_ref ||
+  req.body?.affiliate_ref ||  // se vier no body
+  req.query?.aff ||           // se alguém chamar /api/salvar-quiz?aff=...
+  req.query?.ref ||           // idem
+  null;
+
 
     if (!dados.session_id || !dados.nome || !dados.email || !dados.respostas) {
       return res.status(400).send("Dados incompletos.");
@@ -72,21 +82,33 @@ router.post("/", async (req, res) => {
       tipoRelatorio: null,
       payment_id: null,
       status_pagamento: "pendente",
-      criado_em: new Date().toISOString()
-    };
+      criado_em: new Date().toISOString(),
+      affiliate_ref: affiliateRef
 
+    };
+    
     // Gravação no PostgreSQL
     try {
       await pool.query(`
         INSERT INTO diagnosticos (
           session_id, nome, email, respostas_numericas, respostas_codificadas,
           status_pagamento, status_processo, criado_em,
-          media_vibracional, zona_predominante, codigo_arquetipo
+          media_vibracional, zona_predominante, codigo_arquetipo, affiliate_ref
         ) VALUES (
           $1, $2, $3, $4, $5,
           $6, $7, $8,
-          $9, $10, $11
+          $9, $10, $11,$12
         )
+          ON CONFLICT (session_id) DO UPDATE SET
+      nome = EXCLUDED.nome,
+      email = EXCLUDED.email,
+      respostas_numericas = EXCLUDED.respostas_numericas,
+      respostas_codificadas = EXCLUDED.respostas_codificadas,
+      media_vibracional = EXCLUDED.media_vibracional,
+      zona_predominante = EXCLUDED.zona_predominante,
+      codigo_arquetipo = EXCLUDED.codigo_arquetipo,
+      affiliate_ref = COALESCE(EXCLUDED.affiliate_ref, diagnosticos.affiliate_ref),
+      updated_at = NOW();
       `, [
         dadosCompletos.session_id,
         dadosCompletos.nome,
@@ -98,24 +120,26 @@ router.post("/", async (req, res) => {
         new Date(),
         media,
         zona,
-        codigoArquetipo
+        codigoArquetipo,
+        affiliateRef
       ]);
 
-      console.log(`📥 Diagnóstico ${dadosCompletos.session_id} registrado no PostgreSQL.`);
-    await cadastrarLeadNoBrevo({
-  email: dadosCompletos.email,
-  nome: dadosCompletos.nome,
-  atributos: {
-    QUIZ: true
-  }
-});
+       console.log(`📥 Diagnóstico ${dadosCompletos.session_id} registrado no PostgreSQL.`);
+} catch (erroPg) {
+  console.error("❌ Falha ao gravar no PostgreSQL:", erroPg);
+  return res.status(500).send("Erro ao salvar no banco de dados.");
+}
 
-
-
-    } catch (erroPg) {
-      console.error("❌ Falha ao gravar no PostgreSQL. Abandonando fluxo:", erroPg);
-      return res.status(500).send("Erro ao salvar no banco de dados.");
-    }
+// (fora do try do DB) — falhas aqui não devem travar sua sessão
+try {
+  await cadastrarLeadNoBrevo({
+    email: dadosCompletos.email,
+    nome: dadosCompletos.nome,
+    atributos: { QUIZ: true }
+  });
+} catch (e) {
+  console.warn("⚠️ Não foi possível cadastrar no Brevo agora:", e.message || e);
+}
 
     // Só grava o JSON após sucesso no banco
     await fs.promises.writeFile(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");

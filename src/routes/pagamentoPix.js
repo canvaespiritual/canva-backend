@@ -10,8 +10,8 @@ const client = new MercadoPagoConfig({
 // Produtos disponíveis
 const PRODUTOS = {
   basico: { title: "Mapa Base da Alma", unit_price: 1 },
-  intermediario: { title: "Diagnóstico Interdimensional", unit_price: 1.1 },
-  completo: { title: "Diagnóstico Corpo-Mente-Espírito", unit_price: 1.2 },
+  intermediario: { title: "Diagnóstico Interdimensional", unit_price: 1.2 },
+  completo: { title: "Diagnóstico Corpo-Mente-Espírito", unit_price: 1.5 },
 };
 
 // Rota: /pagamento/criar-pix/:tipo/:session_id

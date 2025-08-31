@@ -556,12 +556,47 @@
   document.getElementById("previewDiagnostico").classList.remove("hidden");
 </script>
 <script>
-  function irParaPagamento(tipo) {
-    const sessionId = localStorage.getItem('session_id') || 'sessao-' + Date.now();
-    localStorage.setItem('session_id', sessionId);
-    window.location.href = `/pagamento-opcao.html?tipo=${tipo}&session_id=${sessionId}`;
+function irParaPagamento(tipo) {
+  const sessionId = localStorage.getItem('session_id');
+  if (!sessionId) {
+    alert("⏳ Sua sessão expirou. Refaça o diagnóstico para continuar.");
+    const qs0 = new URLSearchParams(window.location.search);
+    const ref0 = qs0.get("ref") || qs0.get("aff");
+    const refPart0 = ref0 ? `?ref=${encodeURIComponent(ref0)}` : "";
+    window.location.href = `/quiz.html${refPart0}`;
+    return;
   }
+
+  // ✅ Normaliza o plano para os nomes canônicos do backend:
+  // - "interdimensional" (nome comercial) => "completo"
+  // - "intermediario" ou "premium"        => "premium"
+  // - demais / vazio                      => "basico"
+  const t = String(tipo || '').toLowerCase();
+  const tipoCanonical =
+    t === 'interdimensional' ? 'completo' :
+    (t === 'intermediario' || t === 'premium') ? 'premium' :
+    (t === 'completo') ? 'completo' : 'basico';
+
+  const qs = new URLSearchParams(window.location.search);
+  const ref = qs.get("ref") || qs.get("aff");
+  const refPart = ref ? `&ref=${encodeURIComponent(ref)}` : "";
+
+  // ✅ Só pré-abre a aba externa (para usar Asaas) se for link de afiliado
+  if (ref) {
+    const winName = `asaasCheckout_${sessionId}`;
+    const child = window.open('about:blank', winName);
+    if (child && child.document) {
+      child.document.write('<title>Abrindo checkout…</title><p style="font:16px system-ui">Abrindo checkout seguro…</p>');
+    }
+    sessionStorage.setItem('asaasWinName', winName);
+  }
+
+  window.location.href =
+    `/pagamento-opcao.html?tipo=${encodeURIComponent(tipoCanonical)}&session_id=${encodeURIComponent(sessionId)}${refPart}`;
+}
+
 </script>
+
 
 
 

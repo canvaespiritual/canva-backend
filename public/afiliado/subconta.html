@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Minha Subconta — Afiliado</title>
+  <link rel="stylesheet" href="/afiliado.css"/>
+  <style>
+    .kv{display:grid;grid-template-columns:160px 1fr;gap:8px 12px;align-items:center}
+    .muted{color:#666}
+    .ok{color:#0a7b22;font-weight:600}
+    .warn{color:#b15b00;font-weight:600}
+    .err{color:#b00020;font-weight:600}
+    .row{display:flex;gap:12px;align-items:center}
+    .hide{display:none}
+    .sep{height:1px;background:#eee;margin:16px 0}
+    .field{display:grid;gap:6px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="brand__logo"></div>
+        <div class="brand__title">Canva Espiritual · Subconta Asaas</div>
+      </div>
+      <div class="row">
+        <a class="badge" href="/afiliado/dashboard.html">Dashboard</a>
+        <button id="btnLogout" class="badge danger">Sair</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <h1>Configurar Subconta & Saques</h1>
+      <p class="sub">Crie sua subconta, acompanhe a aprovação (KYC) e cadastre seu método de saque.</p>
+
+      <div class="sep"></div>
+
+      <h3>Status da Subconta</h3>
+      <div class="kv mt-8">
+        <div>Geral (KYC):</div><div id="stGeneral" class="muted">—</div>
+        <div>Bancário:</div><div id="stBank" class="muted">—</div>
+        <div>Link liberado:</div><div id="stLink" class="muted">—</div>
+      </div>
+
+      <div class="row mt-12">
+        <button id="btnCreateSub" class="btn">Criar subconta</button>
+        <button id="btnCheckStatus" class="btn ghost">Atualizar status</button>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>Método de Saque</h3>
+      <div class="row">
+        <label class="row"><input type="radio" name="pmode" value="pix" checked> PIX</label>
+        <label class="row"><input type="radio" name="pmode" value="bank"> Conta bancária</label>
+      </div>
+
+      <div id="boxPix" class="grid-2 mt-12">
+        <div class="field">
+          <label>Tipo da chave Pix</label>
+          <select id="pixType" class="input">
+            <option value="CPF">CPF</option>
+            <option value="CNPJ">CNPJ</option>
+            <option value="EMAIL">E-mail</option>
+            <option value="PHONE">Telefone</option>
+            <option value="EVP">Chave aleatória (EVP)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Chave Pix</label>
+          <input id="pixValue" class="input" placeholder="Digite sua chave"/>
+        </div>
+      </div>
+
+      <div id="boxBank" class="grid-2 mt-12 hide">
+        <div class="field">
+          <label>Nome do titular (como no banco)</label>
+          <input id="bnHolder" class="input"/>
+        </div>
+        <div class="field">
+          <label>CPF/CNPJ do titular</label>
+          <input id="bnDoc" class="input"/>
+        </div>
+        <div class="field">
+          <label>Nº do banco (código)</label>
+          <input id="bnNumber" class="input" placeholder="ex: 001, 237, 341"/>
+        </div>
+        <div class="field">
+          <label>Agência</label>
+          <input id="bnAgency" class="input"/>
+        </div>
+        <div class="field">
+          <label>Conta</label>
+          <input id="bnAccount" class="input"/>
+        </div>
+        <div class="field">
+          <label>Dígito</label>
+          <input id="bnDigit" class="input"/>
+        </div>
+        <div class="field">
+          <label>Tipo da conta</label>
+          <select id="bnType" class="input">
+            <option value="CHECKING_ACCOUNT">Conta corrente</option>
+            <option value="SAVINGS_ACCOUNT">Poupança</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mt-12">
+        <button id="btnSavePayout" class="btn">Salvar método de saque</button>
+        <button id="btnTestPayout" class="btn ghost">Testar saque R$1</button>
+      </div>
+
+      <p id="msg" class="muted mt-12"></p>
+    </section>
+  </div>
+
+  <script src="/scripts/afiliado-subconta.js" defer></script>
+</body>
+</html>

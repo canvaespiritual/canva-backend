@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cadastro de Afiliado — Canva Espiritual</title>
+  <link rel="stylesheet" href="/afiliado.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="brand__logo"></div>
+        <div class="brand__title">Canva Espiritual · Programa de Afiliados</div>
+      </div>
+      <a class="badge" href="/afiliado/login.html">Já tenho conta</a>
+    </header>
+
+    <section class="card">
+      <h1>Seja um Afiliado</h1>
+      <p class="sub">Crie sua conta e receba um link exclusivo com comissão automática.</p>
+
+      <form id="form-cadastro" class="form-grid mt-16">
+        <div class="col-6">
+          <label>Nome completo</label>
+          <input class="input" name="name" required />
+        </div>
+
+        <div class="col-6">
+          <label>E-mail</label>
+          <input class="input" type="email" name="email" required />
+        </div>
+
+        <div class="col-4">
+          <label>CPF/CNPJ</label>
+          <input class="input" name="cpf_cnpj" required />
+        </div>
+
+        <div class="col-4">
+          <label>Celular (DDD + número)</label>
+          <input class="input" name="phone" placeholder="11987654321" required />
+          <div class="help">Somente dígitos.</div>
+        </div>
+
+        <!-- Comissão dinâmica (token) ou 30% padrão -->
+        <div class="col-4">
+          <label id="lblComissao">Comissão inicial</label>
+          <input class="input" id="commission_display" type="text" value="30%" readonly aria-label="Comissão inicial">
+          <input type="hidden" name="invite_token" id="invite_token" />
+        </div>
+
+        <!-- Data de nascimento -->
+        <div class="col-4" id="birth_date_wrap">
+          <label>Data de nascimento</label>
+          <input class="input" type="date" name="birth_date" id="birth_date" required />
+          <div class="help">Obrigatório para pessoa física (ASAAS).</div>
+        </div>
+
+        <div class="col-2">
+          <label>CEP</label>
+          <input class="input" name="postal_code" placeholder="00000000" required />
+        </div>
+
+        <div class="col-6">
+          <label>Endereço</label>
+          <input class="input" name="address" required />
+        </div>
+
+        <div class="col-4">
+          <label>Número</label>
+          <input class="input" name="address_number" required />
+        </div>
+
+        <div class="col-4">
+          <label>Bairro</label>
+          <input class="input" name="district" required />
+        </div>
+
+        <div class="col-6">
+          <label>Cidade</label>
+          <input class="input" name="city" required />
+        </div>
+
+        <div class="col-2">
+          <label>UF</label>
+          <input class="input" name="state" maxlength="2" required />
+        </div>
+
+        <div class="col-12">
+          <label>Complemento</label>
+          <input class="input" name="complement" />
+        </div>
+
+        <div class="col-12 row mt-16">
+          <label class="row" style="gap:8px;">
+            <!-- mantenha name="terms" para seu JS poder enviar terms: true -->
+            <input type="checkbox" name="terms" id="terms" required />
+            <span>
+              Li e concordo com os
+              <a href="/afiliado/termos.html" target="_blank">Termos do Programa de Afiliados</a>
+              e com a
+              <a href="/afiliado/privacidade.html" target="_blank">Política de Privacidade</a>.
+            </span>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <button class="btn full" type="submit">Criar minha conta</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Script pequeno para ler token e preencher comissão/e-mail -->
+  <script>
+    (function () {
+      function qp(n) { try { return new URL(location.href).searchParams.get(n); } catch (_) { return null; } }
+      const token = qp("token");
+      if (!token) return; // sem token: mantém 30%
+
+      // set hidden token
+      const hid = document.getElementById("invite_token");
+      if (hid) hid.value = token;
+
+      // busca dados do convite para exibir comissão proposta e e-mail convidado
+      fetch("/affiliates/affiliate-invites/" + encodeURIComponent(token), { credentials: "include" })
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(info => {
+          const lbl = document.getElementById("lblComissao");
+          const inp = document.getElementById("commission_display");
+          if (lbl) lbl.textContent = "Comissão proposta";
+          if (inp && typeof info.pct_aff_proposed === "number") {
+            inp.value = info.pct_aff_proposed + "%";
+          }
+          const em = document.querySelector('input[name="email"]');
+          if (em && info.invite_email) { em.value = info.invite_email; em.readOnly = true; }
+        })
+        .catch(() => { /* token inválido/expirado: mantém 30% e fluxo normal */ });
+    })();
+  </script>
+
+  <!-- Seu JS de envio -->
+  <script src="/scripts/afiliado.js"></script>
+</body>
+</html>

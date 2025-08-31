@@ -267,6 +267,35 @@ function identificarFruto(codigo) {
   };
   return mapa[prefixo] || "fruto";
 }
+// 🔄 Loader global (overlay + spinner)
+function showLoader(msg = "Processando...") {
+  if (!document.getElementById("loader-style")) {
+    const s = document.createElement("style");
+    s.id = "loader-style";
+    s.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
+    document.head.appendChild(s);
+  }
+  let el = document.getElementById("globalLoader");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "globalLoader";
+    el.setAttribute("role", "alert");
+    el.style.cssText = "position:fixed;inset:0;background:rgba(17,24,39,.55);display:flex;align-items:center;justify-content:center;z-index:9999";
+    el.innerHTML = `
+      <div style="background:#fff;padding:20px 24px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.2);display:flex;gap:12px;align-items:center;min-width:260px;">
+        <div style="width:28px;height:28px;border:3px solid #e5e7eb;border-top-color:#0ea5e9;border-radius:50%;animation:spin 1s linear infinite;"></div>
+        <div id="globalLoaderText" style="font:600 14px/20px system-ui,-apple-system,Segoe UI,Roboto">` + msg + `</div>
+      </div>`;
+    document.body.appendChild(el);
+  } else {
+    document.getElementById("globalLoaderText").textContent = msg;
+  }
+}
+function hideLoader() {
+  const el = document.getElementById("globalLoader");
+  if (el) el.remove();
+}
+
   document.addEventListener("DOMContentLoaded", () => {
       
    setTimeout(() => {
@@ -311,82 +340,102 @@ setTimeout(() => {
 
   document.addEventListener("click", async (e) => {
   if (e.target.id === "btn-diagnostico") {
-    console.log("✔️ Botão detectado via delegação");
+    const btn = e.target;
 
-    const token = grecaptcha.getResponse();
-    if (!token) {
-      alert("❗ Por favor, confirme o reCAPTCHA.");
-      return;
+    // 🔒 trava o botão + mostra loader
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    btn.style.cursor = "not-allowed";
+    showLoader("Validando segurança...");
+
+    try {
+      const token = grecaptcha.getResponse();
+      if (!token) {
+        hideLoader();
+        btn.disabled = false;
+        btn.style.opacity = "";
+        btn.style.cursor = "";
+        alert("❗ Por favor, confirme o reCAPTCHA.");
+        return;
+      }
+
+      const verificacao = await fetch("/verificar-recaptcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      const resposta = await verificacao.json();
+      if (!resposta.sucesso) {
+        hideLoader();
+        btn.disabled = false;
+        btn.style.opacity = "";
+        btn.style.cursor = "";
+        alert("⚠️ reCAPTCHA inválido. Tente novamente.");
+        return;
+      }
+
+      const nome  = document.getElementById("nome")?.value?.trim() || "Desconhecido";
+      const email = document.getElementById("email")?.value?.trim();
+
+      if (!email || respostas.length !== perguntas.length) {
+        hideLoader();
+        btn.disabled = false;
+        btn.style.opacity = "";
+        btn.style.cursor = "";
+        document.getElementById("mensagem").textContent =
+          "Por favor, preencha todos os campos e responda as 12 perguntas.";
+        return;
+      }
+
+      const dados = { nome, email, token: "geradoNoFuturo", respostas };
+      const notas = respostas.map(codigo => parseInt(codigo.slice(-2)));
+
+      // localStorage
+      localStorage.setItem("frutos", JSON.stringify(notas));
+      localStorage.setItem("dadosQuiz", JSON.stringify(dados));
+
+      // session_id
+      const session_id = "sessao-" + Date.now();
+      localStorage.setItem("session_id", session_id);
+
+      // 💾 salva no backend (só segue se ok)
+      showLoader("Salvando seus dados...");
+      const resp = await fetch("/api/salvar-quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id, nome, email, respostas: notas })
+      });
+
+      if (!resp.ok) {
+        const msg = await resp.text();
+        throw new Error(msg || "Falha no servidor.");
+      }
+
+      // ✅ redireciona com ref/aff preservado
+      showLoader("Redirecionando ao checkout...");
+      const qs = new URLSearchParams(window.location.search);
+      const ref = qs.get("ref") || qs.get("aff");
+      const refPart = ref ? `&ref=${encodeURIComponent(ref)}` : "";
+      window.location.href = `/pagar.html?session_id=${session_id}${refPart}`;
+      return; // evita cair no finally e "destivar" o botão após navegar
+
+    } catch (err) {
+      console.error("❌ Falha ao salvar seus dados:", err);
+      alert("Erro ao salvar seus dados. Tente novamente.\n\n" + (err.message || ""));
+    } finally {
+      hideLoader();
+      // se ainda não redirecionou, destrava o botão
+      const b = document.getElementById("btn-diagnostico");
+      if (b) {
+        b.disabled = false;
+        b.style.opacity = "";
+        b.style.cursor = "";
+      }
     }
-
-    const verificacao = await fetch("/verificar-recaptcha", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-
-    const resposta = await verificacao.json();
-    if (!resposta.sucesso) {
-      alert("⚠️ reCAPTCHA inválido. Tente novamente.");
-      return;
-    }
-
-    const nome = document.getElementById("nome")?.value?.trim() || "Desconhecido";
-    const email = document.getElementById("email")?.value?.trim();
-
-    if (!email || respostas.length !== perguntas.length) {
-  document.getElementById("mensagem").textContent = "Por favor, preencha todos os campos e responda as 12 perguntas.";
-  return;
-}
-
-// Verificação simples (sem validar email externo)
-if (!email || respostas.length !== perguntas.length) {
-  document.getElementById("mensagem").textContent = "Por favor, preencha todos os campos e responda as 12 perguntas.";
-  return;
-}
-
-
-
-    const dados = {
-      nome,
-      email,
-      token: "geradoNoFuturo",
-      respostas
-    };
-    // Converte os códigos para níveis (últimos dois dígitos)
-    const notas = respostas.map(codigo => parseInt(codigo.slice(-2)));
-
-    // Salva no localStorage
-    localStorage.setItem("frutos", JSON.stringify(notas));
-
-    localStorage.setItem("dadosQuiz", JSON.stringify(dados));
-
-// Gerar e salvar session_id
-const session_id = "sessao-" + Date.now();
-localStorage.setItem("session_id", session_id);
-
-// Salvar JSON da sessão no backend
-try {
-  await fetch("/api/salvar-quiz", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      session_id,
-      nome,
-      email,
-      respostas: notas
-    })
-  });
-  console.log("✅ Sessão salva com sucesso.");
-} catch (err) {
-  console.warn("❌ Erro ao salvar a sessão:", err);
-}
-
-// Redireciona para a próxima etapa
-window.location.href = `/pagar.html?session_id=${session_id}`;
-
   }
 });
+
 
 
 });
