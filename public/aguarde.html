@@ -135,6 +135,69 @@
       }
     }
   </style>
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '208458446274723');
+fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=208458446274723&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+<!-- Meta: Purchase (sem valor) -->
+<script>
+  if (typeof fbq === 'function') {
+    fbq('track', 'Purchase', {
+      content_name: 'Mapa da Alma - Compra',
+      content_category: 'sale'
+    });
+  }
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Configura o GA4 com seu ID
+  gtag('config', 'G-9QDEN04CQM');
+   // Google Ads (ID base) – adicione se ainda não tiver nesta página
+  gtag('config', 'AW-936695843');
+
+  // Google Ads: Compra Quiz (Purchase)
+  gtag('event', 'conversion', {
+    'send_to': 'AW-936695843/wYdYCJmK-pYbEKOw074D',
+    // opcional, se quiser rastrear um ID único:
+    'transaction_id': (localStorage.getItem('session_id') || '') + '-' + Date.now()
+    // opcional: se quiser enviar valor, inclua:
+    // 'value': 0, 'currency': 'BRL'
+  });
+</script>
+
+<script>
+  gtag('event', 'purchase', {
+    transaction_id: (localStorage.getItem('session_id') || 'sessao') + '-' + Date.now(),
+    currency: 'BRL',
+    value: 0, // se não tiver valor real, pode deixar 0
+    items: [{
+      item_id: 'diagnostico',
+      item_name: 'Diagnóstico Mapa da Alma',
+      item_category: 'diagnostico',
+      quantity: 1
+    }]
+  });
+</script>
+
 </head>
 <body>
 

@@ -7,6 +7,60 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
   <link rel="stylesheet" href="./styles/pagar.css" />
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '208458446274723');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=208458446274723&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Evento desta página: Lead (chegou ao checkout) -->
+<script>
+  fbq('track', 'Lead', {
+    content_name: 'Checkout - Quiz',
+    content_category: 'quiz_checkout'
+  });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Configura o GA4 com seu ID
+  gtag('config', 'G-9QDEN04CQM');
+  // Config Google Ads
+  gtag('config', 'AW-936695843');
+
+  // Conversão: Lead Quiz
+  gtag('event', 'conversion', {
+    'send_to': 'AW-936695843/rusXCK68ipcbEKOw074D'
+  });
+</script>
+
+<script>
+  gtag('event', 'begin_checkout', {
+    currency: 'BRL',
+    value: 0,
+    items: [{
+      item_id: 'quiz_plan',
+      item_name: 'Escolha Diagnóstico',
+      item_category: 'checkout'
+    }]
+  });
+</script>
+
 </head>
 
 <body class="bg-white text-gray-800 font-sans  mt-10">
@@ -577,6 +631,14 @@ function irParaPagamento(tipo) {
     (t === 'intermediario' || t === 'premium') ? 'premium' :
     (t === 'completo') ? 'completo' : 'basico';
 
+        const prices = { basico: 12, premium: 21, completo: 40 };
+  const price = prices[tipoCanonical] || 0;
+
+  // 🔵 Meta: clique no plano + início do checkout
+  if (typeof fbq === 'function') {
+    fbq('trackCustom', 'SelectPlan', { plan: tipoCanonical });
+    fbq('track', 'InitiateCheckout', { value: price, currency: 'BRL' });
+  }
   const qs = new URLSearchParams(window.location.search);
   const ref = qs.get("ref") || qs.get("aff");
   const refPart = ref ? `&ref=${encodeURIComponent(ref)}` : "";
