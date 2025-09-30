@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Checkup de Stress e Ansiedade — Paciência ↔ Ira | Canva Espiritual</title>
+  <meta name="description" content="Faça agora seu checkup de stress/ansiedade. Descubra seu nível na escala Paciência ↔ Ira, veja reflexos na vida, gatilhos e predisposições físicas/psicológicas. Baixe o Protocolo de Cura Emocional.">
+  <link rel="canonical" href="https://api.canvaspiritual.com/escala/paciencia" />
+
+  <!-- Brand Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=M+PLUS+1:wght@400;500;700&family=Questrial&display=swap" rel="stylesheet" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Checkup de Stress e Ansiedade — Paciência ↔ Ira">
+  <meta property="og:description" content="Descubra seu nível na escala Paciência ↔ Ira e leve o Protocolo de Cura Emocional do stress.">
+  <meta property="og:url" content="https://api.canvaspiritual.com/escala/paciencia">
+  <meta property="og:image" content="https://canvaspiritual.com/wp-content/uploads/2025/08/brandmark-design.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    :root{
+      --bg:#ffffff; --ink:#4b4b4b; --ink-strong:#2c2b28; --muted:#727272;
+      --gold:#f5c84c; --gold2:#bc9e4c; --line:#eaeaea; --card:#fff;
+      --radius:16px; --shadow:0 4px 10px rgba(0,0,0,.06); --max: 920px;
+      --blue:#0ea5e9; --red:#ef4444;
+    }
+    html,body{background:var(--bg); color:var(--ink); margin:0}
+    body{font-family:'Questrial',sans-serif; line-height:1.6}
+    .wrap{max-width:var(--max); margin:auto; padding:28px 20px}
+
+    header{display:flex; align-items:center; gap:14px; padding:14px 0 0 0}
+    .brand{height:28px; width:auto}
+    .brandname{font-family:'Comfortaa',cursive; font-weight:700; color:var(--gold2); font-size:clamp(18px,2.5vw,20px)}
+
+    h1{font-family:'Comfortaa',cursive; font-weight:700; letter-spacing:.2px; margin:10px 0 6px; color:var(--ink-strong)}
+    h2{font-family:'Comfortaa',cursive; font-weight:700; letter-spacing:.2px; margin:0 0 8px; color:var(--ink-strong)}
+    .lead{color:var(--muted); margin:8px 0 20px; font-size:clamp(15px,2.2vw,18px)}
+    .title{font-size:clamp(24px,3.6vw,34px)}
+    .subtitle{font-size:clamp(18px,2.8vw,22px)}
+
+    .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow)}
+    .card.pad{padding:16px 18px}
+    .grid{display:grid; gap:12px}
+    .grid-2{grid-template-columns: 1fr}
+    .grid-3{grid-template-columns: 1fr}
+    @media(min-width:860px){ .grid-2{grid-template-columns: 1fr 1fr} .grid-3{grid-template-columns: 1fr 1fr 1fr} }
+
+    .btn{display:inline-block; border-radius:999px; border:1px solid #0000; padding:.7rem 1.15rem; font-family:'M PLUS 1',sans-serif; font-weight:700; letter-spacing:.2px; cursor:pointer; transition:.2s}
+    .btn-primary{background:#2c2b28; color:var(--gold)}
+    .btn-ghost{background:#fff; border-color:var(--line); color:#2c2b28}
+    .btn-link{background:transparent; border:0; color:var(--gold2); font-weight:700; text-decoration:underline; padding:0}
+    .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow)}
+
+    .muted{color:var(--muted)} .price{font-family:'M PLUS 1',sans-serif; font-weight:700}
+    .badge{display:inline-block; font-size:12px; background:#fff7da; border:1px solid var(--gold); color:#8a6b1d; padding:2px 8px; border-radius:999px; margin-left:8px}
+    .note{font-size:13px; color:#999} .ok{color:#059669; font-weight:700} .warn{color:#b45309; font-weight:700}
+
+    table{width:100%; border-collapse:collapse; font-size:clamp(14px,2.2vw,15px)}
+    th,td{padding:12px 10px; text-align:left; vertical-align:top}
+    thead{background:#fafafa} tr+tr td{border-top:1px solid var(--line)}
+
+    .level{padding:14px 16px; cursor:pointer; transition:.15s}
+    .level:hover{transform:translateY(-1px)}
+    .level .n{font-weight:700; display:flex; align-items:center; gap:10px}
+    .pill{display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); color:#555}
+    .selected-blue{border-color:rgba(14,165,233,.3); box-shadow:0 0 0 4px rgba(14,165,233,.12)}
+    .selected-red{border-color:rgba(239,68,68,.35); box-shadow:0 0 0 4px rgba(239,68,68,.12)}
+
+    /* Acordeões */
+    .acc{border:1px solid var(--line); border-radius:14px; overflow:hidden}
+    .acc-h{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; background:#fafafa}
+    .acc-h b{font-family:'Comfortaa',cursive}
+    .acc-c{display:none; padding:0}
+    .acc.open .acc-c{display:block}
+    .acc.open .acc-h{background:#fff}
+    .acc-c .inner{padding:16px}
+
+    footer{border-top:1px solid var(--line); margin-top:28px; padding:16px 0 32px}
+    footer p{font-size:13px; color:#999}
+ /* Passo 1 – desktop: lista (1 por linha) */
+@media (min-width: 1100px){
+  #levels{
+    display: grid;
+    grid-template-columns: 1fr;   /* <<< era auto-fit; agora 1 coluna fixa */
+    gap: 12px;
+  }
+  #levels .card.pad{ padding: 14px 18px; }
+  #levels .n{ justify-content: space-between; }
+  #levels .muted{ font-size: 14px; line-height: 1.4; }
+  /* mantém o clamp e o “sinais” só no hover/seleção */
+  #levels .desc{
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #levels .sig{ display: none; }
+  #levels .level:hover .sig,
+  #levels .level.selected-blue .sig,
+  #levels .level.selected-red .sig{ display: block; }
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- TOPO -->
+    <header>
+      <img class="brand" src="https://canvaspiritual.com/wp-content/uploads/2025/08/brandmark-design.png" alt="Canva Espiritual">
+      <div class="brandname">Canva Espiritual</div>
+    </header>
+
+    <!-- HERO -->
+    <section aria-labelledby="hero">
+      <h1 id="hero" class="title">Faça agora seu Checkup de Stress e Ansiedade</h1>
+      <p class="lead">
+        O stress e a ansiedade sistêmicos, que afetam sua saúde física e psicológica, estão enraizados no eixo emocional <strong>Paciência ↔ Impaciência</strong>.
+        Existem <strong>dois caminhos</strong>: o paliativo (alívio momentâneo) e o definitivo (consciência + reeducação). Nesta página, em poucos minutos, você descobre seu nível, onde ele se manifesta e quais gatilhos te disparam.
+      </p>
+    </section>
+
+    <!-- DOIS CAMINHOS -->
+    <section aria-labelledby="caminhos" style="margin-top:18px">
+      <h2 id="caminhos" class="subtitle">Dois caminhos para tratar o stress</h2>
+      <div class="grid grid-2">
+        <div class="card pad">
+          <div style="font-weight:700">Caminho paliativo</div>
+          <p class="muted">Remédios e técnicas de alívio imediato. Úteis em crise, <em>mas não tratam a raiz</em>.</p>
+        </div>
+        <div class="card pad">
+          <div style="font-weight:700">Caminho definitivo</div>
+          <p class="muted">Consciência, diagnóstico sincero e <strong>protocolo prático</strong> de cura emocional baseado no seu nível e nos seus gatilhos.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px">Comece pelo espelho: identifique seu nível agora ↓</p>
+    </section>
+
+    <!-- PASSO 1 -->
+    <section aria-labelledby="p1" style="margin-top:22px">
+      <h2 id="p1" class="subtitle">Passo 1 — Seu nível de Paciência ↔ Impaciência</h2>
+      <p class="muted">Feche os olhos por 5 segundos. Respire. Pergunte-se: “Qual é o meu nível agora?”. Em seguida, <strong>marque</strong> abaixo. (Quando ≥ 50% paciência, o cartão fica <span class="ok">azul</span>; quando &lt; 50%, fica <span class="warn">vermelho</span>.)</p>
+
+      <div id="levels" class="grid"></div>
+      <p id="level-output" class="muted" style="margin-top:8px"></p>
+    </section>
+
+    <!-- PASSO 2 (NOVO): ÁREAS EM ACORDEÃO + LISTA DOS 12 NÍVEIS -->
+    <section aria-labelledby="p2" style="margin-top:24px">
+      <h2 id="p2" class="subtitle">Passo 2 — Onde o stress aparece na sua vida?</h2>
+      <p class="muted">Escolha uma área para abrir a lista dos 12 níveis. Marque o nível que mais descreve <em>como</em> esse estado aparece ali.</p>
+
+      <!-- Familiar -->
+      <div class="acc" id="acc-familiar">
+        <div class="acc-h" onclick="toggleAcc('acc-familiar')"><b>👨‍👩‍👧‍👦 Vida Familiar</b><span>abrir/fechar</span></div>
+        <div class="acc-c"><div class="inner">
+          <table>
+            <thead><tr><th>Nível (emoção)</th><th>Reflexo familiar</th><th></th></tr></thead>
+            <tbody id="tbody-familiar"></tbody>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- Social/Conjugal -->
+      <div class="acc" id="acc-social" style="margin-top:12px">
+        <div class="acc-h" onclick="toggleAcc('acc-social')"><b>🤝 Vida Social / Conjugal</b><span>abrir/fechar</span></div>
+        <div class="acc-c"><div class="inner">
+          <table>
+            <thead><tr><th>Nível (emoção)</th><th>Reflexo social/conjugal</th><th></th></tr></thead>
+            <tbody id="tbody-social"></tbody>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- Profissional -->
+      <div class="acc" id="acc-prof" style="margin-top:12px">
+        <div class="acc-h" onclick="toggleAcc('acc-prof')"><b>💼 Vida Profissional</b><span>abrir/fechar</span></div>
+        <div class="acc-c"><div class="inner">
+          <table>
+            <thead><tr><th>Nível (emoção)</th><th>Reflexo profissional</th><th></th></tr></thead>
+            <tbody id="tbody-prof"></tbody>
+          </table>
+        </div></div>
+      </div>
+
+      <p id="area-output" class="muted" style="margin-top:10px"></p>
+    </section>
+
+    <!-- PASSO 3 (AJUSTADO): GATILHOS EM ACORDEÃO -->
+    <section aria-labelledby="p3" style="margin-top:24px">
+      <h2 id="p3" class="subtitle">Passo 3 — O que dispara seu stress?</h2>
+      <p class="muted">Abra as categorias e marque os gatilhos que mais te derrubam.</p>
+
+      <div class="acc" id="acc-visao">
+        <div class="acc-h" onclick="toggleAcc('acc-visao')"><b>👀 Visuais</b><span>abrir/fechar</span></div>
+        <div class="acc-c"><div class="inner" id="box-visao"></div></div>
+      </div>
+
+      <div class="acc" id="acc-audicao" style="margin-top:12px">
+        <div class="acc-h" onclick="toggleAcc('acc-audicao')"><b>🔊 Auditivos</b><span>abrir/fechar</span></div>
+        <div class="acc-c"><div class="inner" id="box-audicao"></div></div>
+      </div>
+
+      <div class="acc" id="acc-emoc" style="margin-top:12px">
+        <div class="acc-h" onclick="toggleAcc('acc-emoc')"><b>💥 Emocionais</b><span>abrir/fechar</span></div>
+        <div class="acc-c"><div class="inner" id="box-emoc"></div></div>
+      </div>
+
+      <p id="trigger-output" class="muted" style="margin-top:8px"></p>
+    </section>
+
+    <!-- PASSO 4: PREDISPOSIÇÕES -->
+    <section aria-labelledby="p4" style="margin-top:26px">
+      <h2 id="p4" class="subtitle">Passo 4 — O stress no corpo e na mente</h2>
+      <p class="muted">A alma fala através do corpo. O stress prolongado ajusta hormônios, altera sistemas e pode se tornar doença. Veja exemplos típicos em <strong>Paciência ↔ Ira</strong> (níveis 6–12). O protocolo completo traz a tabela integral.</p>
+      <div class="card">
+        <table>
+          <thead><tr><th>Nível</th><th>Sinais físicos</th><th>Predisposição (física/psicológica)</th></tr></thead>
+          <tbody id="predis-tbody"></tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px">Este conteúdo é educativo e complementar. Não substitui acompanhamento médico/psicológico.</p>
+    </section>
+<!-- PAUSA DE HUMOR (sanduíche) -->
+<section aria-labelledby="humor" style="margin-top:24px">
+  <h2 id="humor" class="subtitle">Pausa rápida: 3 piadinhas anti-stress 😅</h2>
+  <div class="card pad">
+    <ul class="muted" style="margin-top:2px">
+      <li>😅 <strong>Qual o chá preferido do estressado?</strong> Chá-paz. (Se não tiver, serve camomila mesmo 😌)</li>
+      <li>😅 <strong>Meu stress é tipo Wi-Fi:</strong> quando chega visita, ele aumenta.</li>
+      <li>😅 <strong>Saudade quando o maior stress</strong> era encapar o caderno com papel contact sem fazer bolha.</li>
+    </ul>
+
+    <p class="muted" style="margin:10px 0 8px">
+      Curtiu? No <strong>Protocolo de Cura Emocional</strong> tem <strong>+10 piadinhas anti-stress</strong> e exercícios práticos. 
+      <em>Logo abaixo</em> você vê como baixar o PDF.
+    </p>
+
+    <p class="note" style="margin-top:6px">Humor é um respiro, não um diagnóstico. Se precisar, procure apoio médico/psicológico.</p>
+  </div>
+</section>
+
+    <!-- PASSO 5: PROTOCOLO -->
+    <section aria-labelledby="p5" style="margin-top:28px">
+      <h2 id="p5" class="subtitle">Passo 5 — Baixe seu <em>Protocolo de Cura Emocional</em> do stress/ansiedade</h2>
+      <div class="card pad" id="proto-card">
+        <p class="muted" id="proto-intro">Você já viu níveis, reflexos e gatilhos. Leve tudo organizado em PDF com exercícios práticos.</p>
+        <ul class="muted" style="margin-top:-2px">
+          <li>Escala completa <strong>Paciência ↔ Ira</strong> (stress/ansiedade)</li>
+          <li>Tabelas de reflexo: familiar, profissional, conjugal/individual</li>
+          <li>Gatilhos sensoriais e emocionais</li>
+          <li><strong>Predisposições fisiológicas e psicológicas</strong> (tabela completa)</li>
+          <li><strong>Protocolos psicoespirituais</strong> de elevação (10–15 min/dia)</li>
+        </ul>
+        <div id="proto-cta" style="margin-top:10px">
+          <button class="btn btn-primary" onclick="revealOffer()">Baixar agora</button>
+        </div>
+        <div id="proto-offer" style="display:none; margin-top:14px">
+          <div style="font-weight:700">Protocolo completo — PDF Stress/Ansiedade</div>
+          <p class="muted" style="margin:6px 0 10px">Inclui todas as tabelas + exercícios práticos. Entrega imediata por e-mail/WhatsApp.</p>
+          <button class="btn btn-primary" onclick="startCheckout('pdf_paciencia')">Quero baixar por <span class="price">R$ 12,00</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTINUAÇÃO NATURAL -->
+    <section aria-labelledby="cont" style="margin-top:24px">
+      <h2 id="cont" class="subtitle">Seu stress não anda sozinho</h2>
+      <p class="muted">A média do stress combinada com outras forças (paz, alegria, etc.) revela padrões superiores (propósito, bênção x maldição, gestão de energia).</p>
+      <div class="grid grid-3">
+        <div class="card pad">
+          <div style="font-weight:700">Mapa da Alma</div>
+          <p class="muted">Diagnóstico das 12 forças emocionais</p>
+          <button class="btn btn-ghost" onclick="startCheckout('mapa_da_alma')">R$ 59,00</button>
+        </div>
+        <div class="card pad">
+          <div style="font-weight:700">Mapa Espiritual</div>
+          <p class="muted">Consequências superiores (propósito, bênção/energia)</p>
+          <button class="btn btn-ghost" onclick="startCheckout('mapa_espiritual')">R$ 59,00</button>
+        </div>
+        <div class="card pad">
+          <div style="font-weight:700">Combo Total <span class="badge">Melhor oferta</span></div>
+          <p class="muted">Mapa da Alma + Mapa Espiritual</p>
+          <button class="btn btn-primary" onclick="startCheckout('combo_total')">Levar por <span class="price">R$ 89,00</span></button>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px">Quer resolver de vez? Conheça o <a class="btn-link" href="javascript:void(0)" onclick="startCheckout('curso_completo')">Curso Canva Espiritual (R$ 200)</a>.</p>
+    </section>
+
+    <footer><p>© Canva Espiritual • Termos • Privacidade</p></footer>
+  </div>
+
+  <!-- DATA + LOGIC -->
+  <script>
+    /* ============== MAPA BÁSICO — PASSO 1 ============== */
+    const SCALE_DATA = {
+      slug: "paciencia",
+      title: "Paciência ↔ Ira",
+      levelToPercent: { 1:92,2:84,3:75,4:69,5:60,6:52,7:47,8:43,9:35,10:27,11:18,12:9 },
+      levels: [
+  {level:1,  emoji:"🕊️", name:"Paciência Mártir",      desc:"Serenidade sob pressão; presença governada.",     signals:"Postura imóvel; pulso ~60 bpm.",                zone:"virtue"},
+  {level:2,  emoji:"💪", name:"Perseverança Sagrada",  desc:"Constância mansa; respiração consciente.",        signals:"Respiração diafragmática (6/min).",             zone:"virtue"},
+  {level:3,  emoji:"🌬️", name:"Tolerância Ativa",      desc:"Paciência dinâmica; acolhe sem azedar.",         signals:"Sorriso Duchenne; gestos fluidos.",             zone:"virtue"},
+  {level:4,  emoji:"🌾", name:"Resiliência Calma",     desc:"Retorna ao eixo com facilidade.",                 signals:"Contato visual constante.",                     zone:"virtue"},
+  {level:5,  emoji:"😐", name:"Neutralidade",          desc:"Plano, sem queda nem virtude ativa.",            signals:"Expressão plana; HPA basal.",                   zone:"neutral"},
+  {level:6,  emoji:"😓", name:"Tolerância Cansada",    desc:"Paciência por esforço; desgaste evidente.",      signals:"Mandíbula tensionada; pés inquietos.",          zone:"neutral"},
+  {level:7,  emoji:"😣", name:"Impaciência Contida",   desc:"Segura a raiva; ferve por dentro.",              signals:"Braços cruzados; respiração superficial.",      zone:"neutral"},
+  {level:8,  emoji:"😤", name:"Irritação Ativa",       desc:"Transborda irritação; microexplosões.",          signals:"Rubor facial; tamborilar de dedos.",            zone:"neutral"},
+  {level:9,  emoji:"❗", name:"Intolerância",          desc:"Reatividade alta; dureza com pessoas.",          signals:"Voz estridente; veias salientes.",              zone:"degrade"},
+  {level:10, emoji:"😠", name:"Impaciência Agressiva", desc:"Respostas ríspidas; urgência no corpo e na fala.",signals:"Tremores; sudorese profusa.",                   zone:"degrade"},
+  {level:11, emoji:"🔥", name:"Fúria Incontrolável",   desc:"Perda de governo; agressividade aberta.",        signals:"Pupilas dilatadas; postura agressiva.",         zone:"degrade"},
+  {level:12, emoji:"💥", name:"Ira Autodestrutiva",    desc:"Raiva contra si; risco elevado.",                signals:"Automutilação; hiperventilação.",               zone:"degrade"},
+],
+
+    };
+
+    /* ============== PASSO 2 — TEXTOS POR ÁREA (12 níveis) ============== */
+    // ordem: 12 → 1 como no seu print; inclui emoji e descrição emocional curta
+    const LEVELS_AREA_REFLEX = [
+      {lvl:12, emoji:"💥", titulo:"Ira Autodestrutiva", emo:"a raiva transborda e começa a te afetar mais do que aos outros.",
+        desc:"Explosões internas te levam a agir contra si mesmo, com culpa e reatividade destrutiva.",
+        fam:"Críticas duras a si mesmo diante da família.",
+        soc:"Afastamento por medo de falhar com os outros.",
+        prof:"Autossabotagem e bloqueios em momentos de desafio."
+      },
+      {lvl:10, emoji:"😠", titulo:"Impaciência Agressiva", emo:"respostas ríspidas, tensão e urgência na fala e no corpo.",
+        desc:"Sua impaciência se manifesta de forma agressiva e controladora.",
+        fam:"Irritação constante com atrasos ou falhas alheias.",
+        soc:"Pressa em obter respostas e resultados.",
+        prof:"Microgestão, dificuldade em delegar."
+      },
+      {lvl:9, emoji:"❗", titulo:"Intolerância", emo:"baixa margem de aceitação ao que escapa do seu controle.",
+        desc:"Dificuldade em aceitar diferenças ou limitações do outro.",
+        fam:"Crítica recorrente ao comportamento de parentes.",
+        soc:"Baixa tolerância com opiniões contrárias.",
+        prof:"Intolerância com erros da equipe."
+      },
+      {lvl:8, emoji:"😤", titulo:"Irritação Ativa", emo:"reações visíveis e incômodo com atrasos ou falhas alheias.",
+        desc:"Você tenta conter, mas a irritação vaza em olhares e posturas.",
+        fam:"Respostas ríspidas ou curtas.",
+        soc:"Impaciência em filas ou esperas.",
+        prof:"Inquietação em reuniões ou projetos lentos."
+      },
+      {lvl:7, emoji:"😣", titulo:"Impaciência Contida", emo:"o incômodo é constante, mas ainda controlado.",
+        desc:"Você controla a impaciência, mas há desconforto interno.",
+                fam:"Esforço consciente para manter a calma.",
+        soc:"Evita embates, mas guarda mágoas.",
+        prof:"Foco no resultado, mas com tensão interna."
+      },
+      {lvl:6, emoji:"😓", titulo:"Tolerância Cansada", emo:"suporta, mas já com desgaste e pouca alegria no processo.",
+        desc:"Você suporta, porém sem prazer; cansaço emocional acumulado.",
+        fam:"Cumpre obrigações, mas com peso no coração.",
+        soc:"Presente, mas desconectado.",
+        prof:"Entrega o necessário, sem energia renovadora."
+      },
+      {lvl:5, emoji:"😐", titulo:"Neutralidade", emo:"nem resiste, nem acolhe — apenas aguarda sem envolvimento.",
+        desc:"Pausa emocional: sem grande irritação nem grande paciência.",
+        fam:"Convívio pacífico, porém superficial.",
+        soc:"Interações sem emoção profunda.",
+        prof:"Produtividade regular e estável."
+      },
+      {lvl:4, emoji:"🌾", titulo:"Resiliência Calma", emo:"recompõe-se internamente após frustrações ou esperas.",
+        desc:"Adaptação tranquila às situações, inclusive adversas.",
+        fam:"Paciência com o tempo de amadurecimento dos outros.",
+        soc:"Capacidade de escutar sem pressa.",
+        prof:"Persistência diante de desafios."
+      },
+      {lvl:3, emoji:"🌬️", titulo:"Tolerância Ativa", emo:"acolhe o outro com compreensão, mesmo diante da dificuldade.",
+        desc:"Tolerância com leveza e presença.",
+        fam:"Respostas brandas a provocações.",
+        soc:"Serenidade ao lidar com falhas alheias.",
+        prof:"Espírito colaborativo e compreensivo."
+      },
+      {lvl:2, emoji:"💪", titulo:"Perseverança Sagrada", emo:"persiste com leveza e confiança, mesmo diante de obstáculos.",
+        desc:"Paciência como virtude espiritual em prática.",
+        fam:"Inspira pelo exemplo e silêncio ativo.",
+        soc:"Apoia com firmeza quem está em crise.",
+        prof:"Referência de equilíbrio emocional."
+      },
+      {lvl:1, emoji:"🕊️", titulo:"Paciência Sagrada / Mártir", emo:"espera com serenidade; consagra o tempo e transcende o ego.",
+        desc:"Paciência moldada pela fé; instrumento de paz.",
+        fam:"Amor resiliente em tempos difíceis.",
+        soc:"Presença iluminadora nas adversidades.",
+        prof:"Postura de guia e pacificador natural."
+      }
+    ];
+
+    /* ============== PASSO 3 — GATILHOS (opções por categoria) ============== */
+    const TRIGGERS = {
+      visao: [
+        "Ambientes caóticos/desorganizados",
+        "Excesso de telas/feeds acelerados",
+        "Bagunça visual no trabalho ou em casa",
+        "Luzes fortes/visuais agressivos"
+      ],
+      audicao: [
+        "Ruído constante (trânsito, obra, TV alta)",
+        "Notificações frequentes do celular",
+        "Vozes em tom elevado/interrupções",
+        "Ambiente com som metálico/irritante"
+      ],
+      emoc: [
+        "Sensação de injustiça/desrespeito",
+        "Cobrança/pressa alheia recorrente",
+        "Críticas públicas/ataques pessoais",
+        "Quebra de combinado ou de expectativa"
+      ]
+    };
+
+    /* ============== PASSO 4 — PREDISPOSIÇÕES (resumo 6–12) ============== */
+    const PREDIS_DATA = [
+      {level:6,  physical:"Bruxismo/ATM; cortisol +200% (1h)",      psych:"Transtorno de Adaptação"},
+      {level:7,  physical:"PA +15%; risco de hipertensão",          psych:"TAG (ansiedade generalizada)"},
+      {level:8,  physical:"Úlcera gástrica; adrenalina >150 pg/mL", psych:"Transtorno Explosivo Intermitente"},
+      {level:9,  physical:"Glicemia >140 mg/dL (DM2)",              psych:"Transtorno de Personalidade Borderline"},
+      {level:10, physical:"CK-MB ↑; cardiomiopatia",                psych:"TEPT (pós-trauma)"},
+      {level:11, physical:"Rabdomiólise; risco de falência renal",  psych:"Transtorno Dissociativo"},
+      {level:12, physical:"Acidose metabólica; lesões cerebrais",   psych:"Transtorno Antissocial"}
+    ];
+    
+
+    /* ============== HELPERS (UI) ============== */
+    function toggleAcc(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle('open');
+    }
+    function pillFor(level){
+      const pct = SCALE_DATA.levelToPercent[level] ?? 50;
+      return `<span class="pill">${pct}%</span>`;
+    }
+    function markRow(tr){
+      tr.style.boxShadow = '0 0 0 4px rgba(188,158,76,.18)';
+      tr.style.background = '#fffaf0';
+      setTimeout(()=>{ tr.style.boxShadow=''; tr.style.background=''; }, 900);
+    }
+
+    /* ============== RENDER — PASSO 1 (níveis) ============== */
+    function renderLevels(){
+      const grid = document.getElementById('levels');
+      const out  = document.getElementById('level-output');
+      grid.innerHTML = '';
+      grid.classList.add('grid');
+      SCALE_DATA.levels.forEach(L=>{
+        const pct = SCALE_DATA.levelToPercent[L.level] ?? 50;
+        const card = document.createElement('div');
+        card.className = 'card pad level';
+        card.innerHTML = `
+          <div class="n">${L.emoji || ""} Nível ${L.level} — ${L.name} ${pillFor(L.level)}</div>
+          <div class="muted desc">${L.desc}</div>
+            <div class="muted sig" style="margin-top:6px"><em>${L.signals}</em></div>
+        `;
+        card.addEventListener('click', ()=>{
+          document.querySelectorAll('.level').forEach(e=>e.classList.remove('selected-blue','selected-red'));
+          if(pct>=50) card.classList.add('selected-blue'); else card.classList.add('selected-red');
+          out.innerHTML = `Seu nível atual: <strong>${L.level} — ${L.name}</strong> (indicativo <strong>${pct}%</strong>).`;
+          window.scrollTo({top: card.getBoundingClientRect().top + window.scrollY - 90, behavior:'smooth'});
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    /* ============== RENDER — PASSO 2 (tabelas por área) ============== */
+    function buildAreaTbody(areaKey, tbodyId){
+      const tbody = document.getElementById(tbodyId);
+      tbody.innerHTML = '';
+      const col = areaKey==='fam' ? 'fam' : areaKey==='soc' ? 'soc' : 'prof';
+      LEVELS_AREA_REFLEX.forEach(item=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.emoji} Nível ${item.lvl} — ${item.titulo}</strong><br><span class="muted">${item.desc}</span></td>
+          <td>${item[col]}</td>
+          <td><button class="btn btn-ghost">Marcar ${pillFor(item.lvl)}</button></td>
+        `;
+        tr.querySelector('button').addEventListener('click', ()=>{
+          const out = document.getElementById('area-output');
+          const areaName = areaKey==='fam' ? 'Vida Familiar' : areaKey==='soc' ? 'Vida Social/Conjugal' : 'Vida Profissional';
+          out.innerHTML = `Na <strong>${areaName}</strong>, seu espelho se aproxima de: <strong>Nível ${item.lvl} — ${item.titulo}</strong>.`;
+          markRow(tr);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+    function renderAreaTables(){
+      buildAreaTbody('fam','tbody-familiar');
+      buildAreaTbody('soc','tbody-social');
+      buildAreaTbody('prof','tbody-prof');
+    }
+
+    /* ============== RENDER — PASSO 3 (gatilhos) ============== */
+    function renderTriggers(){
+      const boxes = [
+        {id:'box-visao', list:TRIGGERS.visao},
+        {id:'box-audicao', list:TRIGGERS.audicao},
+        {id:'box-emoc', list:TRIGGERS.emoc},
+      ];
+      const out = document.getElementById('trigger-output');
+      boxes.forEach(b=>{
+        const div = document.getElementById(b.id);
+        div.innerHTML = '';
+        b.list.forEach((txt,idx)=>{
+          const id = `${b.id}-${idx}`;
+          const wrap = document.createElement('div');
+          wrap.style.display='flex'; wrap.style.alignItems='center'; wrap.style.gap='8px'; wrap.style.margin='6px 0';
+          wrap.innerHTML = `<input type="checkbox" id="${id}"><label for="${id}">${txt}</label>`;
+          wrap.querySelector('input').addEventListener('change', ()=>{
+            const total = document.querySelectorAll(`#${b.id} input:checked`).length
+                        + document.querySelectorAll(`#box-visao input:checked`).length
+                        + document.querySelectorAll(`#box-audicao input:checked`).length
+                        + document.querySelectorAll(`#box-emoc input:checked`).length;
+            out.innerHTML = total>0 ? `Gatilhos selecionados: <strong>${total}</strong>. Identificar é metade da cura.` : '';
+          });
+          div.appendChild(wrap);
+        });
+      });
+    }
+
+    /* ============== RENDER — PASSO 4 (predisposições) ============== */
+    function renderPredis(){
+      const tbody = document.getElementById('predis-tbody');
+      tbody.innerHTML = '';
+      PREDIS_DATA.forEach(p=>{
+        const name = SCALE_DATA.levels.find(x=>x.level===p.level)?.name || '';
+        const sig  = SCALE_DATA.levels.find(x=>x.level===p.level)?.signals || '';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>Nível ${p.level} — ${name}</strong><div class="muted">${sig}</div></td>
+          <td>${p.physical}</td>
+          <td>${p.psych}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ============== PROTOCOLO — REVEAL + CHECKOUT ============== */
+    function revealOffer(){
+      document.getElementById('proto-offer').style.display='block';
+      document.getElementById('proto-cta').style.display='none';
+      document.getElementById('proto-intro').innerText = 'Detalhes do Protocolo:';
+    }
+
+    (function initUTM(){
+      try{
+        const url = new URL(location.href);
+        const keys = ["utm_source","utm_medium","utm_campaign","utm_term","utm_content","a","s"];
+        const o={}; keys.forEach(k=>{const v=url.searchParams.get(k); if(v) o[k]=v; });
+        if(Object.keys(o).length){
+          localStorage.setItem("utm_aff", JSON.stringify({...o, ts:Date.now()}));
+          document.cookie = `affid=${o.a||""};path=/;max-age=${60*60*24*90}`;
+          document.cookie = `subid=${o.s||""};path=/;max-age=${60*60*24*90}`;
+        }
+      }catch(e){}
+    })();
+
+    async function startCheckout(product_slug){
+      let utm={}; try{ utm = JSON.parse(localStorage.getItem("utm_aff")||"{}"); }catch(e){}
+      try{
+        const res = await fetch("https://api.canvaspiritual.com/pagamento/criar-sessao",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({ product_slug, affid:utm.a||null, subid:utm.s||null, utm, lp_path:location.pathname })
+        });
+        const json = await res.json();
+        if(json?.url){ location.href=json.url; return; }
+        alert("Não foi possível iniciar o checkout agora. Tente novamente.");
+      }catch(e){ alert("Falha de rede. Tente novamente."); }
+    }
+
+    /* ============== BOOT ============== */
+    renderLevels();
+    renderAreaTables();
+    renderTriggers();
+    renderPredis();
+  </script>
+
+  <!-- FAQ JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Como saber meu nível de stress agora?",
+       "acceptedAnswer":{"@type":"Answer","text":"Leia os 12 níveis da escala Paciência ↔ Ira, clique no que mais te representa e veja a indicação percentual e a cor (azul ≥ 50%, vermelho < 50%)."}},
+      {"@type":"Question","name":"O que tem no Protocolo de Cura Emocional?",
+       "acceptedAnswer":{"@type":"Answer","text":"Escala completa, tabelas de reflexo por área e gatilhos, predisposições físicas/psicológicas e exercícios psicoespirituais para elevar seu nível em 10–15 minutos/dia."}},
+      {"@type":"Question","name":"Como recebo?",
+       "acceptedAnswer":{"@type":"Answer","text":"Após a compra, o link é liberado imediatamente e enviado por e-mail/WhatsApp."}}
+    ]
+  }
+  </script>
+</body>
+</html>
+
