@@ -583,6 +583,27 @@ const imagemFinal = gerarImagemZona(zona);
       Seu <strong>Checkup Espiritual completo</strong> está pronto para ser enviado. Ele revela sua vibração média, níveis espirituais e caminhos de elevação.
     </p>
   `;
+// ⛔ ALERTA VERMELHO: permanecer na página
+// 9. Alerta vermelho de atenção
+const alertaHTML = `
+  <div id="stay-alert" role="alert" aria-live="assertive"
+       style="background: rgba(220,38,38,0.08);
+              border: 1px solid rgba(220,38,38,.4);
+              color: #b91c1c;
+              padding: 12px 16px;
+              border-radius: 6px;
+              font-size: 14px;
+              font-weight: 600;
+              display: block;
+              width: 100%;
+              max-width: 520px;      /* casa com a largura do form */
+              margin: 18px auto 12px; /* centraliza */
+             ">
+    ⚠️ <strong>ATENÇÃO:</strong> permaneça nesta página para o <u>último passo</u> antes de receber seu relatório.<br>
+    Na próxima tela você irá <strong>escolher o tipo de relatório</strong> que deseja receber.
+  </div>
+`;
+
 
   // 9. Formulário com reCAPTCHA dinâmico
   const formularioHTML = `
@@ -598,8 +619,18 @@ const imagemFinal = gerarImagemZona(zona);
     </form>
   `;
   // 10. Montar na tela
-  container.innerHTML = blocoVisual + barraMedia + explicacaoEspiritual + blocoFrutos + reforcoFinal + formularioHTML;
+  container.innerHTML = blocoVisual + barraMedia + explicacaoEspiritual + blocoFrutos + reforcoFinal + alertaHTML + formularioHTML;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+const alertEl = document.getElementById('stay-alert');  // id do alerta
+const formEl  = document.getElementById('formulario-diagnostico'); // id do formulário (corrigido)
+    // id do formulário
+function syncAlertWidth(){
+  if(alertEl && formEl){
+    alertEl.style.width = formEl.offsetWidth + 'px';
+  }
+}
+syncAlertWidth();
+window.addEventListener('resize', syncAlertWidth);
 
   // 11. Re-renderizar reCAPTCHA manualmente após injeção
   if (typeof grecaptcha !== "undefined") {

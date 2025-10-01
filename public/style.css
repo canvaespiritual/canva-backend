@@ -42,3 +42,36 @@ body {
   transform: translateY(-2px);
   opacity: 0.95;
 }
+/* ALERTA “permaneça na página” — desktop centrado e do tamanho do form */
+.stay-alert{
+  display:flex; gap:12px; align-items:flex-start;
+  /* centraliza e limita largura */
+  width:min(640px, 92%);
+  margin:18px auto 12px;
+
+  padding:14px 16px; border-radius:14px;
+  background: rgba(220,38,38,.12);
+  border: 1.5px solid rgba(220,38,38,.55);
+  color:#b91c1c;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 10px 26px rgba(220,38,38,.18);
+  position: relative; isolation: isolate; overflow: hidden;
+}
+@media (min-width: 1024px){
+  .stay-alert{ width: 520px; }           /* casa com a largura típica do form */
+}
+
+.stay-alert__icon{ font-size:20px; line-height:1; margin-top:2px; }
+.stay-alert__text{ font: 600 14.5px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+.stay-alert__text strong{ font-weight:800; }
+.stay-alert__text b{ font-weight:800; }
+
+/* anima sutil (3 ciclos) */
+@keyframes alertPulse {
+  0%,100% { box-shadow: 0 10px 26px rgba(220,38,38,.18); transform: scale(1); }
+  50%     { box-shadow: 0 14px 36px rgba(220,38,38,.32); transform: scale(1.01); }
+}
+.stay-alert{ animation: alertPulse 2.1s ease-in-out 3; }  /* 3 vezes e para */
+@media (prefers-reduced-motion: reduce){
+  .stay-alert{ animation:none; }
+}
