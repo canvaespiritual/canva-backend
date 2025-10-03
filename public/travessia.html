@@ -109,171 +109,66 @@
 
 
   </style>
-  <!-- PIXEL / CLARITY (opcional) -->
-  <!-- Meta Pixel placeholder
-  <script>/* fbq init */</script>
-  -->
-  <!-- Microsoft Clarity placeholder
-  <script type="text/javascript">
-  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/ID_AQUI";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "ID_AQUI");
-  </script> -->
-  <!-- ========== Meta Pixel Global ========== -->
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=1;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','734281049586138'); fbq('track','PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></noscript>
-
-<!-- Dedupe de PageView (evita PV extra por hashchange/plugins) -->
-<script>
-(function(){
-  function ready(fn){ if(document.readyState==='complete') fn(); else addEventListener('load',fn); }
-  ready(function(){
-    if(!window.fbq) return;
-    var _fbq=window.fbq, sent=false;
-    window.fbq=function(){ if(arguments[0]==='track'&&arguments[1]==='PageView'){ if(sent) return; sent=true; } return _fbq.apply(this,arguments); };
-  });
-})();
+  <!-- Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "tg0bonz3au");
 </script>
 
-<!-- ========== MICRO-EVENTOS META (Scroll/CTAs/Modais/Preço/YouTube) ========== -->
-<script>
-(function(){
-  function track(name, params){ try{ fbq('trackCustom', name, params||{}); }catch(e){} }
-
-  /* 1) Scroll depth (25/50/75/90) */
-  (function(){
-    var fired={};
-    function onScroll(){
-      var H=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight,document.documentElement.offsetHeight,document.body.clientHeight,document.documentElement.clientHeight);
-      var pct=Math.round((scrollY+innerHeight)/H*100);
-      [25,50,75,90].forEach(function(m){ if(pct>=m && !fired[m]){ fired[m]=true; track('Scroll'+m); }});
-    }
-    addEventListener('scroll', onScroll, {passive:true}); onScroll();
-  })();
-
-  /* 2) ViewPrice (quando #comprar entra) */
-  (function(){
-    var sec=document.getElementById('comprar'); if(!sec) return;
-    var fired=false;
-    if('IntersectionObserver'in window){
-      var io=new IntersectionObserver(function(es){
-        if(es[0].isIntersecting && !fired){ fired=true; track('ViewPriceSection'); }
-      },{threshold:.35});
-      io.observe(sec);
-    }
-  })();
-
-  /* 3) Cliques em CTAs relevantes */
-  (function(){
-    var sels=['a[href="#comprar"]','a[href="#aulas"]','.cta-float__btn','.btn','.acc-head','a[href*="pay.kiwify.com.br"]'];
-    document.addEventListener('click', function(ev){
-      var el=ev.target.closest(sels.join(','));
-      if(!el) return;
-      var label=(el.textContent||'').trim().slice(0,120);
-      var href=el.getAttribute('href')||'';
-      track('CTA_Click',{label:label,href:href});
-    },true);
-  })();
-
-  /* 4) Abertura de módulos (popups data-modal-open) */
-  (function(){
-    document.addEventListener('click', function(ev){
-      var btn=ev.target.closest('[data-modal-open], a[href^="#m"]'); if(!btn) return;
-      var id=(btn.getAttribute('data-modal-open')||btn.getAttribute('href')||'').replace('#','').trim();
-      if(id) track('ModuleOpen',{module:id});
-    }, true);
-  })();
-
-  /* 5) Trailer/Aulas – YouTube (play + progresso) */
-  (function(){
-    // Carrega API IFrame
-    var yts = document.createElement('script'); yts.src="https://www.youtube.com/iframe_api"; yts.async=1; document.head.appendChild(yts);
-    var player=null, marks={25:0,50:0,75:0,95:0}, currentId='';
-
-    // hook em openModal para sabermos qual id abriu
-    var _openModal = window.openModal;
-    window.openModal = function(id){
-      try{ window.__lastVideoKey = id; }catch(e){}
-      return _openModal ? _openModal(id) : null;
-    };
-
-    // API callback global
-    window.onYouTubeIframeAPIReady = function(){
-      var ifr = document.getElementById('trialFrame'); if(!ifr) return;
-      player = new YT.Player('trialFrame',{
-        events:{
-          'onStateChange': function(e){
-            var st=e.data;
-            // mapeia o que está tocando
-            currentId = (window.__lastVideoKey||'').toString();
-            if(st===YT.PlayerState.PLAYING){
-              track(currentId==='t1' ? 'TrailerPlay' : 'LessonPlay', {key: currentId});
-              // inicia checagem de progresso
-              clearInterval(window.__ytTick);
-              window.__ytTick = setInterval(function(){
-                if(!player || typeof player.getDuration!=='function') return;
-                var d=player.getDuration()||0, t=player.getCurrentTime()||0; if(d<=0) return;
-                var p=Math.floor(t/d*100);
-                [25,50,75,95].forEach(function(m){
-                  if(p>=m && !marks[m]){ marks[m]=1; track(currentId==='t1'?'TrailerProgress':'LessonProgress',{key:currentId,pct:m}); }
-                });
-              }, 1000);
-            }
-            if(st===YT.PlayerState.ENDED){
-              track(currentId==='t1'?'TrailerComplete':'LessonComplete',{key:currentId});
-              marks={25:0,50:0,75:0,95:0};
-              clearInterval(window.__ytTick);
-            }
-            if(st===YT.PlayerState.PAUSED){ track(currentId==='t1'?'TrailerPause':'LessonPause',{key:currentId}); }
-          }
-        }
-      });
-    };
-  })();
-})();
-</script>
-
-<!-- ========== Google (GA4 + Ads) ========== -->
+<!-- GA4 + Google Ads -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config','G-9QDEN04CQM');   /* GA4 */
-gtag('config','AW-936695843');   /* Google Ads */
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-9QDEN04CQM');   /* GA4 */
+  gtag('config', 'AW-936695843');   /* Google Ads */
 </script>
 
-<!-- Conversão no clique para Kiwify + InitiateCheckout (Meta) -->
+<!-- Meta Pixel -->
 <script>
-document.addEventListener('click', function(e){
-  const a = e.target.closest('a[href]'); if(!a) return;
-  try{
-    const url = new URL(a.href, location.href);
-    if (/(^|\.)kiwify\.com\.br$/i.test(url.hostname)) {
-      let navigated=false;
-      if(typeof gtag==='function'){
-        gtag('event','conversion',{ 'send_to':'AW-936695843/1p50CKfv_pYbEKOw074D', 'event_callback': function(){ if(!navigated){ navigated=true; location.href=a.href; } }});
-      }
-      if(typeof fbq==='function'){
-        fbq('track','InitiateCheckout',{content_name:'Curso Travessia Canva Espiritual',content_category:'curso'});
-      }
-      e.preventDefault();
-      setTimeout(function(){ if(!navigated){ navigated=true; location.href=a.href; } },700);
-    }
-  }catch(err){}
-}, true);
+  !function(f,b,e,v,n,t,s){
+    if(f.fbq)return; n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0';
+    n.queue=[]; t=b.createElement(e); t.async=!0; t.src=v;
+    s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
+  }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','734281049586138');
+  fbq('track','PageView');
 </script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></noscript>
 
-<!-- ========== Microsoft Clarity ========== -->
-<script type="text/javascript">
-(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-})(window, document, "clarity", "script", "tg0bonz3au");
+<!-- Contexto do item/página (usado pelos eventos) -->
+<script>
+  window._CTX = {
+    id: 'curso_travessia_canva',
+    name: 'Curso Travessia Canva',
+    category: 'course',
+    price: 39,
+    currency: 'BRL'
+  };
+
+  // ViewContent (Meta) + view_item (GA4)
+  document.addEventListener('DOMContentLoaded', function(){
+    var p = window._CTX || {};
+    if (typeof fbq === 'function') {
+      fbq('track','ViewContent',{
+        content_ids:[p.id], content_name:p.name, content_type:'product',
+        content_category:p.category, currency:p.currency, value:p.price
+      });
+    }
+    if (typeof gtag === 'function') {
+      gtag('event','view_item',{
+        currency:p.currency, value:p.price,
+        items:[{ item_id:p.id, item_name:p.name, item_category:p.category, price:p.price, quantity:1 }]
+      });
+    }
+  });
 </script>
 
 <!-- ========== Patch: âncoras para #comprar com scroll suave (sem hash) ========== -->
@@ -334,6 +229,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     }
     
   </script>
+  
 </head>
 <body>
   <!-- HEADER -->
@@ -348,9 +244,12 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         <a href="#aulas" class="hover:text-gold">Aula experimental</a>
         <a href="#faq" class="hover:text-gold">Dúvidas</a>
       </nav>
-      <a href="#comprar" class="inline-flex items-center gap-2 bg-gold text-black font-semibold px-4 py-2 rounded-xl shadow-soft hover:scale-[1.02] transition">
-        Começar por R$39
-      </a>
+     <a href="#comprar"
+   class="js-buy inline-flex items-center gap-2 bg-gold text-black font-semibold px-4 py-2 rounded-xl shadow-soft hover:scale-[1.02] transition"
+   aria-label="Ver preço e começar por R$39">
+  Começar por R$39
+</a>
+
     </div>
   </header>
 
@@ -367,9 +266,11 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
   Escolher aula experimental
 </a>
       <a href="#comprar"
-   class="px-5 py-3 rounded-xl bg-gold text-black font-semibold shadow-soft hover:translate-y-[-1px] transition cta-glow cta-glow--gold">
+   class="js-buy px-5 py-3 rounded-xl bg-gold text-black font-semibold shadow-soft hover:translate-y-[-1px] transition cta-glow cta-glow--gold"
+   aria-label="Ver preço e começar agora">
   Quero começar agora
 </a>
+
         </div>
         <div class="mt-6 flex items-center gap-4 text-xs text-white/60">
           <div class="flex items-center gap-2"><span class="i">⏱️</span> Aulas curtas (2–12 min)</div>
@@ -1094,9 +995,23 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 
     <!-- CTA final da FAQ -->
     <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
-      <a href="#comprar" class="acc-head" style="border:1.5px solid rgba(245,200,76,.35); width:auto; padding:8px 14px; border-radius:12px; font-weight:700;">Ver preço</a>
-      <a href="https://pay.kiwify.com.br/EkolVSl" class="acc-head" style="background:#f5c84c; border:none; width:auto; padding:8px 14px; border-radius:12px; font-weight:700; color:#121212;">Começar agora</a>
-    </div>
+  <!-- abre a seção de preço (#comprar) -->
+  <a href="#comprar"
+     class="acc-head js-buy"
+     style="border:1.5px solid rgba(245,200,76,.35); width:auto; padding:8px 14px; border-radius:12px; font-weight:700;"
+     aria-label="Ver preço e planos">
+    Ver preço
+  </a>
+
+  <!-- checkout Kiwify (marca BeginCheckout) -->
+  <a href="https://pay.kiwify.com.br/EkolVSl"
+     class="acc-head js-buy"
+     style="background:#f5c84c; border:none; width:auto; padding:8px 14px; border-radius:12px; font-weight:700; color:#121212;"
+     aria-label="Ir para o checkout e começar agora">
+    Começar agora
+  </a>
+</div>
+
   </div>
 </section>
 
@@ -1113,46 +1028,49 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 
   // Sanfona acessível
   const heads = faq.querySelectorAll('.acc-head');
-  function closePanel(panel, head){
-    if(!panel) return;
-    head.setAttribute('aria-expanded','false');
-    panel.style.maxHeight = '0px';
-    panel.addEventListener('transitionend', function onEnd(){
-      if(head.getAttribute('aria-expanded') === 'false'){ panel.hidden = true; }
-      panel.removeEventListener('transitionend', onEnd);
-    });
-  }
-  function openPanel(panel, head){
-    if(!panel) return;
-    head.setAttribute('aria-expanded','true');
-    panel.hidden = false;
-    panel.style.maxHeight = panel.scrollHeight + 'px';
-  }
-
-  const singleOpen = true;
-
-  heads.forEach((btn)=>{
-    const panelId = btn.getAttribute('aria-controls');
-    const panel   = document.getElementById(panelId);
-    panel.style.maxHeight = '0px';
-
-    btn.addEventListener('click', ()=>{
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      if(expanded){
-        closePanel(panel, btn);
-      }else{
-        if(singleOpen){
-          heads.forEach(h=>{
-            if(h !== btn && h.getAttribute('aria-expanded') === 'true'){
-              const other = document.getElementById(h.getAttribute('aria-controls'));
-              closePanel(other, h);
-            }
-          });
-        }
-        openPanel(panel, btn);
-      }
-    });
+function closePanel(panel, head){
+  if(!panel) return;
+  head.setAttribute('aria-expanded','false');
+  panel.style.maxHeight = '0px';
+  panel.addEventListener('transitionend', function onEnd(){
+    if(head.getAttribute('aria-expanded') === 'false'){ panel.hidden = true; }
+    panel.removeEventListener('transitionend', onEnd);
   });
+}
+function openPanel(panel, head){
+  if(!panel) return;
+  head.setAttribute('aria-expanded','true');
+  panel.hidden = false;
+  panel.style.maxHeight = panel.scrollHeight + 'px';
+}
+
+const singleOpen = true;
+
+heads.forEach((btn)=>{
+  const panelId = btn.getAttribute('aria-controls');
+  const panel   = document.getElementById(panelId);
+  if (!panel) { console.warn('[FAQ] painel não encontrado:', panelId); return; }  // <-- guarda nulo
+
+  panel.style.maxHeight = '0px';
+
+  btn.addEventListener('click', ()=>{
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    if(expanded){
+      closePanel(panel, btn);
+    }else{
+      if(singleOpen){
+        heads.forEach(h=>{
+          const other = document.getElementById(h.getAttribute('aria-controls'));
+          if (h !== btn && h.getAttribute('aria-expanded') === 'true'){
+            closePanel(other, h);
+          }
+        });
+      }
+      openPanel(panel, btn);
+    }
+  });
+});
+
 
   // Abrir direto via hash (#p3/#h3)
   function openByHash(){
@@ -1206,11 +1124,13 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 
         <div class="p-4 border-t border-white/10 text-center">
   <a href="#comprar"
-     class="inline-flex items-center justify-center bg-gold text-black font-semibold px-5 py-3 rounded-xl shadow-soft hover:scale-[1.02] transition">
+     class="js-buy inline-flex items-center justify-center bg-gold text-black font-semibold px-5 py-3 rounded-xl shadow-soft hover:scale-[1.02] transition"
+     aria-label="Acessar preço e planos do curso">
      🎁 Acessar as 45 aulas + bônus por R$39
   </a>
   <p class="mt-2 text-xs text-white/60">Liberação imediata | Garantia de 7 dias.</p>
 </div>
+
 
       </div>
     </div>
@@ -1237,73 +1157,100 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     }
   }
   </script>
-  <!-- Tempo na página (30/60/120/180s) → Meta Pixel (TimeOnPage) + GA4 (time_on_page) -->
+ 
+<!-- Meta custom events: TimeOnPage + ScrollDepth + ViewPrice + CTA -->
 <script>
 (function(){
-  // Marcos em segundos
-  const MARKS = [30, 60, 120, 180];
-  const fired = new Set();
+  // DEBUG opcional: no console -> window.__DEBUG_EVENTS = true
+  function dbg(){ if (window.__DEBUG_EVENTS) console.log.apply(console, arguments); }
+  function metaCustom(name, params){
+    if (typeof fbq === 'function') { try{ fbq('trackCustom', name, params||{}); dbg('[META]', name, params||{}); }catch(e){} }
+  }
+  function gaEvent(name, params){
+    if (typeof gtag === 'function') { try{ gtag('event', name, params||{}); dbg('[GA4]', name, params||{}); }catch(e){} }
+  }
+  var ctx = window._CTX || { id:'curso', name:'Curso', category:'course', price:39, currency:'BRL' };
 
-  // Descreve o "produto" (curso) para mandar como contexto
-  const P = {
-    id: 'curso_travessia_canva',
-    name: 'Curso Travessia Canva — Espiritualidade Aplicada',
-    category: 'course',
-    price: 39.00,
-    currency: 'BRL'
-  };
+  document.addEventListener('DOMContentLoaded', function(){
 
-  // Conta só quando a aba está ativa/visível
-  let active = !document.hidden;
-  document.addEventListener('visibilitychange', function(){
-    active = !document.hidden;
-  });
-
-  let seconds = 0;
-  const t = setInterval(function(){
-    if (!active) return;
-    seconds++;
-
-    // Dispara cada marco uma única vez
-    for (var i = 0; i < MARKS.length; i++){
-      var m = MARKS[i];
-      if (seconds >= m && !fired.has(m)){
-        fired.add(m);
-
-        // Meta Pixel (evento custom)
-        if (typeof fbq === 'function'){
-          fbq('trackCustom', 'TimeOnPage', {
-            seconds: m,
-            content_ids: [P.id],
-            content_name: P.name,
-            content_type: 'product',
-            content_category: P.category,
-            currency: P.currency,
-            value: P.price
+    /* 1) TimeOnPage — 30/60/120/180s (pausa quando aba está oculta) */
+    (function(){
+      var marks = [30, 60, 120, 180], fired = {};
+      var active = !document.hidden;
+      document.addEventListener('visibilitychange', function(){ active = !document.hidden; });
+      var secs = 0;
+      setInterval(function(){
+        if (!active) return;
+        secs++;
+        if (marks.indexOf(secs)>-1 && !fired[secs]){
+          fired[secs] = true;
+          metaCustom('TimeOnPage',{
+            seconds:secs, content_ids:[ctx.id], content_name:ctx.name,
+            content_type:'product', content_category:ctx.category, currency:ctx.currency, value:ctx.price
+          });
+          gaEvent('time_on_page',{
+            seconds:secs, currency:ctx.currency, value:ctx.price,
+            items:[{ item_id:ctx.id, item_name:ctx.name, item_category:ctx.category, price:ctx.price, quantity:1 }]
           });
         }
+      },1000);
+    })();
 
-        // GA4 (evento custom)
-        if (typeof gtag === 'function'){
-          gtag('event', 'time_on_page', {
-            seconds: m,
-            currency: P.currency,
-            value: P.price,
-            items: [{
-              item_id: P.id,
-              item_name: P.name,
-              item_category: P.category,
-              price: P.price,
-              quantity: 1
-            }]
-          });
-        }
+    /* 2) ScrollDepth — 25/50/75/90 (percentual do FUNDO da janela) */
+    (function(){
+      var fired = {};
+      var se = document.scrollingElement || document.documentElement;
+      function onScroll(){
+        var top = se.scrollTop || 0;
+        var vh  = window.innerHeight || se.clientHeight || 0;
+        var sh  = se.scrollHeight || 1;
+        var pct = Math.round(((top + vh) / sh) * 100);
+        [25,50,75,90].forEach(function(m){
+          if (pct >= m && !fired[m]){ fired[m]=1; metaCustom('ScrollDepth',{percent:m}); dbg('[SCROLL %]', pct); }
+        });
       }
-    }
-  }, 1000);
+      window.addEventListener('scroll', onScroll, {passive:true});
+      window.addEventListener('resize', function(){ setTimeout(onScroll, 150); }, {passive:true});
+      window.addEventListener('load',  function(){ setTimeout(onScroll, 250); });
+      setTimeout(onScroll, 300); setTimeout(onScroll, 800); setTimeout(onScroll, 1600);
+      var i=0, wd=setInterval(function(){ onScroll(); if(++i>5) clearInterval(wd); }, 2000); // watchdog p/ lazy-load
+    })();
 
-  // Limpa o timer ao sair
-  window.addEventListener('beforeunload', function(){ clearInterval(t); });
+    /* 3) ViewPriceSection — #comprar entrou na viewport */
+    (function(){
+      var sec = document.getElementById('comprar'); if (!sec) return;
+      var sent = false;
+      if ('IntersectionObserver' in window){
+        new IntersectionObserver(function(es){
+          if ( es[0].isIntersecting && !sent ){ sent = true; metaCustom('ViewPriceSection'); }
+        }, { threshold:0.35 }).observe(sec);
+      }
+    })();
+
+    /* 4) CTA / BeginCheckout — clique nos botões e no link do checkout */
+    (function(){
+      var sels = ['.js-buy','a[href="#comprar"]','a[href*="pay.kiwify.com.br"]'];
+      document.addEventListener('click', function(e){
+        var el = e.target.closest(sels.join(',')); if(!el) return;
+
+        // clique genérico
+        metaCustom('CTA_Click',{ label:(el.textContent||'').trim().slice(0,120), href: el.getAttribute('href')||'' });
+
+        // se for link para o checkout, marca BeginCheckout (Meta/GA)
+        try{
+          var url = new URL(el.href, location.href);
+          if (/(^|\.)kiwify\.com\.br$/i.test(url.hostname)){
+            if (typeof fbq === 'function') fbq('track','InitiateCheckout',{ value:ctx.price, currency:ctx.currency });
+            gaEvent('begin_checkout',{
+              currency:ctx.currency, value:ctx.price,
+              items:[{ item_id:ctx.id, item_name:ctx.name, item_category:ctx.category, price:ctx.price, quantity:1 }]
+            });
+          }
+        }catch(_){}
+      }, true);
+    })();
+
+  });
 })();
 </script>
 
