@@ -647,7 +647,7 @@ window.avancar = avancar;
 window.respostas = respostas;
 window.perguntas = perguntas;
 
-<script>
+
 // Tempo na página (Meta: TimeOnPage | GA4: time_on_page) — 30 / 60 / 120 / 180s
 (function(){
   // Marcos em segundos
@@ -714,4 +714,4 @@ window.perguntas = perguntas;
   // Limpa ao sair
   window.addEventListener('beforeunload', function(){ clearInterval(timer); });
 })();
-</script>
+
