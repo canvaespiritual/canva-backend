@@ -11,11 +11,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- OG -->
-  <meta property="og:title" content="Ebook – Mapa da Alma • R$29,90" />
-  <meta property="og:description" content="Descubra os 144 estados da alma e como refletem na vida familiar, social e espiritual. PDF com acesso imediato." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://placehold.co/1200x630/png?text=Ebook+Mapa+da+Alma" />
+ <!-- OG -->
+<meta property="og:title" content="Ebook – Mapa da Alma • R$29,90" />
+<meta property="og:description" content="Descubra os 144 estados da alma e como refletem na vida familiar, social e espiritual. PDF com acesso imediato." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://canvaspiritual.com/wp-content/uploads/2025/10/capa-ebook-12-forcas-alma-v2.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:url" content="https://api.canvaspiritual.com/ebookcanvaespiritual.html" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Ebook – Mapa da Alma • R$29,90" />
+<meta name="twitter:description" content="Descubra os 144 estados da alma e como refletem na vida familiar, social e espiritual. PDF com acesso imediato." />
+<meta name="twitter:image" content="https://canvaspiritual.com/wp-content/uploads/2025/10/capa-ebook-12-forcas-alma-v2.jpg" />
+<link rel="canonical" href="https://api.canvaspiritual.com/ebookcanvaespiritual.html" />
+
   <style>
     :root{ --bg:#0b0f14; --ink:#e9edf2; --gold:#f5c84c;}
     body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink);}
@@ -42,7 +54,88 @@
 
   </style>
 
-  <!-- (Opcional) Meta Pixel / GA / Clarity – cole aqui se quiser mensurar -->
+ <!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "tg0bonz3au"); /* seu ID */
+</script>
+
+<!-- GA4 + Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  /* GA4 */
+  gtag('config', 'G-9QDEN04CQM');
+  /* Google Ads */
+  gtag('config', 'AW-936695843');
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s){
+    if(f.fbq)return; n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0';
+    n.queue=[];
+    t=b.createElement(e); t.async=!0; t.src=v;
+    s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
+  }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '734281049586138'); /* seu Pixel */
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1" />
+</noscript>
+
+<!-- PRODUTO (PT/BR) -->
+<script>
+  window.PRODUTO = {
+    id: 'ebook_canva_espiritual_pt',
+    name: 'Canva Espiritual — eBook (PT)',
+    category: 'ebook',
+    price: 29.90,       // R$ 29,90 -> ajuste aqui se mudar o preço
+    currency: 'BRL'
+  };
+</script>
+
+<!-- ViewContent ao carregar a página -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const p = window.PRODUTO || {};
+    /* Meta (ViewContent) */
+    if (typeof fbq === 'function') {
+      fbq('track', 'ViewContent', {
+        content_ids: [p.id],
+        content_name: p.name,
+        content_type: 'product',
+        content_category: p.category,
+        currency: p.currency,
+        value: p.price
+      });
+    }
+    /* GA4 (view_item) */
+    if (typeof gtag === 'function') {
+      gtag('event', 'view_item', {
+        currency: p.currency,
+        value: p.price,
+        items: [{
+          item_id: p.id,
+          item_name: p.name,
+          item_category: p.category,
+          price: p.price,
+          quantity: 1
+        }]
+      });
+    }
+  });
+</script>
+
 </head>
 <body>
   <!-- HEADER -->
@@ -52,7 +145,7 @@
         <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-300 to-white/80"></div>
         <span class="font-extrabold tracking-tight">Canva Espiritual</span>
       </div>
-      <a href="#comprar" class="btn btn-gold btn-slim">Comprar por R$29,90</a>
+      <a href="#comprar" class="btn btn-gold btn-slim js-buy">Comprar por R$29,90</a>
 
     </div>
   </header>
@@ -71,7 +164,7 @@
           profissional e espiritual. Linguagem clara, exemplos práticos e exercícios de elevação.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#comprar" class="btn btn-gold">Quero meu Ebook por R$29,90</a>
+          <a href="#comprar" class="btn btn-gold js-buy">Quero meu Ebook por R$29,90</a>
           <a href="#conteudo" class="btn glass">Ver o que tem dentro</a>
         </div>
         <div class="mt-5 text-sm text-white/60 flex flex-col gap-1">
@@ -424,11 +517,12 @@
       <!-- CTA de reforço sob o prólogo (vivo e contrastado) -->
       <div class="mt-6 flex justify-center">
         <a href="https://pay.kiwify.com.br/JEeRD49"
-           class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#f5c84c] text-black font-semibold
-                  shadow-[0_12px_28px_rgba(245,200,76,.35)] ring-1 ring-[#f5c84c]/30
-                  hover:shadow-[0_16px_36px_rgba(245,200,76,.45)] hover:-translate-y-[1px] transition">
-          Garantir meu Ebook por R$29,90
-        </a>
+   class="js-buy inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#f5c84c] text-black font-semibold
+          shadow-[0_12px_28px_rgba(245,200,76,.35)] ring-1 ring-[#f5c84c]/30
+          hover:shadow-[0_16px_36px_rgba(245,200,76,.45)] hover:-translate-y-[1px] transition">
+  Garantir meu Ebook por R$29,90
+</a>
+
       </div>
     </div>
   </div>
@@ -544,11 +638,173 @@
     <h2 class="text-3xl sm:text-4xl font-extrabold mb-6">Garanta seu acesso agora</h2>
     <p class="text-white/70 mb-8">Apenas <strong>R$29,90</strong> para transformar a forma como você entende a alma e as emoções.</p>
     <div id="comprar" class="h-0"></div>
+    <a id="comprar-ebook"
+   href="https://pay.kiwify.com.br/JEeRD49"
+   class="btn js-buy inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-[#f5c84c] text-black font-bold text-lg shadow-[0_8px_24px_rgba(245,200,76,.35)] hover:scale-[1.02] transition">
+  📕 Quero meu Ebook agora
+</a>
 
-    <a href="https://pay.kiwify.com.br/JEeRD49" 
-       class="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-[#f5c84c] text-black font-bold text-lg shadow-[0_8px_24px_rgba(245,200,76,.35)] hover:scale-[1.02] transition">
-      📕 Quero meu Ebook agora
-    </a>
     <p class="mt-4 text-xs text-white/60">Pagamento 100% seguro via Kiwify • Garantia de 7 dias</p>
   </div>
 </section>
+<!-- CTA (BeginCheckout/InitiateCheckout) + ScrollDepth + TimeOnPage -->
+<script>
+(function(){
+  /* ---------- Util ---------- */
+  function PROD(){
+    return window.PRODUTO || {
+      id: 'ebook_canva_espiritual_pt',
+      name: 'Canva Espiritual — eBook (PT)',
+      category: 'ebook',
+      price: 29.90,
+      currency: 'BRL'
+    };
+  }
+
+  /* ---------- 1) Clique no CTA: Begin Checkout ---------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    // Coloque a classe .js-buy em todos os botões de compra (header e CTA final)
+    const ctas = document.querySelectorAll('.js-buy');
+    ctas.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const p = PROD();
+        // Meta
+        if (typeof fbq === 'function') {
+          fbq('track', 'InitiateCheckout', {
+            content_ids: [p.id],
+            content_name: p.name,
+            content_type: 'product',
+            content_category: p.category,
+            currency: p.currency,
+            value: p.price
+          });
+        }
+        // GA4
+        if (typeof gtag === 'function') {
+          gtag('event', 'begin_checkout', {
+            currency: p.currency,
+            value: p.price,
+            items: [{
+              item_id: p.id,
+              item_name: p.name,
+              item_category: p.category,
+              price: p.price,
+              quantity: 1
+            }]
+          });
+        }
+      });
+    });
+  });
+
+  /* ---------- 2) ScrollDepth: 25/50/75/90% ---------- */
+  const MARCOS = [25, 50, 75, 90];
+  const disparados = new Set();
+
+  function porcentagemScroll() {
+    const doc = document.documentElement, body = document.body;
+    const scrollTop = (doc && doc.scrollTop) || (body && body.scrollTop) || 0;
+    const scrollHeight = (doc && doc.scrollHeight) || (body && body.scrollHeight) || 0;
+    const clientHeight = doc.clientHeight || window.innerHeight || 0;
+    const total = scrollHeight - clientHeight;
+    if (total <= 0) return 100;
+    return Math.max(0, Math.min(100, (scrollTop / total) * 100));
+  }
+
+  let ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      const pct = porcentagemScroll();
+      for (let i=0; i<MARCOS.length; i++){
+        const m = MARCOS[i];
+        if (pct >= m && !disparados.has(m)) {
+          disparados.add(m);
+          const p = PROD();
+          // Meta
+          if (typeof fbq === 'function') {
+            fbq('trackCustom', 'ScrollDepth', {
+              percent: m,
+              content_ids: [p.id],
+              content_name: p.name,
+              content_type: 'product',
+              content_category: p.category,
+              currency: p.currency,
+              value: p.price
+            });
+          }
+          // GA4 (custom)
+          if (typeof gtag === 'function') {
+            gtag('event', 'scroll_depth', {
+              percent: m,
+              currency: p.currency,
+              value: p.price,
+              items: [{
+                item_id: p.id,
+                item_name: p.name,
+                item_category: p.category,
+                price: p.price,
+                quantity: 1
+              }]
+            });
+          }
+        }
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('load', onScroll);
+
+  /* ---------- 3) Tempo na página: 30/60/120/180s ---------- */
+  const THRESHOLDS = [30, 60, 120, 180];
+  const firedTime = new Set();
+  let active = !document.hidden;
+  document.addEventListener('visibilitychange', function(){ active = !document.hidden; });
+
+  let seconds = 0;
+  let timer = setInterval(function(){
+    if (!active) return;
+    seconds++;
+    for (let i=0; i<THRESHOLDS.length; i++){
+      const t = THRESHOLDS[i];
+      if (seconds >= t && !firedTime.has(t)){
+        firedTime.add(t);
+        const p = PROD();
+        // Meta
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'TimeOnPage', {
+            seconds: t,
+            content_ids: [p.id],
+            content_name: p.name,
+            content_type: 'product',
+            content_category: p.category,
+            currency: p.currency,
+            value: p.price
+          });
+        }
+        // GA4 (custom)
+        if (typeof gtag === 'function') {
+          gtag('event', 'time_on_page', {
+            seconds: t,
+            currency: p.currency,
+            value: p.price,
+            items: [{
+              item_id: p.id,
+              item_name: p.name,
+              item_category: p.category,
+              price: p.price,
+              quantity: 1
+            }]
+          });
+        }
+      }
+    }
+  }, 1000);
+
+  window.addEventListener('beforeunload', function(){ clearInterval(timer); });
+})();
+</script>
+
+</body>

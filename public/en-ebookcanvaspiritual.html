@@ -12,10 +12,31 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- OG -->
-  <meta property="og:title" content="Ebook – Soul Map • $9.90" />
-  <meta property="og:description" content="Discover the soul’s 144 states and how they reflect in family, social, and spiritual life. PDF with instant access." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://placehold.co/1200x630/png?text=Soul+Map+Ebook" />
+ <!-- Open Graph -->
+<meta property="og:title" content="Ebook – Soul Map • $9.90" />
+<meta property="og:description" content="Discover the soul’s 144 states and how they reflect in family, social, professional, and spiritual life. Digital ebook (PDF), instant access." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://api.canvaspiritual.com/en-ebookcanvaspiritual.html" />
+<meta property="og:site_name" content="Canva Spiritual" />
+
+<!-- Share image (WebP) -->
+<meta property="og:image" content="https://canvaspiritual.com/wp-content/uploads/2025/10/ebook-cover-full.webp" />
+<meta property="og:image:secure_url" content="https://canvaspiritual.com/wp-content/uploads/2025/10/ebook-cover-full.webp" />
+<meta property="og:image:alt" content="Soul Map — Canva Spiritual (eBook cover)" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Locale -->
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Ebook – Soul Map • $9.90" />
+<meta name="twitter:description" content="Discover the soul’s 144 states and their real-life reflections. Instant PDF access." />
+<meta name="twitter:image" content="https://canvaspiritual.com/wp-content/uploads/2025/10/ebook-cover-full.webp" />
+
+<!-- Canonical -->
+<link rel="canonical" href="https://api.canvaspiritual.com/en-ebookcanvaspiritual.html" />
 
   <style>
     :root{ --bg:#0b0f14; --ink:#e9edf2; --gold:#f5c84c;}
@@ -42,7 +63,84 @@
     }
   </style>
 
-  <!-- (Optional) Meta Pixel / GA / Clarity -->
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "tg0bonz3au");
+</script>
+
+<!-- GA4 + Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-9QDEN04CQM');   /* GA4 */
+  gtag('config', 'AW-936695843');   /* Google Ads */
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s){
+    if(f.fbq)return; n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0';
+    n.queue=[];
+    t=b.createElement(e); t.async=!0; t.src=v;
+    s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);
+  }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '734281049586138');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1" />
+</noscript>
+
+<!-- Produto (EN/US) -->
+<script>
+  window.PRODUCT = {
+    id: 'ebook_canva_spiritual_en',
+    name: 'Canva Spiritual — eBook (EN)',
+    category: 'ebook',
+    price: 9.90,
+    currency: 'USD'
+  };
+</script>
+
+<!-- ViewContent ao carregar -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const p = window.PRODUCT || {};
+    if (typeof fbq === 'function') {
+      fbq('track', 'ViewContent', {
+        content_ids: [p.id],
+        content_name: p.name,
+        content_type: 'product',
+        content_category: p.category,
+        currency: p.currency,
+        value: p.price
+      });
+    }
+    if (typeof gtag === 'function') {
+      gtag('event', 'view_item', {
+        currency: p.currency,
+        value: p.price,
+        items: [{
+          item_id: p.id,
+          item_name: p.name,
+          item_category: p.category,
+          price: p.price,
+          quantity: 1
+        }]
+      });
+    }
+  });
+</script>
+
 </head>
 <body>
   <!-- HEADER -->
@@ -52,7 +150,7 @@
         <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-300 to-white/80"></div>
         <span class="font-extrabold tracking-tight">Canva Espiritual</span>
       </div>
-      <a href="#comprar" class="btn btn-gold btn-slim">Buy for $9.90</a>
+      <a href="#comprar" class="btn btn-gold btn-slim js-buy">Buy for $9.90</a>
     </div>
   </header>
 
@@ -69,7 +167,7 @@
           Discover <strong>144 emotional states</strong> and how they reflect in family, social, professional, and spiritual life. Clear language, practical examples, and elevation exercises.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#comprar" class="btn btn-gold">I want my Ebook for $9.90</a>
+          <a href="#comprar" class="btn btn-gold js-buy">I want my Ebook for $9.90</a>
           <a href="#conteudo" class="btn glass">See what’s inside</a>
         </div>
         <div class="mt-5 text-sm text-white/60 flex flex-col gap-1">
@@ -409,14 +507,17 @@
         </p>
 
         <!-- Reinforcement CTA under the prologue -->
-        <div class="mt-6 flex justify-center">
-          <a href="https://primegod.gumroad.com/l/pnkne?wanted=true"
-             class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#f5c84c] text-black font-semibold
-                    shadow-[0_12px_28px_rgba(245,200,76,.35)] ring-1 ring-[#f5c84c]/30
-                    hover:shadow-[0_16px_36px_rgba(245,200,76,.45)] hover:-translate-y-[1px] transition">
-            Get my Ebook for $9.90
-          </a>
-        </div>
+       <div class="mt-6 flex justify-center">
+  <a id="buy-ebook-prologue"
+     href="https://primegod.gumroad.com/l/pnkne?wanted=true&utm_source=site&utm_medium=cta&utm_campaign=ebook_en"
+     class="js-buy inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#f5c84c] text-black font-semibold
+            shadow-[0_12px_28px_rgba(245,200,76,.35)] ring-1 ring-[#f5c84c]/30
+            hover:shadow-[0_16px_36px_rgba(245,200,76,.45)] hover:-translate-y-[1px] transition"
+     aria-label="Buy the eBook now for $9.90">
+    📕 Get my Ebook for $9.90
+  </a>
+</div>
+
       </div>
     </div>
   </section>
@@ -526,13 +627,11 @@
     <h2 class="text-3xl sm:text-4xl font-extrabold mb-6">Get instant access now</h2>
     <p class="text-white/70 mb-8">Only <strong>$9.90</strong> to transform how you understand the soul and emotions.</p>
 
-    <div id="comprar" class="h-0"></div>
-
-    <a href="https://primegod.gumroad.com/l/pnkne?wanted=true"
-       class="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-[#f5c84c] text-black font-bold text-lg shadow-[0_8px_24px_rgba(245,200,76,.35)] hover:scale-[1.02] transition">
-      📕 I want my Ebook now
-    </a>
-
+    <a id="buy-ebook"
+   href="https://primegod.gumroad.com/l/pnkne?wanted=true"
+   class="btn js-buy inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-[#f5c84c] text-black font-bold text-lg shadow-[0_8px_24px_rgba(245,200,76,.35)] hover:scale-[1.02] transition">
+  📕 I want my Ebook now
+</a>
     <!-- TRUST / PAYMENT BADGES -->
     <div class="mt-6 space-y-3">
 
@@ -586,3 +685,158 @@
     </div>
   </div>
 </section>
+<!-- CTA (BeginCheckout/InitiateCheckout) + ScrollDepth + TimeOnPage -->
+<script>
+(function(){
+  /* Util: produto EN */
+  function PROD(){
+    return window.PRODUCT || {
+      id: 'ebook_canva_spiritual_en',
+      name: 'Canva Spiritual — eBook (EN)',
+      category: 'ebook',
+      price: 9.90,
+      currency: 'USD'
+    };
+  }
+
+  /* 1) Clique no CTA → BeginCheckout (GA4) / InitiateCheckout (Meta) */
+  document.addEventListener('DOMContentLoaded', function () {
+    // Adicione .js-buy em TODOS os botões de compra (header, hero, CTA final)
+    const ctas = document.querySelectorAll('.js-buy, #buy-ebook');
+    ctas.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const p = PROD();
+        if (typeof fbq === 'function') {
+          fbq('track', 'InitiateCheckout', {
+            content_ids: [p.id],
+            content_name: p.name,
+            content_type: 'product',
+            content_category: p.category,
+            currency: p.currency,
+            value: p.price
+          });
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'begin_checkout', {
+            currency: p.currency,
+            value: p.price,
+            items: [{
+              item_id: p.id,
+              item_name: p.name,
+              item_category: p.category,
+              price: p.price,
+              quantity: 1
+            }]
+          });
+        }
+      });
+    });
+  });
+
+  /* 2) ScrollDepth: 25/50/75/90% */
+  const THRESHOLDS = [25, 50, 75, 90];
+  const fired = new Set();
+
+  function scrollPercent() {
+    const doc = document.documentElement, body = document.body;
+    const top = (doc && doc.scrollTop) || (body && body.scrollTop) || 0;
+    const height = (doc && doc.scrollHeight) || (body && body.scrollHeight) || 0;
+    const client = doc.clientHeight || window.innerHeight || 0;
+    const total = height - client;
+    if (total <= 0) return 100;
+    return Math.max(0, Math.min(100, (top / total) * 100));
+  }
+
+  let ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      const pct = scrollPercent();
+      for (let i=0; i<THRESHOLDS.length; i++){
+        const t = THRESHOLDS[i];
+        if (pct >= t && !fired.has(t)) {
+          fired.add(t);
+          const p = PROD();
+          if (typeof fbq === 'function') {
+            fbq('trackCustom', 'ScrollDepth', {
+              percent: t,
+              content_ids: [p.id],
+              content_name: p.name,
+              content_type: 'product',
+              content_category: p.category,
+              currency: p.currency,
+              value: p.price
+            });
+          }
+          if (typeof gtag === 'function') {
+            gtag('event', 'scroll_depth', {
+              percent: t,
+              currency: p.currency,
+              value: p.price,
+              items: [{
+                item_id: p.id,
+                item_name: p.name,
+                item_category: p.category,
+                price: p.price,
+                quantity: 1
+              }]
+            });
+          }
+        }
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('load', onScroll);
+
+  /* 3) TimeOnPage: 30/60/120/180s */
+  const TIME_MARKS = [30, 60, 120, 180];
+  const timeFired = new Set();
+  let active = !document.hidden;
+  document.addEventListener('visibilitychange', function(){ active = !document.hidden; });
+
+  let seconds = 0;
+  let timer = setInterval(function(){
+    if (!active) return;
+    seconds++;
+    for (let i=0; i<TIME_MARKS.length; i++){
+      const t = TIME_MARKS[i];
+      if (seconds >= t && !timeFired.has(t)) {
+        timeFired.add(t);
+        const p = PROD();
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'TimeOnPage', {
+            seconds: t,
+            content_ids: [p.id],
+            content_name: p.name,
+            content_type: 'product',
+            content_category: p.category,
+            currency: p.currency,
+            value: p.price
+          });
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'time_on_page', {
+            seconds: t,
+            currency: p.currency,
+            value: p.price,
+            items: [{
+              item_id: p.id,
+              item_name: p.name,
+              item_category: p.category,
+              price: p.price,
+              quantity: 1
+            }]
+          });
+        }
+      }
+    }
+  }, 1000);
+
+  window.addEventListener('beforeunload', function(){ clearInterval(timer); });
+})();
+</script>
+
+</body>

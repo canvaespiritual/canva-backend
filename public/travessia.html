@@ -1237,5 +1237,75 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     }
   }
   </script>
+  <!-- Tempo na página (30/60/120/180s) → Meta Pixel (TimeOnPage) + GA4 (time_on_page) -->
+<script>
+(function(){
+  // Marcos em segundos
+  const MARKS = [30, 60, 120, 180];
+  const fired = new Set();
+
+  // Descreve o "produto" (curso) para mandar como contexto
+  const P = {
+    id: 'curso_travessia_canva',
+    name: 'Curso Travessia Canva — Espiritualidade Aplicada',
+    category: 'course',
+    price: 39.00,
+    currency: 'BRL'
+  };
+
+  // Conta só quando a aba está ativa/visível
+  let active = !document.hidden;
+  document.addEventListener('visibilitychange', function(){
+    active = !document.hidden;
+  });
+
+  let seconds = 0;
+  const t = setInterval(function(){
+    if (!active) return;
+    seconds++;
+
+    // Dispara cada marco uma única vez
+    for (var i = 0; i < MARKS.length; i++){
+      var m = MARKS[i];
+      if (seconds >= m && !fired.has(m)){
+        fired.add(m);
+
+        // Meta Pixel (evento custom)
+        if (typeof fbq === 'function'){
+          fbq('trackCustom', 'TimeOnPage', {
+            seconds: m,
+            content_ids: [P.id],
+            content_name: P.name,
+            content_type: 'product',
+            content_category: P.category,
+            currency: P.currency,
+            value: P.price
+          });
+        }
+
+        // GA4 (evento custom)
+        if (typeof gtag === 'function'){
+          gtag('event', 'time_on_page', {
+            seconds: m,
+            currency: P.currency,
+            value: P.price,
+            items: [{
+              item_id: P.id,
+              item_name: P.name,
+              item_category: P.category,
+              price: P.price,
+              quantity: 1
+            }]
+          });
+        }
+      }
+    }
+  }, 1000);
+
+  // Limpa o timer ao sair
+  window.addEventListener('beforeunload', function(){ clearInterval(t); });
+})();
+</script>
+
 </body>
 </html>

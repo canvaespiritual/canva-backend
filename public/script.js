@@ -647,3 +647,71 @@ window.avancar = avancar;
 window.respostas = respostas;
 window.perguntas = perguntas;
 
+<script>
+// Tempo na página (Meta: TimeOnPage | GA4: time_on_page) — 30 / 60 / 120 / 180s
+(function(){
+  // Marcos em segundos
+  const MARKS = [30, 60, 120, 180];
+  const fired = new Set();
+
+  // Contexto do "produto" (quiz)
+  const Q = {
+    id: 'quiz',
+    name: 'Mapa da Alma - Quiz',
+    category: 'quiz',
+    price: 0,
+    currency: 'BRL'
+  };
+
+  // Só conta quando a aba está ativa
+  let active = !document.hidden;
+  document.addEventListener('visibilitychange', function(){
+    active = !document.hidden;
+  });
+
+  let seconds = 0;
+  const timer = setInterval(function(){
+    if (!active) return;
+    seconds++;
+
+    for (let i = 0; i < MARKS.length; i++){
+      const t = MARKS[i];
+      if (seconds >= t && !fired.has(t)){
+        fired.add(t);
+
+        // Meta Pixel (custom)
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'TimeOnPage', {
+            seconds: t,
+            content_ids: [Q.id],
+            content_name: Q.name,
+            content_type: 'product',
+            content_category: Q.category,
+            currency: Q.currency,
+            value: Q.price
+          });
+        }
+
+        // GA4 (custom)
+        if (typeof gtag === 'function') {
+          gtag('event', 'time_on_page', {
+            seconds: t,
+            currency: Q.currency,
+            value: Q.price,
+            items: [{
+              item_id: Q.id,
+              item_name: Q.name,
+              item_category: Q.category,
+              price: Q.price,
+              quantity: 1
+            }]
+          });
+        }
+      }
+    }
+  }, 1000);
+
+  // Limpa ao sair
+  window.addEventListener('beforeunload', function(){ clearInterval(timer); });
+})();
+</script>
