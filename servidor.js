@@ -24,6 +24,7 @@ const rotaGerar = require('./src/routes/gerar');
 const webhookRoutes = require("./src/routes/webhook");
 const webhookSesRoutes = require("./src/routes/webhookSes");
 const brevoRoutes = require("./src/routes/brevo"); // ✅ novo
+const fruitDetailsRoutes = require("./src/routes/fruit-details"); // ✅ NEW (/api/fruit-details)
 const pingSincronizar = require("./src/routes/ping/sincronizar");
 // 👇 Painel do Afiliado (frontend + API)
 const affiliatesRoutes = require("./src/routes/affiliates");
@@ -85,6 +86,8 @@ app.use("/dev", asaasTestRoutes);
 app.use("/debug", debugRoutes); // ← ADD
 
 app.use(cookieParser());
+app.use(fruitDetailsRoutes); // ✅ habilita GET /api/fruit-details?lang=en|es|pt
+
 
 // ⬇️ Captura ?aff= ou ?ref= e salva cookie + sessão (90 dias)
 app.use((req, res, next) => {
