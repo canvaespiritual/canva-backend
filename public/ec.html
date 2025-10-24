@@ -23,13 +23,37 @@
     .sub{color:#e7e5e4;margin:0 0 10px;font-size:16px;opacity:.95}
 
     /* PLAYER */
-    .player-wrap{
-      position:relative;z-index:1;overflow:hidden;background:#000;border-radius:14px;margin-top:12px;
-      box-shadow:0 10px 30px rgba(0,0,0,.4)
-    }
-    .player-wrap iframe,.player-wrap video,.player-wrap vturb-smartplayer{
-      display:block;width:100%;height:auto;aspect-ratio:16/9;position:relative;z-index:1
-    }
+   .player-wrap{
+  position:relative;
+  z-index:1;
+  overflow:hidden;
+  background:#000;
+  border-radius:14px;
+  margin-top:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  /* ratio 16:9 compatível com iOS */
+  height:0;
+  padding-top:56.25%;
+}
+
+/* o player/pôster ocupam exatamente o wrapper */
+.player-wrap vturb-smartplayer,
+.player-wrap iframe,
+.player-wrap video,
+.player-wrap img{
+  position:absolute;
+  inset:0;           /* top:0; right:0; bottom:0; left:0 */
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* evita corte no pôster do VTurb no iOS */
+.player-wrap img{
+  object-fit:contain;     /* sem crop do pôster */
+  background:#000;        /* barras pretas, se necessário */
+}
+
 
     /* CTA */
     .cta-area{margin:18px 0 8px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
