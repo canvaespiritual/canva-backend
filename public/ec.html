@@ -1,131 +1,84 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Código da Harmonia — Aula Secreta</title>
-  <meta name="description" content="Aula secreta do Código da Harmonia. Assista e descubra o método na prática.">
+  <meta name="description" content="Aula secreta do Código da Harmonia. Assista e veja o método na prática.">
   <style>
-    :root{
-      --bg:#0c0a09;
-      --fg:#e7e5e4;
-      --muted:#a8a29e;
-      --brand:#eab308;
-      --card:#13110f;
-      --maxw:980px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:20px}
-    .center{text-align:center}
-    .title{font-weight:800;letter-spacing:.2px;margin:16px 0 4px;font-size:30px;line-height:1.15}
-    .sub{color:#e7e5e4;margin:0 0 10px;font-size:16px;opacity:.95}
+    :root{ --bg:#0c0a09; --fg:#e7e5e4; --muted:#a8a29e; --brand:#eab308; --card:#13110f; --maxw:980px; }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif }
+    .wrap{ max-width:var(--maxw); margin:0 auto; padding:20px }
+    .center{ text-align:center }
+    h1{ margin:16px 0 4px; font-size:30px; line-height:1.15; font-weight:800 }
+    .sub{ margin:0 0 12px; color:#e7e5e4; opacity:.95 }
 
-    /* PLAYER */
-   .player-wrap{
-  position:relative;
-  z-index:1;
-  overflow:hidden;
-  background:#000;
-  border-radius:14px;
-  margin-top:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  /* ratio 16:9 compatível com iOS */
-  height:0;
-  padding-top:56.25%;
-}
-
-/* o player/pôster ocupam exatamente o wrapper */
-.player-wrap vturb-smartplayer,
-.player-wrap iframe,
-.player-wrap video,
-.player-wrap img{
-  position:absolute;
-  inset:0;           /* top:0; right:0; bottom:0; left:0 */
-  width:100%;
-  height:100%;
-  display:block;
-}
-
-/* evita corte no pôster do VTurb no iOS */
-.player-wrap img{
-  object-fit:contain;     /* sem crop do pôster */
-  background:#000;        /* barras pretas, se necessário */
-}
-
+    /* Player responsivo — iOS-safe (ajustado para 9:16) */
+    .player-box{ position:relative; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.4) }
+    .ratio{ height:0; padding-top:177.7777%; } /* 9:16 — se mudar pra 16:9 use 56.25% */
+    .player-box iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block }
 
     /* CTA */
-    .cta-area{margin:18px 0 8px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .cta-area{ margin:18px 0 8px; display:flex; justify-content:center }
     .btn{
-      appearance:none;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;
-      background:var(--brand);color:#1c1917;font-weight:700;font-size:16px;letter-spacing:.2px;
-      box-shadow:0 6px 20px rgba(234,179,8,.25);transition:transform .12s ease,opacity .2s ease;
+      appearance:none; border:0; border-radius:999px; padding:14px 22px; cursor:pointer;
+      background:var(--brand); color:#1c1917; font-weight:700; font-size:16px; letter-spacing:.2px;
+      box-shadow:0 6px 20px rgba(234,179,8,.25);
     }
-    .btn:hover{transform:translateY(-1px)}
-    .ghost{background:transparent;color:var(--fg);border:1px solid #292524}
-    .hint{color:var(--muted);font-size:.95rem;text-align:center}
+    .hint{ color:var(--muted); font-size:.95rem; text-align:center }
+    .hidden{ display:none !important }
 
-    /* BIO */
-    .card{background:var(--card);border:1px solid #1c1917;border-radius:14px;padding:18px;margin-top:28px}
-    .bio h3{margin:0 0 6px;font-size:20px}
-    .bio p{margin:0;color:var(--muted)}
+    /* Bio */
+    .card{ background:var(--card); border:1px solid #1c1917; border-radius:14px; padding:18px; margin-top:28px }
+    .bio h3{ margin:0 0 6px; font-size:20px }
+    .bio p{ margin:0; color:var(--muted) }
     .avatar{
-      width:160px;height:160px;object-fit:cover;border-radius:100%;
-      margin:-70px auto 16px auto;border:2px solid #2d2a28;display:block;
-      box-shadow:0 10px 25px rgba(0,0,0,.35)
+      width:160px; height:160px; object-fit:cover; border-radius:100%;
+      margin:-70px auto 16px; border:2px solid #2d2a28; display:block; box-shadow:0 10px 25px rgba(0,0,0,.35)
     }
-    .bio-top-spacer{height:56px}
-    .footer{color:#78716c;font-size:.85rem;margin:40px 0;text-align:center}
-
-    /* CTA fixo no mobile após liberação */
-    .sticky-cta{
-      position:fixed;left:0;right:0;bottom:0;display:none;gap:10px;justify-content:center;
-      padding:12px;background:linear-gradient(180deg,transparent,rgba(12,10,9,.9) 20%,rgba(12,10,9,.98));
-      z-index:50
-    }
-    .sticky-cta.show{display:flex}
-    @media (min-width:900px){.sticky-cta{display:none!important}}
-
-    .esconder{display:none}
+    .bio-top-spacer{ height:56px }
+    .footer{ color:#78716c; font-size:.85rem; margin:40px 0; text-align:center }
   </style>
 </head>
 <body>
-
   <header class="wrap center">
-    <h1 class="title">Código da Harmonia</h1>
-    <p class="sub">Assista à aula e veja o método por trás da travessia.</p>
+    <h1>Código da Harmonia</h1>
+    <p class="sub">mapa revelado</p>
   </header>
 
   <main class="wrap">
-    <!-- PLAYER -->
-    <section class="player-wrap" id="player">
-      <vturb-smartplayer
-        id="vid-68fbab9e0daa4ea4dd6dbddd"
-        style="display:block;margin:0;width:100%;max-width:100%;">
-      </vturb-smartplayer>
+    <!-- PLAYER (opção #2: IFRAME, mais estável) -->
+    <section class="player-box">
+      <div class="ratio"></div>
       <script>
         (function(){
           var s=document.createElement("script");
-          s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/68fbab9e0daa4ea4dd6dbddd/v4/player.js";
+          s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js";
           s.async=true; document.head.appendChild(s);
         })();
       </script>
+      <iframe
+        id="ifr_68fbab9e0daa4ea4dd6dbddd"
+        allowfullscreen
+        referrerpolicy="origin"
+        src="about:blank"
+        onload="this.onload=null; this.src='https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/68fbab9e0daa4ea4dd6dbddd/v4/embed.html'+(location.search||'?')+'&vl='+encodeURIComponent(location.href)">
+      </iframe>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-area center esconder">
+    <!-- CTA (um único botão) -->
+    <section class="cta-area center hidden" id="ctaBox">
       <button id="cta" class="btn">QUERO COMEÇAR MINHA TRAVESSIA</button>
-      <a id="ghost" class="btn ghost" href="#bio">Saiba mais</a>
     </section>
-    <p class="hint" id="timerHint">O botão será liberado após alguns minutos de aula.</p>
+    <p class="hint" id="timerHint"></p>
 
-    <!-- BIO (com foto de perfil mantida) -->
+    <!-- BIO -->
     <section id="bio" class="card bio center">
       <div class="bio-top-spacer"></div>
       <img class="avatar" src="https://canvaspiritual.com/wp-content/uploads/2025/10/IMG_4316.jpg" alt="Gustavo Prado">
       <h3>Gustavo Prado</h3>
-      <p><em>Pesquisador da Consciência e criador do Método Canva Espiritual</em></p>
+      <p><em>Engenheiro e Pesquisador</em></p>
       <div style="height:14px"></div>
       <p>Após anos construindo casas e estruturando equipes no mundo físico, descobri que a verdadeira engenharia era a da alma.
       Foram mais de 10 anos de estudos em comportamento humano, espiritualidade e engenharia emocional, até decifrar o código que revelo nesta aula —
@@ -135,53 +88,65 @@
     <div class="footer">© Canva Espiritual — Engenharia da Consciência</div>
   </main>
 
-  <!-- CTA fixo mobile -->
-  <div class="sticky-cta esconder" id="sticky">
-    <button class="btn" id="ctaSticky">QUERO COMEÇAR MINHA TRAVESSIA</button>
-  </div>
-
   <script>
-    const REVEAL_AT_SECONDS = 1651; // 27min31s
+    /* ===== CONFIG ===== */
+    const VIDEO_ID = '68fbab9e0daa4ea4dd6dbddd';
+    const REVEAL_AT_SECONDS = 1817; // 30:17 (ponto da timeline, independente da velocidade)
+    const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
 
-    const goCheckout = () => {
-      window.location.href = "https://seu-checkout-aqui.com/"; // altere para sua URL
-    };
+    const ctaBox = document.getElementById('ctaBox');
+    const timerHint = document.getElementById('timerHint');
+    const goCheckout = () => { window.location.href = "https://seu-checkout-aqui.com/"; }; // ajuste
     document.getElementById('cta').addEventListener('click', goCheckout);
-    document.getElementById('ctaSticky').addEventListener('click', goCheckout);
 
-    (function setupDelay(){
-      const playerEl = document.querySelector('vturb-smartplayer');
-      if (!playerEl) return;
+    function showCTA(){
+      if (ctaBox.classList.contains('hidden')){
+        ctaBox.classList.remove('hidden');
+        if (timerHint) timerHint.style.display='none';
+      }
+    }
+    function saveProgress(sec){
+      try { localStorage.setItem(STORAGE_KEY, String(Math.floor(sec))); } catch(e){}
+    }
+    function getProgress(){
+      try { return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10); } catch(e){ return 0; }
+    }
 
-      playerEl.addEventListener('player:ready', function(){
-        try {
-          playerEl.displayHiddenElements(REVEAL_AT_SECONDS, ['.esconder'], {
-            persist: true
-          });
+    // Desbloqueio imediato se já tinha passado do tempo
+    if (getProgress() >= REVEAL_AT_SECONDS) showCTA();
 
-          const sticky = document.getElementById('sticky');
-          const timerHint = document.getElementById('timerHint');
+    // Ouvir o tempo do vídeo via postMessage (iframe do VTurb)
+    function extractSeconds(data){
+      if (!data || typeof data !== 'object') return null;
+      const keys = ['currentTime','time','seconds','position','current_time'];
+      for (const k of keys){ if (k in data && isFinite(Number(data[k]))) return Number(data[k]); }
+      if (data.payload && typeof data.payload === 'object'){
+        for (const k of keys){ if (k in data.payload && isFinite(Number(data.payload[k]))) return Number(data.payload[k]); }
+      }
+      return null;
+    }
 
-          const obs = new MutationObserver(()=>{
-            if (getComputedStyle(sticky).display !== 'none'){
-              sticky.classList.add('show');
-              if (timerHint) timerHint.style.display='none';
-            }
-          });
-          obs.observe(sticky, { attributes:true, attributeFilter:['style','class'] });
-
-        } catch(e){
-          console.warn('Fallback acionado:', e);
-          setTimeout(()=>{
-            document.querySelectorAll('.esconder').forEach(el=>el.style.display='');
-            const sticky = document.getElementById('sticky');
-            if (sticky) sticky.classList.add('show');
-            const timerHint = document.getElementById('timerHint');
-            if (timerHint) timerHint.style.display='none';
-          }, REVEAL_AT_SECONDS*1000);
+    window.addEventListener('message', (event)=>{
+      try{
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        const sec = extractSeconds(data);
+        if (sec != null){
+          saveProgress(sec);
+          if (sec >= REVEAL_AT_SECONDS) showCTA();
         }
-      });
-    })();
+      }catch(e){}
+    });
+
+    // Fallback gentil (rede lenta/sem eventos)
+    setTimeout(()=>{
+      if (!ctaBox.classList.contains('hidden')) return;
+      let elapsed = getProgress();
+      const t = setInterval(()=>{
+        if (!ctaBox.classList.contains('hidden')) { clearInterval(t); return; }
+        elapsed += 1; saveProgress(elapsed);
+        if (elapsed >= REVEAL_AT_SECONDS){ clearInterval(t); showCTA(); }
+      }, 1000);
+    }, 5000);
   </script>
 </body>
 </html>
