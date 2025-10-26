@@ -39,6 +39,21 @@
     }
     .bio-top-spacer{ height:56px }
     .footer{ color:#78716c; font-size:.85rem; margin:40px 0; text-align:center }
+
+    /* ===== POPUP ===== */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1000}
+    .modal{width:92vw;max-width:520px;background:#141211;border:1px solid #262320;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .modal header{padding:18px 18px 10px}
+    .modal h3{margin:0;font-size:20px}
+    .modal .subm{margin:6px 0 0 0;color:var(--muted);font-size:14px}
+    .modal .content{padding:12px 18px 18px}
+    .modal label{display:block;font-size:13px;margin:12px 0 6px}
+    .modal input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #2b2724;background:#181614;color:var(--fg)}
+    .modal .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:18px}
+    .modal .cancel{background:transparent;color:var(--fg);border:1px solid #2b2724}
+    .modal .error{color:#fca5a5;font-size:13px;margin-top:6px;display:none}
+    .close-x{position:absolute;right:10px;top:10px;background:transparent;border:0;color:#a9a29d;font-size:20px;cursor:pointer}
+    .show{display:flex}
   </style>
 </head>
 <body>
@@ -67,7 +82,7 @@
       </iframe>
     </section>
 
-    <!-- CTA (um único botão) -->
+    <!-- CTA (um único botão → abre POPUP) -->
     <section class="cta-area center hidden" id="ctaBox">
       <button id="cta" class="btn">QUERO COMEÇAR MINHA TRAVESSIA</button>
     </section>
@@ -88,21 +103,121 @@
     <div class="footer">© Canva Espiritual — Engenharia da Consciência</div>
   </main>
 
+  <!-- ===== MODAL / POPUP ===== -->
+  <div id="checkoutModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ttl">
+      <button class="close-x" aria-label="Fechar" id="closeX">×</button>
+      <header>
+        <h3 id="ttl">Crie seu acesso no Engenharia da Consciência</h3>
+        <p class="subm"></p>
+      </header>
+      <div class="content">
+        <form id="accessForm" novalidate>
+          <label for="name">Nome completo</label>
+          <input id="name" name="name" type="text" placeholder="Insira seu nome completo" autocomplete="name" required>
+
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" placeholder="Insira seu melhor e-mail" autocomplete="email" inputmode="email" required>
+
+          <label for="phone">WhatsApp</label>
+          <input id="phone" name="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" inputmode="numeric" required>
+
+          <div id="err" class="error">Verifique os campos. O WhatsApp deve ter DDD e 9 dígitos (ex.: (11) 98888-7777).</div>
+
+          <div class="actions">
+            <button type="button" class="btn cancel" id="cancel">Cancelar</button>
+            <button type="submit" class="btn">Continuar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
-    /* ===== CONFIG ===== */
+    /* ====== CONFIG GERAL ====== */
     const VIDEO_ID = '68fbab9e0daa4ea4dd6dbddd';
-    const REVEAL_AT_SECONDS = 1817; // 30:17 (ponto da timeline, independente da velocidade)
+    const REVEAL_AT_SECONDS = 1817; // 30:17 (timeline do vídeo)
     const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
 
-    const ctaBox = document.getElementById('ctaBox');
-    const timerHint = document.getElementById('timerHint');
-    const goCheckout = () => { window.location.href = "https://seu-checkout-aqui.com/"; }; // ajuste
-    document.getElementById('cta').addEventListener('click', goCheckout);
+    /* ====== CONFIG KIWIFY ====== */
+    const KIWIFY_BASE = 'https://pay.kiwify.com.br/otZkPSG';
+    const COUPON = 'CODIGO10';
 
+    /* ====== ELEMENTOS ====== */
+    const ctaBox   = document.getElementById('ctaBox');
+    const ctaBtn   = document.getElementById('cta');
+    const timerHint= document.getElementById('timerHint');
+
+    const modal    = document.getElementById('checkoutModal');
+    const openBtn  = ctaBtn; // CTA abre o modal
+    const closeBtn = document.getElementById('closeX');
+    const cancelBtn= document.getElementById('cancel');
+    const form     = document.getElementById('accessForm');
+    const nameEl   = document.getElementById('name');
+    const emailEl  = document.getElementById('email');
+    const phoneEl  = document.getElementById('phone');
+    const errEl    = document.getElementById('err');
+
+    /* ====== FUNÇÕES POPUP ====== */
+    function openModal(){
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      setTimeout(()=> nameEl.focus(), 50);
+      document.documentElement.style.overflow='hidden';
+      document.body.style.overflow='hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow='';
+      document.body.style.overflow='';
+    }
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('show')) closeModal(); });
+
+    /* ====== MÁSCARA WHATSAPP ====== */
+    function formatPhoneNumber(){
+      let v = phoneEl.value.replace(/\D/g,'');
+      if (v.length > 11) v = v.slice(0,11);
+      if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      if (v.length > 10) v = `${v.slice(0,10)}-${v.slice(10)}`;
+      phoneEl.value = v;
+    }
+    function digitsOnly(){ return phoneEl.value.replace(/\D/g,''); }
+    phoneEl.addEventListener('focus', formatPhoneNumber);
+    phoneEl.addEventListener('keyup', formatPhoneNumber);
+    phoneEl.addEventListener('blur', formatPhoneNumber);
+
+    /* ====== SUBMIT → REDIRECIONA ====== */
+    function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email); }
+    function isValidPhoneDigits(d){ return d.length === 11; } // 2 DDD + 9 dígitos
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      errEl.style.display='none';
+
+      const name  = nameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+      let phone   = digitsOnly(); // só números
+
+      if (!name || !isValidEmail(email) || !isValidPhoneDigits(phone)){
+        errEl.style.display='block';
+        return;
+      }
+      if (!phone.startsWith('55')) phone = '55' + phone;
+
+      const url = `${KIWIFY_BASE}?coupon=${encodeURIComponent(COUPON)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+      window.location.href = url;
+    });
+
+    /* ====== DELAY DO CTA POR TEMPO DE VÍDEO ====== */
     function showCTA(){
       if (ctaBox.classList.contains('hidden')){
         ctaBox.classList.remove('hidden');
-        if (timerHint) timerHint.style.display='none';
+        if (timerHint) timerHint.textContent = '';
       }
     }
     function saveProgress(sec){
@@ -112,10 +227,10 @@
       try { return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10); } catch(e){ return 0; }
     }
 
-    // Desbloqueio imediato se já tinha passado do tempo
+    // Desbloqueio imediato se já passou do tempo antes
     if (getProgress() >= REVEAL_AT_SECONDS) showCTA();
 
-    // Ouvir o tempo do vídeo via postMessage (iframe do VTurb)
+    // Ouvir o tempo do vídeo via postMessage
     function extractSeconds(data){
       if (!data || typeof data !== 'object') return null;
       const keys = ['currentTime','time','seconds','position','current_time'];
@@ -137,7 +252,7 @@
       }catch(e){}
     });
 
-    // Fallback gentil (rede lenta/sem eventos)
+    // Fallback gentil (se nenhum evento chegar)
     setTimeout(()=>{
       if (!ctaBox.classList.contains('hidden')) return;
       let elapsed = getProgress();
