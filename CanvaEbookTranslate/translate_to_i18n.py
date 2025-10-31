@@ -173,6 +173,20 @@ def main():
                     text_to_keys.setdefault(pt_text, []).append(key)
 
         unique_texts = list(text_to_keys.keys())
+        # estimativa total e por módulo (com dedupe)
+total_chars = sum(len(s) for s in unique_texts)
+print(f"Estimativa de caracteres únicos (DeepL): {total_chars}")
+
+by_entity = {}
+for s in unique_texts:
+    ent = text_to_keys[s][0][0]  # primeiro entity associado à string
+    by_entity.setdefault(ent, {"strings": 0, "chars": 0})
+    by_entity[ent]["strings"] += 1
+    by_entity[ent]["chars"]   += len(s)
+
+for ent, d in by_entity.items():
+    print(f" - {ent}: {d['strings']} únicos / {d['chars']} chars")
+
         print(f"Coletados {len(work_items)} textos (únicos: {len(unique_texts)})")
 
         if args.dry_run:
