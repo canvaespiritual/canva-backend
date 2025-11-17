@@ -68,7 +68,8 @@ try {
     email: session.email,
     nome: session.nome,
     sessionId: session_id,
-    linkPdf: s3Url
+    linkPdf: s3Url,
+    idioma: session.idioma
   });
 } catch (err) {
   console.warn(`⚠️ Falha ao enviar e-mail principal: ${err.message}`);
