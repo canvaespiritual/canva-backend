@@ -49,6 +49,8 @@ const cookieParser = require('cookie-parser');
 
 const emProducao = process.env.RAILWAY_ENVIRONMENT !== undefined;
 const app = express();
+// ⬇️ importe a função (para evitar o “handler must be a function”)
+const stripeWebhook = require("./src/routes/stripeWebhook");
 
 app.set("trust proxy", true);
 // ---------------------------
@@ -76,7 +78,11 @@ app.use(session({
     secure: emProducao // em produção, só envia por HTTPS
   }
 }));
-
+app.post(
+  "/webhooks/stripe",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
 app.use(express.json());
 
 // 🧪 DEV | Asaas Sandbox (smoke test)
@@ -374,7 +380,7 @@ app.use("/pagamento", pagamentoStatus);
 app.use("/pagamento", statusRedirect);
 app.use("/pagamento", pagamentoStatusSessao);
 
-
+app.use("/api/stripe", require("./src/routes/stripeCheckout"));
 // ---------------------------
 // 📄 Relatórios
 // ---------------------------

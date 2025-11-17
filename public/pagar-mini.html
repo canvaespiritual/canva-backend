@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Receber Relatório — Mapa da Alma</title>
+  <meta name="description" content="Assista à instrução breve e libere seu relatório personalizado do Mapa da Alma." />
+
+  <style>
+    :root{
+      --bg:#0b0b0c; --fg:#f5f5f5; --muted:#9ca3af; --brand:#eab308; --card:#131316; --ok:#16a34a;
+      --maxw:960px;
+    }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif }
+    .wrap{ max-width:var(--maxw); margin:0 auto; padding:20px 14px }
+    .center{ text-align:center }
+    .card{ background:var(--card); border:1px solid #1f2126; border-radius:14px; padding:18px }
+    .hint{ color:var(--muted); font-size:.95rem }
+    .hidden{ display:none !important }
+
+    .player-box{ position:relative; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 14px 36px rgba(0,0,0,.45) }
+    .ratio{ height:0; padding-top:177.7777%; }
+    .player-abs{ position:absolute; inset:0; }
+    .player-abs vturb-smartplayer{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+
+    .btn{
+      appearance:none; border:0; border-radius:999px; padding:14px 22px; cursor:pointer;
+      background:var(--ok); color:#fff; font-weight:800; letter-spacing:.2px;
+      box-shadow:0 12px 28px rgba(22,163,74,.25);
+    }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="center" style="margin:6px 0 16px">
+      <h1 style="margin:0 0 4px; font-size:22px; line-height:1.2">Seu relatório está quase pronto</h1>
+      <p class="hint" id="topHint">Assista à instrução breve e libere seu autodiagnóstico nesta página.</p>
+    </header>
+
+    <!-- PLAYER -->
+    <section class="player-box">
+      <div class="ratio" id="ratioBox"></div>
+      <div class="player-abs" id="vturbMount"></div>
+    </section>
+
+    <!-- BLOCO SOLIDÁRIO -->
+    <section id="solidario" style="max-width:520px;margin:24px auto 0;padding:0 12px;text-align:center">
+      <h3 style="margin:0 0 8px;font:800 18px/1.2 system-ui">💛 Contribuição solidária</h3>
+      <p style="margin:0 0 12px;color:#9ca3af;font:14px system-ui">
+        A partir de <strong>R$10</strong> — quanto mais você puder contribuir, mais essa mensagem alcança outras pessoas. 🌍
+      </p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">
+        <button class="chip" data-v="10" title="🌱 Semente" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$10</button>
+        <button class="chip" data-v="21" title="🔺 Esforçado (21)" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$21</button>
+        <button class="chip" data-v="40" title="🔥 Transformador" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$40</button>
+        <button class="chip" data-v="70" title="🌕 Completo (70)" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$70</button>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:8px">
+        <label for="valorSolidario" style="color:#f5f5f5;font:600 14px system-ui">Valor:</label>
+        <input id="valorSolidario" type="number" min="10" step="1" value="10"
+               style="width:120px;text-align:center;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;font:700 16px system-ui">
+      </div>
+      <p id="solidarioHint" style="margin:4px 0 12px;color:#9ca3af;font:12px system-ui">
+        🌱 R$10 = Semente • 🔺 R$21 = Esforço • 🔥 R$40 = Transformação • 🌕 R$70 = Plenitude
+      </p>
+
+      <button id="solidarioBtn"
+              style="appearance:none;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;
+                     background:#16a34a;color:#fff;font:800 16px system-ui;box-shadow:0 10px 24px rgba(22,163,74,.25)">
+        Contribuir com R$10 →
+      </button>
+      <p style="margin:8px 0 0;color:#9ca3af;font:12px system-ui">
+        O relatório completo será liberado imediatamente após a contribuição.
+      </p>
+    </section>
+  </main>
+
+  <script>
+  /* =================== CONFIG =================== */
+  const VTURB_ACCOUNT_ID = 'ab0d5dbd-353e-4147-a5c6-52ab96121828';
+  const VTURB_PLAYER_ID  = '68fbab9e0daa4ea4dd6dbddd';
+  const ASPECT_RATIO     = '9:16';
+  const CHECKOUT_URL     = '/pagamento-opcao.html?tipo=completo';
+  /* ============================================== */
+
+  // Player ratio
+  (function setRatio(){
+    const rb = document.getElementById('ratioBox');
+    rb.style.paddingTop = (ASPECT_RATIO === '16:9') ? '56.25%' : '177.7777%';
+  })();
+
+  // Player VTurb
+  (function mountVturb(){
+    const mount = document.getElementById('vturbMount');
+    const tag = document.createElement('vturb-smartplayer');
+    tag.id = 'vid-' + VTURB_PLAYER_ID;
+    tag.style.cssText = 'display:block;margin:0 auto;width:100%;max-width:480px;height:100%';
+    mount.appendChild(tag);
+    const s = document.createElement('script');
+    s.src   = `https://scripts.converteai.net/${VTURB_ACCOUNT_ID}/players/${VTURB_PLAYER_ID}/v4/player.js`;
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+
+  // =================== BLOCO SOLIDÁRIO JS ===================
+  (function(){
+    const MIN = 10;
+    const input = document.getElementById('valorSolidario');
+    const btn   = document.getElementById('solidarioBtn');
+    const chips = Array.from(document.querySelectorAll('#solidario .chip'));
+
+    // params
+    const qs  = new URLSearchParams(location.search);
+    const ref = qs.get('ref') || qs.get('aff');
+    const refPart = ref ? `&ref=${encodeURIComponent(ref)}` : '';
+    let session_id = localStorage.getItem('session_id') || `sessao-${Date.now()}`;
+    localStorage.setItem('session_id', session_id);
+
+    function moeda(v){ return 'R$' + Number(v||0).toFixed(0); }
+    function setValor(v){
+      const val = Math.max(parseFloat(v||MIN), MIN);
+      input.value = isFinite(val) ? val : MIN;
+      btn.textContent = `Contribuir com ${moeda(input.value)} →`;
+    }
+
+    chips.forEach(c => c.addEventListener('click', () => setValor(c.getAttribute('data-v'))));
+    input.addEventListener('input', () => setValor(input.value));
+
+    btn.addEventListener('click', () => {
+      const valor = Math.max(parseFloat(input.value||MIN), MIN);
+      const url = `${CHECKOUT_URL}&valor=${encodeURIComponent(valor)}&session_id=${encodeURIComponent(session_id)}${refPart}`;
+      window.location.href = url;
+    });
+
+    setValor(input.value);
+  })();
+  </script>
+</body>
+</html>

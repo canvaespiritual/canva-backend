@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Espiritual - Mapa da Alma</title>
+   <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tg0bonz3au");
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+     <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '734281049586138');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Evento desta página (ViewContent) -->
+<script>
+  fbq('track', 'ViewContent', {
+    content_name: 'Mapa da Alma - Quiz',
+    content_category: 'quiz'
+  });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Configura o GA4 com seu ID
+  gtag('config', 'G-9QDEN04CQM');
+    // 👇 ADIÇÃO: ativa o Google Ads nesta página
+  gtag('config', 'AW-936695843');
+
+  // 👇 ADIÇÃO: evento da conversão "Entrou no Quiz"
+  gtag('event', 'conversion', {
+    'send_to': 'AW-936695843/V9hFCKeIipcbEKOw074D'
+  });
+</script>
+
+<script>
+  gtag('event', 'view_item', {
+    currency: 'BRL',
+    value: 0,
+    items: [{
+      item_id: 'quiz',
+      item_name: 'Mapa da Alma - Quiz',
+      item_category: 'quiz'
+    }]
+  });
+
+  // opcional: início do quiz
+  function quizStartGA(){
+    gtag('event', 'start_quiz', {
+      content_category: 'quiz'
+    });
+  }
+</script>
+
+</head>
+
+<body class="bg-white text-gray-800 font-sans">
+
+  <!-- BLOCO: Introdução -->
+  <section id="intro" class="min-h-screen flex flex-col justify-center items-center px-4 text-center space-y-4">
+    <h1 class="text-2xl font-semibold text-[#143d59] leading-snug">
+      Qual foi a última vez que você enxergou a sua alma... <span class="italic text-yellow-600">por completo?</span>
+    </h1>
+   <picture>
+  <source srcset="./assets/pagina-inicial.webp" type="image/webp" />
+  <img src="./assets/pagina-inicial.png" alt="Ilustração do estado da alma" class="w-64 max-w-[80%] mx-auto mb-2" loading="lazy" />
+</picture>
+
+
+    <p class="text-gray-600 text-sm">Há correntes que só se revelam quando fechamos os olhos para fora.</p>
+    <p class="text-gray-600 text-sm">Este é um momento só seu. Um espelho silencioso será revelado.</p>
+    <button id="btnComecarQuiz" onclick="quizStart();mostrarPergunta(0)" class="mt-3 px-6 py-3 bg-[#143d59] text-white rounded-md shadow-md hover:scale-105 transition transform duration-300 animate-pulse">
+  Iniciar Diagnóstico
+</button>
+
+    <p class="text-xs text-gray-400 mt-2 italic">
+      Autoanálise gratuita • Protocolo Geral – Mapa da Alma
+    </p>
+  </section>
+
+  <!-- Quiz container -->
+  <div id="quiz-container"></div>
+ 
+
+  <!-- Formulário Final (desativado pois novo formulário é gerado dinamicamente) -->
+  <section id="formulario-final" class="hidden max-w-2xl mx-auto p-6 space-y-4"></section>
+
+  
+
+  <!-- Dados dos frutos -->
+  <script src="./frutos-detalhes.js"></script>
+  <script src="./fe-detalhes.js"></script>
+  <script src="./servidao-detalhes.js"></script>
+  <script src="./bencao-detalhes.js"></script>
+
+  <!-- Injeção global dos dados -->
+  <script type="module">
+    import  detalhesFe from './fe-detalhes.js';
+    import  detalhesServidao from './servidao-detalhes.js';
+    import  detalhesBencao from './bencao-detalhes.js';
+
+    window.detalhesFe = detalhesFe;
+    window.detalhesServidao = detalhesServidao;
+    window.detalhesBencao = detalhesBencao;
+  </script>
+
+  <!-- Script principal -->
+  <!-- Script mini -->
+<script src="script-mini-lf.js"></script>
+
+
+  <!-- Áudio ambiente -->
+  <audio id="musicaAmbiente" loop>
+    <source src="./assets/audio/som-ambiente.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- Controle de som -->
+  <div id="controleSom" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500">
+    <div class="relative flex items-center justify-center">
+      <input type="range" id="volumeSlider"
+        min="0" max="1" step="0.01" value="0.1"
+        class="hidden absolute bottom-[100px] w-24 h-2 rotate-[-90deg] origin-bottom bg-gray-300 rounded-full appearance-none cursor-pointer transition-all duration-300" />
+      <button id="botaoSom"
+        class="bg-white bg-opacity-30 backdrop-blur-md shadow-lg p-3 rounded-full text-gray-700 hover:bg-opacity-60 transition">
+        🔊
+      </button>
+    </div>
+  </div>
+  <script>
+  function quizStart(){
+    // Evento custom (opcional, mas recomendado)
+    if (typeof fbq === 'function') {
+      fbq('trackCustom', 'QuizStart', {
+        step: 'start',
+        content_category: 'quiz'
+      });
+    }
+  }
+</script>
+
+</body>
+</html>

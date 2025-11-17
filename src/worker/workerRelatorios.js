@@ -62,34 +62,44 @@ const worker = new Worker('relatorios', async job => {
     session.pdfGerado = true;
     session.dataGeracao = new Date().toISOString();
 
-    // 📧 Envio principal
+    // 📧 Envio principal — se falhar, NÃO impede salvar pdf_url
+try {
+  await enviarEmailViaBrevo({
+    email: session.email,
+    nome: session.nome,
+    sessionId: session_id,
+    linkPdf: s3Url
+  });
+} catch (err) {
+  console.warn(`⚠️ Falha ao enviar e-mail principal: ${err.message}`);
+  // aqui você já grava email_erro no enviarEmailViaBrevo, então só registra aviso
+}
+
+// 📤 Envio opcional para e-mail corrigido
+if (
+  session.email_corrigido &&
+  session.email_corrigido !== session.email &&
+  !session.email_corrigido_enviado
+) {
+  try {
+    console.log(`📤 Enviando cópia para o e-mail corrigido: ${session.email_corrigido}`);
     await enviarEmailViaBrevo({
-      email: session.email,
+      email: session.email_corrigido,
       nome: session.nome,
       sessionId: session_id,
-      linkPdf: s3Url
+      linkPdf: s3Url,
+      idioma: session.idioma
     });
 
-    // 📤 Envio opcional para e-mail corrigido
-    if (
-      session.email_corrigido &&
-      session.email_corrigido !== session.email &&
-      !session.email_corrigido_enviado
-    ) {
-      console.log(`📤 Enviando cópia para o e-mail corrigido: ${session.email_corrigido}`);
-      await enviarEmailViaBrevo({
-        email: session.email_corrigido,
-        nome: session.nome,
-        sessionId: session_id,
-        linkPdf: s3Url
-      });
-
-      await pool.query(`
-        UPDATE diagnosticos
-        SET email_corrigido_enviado = true
-        WHERE session_id = $1
-      `, [session_id]);
-    }
+    await pool.query(`
+      UPDATE diagnosticos
+      SET email_corrigido_enviado = true
+      WHERE session_id = $1
+    `, [session_id]);
+  } catch (err) {
+    console.warn(`⚠️ Falha ao enviar cópia para e-mail corrigido: ${err.message}`);
+  }
+}
 
     // 🗃️ Atualiza status no banco
     await pool.query(`
@@ -122,10 +132,14 @@ const worker = new Worker('relatorios', async job => {
 // 🔍 Função auxiliar
 async function buscarDadosDoBanco(sessionId) {
   const { rows: [diagnostico] } = await pool.query(
-    `SELECT session_id, nome, email, email_corrigido, email_corrigido_enviado, tipo_relatorio, codigo_arquetipo, respostas_codificadas, respostas_numericas
-     FROM diagnosticos WHERE session_id = $1`,
-    [sessionId]
-  );
+  `SELECT session_id, nome, email, email_corrigido, email_corrigido_enviado,
+          tipo_relatorio, codigo_arquetipo, respostas_codificadas,
+          respostas_numericas, idioma
+   FROM diagnosticos
+   WHERE session_id = $1`,
+  [sessionId]
+);
+
   if (!diagnostico) return null;
 
   const arquetipo = diagnostico.codigo_arquetipo
@@ -141,9 +155,10 @@ async function buscarDadosDoBanco(sessionId) {
     respostas_codificadas: diagnostico.respostas_codificadas,
      respostas_numericas: diagnostico.respostas_numericas, 
     session_id: diagnostico.session_id,
+    idioma: diagnostico.idioma,
   };
-
-  console.log("📌 Tipo de relatório recebido:", diagnostico.tipo_relatorio);
+  console.log("🌐 Idioma vindo do banco:", diagnostico.idioma);
+    console.log("📌 Tipo de relatório recebido:", diagnostico.tipo_relatorio);
   console.log("📄 Template final usado:", diagnostico.tipo_relatorio || 'essencial');
 
   if (arquetipo.rows.length > 0) {

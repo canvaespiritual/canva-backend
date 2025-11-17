@@ -7,64 +7,62 @@ const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
 });
 
-// Tabela de produtos usada pelo MP (basico | intermediario | completo)
+// tabela base
 const PRODUTOS = {
-  basico:         { title: "Mapa Base da Alma",              unit_price: 12 },
-  intermediario:  { title: "Diagnóstico Intermediário",      unit_price: 21 },
-  completo:       { title: "Diagnóstico Corpo-Mente-Espírito", unit_price: 40 },
+  basico:        { title: "Mapa Base da Alma",                 unit_price: 12 },
+  intermediario: { title: "Diagnóstico Interdimensional",      unit_price: 21 },
+  completo:      { title: "Diagnóstico Corpo-Mente-Espírito",  unit_price: 29 },
 };
 
-// Helpers
+// normalizações
 const normalizeProdutoKey = (s) => {
-  // nome aceito pela rota do MP para lookup de preço
   s = String(s || "").toLowerCase();
   if (s === "premium" || s === "intermediario") return "intermediario";
   if (s === "completo" || s === "interdimensional") return "completo";
-  return "basico"; // "basico" e "essencial" caem aqui
+  return "basico";
 };
-
 const canonicalTipo = (s) => {
-  // nome canônico que será salvo em metadata.tipo e, depois, no Postgres
   s = String(s || "").toLowerCase();
   if (s === "premium" || s === "intermediario") return "premium";
   if (s === "completo" || s === "interdimensional") return "completo";
   return "essencial";
 };
 
-// ROTA: /pagamento/criar-preferencia-embed/:tipo/:session_id
+// limites do solidário (iguais ao PIX)
+const VALOR_MINIMO = 10;
+const VALOR_MAXIMO = 500;
+
 router.get("/criar-preferencia-embed/:tipo/:session_id", async (req, res) => {
-  const tipoParam   = req.params.tipo;
-  const session_id  = req.params.session_id;
+  const tipoParam  = req.params.tipo;
+  const session_id = req.params.session_id;
+  const produtoKey = normalizeProdutoKey(tipoParam);   // basico | intermediario | completo
+  const produto    = PRODUTOS[produtoKey];
+  const tipoCanon  = canonicalTipo(tipoParam);         // essencial | premium | completo
 
-  const produtoKey  = normalizeProdutoKey(tipoParam);   // basico | intermediario | completo (para preço)
-  const produto     = PRODUTOS[produtoKey];
-  const tipoCanon   = canonicalTipo(tipoParam);         // essencial | premium | completo (para relatório)
+  if (!produto) return res.status(400).json({ erro: `Produto inválido: ${tipoParam}` });
 
-  if (!produto) {
-    return res.status(400).json({ erro: `Produto inválido: ${tipoParam}` });
+  // override opcional via ?valor
+  let valor = req.query.valor ? parseFloat(String(req.query.valor).replace(',', '.')) : null;
+  if (isNaN(valor)) valor = null;
+  if (valor != null) {
+    if (!isFinite(valor)) valor = null;
+    else valor = Math.min(Math.max(valor, VALOR_MINIMO), VALOR_MAXIMO);
   }
-
-  console.log(`🧭 Criando preferência EMBED | tipoParam=${tipoParam} -> produtoKey=${produtoKey} | tipoCanon=${tipoCanon} | sessão=${session_id}`);
+  const unitPrice = valor != null ? Number(valor.toFixed(2)) : produto.unit_price;
 
   const preferenceData = {
-    items: [
-      {
-        id: session_id,
-        title: produto.title,
-        quantity: 1,
-        currency_id: "BRL",
-        unit_price: produto.unit_price,
-      }
-    ],
+    items: [{
+      id: session_id,
+      title: produto.title,
+      quantity: 1,
+      currency_id: "BRL",
+      unit_price: unitPrice,       // << aplica preço solidário
+    }],
     payer: {
-      // Dummy payer para sandbox; em produção use os dados reais do cliente
       email: `${session_id}@canvaespiritual.com`,
       name: "Cliente",
       surname: "Embed",
-      identification: {
-        type: "CPF",
-        number: "12345678909",
-      },
+      identification: { type: "CPF", number: "12345678909" },
     },
     back_urls: {
       success: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
@@ -72,27 +70,19 @@ router.get("/criar-preferencia-embed/:tipo/:session_id", async (req, res) => {
       pending: `https://api.canvaspiritual.com/aguarde.html?session_id=${session_id}`,
     },
     auto_return: "approved",
-    external_reference: session_id, // ajuda o webhook/polling a localizar a sessão
+    external_reference: session_id,
     metadata: {
       session_id,
-      tipo: tipoCanon,              // 🔥 sempre: essencial | premium | completo
+      tipo: tipoCanon,
+      valor_solidario: unitPrice,  // << útil para relatórios
     },
   };
 
   try {
     const resultado = await new Preference(client).create({ body: preferenceData });
-
-    console.log("📦 Resposta bruta da API Mercado Pago:", resultado);
-
     const preferenceId = resultado?.id || resultado?.body?.id;
-    if (!preferenceId) {
-      console.error("❌ Preferência criada, mas ID ausente:", resultado?.body || resultado);
-      return res.status(500).json({ erro: "Erro ao gerar preferência." });
-    }
-
-    console.log("✅ Preferência criada para embed:", preferenceId);
+    if (!preferenceId) return res.status(500).json({ erro: "Erro ao gerar preferência." });
     res.json({ preferenceId });
-
   } catch (error) {
     console.error("❌ Erro ao criar preferência para embed:", error);
     res.status(500).json({ erro: "Erro ao criar pagamento com cartão." });

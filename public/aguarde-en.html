@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your report is being prepared.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      text-align: center;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    .mensagem {
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .email-box {
+      margin-top: 20px;
+    }
+
+    input[type="email"] {
+      padding: 12px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 16px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 16px;
+      color: green;
+    }
+
+    #baixar {
+      display: none;
+      margin-top: 20px;
+      padding: 14px 16px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      width: 90%;
+      max-width: 360px;
+      box-sizing: border-box;
+      font-weight: bold;
+    }
+
+    #email-confirmado {
+      display: none;
+      font-size: 14px;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    .video-container {
+      margin-top: 60px;
+      display: none;
+    }
+
+    #contador {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    #tempo-restante {
+      font-size: 42px;
+      font-weight: bold;
+      color: #9333ea;
+      margin-bottom: 24px;
+    }
+
+    #video-wrapper {
+      position: relative;
+      padding-top: 56.25%; /* 16:9 */
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    #video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #botao-curso {
+      display: none;
+      margin-top: 30px;
+      font-size: 16px;
+      padding: 14px 22px;
+      background-color: #c026d3;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      #video-wrapper {
+        padding-top: 177.78%; /* vertical para celular */
+      }
+    }
+  </style>
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '734281049586138');
+fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+<!-- Meta: Purchase (sem valor) -->
+<script>
+  if (typeof fbq === 'function') {
+    fbq('track', 'Purchase', {
+      content_name: 'Mapa da Alma - Compra',
+      content_category: 'sale'
+    });
+  }
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Configura o GA4 com seu ID
+  gtag('config', 'G-9QDEN04CQM');
+   // Google Ads (ID base) – adicione se ainda não tiver nesta página
+  gtag('config', 'AW-936695843');
+
+  // Google Ads: Compra Quiz (Purchase)
+  gtag('event', 'conversion', {
+    'send_to': 'AW-936695843/wYdYCJmK-pYbEKOw074D',
+    // opcional, se quiser rastrear um ID único:
+    'transaction_id': (localStorage.getItem('session_id') || '') + '-' + Date.now()
+    // opcional: se quiser enviar valor, inclua:
+    // 'value': 0, 'currency': 'BRL'
+  });
+</script>
+
+<script>
+  gtag('event', 'purchase', {
+    transaction_id: (localStorage.getItem('session_id') || 'sessao') + '-' + Date.now(),
+    currency: 'BRL',
+    value: 0, // se não tiver valor real, pode deixar 0
+    items: [{
+      item_id: 'diagnostico',
+      item_name: 'Diagnóstico Mapa da Alma',
+      item_category: 'diagnostico',
+      quantity: 1
+    }]
+  });
+</script>
+
+</head>
+<body>
+
+ <h1>⏳ We are preparing your spiritual report.</h1>
+
+
+
+  <div class="mensagem" id="mensagem-usuario"></div>
+
+  <div class="email-box">
+    <p>📬 We’ll also send the report to this e-mail:</p>
+    <input type="email" id="email" placeholder="Seu e-mail" />
+    <br />
+    <button onclick="confirmarEmail()">Confirmar ou Corrigir</button>
+  </div>
+
+  <div id="status">⌛ Waiting for the report to be generated.</div>
+
+  <a id="baixar" href="#" target="_blank">📄 Download Report</a>
+
+  <p id="email-confirmado">
+    📩 Report also sent to: <span id="email-final"></span><br />
+    🔎 Verifique sua caixa de entrada e também a pasta de spam.
+  </p>
+
+  <!-- Bloco da revelação -->
+  <div class="video-container" id="video-container">
+    <p id="contador">⏳ A revelação continua…</p>
+    <p id="tempo-restante">20</p>
+
+    <div id="video-wrapper">
+      <iframe src="https://player.vimeo.com/video/1090623287?h=9f5dccfe7b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        title="Convite espiritual">
+      </iframe>
+    </div>
+
+    <a href="https://pay.kiwify.com.br/KxpXn2t" id="botao-curso" style="display: none;">
+  🎁 Quero desbloquear minha alma agora
+</a>
+
+<div id="faq-curso" style="display: none; max-width: 800px; margin: 40px auto 0 auto; text-align: left; font-family: 'Arial', sans-serif;">
+
+  <h2 style="font-size: 24px; text-align: center; font-weight: 300; margin-bottom: 24px; color: #111;">
+    🔓 Descubra o que está por trás da sua travessia espiritual...
+  </h2>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">🌀 O que realmente serei capaz de enxergar após este curso?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      Um novo mapa da sua alma — com camadas, zonas e raízes que antes estavam ocultas. Você será capaz de identificar suas vibrações dominantes, entender seus ciclos e agir com consciência espiritual sobre seus dons e feridas.
+    </p>
+  </details>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">📚 Qual é o conteúdo do curso Canva Espiritual?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      O curso é formado por <strong>40 selos audiovisuais</strong>, com até 10 minutos cada, organizados em <strong>5 módulos ritualísticos</strong>:<br><br>
+      🔍 <strong>Módulo 1 – Espelho da Alma:</strong> Diagnóstico emocional e espiritual.<br>
+      🔑 <strong>Módulo 2 – Mapa Espiritual:</strong> Leis espirituais e polaridades vibracionais.<br>
+      🛡️ <strong>Módulo 3 – Ferramentas de Transmutação:</strong> Técnicas de elevação e blindagem.<br>
+      🏜️ <strong>Módulo 4 – Deserto Interior:</strong> Exercícios de solidão, silêncio e soberania.<br>
+      🌎 <strong>Módulo 5 – Cosmovisão e Propósito:</strong> Chamado individual e visão do Todo.<br><br>
+      🧾 Além das aulas em vídeo, você receberá um <strong>material complementar robusto em PDF</strong>, com mapas da alma, exercícios, reflexões simbólicas e ferramentas práticas. Esses materiais são distribuídos ao longo das aulas para aprofundar sua jornada.
+    </p>
+  </details>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">🔁 Quantas vezes posso acessar os conteúdos?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      Você terá acesso total por 12 meses. O curso é um altar digital — e você pode voltar sempre que precisar realinhar sua alma.
+    </p>
+  </details>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">🌈 Esse curso serve para qualquer fé?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      Sim. O Canva Espiritual honra todas as tradições que buscam a verdade, a luz e o bem. Ele não impõe doutrinas — ele revela leis espirituais universais que ecoam em todas as culturas e tempos.
+    </p>
+  </details>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">🔐 O que há por trás das “chaves espirituais”?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      Cada chave representa uma travessia interior:<br><br>
+      • <strong>Leitura Espiritual:</strong> a alma se revela.<br>
+      • <strong>Autogoverno:</strong> você retoma o comando.<br>
+      • <strong>Blindagem Espiritual:</strong> escudo contra influências externas.<br>
+      • <strong>Transcendência:</strong> você aprende a voar por dentro.<br>
+      • <strong>Cosmovisão:</strong> você se alinha ao Todo.<br><br>
+      Juntas, essas chaves ativam áreas sutis e profundas do seu ser.
+    </p>
+  </details>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">🤝 Por que não posso mais caminhar sozinho?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      Porque agora você vê. E quem vê, não pode mais fingir que está cego. Este curso foi criado para te acompanhar na travessia — com verdade, clareza e suporte espiritual real.
+    </p>
+  </details>
+
+  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px;">
+    <summary style="font-weight: bold; cursor: pointer; color: #333;">💸 E se eu não gostar? Posso pedir reembolso?</summary>
+    <p style="margin-top: 10px; color: #444;">
+      Sim. Você tem <strong>7 dias de garantia incondicional</strong>, disponível direto na plataforma. Após a compra, basta acessar sua conta e clicar em <em>“Reembolsar”</em>. Sem burocracias. Sem explicações obrigatórias.
+    </p>
+  </details>
+
+</div>
+
+  </div>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script>
+    const sessionId = new URLSearchParams(window.location.search).get("session_id");
+
+    if (!sessionId) {
+      document.getElementById('mensagem-usuario').innerHTML = "❌ Sessão inválida.";
+      throw new Error("session_id ausente na URL");
+    }
+
+    async function carregarInfo() {
+      try {
+        const res = await fetch(`/info/${sessionId}`);
+        const data = await res.json();
+
+        document.getElementById('mensagem-usuario').innerHTML = `
+          🙏 Obrigado pela sua compra, <strong>${data.nome}</strong>.<br>
+          Você nos abençoou hoje — e esperamos que as sementes que encontrará neste relatório floresçam para sempre na sua alma.<br>
+          🌱 Que essa leitura seja uma porta viva para algo eterno.<br><br>
+          <em>Com fé, sabedoria e propósito — Canva Espiritual</em>
+        `;
+
+        document.getElementById('email').value = data.email || '';
+      } catch (err) {
+        console.error('Erro ao carregar dados do usuário:', err);
+      }
+    }
+
+    async function verificarStatus() {
+      try {
+        const res = await fetch(`/status/${sessionId}`);
+        const data = await res.json();
+
+        if (data.pronto && data.pdf_url) {
+          document.getElementById('status').textContent = '✅ Seu relatório está pronto!';
+          const link = document.getElementById('baixar');
+          link.href = data.pdf_url;
+          link.style.display = 'inline-block';
+
+          document.getElementById('email-confirmado').style.display = 'block';
+          document.getElementById('email-final').textContent = document.getElementById('email').value;
+
+          iniciarContagemRevelacao();
+        } else {
+          setTimeout(verificarStatus, 5000);
+        }
+      } catch (err) {
+        console.error('Erro ao verificar status:', err);
+        setTimeout(verificarStatus, 7000);
+      }
+    }
+
+    function confirmarEmail() {
+      const email = document.getElementById('email').value;
+
+      fetch(`/confirmar-email/${sessionId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.mensagem || 'E-mail confirmado!');
+        document.getElementById('email').disabled = true;
+        document.querySelector('.email-box button').disabled = true;
+      })
+      .catch(err => {
+        console.error('Erro ao confirmar e-mail:', err);
+        alert('Erro ao salvar o e-mail. Tente novamente.');
+      });
+    }
+
+    function iniciarContagemRevelacao() {
+      const videoContainer = document.getElementById('video-container');
+      const contador = document.getElementById('contador');
+      const tempoRestante = document.getElementById('tempo-restante');
+      const videoWrapper = document.getElementById('video-wrapper');
+      const botaoCurso = document.getElementById('botao-curso');
+
+      videoContainer.style.display = 'block';
+      let tempo = 20;
+      tempoRestante.textContent = tempo;
+
+      const intervalo = setInterval(() => {
+        tempo--;
+        tempoRestante.textContent = tempo;
+
+        if (tempo <= 0) {
+          clearInterval(intervalo);
+          contador.style.display = 'none';
+          tempoRestante.style.display = 'none';
+          videoWrapper.style.display = 'block';
+          
+          setTimeout(() => {
+          botaoCurso.style.display = 'inline-block';
+          const blocoFAQ = document.getElementById('faq-curso');
+          if (blocoFAQ) blocoFAQ.style.display = 'block';
+           }, 30000);
+
+        }
+      }, 1000);
+    }
+
+    carregarInfo();
+    verificarStatus();
+  </script>
+</body>
+</html>

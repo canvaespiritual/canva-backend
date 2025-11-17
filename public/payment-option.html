@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Choose Contribution — Soul Map</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    :root{ --bg:#0b0b0c; --fg:#f5f5f5; --muted:#9ca3af; --card:#131316; --ok:#16a34a; --err:#ef4444; --maxw:720px; }
+    *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Arial}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:22px 14px}
+    .card{background:var(--card);border:1px solid #1f2126;border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h1{margin:0 0 8px;font-size:22px;line-height:1.2}
+    .muted{color:var(--muted);font-size:.95rem}
+    .row{display:flex;gap:10px;align-items:center;margin:12px 0}
+    input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #d1d5db;background:#fff;color:#111827;font-weight:700}
+    .btn{appearance:none;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;background:var(--ok);color:#fff;font-weight:800;box-shadow:0 12px 28px rgba(22,163,74,.25)}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .note{color:#b8c2d0;font-size:12.5px;margin-top:8px}
+    .err{color:var(--err);font-size:.95rem;margin-top:8px;display:none}
+    .ok{color:#22c55e;font-size:.95rem;margin-top:8px;display:none}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="card">
+      <h1>Secure Checkout</h1>
+      <p class="muted">Review your contribution and continue to Stripe.</p>
+
+      <div class="row">
+        <label for="amount" style="min-width:100px">Amount (USD)</label>
+        <input id="amount" type="number" min="10" max="500" step="1" />
+      </div>
+
+      <div class="row">
+        <label for="type" style="min-width:100px">Report</label>
+        <select id="type" style="flex:1;padding:12px 14px;border-radius:10px;border:1px solid #d1d5db;background:#fff;color:#111827;font-weight:600">
+          <option value="full">Complete</option>
+          <option value="premium">Premium</option>
+          <option value="basic">Essential</option>
+        </select>
+      </div>
+
+      <button id="payNow" class="btn">Continue to Stripe</button>
+      <div id="loading" class="ok">Creating secure session…</div>
+      <div id="fatal" class="err">Something went wrong. Please try again.</div>
+
+      <p class="note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:6px">
+          <path d="M6 10V8a6 6 0 1112 0v2m-9 4h6m-9 0a3 3 0 01-3-3V9a2 2 0 012-2h12a2 2 0 012 2v2a3 3 0 01-3 3m-9 0v2a3 3 0 003 3h3a3 3 0 003-3v-2" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        Secure checkout via <strong>Stripe</strong>. We never store card details.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    // ---- helpers
+    const $ = (id)=>document.getElementById(id);
+    const qs = new URLSearchParams(location.search);
+
+    // Pull params (from pay.html redirect)
+    const paramAmount = Number(qs.get('amount') || '');
+    const paramType   = String(qs.get('type') || 'full').toLowerCase();
+    const sessionId   = qs.get('session_id') || localStorage.getItem('session_id');
+
+    // map UI "type" -> backend canônico
+    function canonical(tipo){
+      const t = String(tipo||'').toLowerCase();
+      if (t === 'premium') return 'premium';
+      if (t === 'full' || t === 'complete' || t === 'interdimensional') return 'completo';
+      return 'essencial';
+    }
+
+    // init fields
+    $('amount').value = Math.min(500, Math.max(10, isFinite(paramAmount)? paramAmount : 19));
+    $('type').value   = (paramType==='premium'||paramType==='basic')? paramType : 'full';
+
+    async function go(){
+      $('fatal').style.display = 'none';
+      $('loading').style.display = 'block';
+
+      const amount = Math.min(500, Math.max(10, Number($('amount').value || 0)));
+      const typeUi = $('type').value; // full|premium|basic
+      const tipo   = canonical(typeUi);
+
+      if(!sessionId){
+        $('loading').style.display = 'none';
+        $('fatal').textContent = 'Missing session_id. Please start again from the quiz.';
+        $('fatal').style.display = 'block';
+        return;
+      }
+
+      try{
+        const resp = await fetch('/api/stripe/create-checkout-session', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            session_id: sessionId,
+            amount,
+            tipo,              // essencial | premium | completo
+            locale: 'en',
+            ref: qs.get('ref') || qs.get('aff') || null
+          })
+        });
+        if(!resp.ok) throw new Error('bad response');
+        const data = await resp.json();
+        if(data && data.url){
+          location.href = data.url;
+        }else{
+          throw new Error('no url');
+        }
+      }catch(e){
+        console.error(e);
+        $('fatal').style.display = 'block';
+      }finally{
+        $('loading').style.display = 'none';
+      }
+    }
+    $('payNow').addEventListener('click', go);
+  </script>
+</body>
+</html>

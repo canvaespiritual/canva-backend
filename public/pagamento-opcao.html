@@ -43,6 +43,9 @@ const tipo = (() => {
    return 'basico';
  })();
   const sessionId = qs.get('session_id') || localStorage.getItem('session_id');
+  const valorParam = qs.get('valor');
+const valorSolidario = valorParam ? parseFloat(valorParam) : null;
+
 
   // 🔎 NOVO: detectar afiliado
   const ref = (qs.get('ref') || qs.get('aff') || '').trim();
@@ -174,7 +177,11 @@ async function iniciarMP(isFallback = false) {
 
   // 1) PIX
   try {
-    const rPix = await fetch(`/pagamento/criar-pix/${encodeURIComponent(tipoForMP)}/${encodeURIComponent(sessionId)}`);
+    const rPix = await fetch(
+  `/pagamento/criar-pix/${encodeURIComponent(tipoForMP)}/${encodeURIComponent(sessionId)}`
+  + (valorSolidario ? `?valor=${encodeURIComponent(valorSolidario)}` : '')
+);
+
     const data = await rPix.json();
     if (data?.qr_code) {
       qrcode.classList.remove('hidden');
@@ -189,7 +196,11 @@ async function iniciarMP(isFallback = false) {
 
   // 2) Cartão (Wallet/Bricks)
   try {
-    const rPref = await fetch(`/pagamento/criar-preferencia-embed/${encodeURIComponent(tipoForMP)}/${encodeURIComponent(sessionId)}`);
+    const rPref = await fetch(
+  `/pagamento/criar-preferencia-embed/${encodeURIComponent(tipoForMP)}/${encodeURIComponent(sessionId)}`
+  + (valorSolidario ? `?valor=${encodeURIComponent(valorSolidario)}` : '')
+);
+
     const pref = await rPref.json();
     if (pref?.preferenceId) {
       const mp = new MercadoPago("APP_USR-491a3716-8f57-4a13-ab92-fa375fe8cc1c");

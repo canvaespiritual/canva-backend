@@ -23,6 +23,26 @@ function definirZona(respostas) {
 router.post("/", async (req, res) => {
   try {
     const dados = req.body;
+    // 🌍 Detecta idioma pela URL de origem (referer) ou pelo body
+let idioma = 'pt'; // padrão seguro
+try {
+  const ref = req.get('referer') || ''; // URL de onde veio o POST
+  if (ref.includes('/en/')) idioma = 'en';
+  else if (ref.includes('/es/')) idioma = 'es';
+  else if (ref.includes('/fr/')) idioma = 'fr';
+  else if (ref.includes('/it/')) idioma = 'it';
+  else if (dados.lang) idioma = dados.lang; // fallback se vier explícito no body
+} catch (e) {
+  idioma = 'pt';
+}
+
+// normalização simples (opcional, se já vem pronto do front pode manter)
+let telefone = dados.telefone || null;
+if (telefone) {
+  telefone = String(telefone).replace(/\D/g, '');
+  if (telefone && !telefone.startsWith('55')) telefone = '55' + telefone;
+}
+
     // 🔽 ADD: captura a referência do afiliado da sessão/cookie
   // 🔽 Captura a referência do afiliado (várias fontes)
 const affiliateRef =
@@ -74,6 +94,7 @@ const affiliateRef =
       session_id: dados.session_id,
       nome: dados.nome,
       email: dados.email,
+      telefone: telefone || null,  
       respostas: dados.respostas,
       respostas_codificadas: respostasCodificadas,
       media_vibracional: media,
@@ -89,40 +110,47 @@ const affiliateRef =
     
     // Gravação no PostgreSQL
     try {
-      await pool.query(`
-        INSERT INTO diagnosticos (
-          session_id, nome, email, respostas_numericas, respostas_codificadas,
-          status_pagamento, status_processo, criado_em,
-          media_vibracional, zona_predominante, codigo_arquetipo, affiliate_ref
-        ) VALUES (
-          $1, $2, $3, $4, $5,
-          $6, $7, $8,
-          $9, $10, $11,$12
-        )
-          ON CONFLICT (session_id) DO UPDATE SET
-      nome = EXCLUDED.nome,
-      email = EXCLUDED.email,
-      respostas_numericas = EXCLUDED.respostas_numericas,
-      respostas_codificadas = EXCLUDED.respostas_codificadas,
-      media_vibracional = EXCLUDED.media_vibracional,
-      zona_predominante = EXCLUDED.zona_predominante,
-      codigo_arquetipo = EXCLUDED.codigo_arquetipo,
-      affiliate_ref = COALESCE(EXCLUDED.affiliate_ref, diagnosticos.affiliate_ref),
-      updated_at = NOW();
-      `, [
-        dadosCompletos.session_id,
-        dadosCompletos.nome,
-        dadosCompletos.email,
-        JSON.stringify(dadosCompletos.respostas),
-        JSON.stringify(dadosCompletos.respostas_codificadas),
-        "pendente",
-        "iniciado",
-        new Date(),
-        media,
-        zona,
-        codigoArquetipo,
-        affiliateRef
-      ]);
+    await pool.query(`
+  INSERT INTO diagnosticos (
+    session_id, nome, email, telefone,
+    respostas_numericas, respostas_codificadas,
+    status_pagamento, status_processo, criado_em,
+    media_vibracional, zona_predominante, codigo_arquetipo, affiliate_ref, idioma
+  ) VALUES (
+    $1, $2, $3, $4,
+    $5, $6,
+    $7, $8, $9,
+    $10, $11, $12, $13, $14
+  )
+  ON CONFLICT (session_id) DO UPDATE SET
+    nome                 = EXCLUDED.nome,
+    email                = EXCLUDED.email,
+    telefone             = COALESCE(EXCLUDED.telefone, diagnosticos.telefone),
+    respostas_numericas  = EXCLUDED.respostas_numericas,
+    respostas_codificadas= EXCLUDED.respostas_codificadas,
+    media_vibracional    = EXCLUDED.media_vibracional,
+    zona_predominante    = EXCLUDED.zona_predominante,
+    codigo_arquetipo     = EXCLUDED.codigo_arquetipo,
+    affiliate_ref        = COALESCE(EXCLUDED.affiliate_ref, diagnosticos.affiliate_ref),
+    idioma               = COALESCE(EXCLUDED.idioma, diagnosticos.idioma),
+    updated_at           = NOW();
+`, [
+  dadosCompletos.session_id,
+  dadosCompletos.nome,
+  dadosCompletos.email,
+  dadosCompletos.telefone,                 // $4
+  JSON.stringify(dadosCompletos.respostas),           // $5
+  JSON.stringify(dadosCompletos.respostas_codificadas), // $6
+  "pendente",                               // $7
+  "iniciado",                               // $8
+  new Date(),                               // $9
+  media,                                    // $10
+  zona,                                     // $11
+  codigoArquetipo,                          // $12
+  affiliateRef,                             // $13
+  idioma                                    // $14 ✅ novo
+]);
+
 
        console.log(`📥 Diagnóstico ${dadosCompletos.session_id} registrado no PostgreSQL.`);
 } catch (erroPg) {
@@ -133,10 +161,12 @@ const affiliateRef =
 // (fora do try do DB) — falhas aqui não devem travar sua sessão
 try {
   await cadastrarLeadNoBrevo({
-    email: dadosCompletos.email,
-    nome: dadosCompletos.nome,
-    atributos: { QUIZ: true }
-  });
+  email: dadosCompletos.email,
+  nome: dadosCompletos.nome,
+  idioma, // vem da detecção do referer
+  atributos: { QUIZ: true }
+});
+
 } catch (e) {
   console.warn("⚠️ Não foi possível cadastrar no Brevo agora:", e.message || e);
 }

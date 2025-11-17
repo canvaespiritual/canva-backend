@@ -2,6 +2,7 @@
    Soul Map – Quiz (EN)
    ========================= */
 
+
 const LANG = 'en';
 // ——— fruit details (code -> { description, diagnostic }) ———
 let fruitDetails = {};
@@ -160,6 +161,26 @@ const questions = [
     ]
   }
 ];
+/* ===== Mini EN: 12 perguntas × 5 opções (espelho do PT) ===== */
+// manter 5 opções por pergunta (0-based): 0, 4, 6, 8, 11
+const OPT_IDX = [0, 4, 6, 8, 11];
+
+// aplica o filtro em TODAS as perguntas (sem mexer em títulos/códigos)
+for (let i = 0; i < questions.length; i++) {
+  const q = questions[i];
+  if (!q || !Array.isArray(q.codes) || !Array.isArray(q.options)) continue;
+
+  const newCodes = [];
+  const newOpts  = [];
+  OPT_IDX.forEach(j => {
+    if (q.codes[j] !== undefined && q.options[j] !== undefined) {
+      newCodes.push(q.codes[j]);
+      newOpts.push(q.options[j]);
+    }
+  });
+
+  questions[i] = { ...q, codes: newCodes, options: newOpts };
+}
 
 /* ——— Helpers ——— */
 function levelFromCode(code){ return parseInt(code.slice(-2),10); }
