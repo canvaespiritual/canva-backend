@@ -135,179 +135,177 @@
       }
     }
   </style>
+
   <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '734281049586138');
-fbq('track', 'PageView');
-</script>
-<noscript>
-  <img height="1" width="1" style="display:none"
-       src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/>
-</noscript>
-<!-- End Meta Pixel Code -->
-<!-- Meta: Purchase (sem valor) -->
-<script>
-  if (typeof fbq === 'function') {
-    fbq('track', 'Purchase', {
-      content_name: 'Mapa da Alma - Compra',
-      content_category: 'sale'
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '734281049586138');
+  fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Meta: Purchase (sem valor) -->
+  <script>
+    if (typeof fbq === 'function') {
+      fbq('track', 'Purchase', {
+        content_name: 'Mapa da Alma - Compra',
+        content_category: 'sale'
+      });
+    }
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    // GA4 config
+    gtag('config', 'G-9QDEN04CQM');
+    // Google Ads
+    gtag('config', 'AW-936695843');
+
+    // Google Ads: Quiz Purchase (conversion)
+    gtag('event', 'conversion', {
+      'send_to': 'AW-936695843/wYdYCJmK-pYbEKOw074D',
+      'transaction_id': (localStorage.getItem('session_id') || '') + '-' + Date.now()
     });
-  }
-</script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  </script>
 
-  // Configura o GA4 com seu ID
-  gtag('config', 'G-9QDEN04CQM');
-   // Google Ads (ID base) – adicione se ainda não tiver nesta página
-  gtag('config', 'AW-936695843');
-
-  // Google Ads: Compra Quiz (Purchase)
-  gtag('event', 'conversion', {
-    'send_to': 'AW-936695843/wYdYCJmK-pYbEKOw074D',
-    // opcional, se quiser rastrear um ID único:
-    'transaction_id': (localStorage.getItem('session_id') || '') + '-' + Date.now()
-    // opcional: se quiser enviar valor, inclua:
-    // 'value': 0, 'currency': 'BRL'
-  });
-</script>
-
-<script>
-  gtag('event', 'purchase', {
-    transaction_id: (localStorage.getItem('session_id') || 'sessao') + '-' + Date.now(),
-    currency: 'BRL',
-    value: 0, // se não tiver valor real, pode deixar 0
-    items: [{
-      item_id: 'diagnostico',
-      item_name: 'Diagnóstico Mapa da Alma',
-      item_category: 'diagnostico',
-      quantity: 1
-    }]
-  });
-</script>
+  <script>
+    gtag('event', 'purchase', {
+      transaction_id: (localStorage.getItem('session_id') || 'sessao') + '-' + Date.now(),
+      currency: 'BRL',
+      value: 0,
+      items: [{
+        item_id: 'diagnostico',
+        item_name: 'Diagnóstico Mapa da Alma',
+        item_category: 'diagnostico',
+        quantity: 1
+      }]
+    });
+  </script>
 
 </head>
 <body>
 
- <h1>⏳ We are preparing your spiritual report.</h1>
-
-
+  <h1>⏳ We are preparing your spiritual report.</h1>
 
   <div class="mensagem" id="mensagem-usuario"></div>
 
   <div class="email-box">
     <p>📬 We’ll also send the report to this e-mail:</p>
-    <input type="email" id="email" placeholder="Seu e-mail" />
+    <input type="email" id="email" placeholder="Your e-mail" />
     <br />
-    <button onclick="confirmarEmail()">Confirmar ou Corrigir</button>
+    <button onclick="confirmarEmail()">Confirm or edit</button>
   </div>
 
   <div id="status">⌛ Waiting for the report to be generated.</div>
 
-  <a id="baixar" href="#" target="_blank">📄 Download Report</a>
+  <a id="baixar" href="#" target="_blank">📄 Download your report</a>
 
   <p id="email-confirmado">
     📩 Report also sent to: <span id="email-final"></span><br />
-    🔎 Verifique sua caixa de entrada e também a pasta de spam.
+    🔎 Check your inbox and also your spam folder.
   </p>
 
-  <!-- Bloco da revelação -->
+  <!-- Revelation block -->
   <div class="video-container" id="video-container">
-    <p id="contador">⏳ A revelação continua…</p>
+    <p id="contador">⏳ The revelation continues…</p>
     <p id="tempo-restante">20</p>
 
     <div id="video-wrapper">
       <iframe src="https://player.vimeo.com/video/1090623287?h=9f5dccfe7b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
         frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
-        title="Convite espiritual">
+        title="Spiritual invitation">
       </iframe>
     </div>
 
-    <a href="https://pay.kiwify.com.br/KxpXn2t" id="botao-curso" style="display: none;">
-  🎁 Quero desbloquear minha alma agora
-</a>
+    <a href="https://pay.hotmart.com/Q102766143I?bid=1763417188323" id="botao-curso" style="display: none;">
+      🎁 I want to unlock my soul now
+    </a>
 
-<div id="faq-curso" style="display: none; max-width: 800px; margin: 40px auto 0 auto; text-align: left; font-family: 'Arial', sans-serif;">
+    <div id="faq-curso" style="display: none; max-width: 800px; margin: 40px auto 0 auto; text-align: left; font-family: 'Arial', sans-serif;">
 
-  <h2 style="font-size: 24px; text-align: center; font-weight: 300; margin-bottom: 24px; color: #111;">
-    🔓 Descubra o que está por trás da sua travessia espiritual...
-  </h2>
+      <h2 style="font-size: 24px; text-align: center; font-weight: 300; margin-bottom: 24px; color: #111;">
+        🔓 Discover what is really behind your spiritual journey…
+      </h2>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🌀 O que realmente serei capaz de enxergar após este curso?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Um novo mapa da sua alma — com camadas, zonas e raízes que antes estavam ocultas. Você será capaz de identificar suas vibrações dominantes, entender seus ciclos e agir com consciência espiritual sobre seus dons e feridas.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">🌀 What will I actually be able to see after this course?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          A new map of your soul — with layers, zones and roots that were previously hidden. You’ll be able to identify your dominant vibrations, understand your cycles and act with spiritual awareness over your gifts and wounds.
+        </p>
+      </details>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">📚 Qual é o conteúdo do curso Canva Espiritual?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      O curso é formado por <strong>40 selos audiovisuais</strong>, com até 10 minutos cada, organizados em <strong>5 módulos ritualísticos</strong>:<br><br>
-      🔍 <strong>Módulo 1 – Espelho da Alma:</strong> Diagnóstico emocional e espiritual.<br>
-      🔑 <strong>Módulo 2 – Mapa Espiritual:</strong> Leis espirituais e polaridades vibracionais.<br>
-      🛡️ <strong>Módulo 3 – Ferramentas de Transmutação:</strong> Técnicas de elevação e blindagem.<br>
-      🏜️ <strong>Módulo 4 – Deserto Interior:</strong> Exercícios de solidão, silêncio e soberania.<br>
-      🌎 <strong>Módulo 5 – Cosmovisão e Propósito:</strong> Chamado individual e visão do Todo.<br><br>
-      🧾 Além das aulas em vídeo, você receberá um <strong>material complementar robusto em PDF</strong>, com mapas da alma, exercícios, reflexões simbólicas e ferramentas práticas. Esses materiais são distribuídos ao longo das aulas para aprofundar sua jornada.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">📚 What is inside the Canva Espiritual course?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          The course is made of <strong>40 audiovisual seals</strong>, up to 10 minutes each, organized in <strong>5 ritualistic modules</strong>:<br><br>
+          🔍 <strong>Module 1 – Soul Mirror:</strong> Emotional and spiritual diagnosis.<br>
+          🔑 <strong>Module 2 – Spiritual Map:</strong> Spiritual laws and vibrational polarities.<br>
+          🛡️ <strong>Module 3 – Transmutation Tools:</strong> Techniques for elevation and protection.<br>
+          🏜️ <strong>Module 4 – Inner Desert:</strong> Exercises of solitude, silence and sovereignty.<br>
+          🌎 <strong>Module 5 – Worldview and Purpose:</strong> Your individual calling and the vision of the Whole.<br><br>
+          🧾 Along with the video lessons, you receive a <strong>robust complementary PDF material</strong>, with soul maps, exercises, symbolic reflections and practical tools. These materials are released throughout the course to deepen your journey.
+        </p>
+      </details>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🔁 Quantas vezes posso acessar os conteúdos?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Você terá acesso total por 12 meses. O curso é um altar digital — e você pode voltar sempre que precisar realinhar sua alma.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">🔁 How long do I have access to the content?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          You’ll have full access for 12 months. The course is a digital altar — and you can return to it anytime you need to realign your soul.
+        </p>
+      </details>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🌈 Esse curso serve para qualquer fé?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Sim. O Canva Espiritual honra todas as tradições que buscam a verdade, a luz e o bem. Ele não impõe doutrinas — ele revela leis espirituais universais que ecoam em todas as culturas e tempos.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">🌈 Is this course compatible with any faith?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          Yes. Canva Espiritual honors every tradition that seeks truth, light and goodness. It doesn’t impose doctrines — it reveals universal spiritual laws that echo across cultures and time.
+        </p>
+      </details>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🔐 O que há por trás das “chaves espirituais”?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Cada chave representa uma travessia interior:<br><br>
-      • <strong>Leitura Espiritual:</strong> a alma se revela.<br>
-      • <strong>Autogoverno:</strong> você retoma o comando.<br>
-      • <strong>Blindagem Espiritual:</strong> escudo contra influências externas.<br>
-      • <strong>Transcendência:</strong> você aprende a voar por dentro.<br>
-      • <strong>Cosmovisão:</strong> você se alinha ao Todo.<br><br>
-      Juntas, essas chaves ativam áreas sutis e profundas do seu ser.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">🔐 What’s behind the “spiritual keys”?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          Each key represents an inner crossing:<br><br>
+          • <strong>Spiritual Reading:</strong> the soul reveals itself.<br>
+          • <strong>Self-Governance:</strong> you take back the command.<br>
+          • <strong>Spiritual Shielding:</strong> protection against external influences.<br>
+          • <strong>Transcendence:</strong> you learn to fly within.<br>
+          • <strong>Worldview:</strong> you align yourself with the Whole.<br><br>
+          Together, these keys activate subtle and deep areas of your being.
+        </p>
+      </details>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🤝 Por que não posso mais caminhar sozinho?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Porque agora você vê. E quem vê, não pode mais fingir que está cego. Este curso foi criado para te acompanhar na travessia — com verdade, clareza e suporte espiritual real.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">🤝 Why shouldn’t I walk this path alone anymore?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          Because now you see. And once you see, you can’t pretend you’re blind. This course was created to walk with you through the crossing — with truth, clarity and real spiritual support.
+        </p>
+      </details>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">💸 E se eu não gostar? Posso pedir reembolso?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Sim. Você tem <strong>7 dias de garantia incondicional</strong>, disponível direto na plataforma. Após a compra, basta acessar sua conta e clicar em <em>“Reembolsar”</em>. Sem burocracias. Sem explicações obrigatórias.
-    </p>
-  </details>
+      <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px;">
+        <summary style="font-weight: bold; cursor: pointer; color: #333;">💸 What if I don’t like it? Can I request a refund?</summary>
+        <p style="margin-top: 10px; color: #444;">
+          Yes. You have a <strong>7-day unconditional guarantee</strong>, directly inside the platform. After the purchase, simply log into your account and click on <em>“Request refund”</em>. No bureaucracy. No mandatory explanations.
+        </p>
+      </details>
 
-</div>
+    </div>
 
   </div>
 
@@ -316,8 +314,8 @@ fbq('track', 'PageView');
     const sessionId = new URLSearchParams(window.location.search).get("session_id");
 
     if (!sessionId) {
-      document.getElementById('mensagem-usuario').innerHTML = "❌ Sessão inválida.";
-      throw new Error("session_id ausente na URL");
+      document.getElementById('mensagem-usuario').innerHTML = "❌ Invalid session.";
+      throw new Error("session_id missing in URL");
     }
 
     async function carregarInfo() {
@@ -326,15 +324,15 @@ fbq('track', 'PageView');
         const data = await res.json();
 
         document.getElementById('mensagem-usuario').innerHTML = `
-          🙏 Obrigado pela sua compra, <strong>${data.nome}</strong>.<br>
-          Você nos abençoou hoje — e esperamos que as sementes que encontrará neste relatório floresçam para sempre na sua alma.<br>
-          🌱 Que essa leitura seja uma porta viva para algo eterno.<br><br>
-          <em>Com fé, sabedoria e propósito — Canva Espiritual</em>
+          🙏 Thank you for your purchase, <strong>${data.nome}</strong>.<br>
+          You blessed us today — and we hope the seeds you’ll find in this report may blossom forever in your soul.<br>
+          🌱 May this reading become a living doorway to something eternal.<br><br>
+          <em>With faith, wisdom and purpose — Canva Espiritual</em>
         `;
 
         document.getElementById('email').value = data.email || '';
       } catch (err) {
-        console.error('Erro ao carregar dados do usuário:', err);
+        console.error('Error loading user data:', err);
       }
     }
 
@@ -344,7 +342,7 @@ fbq('track', 'PageView');
         const data = await res.json();
 
         if (data.pronto && data.pdf_url) {
-          document.getElementById('status').textContent = '✅ Seu relatório está pronto!';
+          document.getElementById('status').textContent = '✅ Your report is ready!';
           const link = document.getElementById('baixar');
           link.href = data.pdf_url;
           link.style.display = 'inline-block';
@@ -357,7 +355,7 @@ fbq('track', 'PageView');
           setTimeout(verificarStatus, 5000);
         }
       } catch (err) {
-        console.error('Erro ao verificar status:', err);
+        console.error('Error checking status:', err);
         setTimeout(verificarStatus, 7000);
       }
     }
@@ -372,13 +370,13 @@ fbq('track', 'PageView');
       })
       .then(res => res.json())
       .then(data => {
-        alert(data.mensagem || 'E-mail confirmado!');
+        alert(data.mensagem || 'Email confirmed!');
         document.getElementById('email').disabled = true;
         document.querySelector('.email-box button').disabled = true;
       })
       .catch(err => {
-        console.error('Erro ao confirmar e-mail:', err);
-        alert('Erro ao salvar o e-mail. Tente novamente.');
+        console.error('Error confirming e-mail:', err);
+        alert('Error saving your e-mail. Please try again.');
       });
     }
 
@@ -402,12 +400,12 @@ fbq('track', 'PageView');
           contador.style.display = 'none';
           tempoRestante.style.display = 'none';
           videoWrapper.style.display = 'block';
-          
+
           setTimeout(() => {
-          botaoCurso.style.display = 'inline-block';
-          const blocoFAQ = document.getElementById('faq-curso');
-          if (blocoFAQ) blocoFAQ.style.display = 'block';
-           }, 30000);
+            botaoCurso.style.display = 'inline-block';
+            const blocoFAQ = document.getElementById('faq-curso');
+            if (blocoFAQ) blocoFAQ.style.display = 'block';
+          }, 30000);
 
         }
       }, 1000);

@@ -5,6 +5,8 @@ const pool = require("../db"); // ajuste o caminho conforme sua estrutura
 
 const router = express.Router();
 const cadastrarLeadNoBrevo = require("../utils/cadastrarLeadNoBrevo");
+const enviarEmailSimplesViaBrevo = require("../utils/enviarEmailSimplesViaBrevo");
+
 
 // Função para calcular média
 function calcularMedia(respostas) {
@@ -173,6 +175,83 @@ try {
 
     // Só grava o JSON após sucesso no banco
     await fs.promises.writeFile(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");
+        // ---------------------------
+    // ✉️ E-mail pós-quiz (remarketing leve)
+    // ---------------------------
+    try {
+      const delayMs = 1 * 60 * 1000; // 5 minutos
+
+      setTimeout(async () => {
+        try {
+          const lang = String(idioma || "pt").toLowerCase();
+          const isEn = lang.startsWith("en");
+
+          // URL base do seu front (ajuste para seu domínio real)
+          const baseUrl = process.env.FRONT_URL || "https://seu-dominio.com";
+
+          // Página de retorno com VSL + pagamento
+          const linkVsl = isEn
+            ? `${baseUrl}/pay.html`
+            : `${baseUrl}/pagar-mini.html`;
+
+          const nome = dadosCompletos.nome;
+          const email = dadosCompletos.email;
+
+          const subject = isEn
+            ? "Your Soul Map is almost ready…"
+            : "Seu Mapa da Alma está quase pronto…";
+
+          const htmlContent = isEn
+            ? `
+              <p>Hi <strong>${nome}</strong>,</p>
+              <p>You’ve just completed your Soul Map quiz. Your personalized report is almost ready on our side.</p>
+              <p>While the system prepares everything, here is your access link to revisit the explanation and unlock your full report when it’s the right moment for you:</p>
+              <p style="margin:20px 0;">
+                <a href="${linkVsl}" target="_blank"
+                   style="background:#16a34a;color:#fff;padding:12px 22px;text-decoration:none;border-radius:999px;font-weight:700;">
+                  👉 Access your spiritual reading
+                </a>
+              </p>
+              <p>If the button doesn’t work, copy and paste this link into your browser:<br>
+              <span style="font-size:13px;color:#6b7280;">${linkVsl}</span></p>
+              <p>Keep this email. You can return anytime and continue your inner journey.</p>
+              <p>With light,<br>Canva Espiritual</p>
+            `
+            : `
+              <p>Olá <strong>${nome}</strong>,</p>
+              <p>Você acabou de concluir o seu autodiagnóstico espiritual. Seu Mapa da Alma já está quase pronto do nosso lado.</p>
+              <p>Enquanto o sistema organiza tudo, deixo aqui o seu link de acesso para rever a explicação e liberar o relatório completo quando for o melhor momento pra você:</p>
+              <p style="margin:20px 0;">
+                <a href="${linkVsl}" target="_blank"
+                   style="background:#16a34a;color:#fff;padding:12px 22px;text-decoration:none;border-radius:999px;font-weight:700;">
+                  👉 Acessar sua leitura espiritual
+                </a>
+              </p>
+              <p>Se o botão não funcionar, copie e cole este link no seu navegador:<br>
+              <span style="font-size:13px;color:#9ca3af;">${linkVsl}</span></p>
+              <p>Guarde este e-mail. Assim você pode voltar quando quiser e continuar a travessia interior.</p>
+              <p>Com luz,<br>Canva Espiritual</p>
+            `;
+
+          await enviarEmailSimplesViaBrevo({
+            nome,
+            email,
+            subject,
+            htmlContent,
+            tags: ["pos_quiz", "vsl_reminder"],
+          });
+
+        } catch (e) {
+          console.error("❌ Erro ao enviar e-mail pós-quiz:", e.message || e);
+        }
+      }, delayMs);
+
+    } catch (e) {
+      console.error("⚠️ Falha ao agendar e-mail pós-quiz:", e.message || e);
+    }
+
+    console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
+    res.status(200).send("Sessão salva com sucesso.");
 
     console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
     res.status(200).send("Sessão salva com sucesso.");

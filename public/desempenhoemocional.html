@@ -1,0 +1,3515 @@
+<!-- ==================== BLOCO 1 • HERO (sem vídeo) ==================== -->
+<style>
+  :root{
+    --bg:#0b0f14; --ink:#e9edf2; --gold:#f5c84c;
+  }
+  #hero1{
+    background:#000 url('https://canvaspiritual.com/wp-content/uploads/2025/09/ChatGPT-Image-22-de-set.-de-2025-07_13_29.png') center/cover no-repeat;
+    color:var(--ink);
+  }
+  #hero1 .wrap{
+    max-width:1200px; margin:0 auto;
+    min-height:100svh; display:grid; align-content:center;
+    padding: clamp(32px,4vw,56px) 16px;
+  }
+  #hero1 .h1{
+    font-family:"Comfortaa",system-ui; font-weight:700;
+    font-size: clamp(26px,5.2vw,44px); line-height:1.06; margin:0 0 10px;
+    color:var(--ink);
+    text-shadow:0 6px 22px rgba(0,0,0,.45);
+  }
+ #hero1 .sub{
+  font-family:Questrial,system-ui;
+  font-size:clamp(14px,2.2vw,18px);
+  max-width:68ch;
+  margin:0 0 14px;
+  color:var(--ink);      /* força branco/clarinho */
+  opacity:1;             /* se quiser bem legível */
+}
+
+/* garante que strong e links também fiquem claros */
+#hero1 .sub strong,
+#hero1 .sub a{
+  color:var(--ink);
+}
+
+  
+  #hero1 .bullets{ display:grid; gap:10px; margin:8px 0 16px; }
+  #hero1 .bullet{
+    display:flex; align-items:flex-start; gap:10px;
+    font-family:Questrial,system-ui; font-size: clamp(14px,2.2vw,18px);
+    text-shadow:0 2px 12px rgba(0,0,0,.35);
+  }
+  #hero1 .ico{
+    width:22px; height:22px; border-radius:8px; flex:0 0 22px;
+    display:grid; place-items:center;
+    background: rgba(245,200,76,.18); color:var(--gold); font-weight:700;
+  }
+  #hero1 .ctas{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  #hero1 .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700;
+    border-radius:14px; padding:12px 18px; font-family:Questrial,system-ui;
+    background:var(--gold); color:#121212; box-shadow:0 12px 28px rgba(0,0,0,.28);
+  }
+  #hero1 .btn:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
+  @media (min-width:1024px){
+    #hero1 .wrap{ padding-left:24px; padding-right:24px; }
+  }
+  /* âncoras suaves do site já existem; garantir margem: */
+  #preco,#como-funciona,#garantia,#faq{ scroll-margin-top:80px; }
+  /* === CTA SLIM do HERO (#hero1) === */
+#hero1 .ctas{ gap:10px; flex-wrap:wrap; }
+
+#hero1 .btn{
+  /* tira qualquer largura herdada */
+  display:inline-flex !important;
+  align-items:center; justify-content:center;
+  width:auto !important; max-width:max-content; white-space:nowrap;
+
+  /* tamanho slim */
+  padding:8px 12px !important;
+  font:700 14px/1.05 Questrial,system-ui !important;
+  border-radius:12px !important;
+
+  /* visual */
+  background:var(--gold);
+  color:#121212;
+  text-decoration:none;
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
+
+  /* animação sutil (piscada/breath) */
+  animation: heroBtnBreathe 2.4s ease-in-out infinite;
+}
+
+#hero1 .btn:hover{
+  filter:brightness(.96);
+  transform:translateY(-1px);
+}
+
+#hero1 .btn:focus-visible{
+  outline:2px solid #fff; outline-offset:2px;
+}
+
+/* desktop: um toque maior */
+@media (min-width:1024px){
+  #hero1 .btn{
+    padding:10px 16px !important;
+    font-size:15px !important;
+    border-radius:14px !important;
+  }
+}
+
+/* animação (super discreta) */
+@keyframes heroBtnBreathe{
+  0%,100%{
+    transform:translateY(0) scale(1);
+    box-shadow:0 6px 14px rgba(0,0,0,.18);
+  }
+  50%{
+    transform:translateY(-1px) scale(1.02);
+    box-shadow:0 10px 22px rgba(0,0,0,.22);
+  }
+}
+
+/* respeitar quem desativa animações */
+@media (prefers-reduced-motion: reduce){
+  #hero1 .btn{ animation:none !important; }
+}
+/* ===== CTA do HERO: centralizado, slim e com borda ===== */
+#hero1 .ctas{
+  display:flex; justify-content:center; align-items:center;
+  gap:12px; flex-wrap:wrap; margin-top:12px;
+  text-align:center;
+}
+
+/* botão principal */
+#hero1 .btn{
+  display:inline-flex !important; align-items:center; justify-content:center;
+  gap:8px;                   /* espaço p/ ícone se quiser */
+  padding:12px 18px !important;      /* um pouco maior que o slim anterior */
+  font:700 15px/1.1 Questrial,system-ui !important;
+  border-radius:14px !important;
+
+  /* visual: sólido + borda + sombra */
+  background:var(--gold);
+  color:#121212;
+  border:2px solid #9a7a1a;          /* dourado escuro p/ “cara de botão” */
+  box-shadow:0 10px 22px rgba(0,0,0,.20);
+
+  width:auto !important; max-width:max-content; white-space:nowrap;
+  cursor:pointer; text-decoration:none;
+
+  /* “breathe” bem sutil */
+  animation: heroBtnBreathe .6s ease-in-out infinite;
+}
+
+/* foco/hover para parecer bem “clicável” */
+#hero1 .btn:hover{
+  filter:brightness(.97);
+  transform:translateY(-1px);
+  box-shadow:0 14px 28px rgba(0,0,0,.24);
+}
+#hero1 .btn:active{
+  transform:translateY(0);
+  box-shadow:0 8px 18px rgba(0,0,0,.18) inset;
+}
+#hero1 .btn:focus-visible{
+  outline:3px solid #fff; outline-offset:3px;
+  box-shadow:0 0 0 3px rgba(255,255,255,.25), 0 10px 22px rgba(0,0,0,.20);
+}
+
+/* micro animação */
+@keyframes heroBtnBreathe{
+  0%,100%{ transform:translateY(0) scale(1); }
+  50%    { transform:translateY(-1px) scale(1.02); }
+}
+
+/* variação “ghost” (se quiser um 2º botão ao lado) */
+#hero1 .btn--ghost{
+  background:transparent; color:var(--ink);
+  border:2px solid rgba(245,200,76,.6);
+  box-shadow:none;
+}
+#hero1 .btn--ghost:hover{
+  background:rgba(245,200,76,.08);
+}
+
+/* mobile: levemente menor, mas ainda com cara de botão */
+@media (max-width:480px){
+  #hero1 .btn{ padding:10px 16px !important; font-size:14px !important; }
+}
+
+</style>
+
+<section id="hero1" role="region" aria-label="Apresentação do método">
+  <div class="wrap">
+    <h1 class="h1">Você não sabe ler suas emoções.   
+    Mas paga o preço todos os dias.</h1>
+    <p class="sub">Aprenda o que ninguém te ensinou: <strong>entender sua vibração</strong>, <strong>corrigir quedas</strong> , <strong>quebrar gatilhos e elevar seu desempenho emocional</strong> — em minutos por dia.</p>
+
+    <div class="bullets" aria-label="Benefícios imediatos">
+      <div class="bullet"><span class="ico">👑</span> <span><strong>Entenda suas emoções com precisão</strong></span></div>
+      <div class="bullet"><span class="ico">🎨</span> <span><strong>Corrija desvios sutis antes que vire caos</strong></span></div>
+      <div class="bullet"><span class="ico">✨</span> <span><strong>Retome o controle do seu dia em minutos</strong></span></div>
+    </div>
+
+    <div class="ctas">
+      <a class="btn" href="#preco">QUERO FAZER MINHA INSCRIÇÃO</a>
+    </div>
+  </div>
+</section>
+<!-- ==================== / BLOCO 1 • HERO <!-- ================== VÍDEO VERTICAL • APRESENTAÇÃO (9:16 com moldura + controles <!-- ==================== BLOCO • APRESENTAÇÃO (9:16 com controles discretos) ==================== -->
+<style>
+  #apre-vert{ background:#fff; color:#1a1a1a; }
+  #apre-vert .wrap{
+    max-width:1100px; margin:0 auto; padding:28px 16px;
+    display:grid; gap:18px;
+  }
+  @media (min-width:1024px){
+    #apre-vert .wrap{
+      padding:56px 24px;
+      grid-template-columns: 1.1fr auto;
+      align-items:center; gap:36px;
+    }
+  }
+
+  /* Texto */
+  #apre-vert .h2{
+    font-family:"Comfortaa",system-ui; font-weight:700;
+    font-size:clamp(22px,5vw,32px); line-height:1.1; margin:0 0 8px;
+  }
+  #apre-vert .sub{
+    font-family:Questrial,system-ui; font-size:clamp(14px,2.2vw,18px);
+    color:#2b2e31; opacity:.9; margin:0 0 12px; max-width:60ch;
+  }
+
+  /* CTA */
+  #apre-vert .ctas{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  #apre-vert .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700;
+    font-family:Questrial,system-ui; border-radius:12px;
+    padding:10px 16px; font-size:15px; line-height:1.05; box-shadow:0 8px 18px rgba(0,0,0,.12);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  #apre-vert .btn-gold{ background:#f5c84c; color:#121212; }
+  #apre-vert .btn-ghost{ background:#fff; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15); }
+  #apre-vert .btn:hover{ filter:brightness(.97); }
+
+  /* Moldura do vídeo */
+  .apre-phone{
+    width:clamp(260px, 86vw, 420px);
+    border-radius:18px; overflow:hidden; background:#0b0f14;
+    box-shadow:0 14px 36px rgba(0,0,0,.12), inset 0 0 0 1px rgba(245,200,76,.35);
+    position:relative;
+  }
+  @media (min-width:1024px){
+    .apre-phone{ width:clamp(300px, 28vw, 380px); max-height:86vh; }
+  }
+  .apre-ratio{ position:relative; width:100%; }
+  .apre-ratio::before{ content:""; display:block; padding-top:177.78%; } /* 9:16 */
+  .apre-ratio > iframe{
+    position:absolute; inset:0; width:100%; height:100%; border:0; display:block;
+  }
+
+  /* Controles discretos */
+  .apre-ctrls{
+    position:absolute; top:10px; right:10px;
+    display:flex; gap:6px; pointer-events:none; z-index:5;
+  }
+  .apre-ctrls .btn{
+    pointer-events:auto;
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 10px;
+    font:600 12.5px/1.05 Questrial,system-ui;
+    border-radius:10px;
+    color:#fff;
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter: blur(6px) saturate(1.05);
+    box-shadow:none;
+    transition:background .2s ease, border-color .2s ease, transform .15s ease;
+  }
+  .apre-ctrls .btn:hover{ 
+    background:rgba(0,0,0,.5); 
+    border-color:rgba(255,255,255,.35);
+    transform:translateY(-1px);
+  }
+  .apre-ctrls .btn:active{ transform:translateY(0); }
+  .apre-ctrls .label{ opacity:.9; }
+  .apre-ctrls .ico{ font-size:14px; line-height:1; }
+  @media (max-width:480px){
+    .apre-ctrls .label{ display:none; }
+    .apre-ctrls .btn{ padding:6px; min-width:34px; justify-content:center; }
+  }
+
+  /* CTA extra no mobile */
+  .apre-cta-mobile{ display:grid; gap:8px; justify-items:center; margin-top:10px; }
+  @media (min-width:1024px){ .apre-cta-mobile{ display:none; } }
+
+  .apre-col-text{ display:grid; gap:10px; }
+</style>
+
+<section id="apre-vert" aria-label="Apresentação da Travessia (vídeo)">
+  <div class="wrap">
+    <!-- Coluna de texto (desktop) -->
+    <div class="apre-col-text">
+      <h2 class="h2">Assista à apresentação</h2>
+      <p class="sub"> como ler sua alma e treinar seu desempenho emocional.</p>
+      <div class="ctas" aria-label="Inscrição (desktop)">
+        <a class="btn btn-gold" href="#preco">🟡 20 vagas por 12x R$ 41,37</a>
+      </div>
+    </div>
+
+    <!-- Vídeo 9:16 -->
+    <div class="apre-phone">
+      <div class="apre-ratio">
+        <iframe
+          id="vimeoVert"
+          src="https://player.vimeo.com/video/1090623287?h=9f5dccfe7b&autoplay=0&muted=0&controls=1&playsinline=1&title=0&byline=0&portrait=0&dnt=1"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          title="Convite espiritual">
+        </iframe>
+
+        <!-- Botões de controle -->
+        <div class="apre-ctrls">
+          <button type="button" class="btn" id="btnPlay"><span class="ico">⏯</span><span class="label">Reproduzir</span></button>
+          <button type="button" class="btn" id="btnSound"><span class="ico">🔊</span><span class="label">Som</span></button>
+          <button type="button" class="btn" id="btnRestart"><span class="ico">↩︎</span><span class="label">Início</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Mobile -->
+    <div class="apre-cta-mobile" aria-label="Inscrição (mobile)">
+      <a class="btn btn-gold" href="#preco">🟡 Garantir vaga por 12x de R$ 41,37</a>
+      <a class="btn btn-ghost" href="#preco">Ver detalhes</a>
+    </div>
+  </div>
+</section>
+
+<!-- Vimeo API -->
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+(function(){
+  const iframe = document.getElementById('vimeoVert');
+  if(!iframe || !window.Vimeo) return;
+  const player = new Vimeo.Player(iframe, { autopause:false });
+
+  const btnPlay    = document.getElementById('btnPlay');
+  const btnSound   = document.getElementById('btnSound');
+  const btnRestart = document.getElementById('btnRestart');
+  let playing = false;
+
+  // Play/Pause
+  btnPlay.addEventListener('click', async ()=>{
+    try{
+      if(playing){ await player.pause(); playing=false; btnPlay.querySelector('.label').textContent='Reproduzir'; }
+      else        { await player.play();  playing=true;  btnPlay.querySelector('.label').textContent='Pausar'; }
+    }catch(e){}
+  });
+
+  // Ativar som
+  btnSound.addEventListener('click', async ()=>{
+    try{
+      await player.setVolume(1);
+      btnSound.querySelector('.label').textContent='Som ligado';
+    }catch(e){}
+  });
+
+  // Recomeçar
+  btnRestart.addEventListener('click', async ()=>{
+    try{
+      await player.setCurrentTime(0);
+      await player.play();
+    }catch(e){}
+  });
+
+  // Estado
+  player.on('play',  ()=>{ playing=true;  btnPlay.querySelector('.label').textContent='Pausar'; });
+  player.on('pause', ()=>{ playing=false; btnPlay.querySelector('.label').textContent='Reproduzir'; });
+
+})();
+</script>
+<!-- ==================== / BLOCO • APRESENTAÇÃO ==================== -->
+
+<!-- ============ BLOCO • DENÚNCIA: Título + Carrossel + CTA (legenda fora, animada) ============ -->
+<style>
+  #denuncia1{
+    --sec-bg:#ffffff; --sec-fg:#1a1a1a; --gold:#f5c84c; --muted:#6c6f73;
+    background:var(--sec-bg); color:var(--sec-fg);
+  }
+
+  /* GRID: mobile (lead → visual → cta) | desktop (lead & visual; cta sob lead) */
+  #denuncia1 .wrap{
+    max-width:1200px; margin:0 auto;
+    padding:20px 16px;                 /* menos topo no mobile */
+    min-height:100svh;
+    display:grid; gap:18px; align-content:center;
+    grid-template-areas:"lead" "visual" "cta";
+  }
+  @media (min-width:1024px){
+    #denuncia1 .wrap{
+      grid-template-columns: 1fr 1.15fr;
+      grid-template-areas: "lead visual" "cta visual";
+      gap:40px; padding:72px 24px; min-height:min(100svh, 860px); align-items:center;
+    }
+  }
+  #denuncia1 .lead{ grid-area: lead; margin-top:clamp(8px,3.5vw,16px); margin-bottom:clamp(18px,6vw,32px); }
+  #denuncia1 .visual{ grid-area: visual; }
+  #denuncia1 .actions{ grid-area: cta; }
+
+  /* Título + linha */
+  #denuncia1 .h2{
+    font-family:"Comfortaa", system-ui, sans-serif; font-weight:700;
+    font-size:clamp(24px, 6.2vw, 46px); line-height:1.08; margin:0 0 10px 0;
+  }
+  #denuncia1 .hl{ color:var(--gold); }
+  #denuncia1 .line{
+    width:0; height:8px; border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+  }
+
+  /* Legenda (fora do carrossel) */
+  #denuncia1 .cs-cap-out{
+    font-family:"Comfortaa", system-ui, sans-serif; font-weight:700;
+    color:var(--sec-fg); text-align:center;
+    margin:0 0 10px 0;                 /* acima do carrossel */
+    font-size:clamp(16px, 4.6vw, 20px);/* > texto base, < título principal */
+    line-height:1.15; word-break:break-word;
+  }
+  @media (min-width:1024px){
+    #denuncia1 .cs-cap-out{ font-size:20px; margin:0 0 12px 0; }
+  }
+  @keyframes capInLeft  { from{opacity:0; transform:translateX(-18px)} to{opacity:1; transform:none} }
+  @keyframes capInRight { from{opacity:0; transform:translateX( 18px)} to{opacity:1; transform:none} }
+  #denuncia1 .cs-cap-out.enter-left{  animation:capInLeft  .45s ease both; }
+  #denuncia1 .cs-cap-out.enter-right{ animation:capInRight .45s ease both; }
+
+  /* CTA (menor) */
+  #denuncia1 .cs-btn{
+    appearance:none; border:0; border-radius:999px; cursor:pointer; font-weight:700;
+    font-size:clamp(14px, 3.5vw, 16px); padding:10px 18px; background:var(--gold); color:#121212;
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+  }
+  @media (min-width:1024px){ #denuncia1 .actions{ margin-top:8px; } #denuncia1 .cs-btn{ font-size:16px; padding:12px 22px; } }
+  @media (max-width:1023px){ #denuncia1 .actions{ display:flex; justify-content:center; margin-top:14px; } }
+
+  /* Carrossel — quadrado em todas as larguras + PNG sem corte */
+  #denuncia1 .cs-slider{
+    position:relative; width:100%;
+    background:#fff; border:1px solid #eee; border-radius:16px;
+    padding:12px; box-shadow:0 10px 24px rgba(0,0,0,.06); overflow:hidden;
+    aspect-ratio:1 / 1;
+  }
+  #denuncia1 .cs-track{ display:flex; width:100%; height:100%; transition: transform .6s cubic-bezier(.22,.61,.36,1); will-change: transform; }
+  #denuncia1 .cs-slide{ min-width:100%; height:100%; display:grid; place-items:center; }
+  #denuncia1 .cs-slide img{ width:100%; height:100%; object-fit:contain !important; background:#fff; display:block; }
+
+  /* Dots */
+  #denuncia1 .cs-dots{
+    position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+    display:flex; gap:8px; z-index:2; padding:6px 8px; border-radius:999px;
+    background:rgba(255,255,255,.75); backdrop-filter:blur(6px);
+  }
+  #denuncia1 .cs-dot{ width:8px; height:8px; border-radius:50%; background:rgba(0,0,0,.25); border:2px solid rgba(255,255,255,.9); cursor:pointer; }
+  #denuncia1 .cs-dot.active{ background:var(--gold); }
+
+  /* Setas discretas; ocultas no mobile */
+  #denuncia1 .cs-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:36px; height:36px; border-radius:999px; border:0; cursor:pointer;
+    display:grid; place-items:center; color:#fff; background:rgba(0,0,0,.36); backdrop-filter:blur(4px); z-index:2;
+  }
+  #denuncia1 .cs-arrow--prev{ left:10px; } 
+  #denuncia1 .cs-arrow--next{ right:10px; }
+  @media (max-width:767px){ #denuncia1 .cs-arrow{ display:none; } }
+
+  /* Animações de entrada (título/linha/slider/cta) */
+  #denuncia1 .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  #denuncia1 .reveal.in{ opacity:1; transform:none; }
+  #denuncia1 .delay-1{ transition-delay:.08s } 
+  #denuncia1 .delay-2{ transition-delay:.16s }
+</style>
+
+<section id="denuncia1" role="region" aria-label="Vivemos uma pandemia emocional silenciosa">
+  <div class="wrap">
+
+    <header class="lead">
+      <h2 class="h2 reveal">Vivemos uma <span class="hl">pandemia emocional</span> silenciosa</h2>
+      <div class="line reveal delay-1" aria-hidden="true"></div>
+    </header>
+
+    <div class="visual reveal delay-1">
+      <!-- Legenda fora do carrossel (atualiza com o slide) -->
+      <div id="den1Cap" class="cs-cap-out" aria-live="polite"></div>
+
+      <div class="cs-slider" data-autoplay="4000">
+        <div class="cs-track">
+          <!-- Adapte os caminhos e os nomes nas data-cap -->
+          <figure class="cs-slide" data-cap="77% das pessoas tomam remédios sem prescrição ">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/77-tomam-remedio.png" alt="Fuga interior — sintomas" loading="lazy">
+          </figure>
+          <figure class="cs-slide" data-cap="86% dos brasileiros tem algum tipo de descompaço emocional">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/sadqwd.png" alt="Alegria artificial — estímulo externo" loading="lazy">
+          </figure>
+          <figure class="cs-slide" data-cap="59% dos usuários reconhecem que são víciados em redes sociais">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/ChatGPT-Image-5_06_2025-15_58_05.png" alt="Identidade projetada — validação social" loading="lazy">
+          </figure>
+          <figure class="cs-slide" data-cap="190 bilhões de faturamento anual da indústria farmacêutica ">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/ChatGPT-Image-5_06_2025-19_29_40.png" alt="Desempenho emocional — exaustão" loading="lazy">
+             </figure>
+          <figure class="cs-slide" data-cap="Ciclo da Fuga Interior">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/5.png" alt="Desempenho emocional — exaustão" loading="lazy">
+          </figure>
+        </div>
+
+        <button class="cs-arrow cs-arrow--prev" aria-label="Anterior">‹</button>
+        <button class="cs-arrow cs-arrow--next" aria-label="Próximo">›</button>
+        <div class="cs-dots" aria-label="Navegação do carrossel"></div>
+      </div>
+    </div>
+
+    <div class="actions reveal delay-2">
+      <a href="#preco" class="cs-btn">Rompa o ciclo</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec     = document.getElementById('denuncia1');
+  const slider  = sec.querySelector('.cs-slider');
+  const track   = slider.querySelector('.cs-track');
+  const slides  = Array.from(track.children);
+  const prevBtn = slider.querySelector('.cs-arrow--prev');
+  const nextBtn = slider.querySelector('.cs-arrow--next');
+  const dotsBox = slider.querySelector('.cs-dots');
+  const capOut  = sec.querySelector('#den1Cap');
+  const delay   = parseInt(slider.dataset.autoplay || '4000', 10);
+
+  /* ---- Animações de entrada (bloco) ---- */
+  const ioReveal = new IntersectionObserver(([e])=>{
+    if(e.isIntersecting){
+      sec.querySelectorAll('.reveal').forEach(el=> el.classList.add('in'));
+      const line = sec.querySelector('.line'); if(line){ requestAnimationFrame(()=> line.style.width = '100%'); }
+      ioReveal.disconnect();
+    }
+  }, { threshold:.2 });
+  ioReveal.observe(sec);
+
+  /* ---- Slider ---- */
+  slides.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.className = 'cs-dot' + (i===0?' active':'');
+    b.setAttribute('aria-label','Ir para slide ' + (i+1));
+    b.addEventListener('click', ()=> go(i));
+    dotsBox.appendChild(b);
+  });
+  const dots = Array.from(dotsBox.children);
+
+  let idx = 0, timer = null, inView = false;
+
+  function setActiveDot(){ dots.forEach((d,i)=> d.classList.toggle('active', i===idx)); }
+
+  function setCaption(i, intro=false){
+    const text = slides[i].dataset.cap || '';
+    capOut.textContent = text;
+    // anima da lateral → centro (mobile: direita; desktop: esquerda)
+    const isDesktop = window.matchMedia('(min-width:1024px)').matches;
+    capOut.classList.remove('enter-left','enter-right'); // reseta
+    void capOut.offsetWidth; // reflow para reiniciar animação
+    capOut.classList.add(isDesktop ? 'enter-left' : 'enter-right');
+  }
+
+  function go(i){
+    idx = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${idx*100}%)`;
+    setActiveDot();
+    setCaption(idx);
+  }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+
+  function start(){ stop(); timer = setInterval(next, delay); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  // Inicializa legenda no primeiro slide
+  setCaption(0, true);
+
+  // Autoplay confiável no mobile
+  const ioPlay = new IntersectionObserver(([e])=>{
+    inView = e.isIntersecting;
+    if(inView){ start(); } else { stop(); }
+  }, { rootMargin:'0px 0px -20% 0px', threshold:.15 });
+  ioPlay.observe(slider);
+
+  // Fallback: se visível e não iniciado, começa após 1.2s
+  setTimeout(()=>{ if(inView && !timer){ start(); } }, 1200);
+
+  // Interações
+  nextBtn.addEventListener('click', ()=>{ next(); if(inView) start(); });
+  prevBtn.addEventListener('click', ()=>{ prev(); if(inView) start(); });
+  slider.addEventListener('mouseenter', stop);
+  slider.addEventListener('mouseleave', ()=> { if(inView) start(); });
+  document.addEventListener('visibilitychange', ()=> { if(document.hidden) stop(); else if(inView) start(); });
+})();
+</script>
+<!-- ============ / BLOCO • DENÚNCIA ============ -->
+<!-- ============ BLOCO • 4 MANEIRAS (comparação) ============ -->
+<style>
+  #caminhos{
+    --sec-bg:#ffffff;
+    --sec-fg:#1a1a1a;
+    --gold:#f5c84c;
+    --muted:#6c6f73;
+    background:var(--sec-bg);
+    color:var(--sec-fg);
+  }
+  #caminhos .wrap{
+    max-width:1200px;
+    margin:0 auto;
+    padding:28px 16px;
+    display:grid;
+    gap:20px;
+  }
+  @media (min-width:1024px){
+    #caminhos .wrap{
+      padding:64px 24px;
+    }
+  }
+
+  /* Título + subtítulo */
+  #caminhos .h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5.2vw,40px);
+    line-height:1.08;
+    margin:0 0 8px;
+    text-align:left;
+  }
+  #caminhos .sub{
+    font-family:Questrial,system-ui;
+    font-size:clamp(14px,2.2vw,18px);
+    color:#2b2e31;
+    opacity:.95;
+    margin:0 0 12px;
+    max-width:70ch;
+  }
+  #caminhos .subline{
+    width:100%;
+    height:8px;
+    border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+    margin-bottom:14px;
+  }
+
+  /* Grid de cards */
+  #caminhos .grid{
+    display:grid;
+    gap:14px;
+  }
+  @media (min-width:1024px){
+    #caminhos .grid{
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  #caminhos .card{
+    border:1px solid #eee;
+    border-radius:16px;
+    background:#fff;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+    padding:14px;
+    display:grid;
+    gap:8px;
+    align-content:flex-start;
+  }
+
+  #caminhos .tag{
+    font-family:Questrial,system-ui;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--muted);
+  }
+
+  #caminhos .title{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(16px,2.8vw,20px);
+    margin:0;
+  }
+
+  #caminhos .label{
+    font-family:Questrial,system-ui;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  #caminhos .text{
+    font-family:Questrial,system-ui;
+    font-size:clamp(13px,2.1vw,16px);
+    color:#2b2e31;
+    margin:2px 0 0;
+  }
+
+  #caminhos .money{
+    font-family:Questrial,system-ui;
+    font-size:13px;
+    color:#1f2326;
+    margin-top:4px;
+  }
+  #caminhos .money strong{
+    font-weight:700;
+  }
+
+  #caminhos .alert{
+    font-family:Questrial,system-ui;
+    font-size:12px;
+    color:#b91c1c;
+    margin-top:4px;
+  }
+
+  /* Destaque do card 4 */
+  #caminhos .card--dest{
+    border-color:rgba(245,200,76,.65);
+    box-shadow:0 14px 32px rgba(245,200,76,.25);
+    position:relative;
+  }
+  #caminhos .card--dest::before{
+    content:"Alternativa 4 – recomendada";
+    position:absolute;
+    top:10px;
+    right:10px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:rgba(245,200,76,.15);
+    border:1px solid rgba(245,200,76,.5);
+    font:700 11px/1 Questrial,system-ui;
+    color:#1a1a1a;
+  }
+
+  /* Bloco de âncora de preço */
+  #caminhos .anchor{
+    margin-top:10px;
+    padding:12px 14px;
+    border-radius:14px;
+    background:#fffbea;
+    border:1px solid rgba(245,200,76,.55);
+    font-family:Questrial,system-ui;
+    font-size:clamp(13px,2.1vw,16px);
+    color:#1f2326;
+  }
+  #caminhos .anchor strong{
+    font-weight:700;
+  }
+
+  #caminhos .ctas{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  #caminhos .btn{
+    appearance:none;
+    border:0;
+    cursor:pointer;
+    text-decoration:none;
+    font-family:Questrial,system-ui;
+    font-weight:700;
+    border-radius:12px;
+    padding:8px 14px;
+    font-size:14px;
+    line-height:1.05;
+    box-shadow:0 6px 14px rgba(0,0,0,.10);
+    text-align:center;
+  }
+  #caminhos .btn-gold{
+    background:var(--gold);
+    color:#121212;
+  }
+  #caminhos .btn-gold:hover{
+    filter:brightness(.95);
+  }
+
+  /* Reveal */
+  #caminhos .reveal{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .55s ease, transform .55s ease;
+  }
+  #caminhos .reveal.in{
+    opacity:1;
+    transform:none;
+  }
+  #caminhos .d1{ transition-delay:.08s }
+  #caminhos .d2{ transition-delay:.16s }
+  #caminhos .d3{ transition-delay:.24s }
+  #caminhos .d4{ transition-delay:.32s }
+
+</style>
+
+<section id="caminhos" aria-label="Quatro maneiras de cuidar da saúde mental e espiritual">
+  <div class="wrap">
+    <h2 class="h2 reveal">As 4 maneiras de cuidar da saúde mental e espiritual — comparadas lado a lado.</h2>
+    <p class="sub reveal d1">
+      Todo mundo acaba escolhendo um desses caminhos. Mas só um trata a causa das emoções, não apenas o sintoma.
+    </p>
+    <div class="subline reveal d1" aria-hidden="true"></div>
+
+    <div class="grid">
+      <!-- CARD 1 -->
+      <article class="card reveal d1">
+        <div class="tag">Opção 1</div>
+        <h3 class="title">Remédios e “analgésicos” emocionais</h3>
+
+        <div>
+          <div class="label">Vantagem</div>
+          <p class="text">Aliviam rápido. Parecem resolver na hora.</p>
+        </div>
+
+        <div>
+          <div class="label">Problema</div>
+          <p class="text">Não tratam a causa. Quando o efeito passa, o ciclo recomeça.</p>
+        </div>
+
+        <p class="money">Custo médio estimado: <strong>R$ 337,00 por ano</strong> em medicamentos.</p>
+        <p class="alert">O corpo paga a conta; a alma continua sem ser ouvida.</p>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="card reveal d2">
+        <div class="tag">Opção 2</div>
+        <h3 class="title">Terapias, clínicas e especialistas</h3>
+
+        <div>
+          <div class="label">Vantagem</div>
+          <p class="text">Acompanham casos específicos, ajudam em traumas e crises.</p>
+        </div>
+
+        <div>
+          <div class="label">Limite</div>
+          <p class="text">Exigem tempo, dinheiro e regularidade. Não são uma formação diária de autogoverno.</p>
+        </div>
+
+        <p class="money">Custo médio: <strong>R$ 200 a R$ 800 por sessão</strong>.</p>
+        <p class="alert">Muita gente não consegue manter o tratamento pelo tempo necessário.</p>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="card reveal d3">
+        <div class="tag">Opção 3</div>
+        <h3 class="title">Religiões e espiritualidade tradicional</h3>
+
+        <div>
+          <div class="label">Vantagem</div>
+          <p class="text">Oferecem fé, consolo e direção espiritual.</p>
+        </div>
+
+        <div>
+          <div class="label">Limite</div>
+          <p class="text">Nem sempre entregam um método simples para lidar com emoções no dia a dia.</p>
+        </div>
+
+        <p class="alert">Você se sente bem no culto… mas cai de novo na segunda-feira.</p>
+      </article>
+
+      <!-- CARD 4 -->
+      <article class="card card--dest reveal d4">
+        <div class="tag">Opção 4</div>
+        <h3 class="title">Alfabetização Emocional Simples e Estruturada</h3>
+
+        <div>
+          <div class="label">Vantagem</div>
+          <p class="text">
+            Treina você a ler suas emoções, reconhecer quedas, quebrar gatilhos e regular o próprio estado.
+          </p>
+        </div>
+
+        <div>
+          <div class="label">Como funciona</div>
+          <p class="text">
+            Método diário, leve e cumulativo: <strong>3–8 minutos por período</strong>, com exercícios práticos e mapas claros.
+          </p>
+        </div>
+
+        <p class="money">
+          Investimento da Travessia: <strong>12× de R$ 41,37</strong> (menos que uma sessão de terapia e que um ano de remédios).
+        </p>
+        <p class="alert">Aqui você não terceiriza a cura: aprende a cuidar da própria alma.</p>
+      </article>
+    </div>
+
+    <!-- ÂNCORA DE PREÇO -->
+    <div class="anchor reveal d4">
+      <strong>Comparando:</strong> remédios recorrentes (~R$ 337/ano), terapias de R$ 200–800 por sessão, recaídas que custam anos de vida…  
+      A Travessia custa <strong>12× de R$ 41,37</strong> e te ensina a treinar sua saúde emocional todos os dias.
+    </div>
+
+    <div class="ctas reveal d4">
+      <a href="#preco" class="btn btn-gold">Quero entender melhor a alternativa 4</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('caminhos');
+  if(!sec) return;
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold:.16 });
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO • 4 MANEIRAS ============ -->
+<!-- ============ BLOCO • TABELA DE TRANSFORMAÇÃO (ANTES / DEPOIS) ============ -->
+<style>
+  #tabela-transformacao{
+    --bg:#ffffff;
+    --ink:#1a1a1a;
+    --muted:#6c6f73;
+    --gold:#f5c84c;
+    background:var(--bg);
+    color:var(--ink);
+  }
+
+  #tabela-transformacao .wrap{
+    max-width:1200px;
+    margin:0 auto;
+    padding:28px 16px;
+    display:grid;
+    gap:18px;
+  }
+  @media (min-width:1024px){
+    #tabela-transformacao .wrap{
+      padding:64px 24px;
+    }
+  }
+
+  /* Título */
+  #tabela-transformacao .h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5.2vw,40px);
+    line-height:1.08;
+    margin:0 0 8px;
+    text-align:left;
+  }
+  #tabela-transformacao .subline{
+    width:100%;
+    height:8px;
+    border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+    margin-bottom:14px;
+  }
+  #tabela-transformacao .sub{
+    font-family:Questrial,system-ui;
+    font-size:clamp(14px,2.2vw,18px);
+    color:#2b2e31;
+    opacity:.95;
+    margin:0 0 10px;
+    max-width:70ch;
+  }
+
+  /* Wrapper com scroll horizontal no mobile */
+  #tabela-transformacao .table-wrap{
+    width:100%;
+    overflow-x:auto;
+  }
+
+  #tabela-transformacao table{
+    width:100%;
+    min-width:760px; /* garante 4 colunas legíveis e scroll no mobile */
+    border-collapse:collapse;
+    font-family:Questrial,system-ui;
+    font-size:0.95rem;
+  }
+
+  #tabela-transformacao th{
+    text-align:left;
+    padding:12px 6px;
+    border-bottom:2px solid rgba(0,0,0,.12);
+    font-weight:700;
+    color:#111827;
+  }
+
+  #tabela-transformacao td{
+    padding:12px 6px;
+    vertical-align:top;
+    line-height:1.45;
+  }
+
+  #tabela-transformacao tbody tr:nth-child(even){
+    background:#f9fafb;
+  }
+
+  /* Colunas com cores */
+  #tabela-transformacao .col-eixo{
+    font-weight:700;
+    color:#92400e; /* marrom/dourado escuro */
+    white-space:nowrap;
+  }
+  #tabela-transformacao .col-antes{
+    color:#b91c1c; /* vermelho suave */
+  }
+  #tabela-transformacao .col-depois{
+    color:#1d4ed8; /* azul */
+  }
+  #tabela-transformacao .col-identidade{
+    font-weight:700;
+    color:#111827;
+  }
+
+  /* Ajustes mobile */
+  @media (max-width:640px){
+    #tabela-transformacao th{
+      font-size:0.85rem;
+      padding:10px 4px;
+    }
+    #tabela-transformacao td{
+      font-size:0.85rem;
+      padding:10px 4px;
+    }
+  }
+
+  /* Reveal */
+  #tabela-transformacao .reveal{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .55s ease, transform .55s ease;
+  }
+  #tabela-transformacao .reveal.in{
+    opacity:1;
+    transform:none;
+  }
+  #tabela-transformacao .d1{ transition-delay:.08s }
+  #tabela-transformacao .d2{ transition-delay:.16s }
+
+</style>
+
+<section id="tabela-transformacao" aria-label="Transformações da alfabetização emocional">
+  <div class="wrap">
+    <h2 class="h2 reveal">Por que a alfabetização emocional muda tudo na sua vida</h2>
+    <div class="subline reveal d1" aria-hidden="true"></div>
+    <p class="sub reveal d1">
+      Cada eixo abaixo mostra um “antes e depois”: como você se sente hoje, o que muda após treinar seu desempenho emocional e quem você se torna na prática.
+    </p>
+
+    <div class="table-wrap reveal d2">
+      <table>
+        <thead>
+          <tr>
+            <th>Eixo</th>
+            <th>Antes</th>
+            <th>Depois</th>
+            <th>Quem você se torna</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-eixo">🕊️ Ansiedade → Clareza</td>
+            <td class="col-antes">Mente acelerada, medo do futuro.</td>
+            <td class="col-depois">Decisões firmes e tranquilas.</td>
+            <td class="col-identidade">O porto seguro da própria vida.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">👁️ Emoções → Leitura da alma</td>
+            <td class="col-antes">Reage ao caos dos outros.</td>
+            <td class="col-depois">Entende a alma por trás do comportamento.</td>
+            <td class="col-identidade">Referência emocional da família.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">🌿 Recaídas → Estabilidade</td>
+            <td class="col-antes">Ciclos de ansiedade, culpa e fuga.</td>
+            <td class="col-depois">Percebe a queda e corrige rápido.</td>
+            <td class="col-identidade">Constante, previsível, confiável.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">🔥 Foco → Prosperidade</td>
+            <td class="col-antes">Dispersão, tarefas pela metade.</td>
+            <td class="col-depois">Foco natural no que importa.</td>
+            <td class="col-identidade">A pessoa mais valiosa da equipe.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">🛡️ Limites → Respeito</td>
+            <td class="col-antes">Diz “sim” pra tudo, vive exausto.</td>
+            <td class="col-depois">Limites firmes, energia preservada.</td>
+            <td class="col-identidade">Admirado e respeitado.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">⚡ Tóxicos → Blindagem</td>
+            <td class="col-antes">Cai em manipulações e drenos.</td>
+            <td class="col-depois">Detecta vibração tóxica à distância.</td>
+            <td class="col-identidade">Inacessível para manipuladores.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">🌙 Hábitos → Identidade</td>
+            <td class="col-antes">Tenta mudar na força de vontade.</td>
+            <td class="col-depois">Muda a vibração; o comportamento segue.</td>
+            <td class="col-identidade">Uma nova pessoa.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">💡 Aprendizado → Velocidade</td>
+            <td class="col-antes">Mente pesada, dificuldade de absorver.</td>
+            <td class="col-depois">Mente leve, absorção rápida.</td>
+            <td class="col-identidade">Aprende em dias o que outros levam meses.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">✨ Paz → Presença</td>
+            <td class="col-antes">Insegurança, comparação.</td>
+            <td class="col-depois">Presença firme, olhar seguro.</td>
+            <td class="col-identidade">Alguém que é sentido quando entra.</td>
+          </tr>
+          <tr>
+            <td class="col-eixo">🌞 Domínio → Prosperidade integral</td>
+            <td class="col-antes">Finanças e escolhas oscilando com humor.</td>
+            <td class="col-depois">Coerência e constância.</td>
+            <td class="col-identidade">Senhor do próprio destino.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('tabela-transformacao');
+  if(!sec) return;
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold:.16 });
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO • TABELA DE TRANSFORMAÇÃO ============ -->
+
+</script>
+<!-- ============ / BLOCO • DENÚNCIA 2 ============ -->
+<!-- ============ BLOCO • DUO (duo1): Dois títulos + dois carrosséis (mobile empilhado / desktop 2 colunas) ============ -->
+<style>
+  #duo1{
+    --sec-bg:#ffffff; --sec-fg:#1a1a1a; --gold:#f5c84c; --muted:#6c6f73;
+    background:var(--sec-bg); color:var(--sec-fg);
+  }
+
+  #duo1 .wrap{
+    max-width:1200px; margin:0 auto;
+    padding:20px 16px;
+    display:grid; gap:22px;
+    grid-template-areas:
+      "pairA"
+      "pairB";
+  }
+  @media (min-width:1024px){
+    #duo1 .wrap{
+      padding:56px 24px; gap:36px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "pairA pairB";
+      align-items:start;
+    }
+  }
+
+  /* Cada par (título + slider) */
+  #duo1 .pairA{ grid-area: pairA; }
+  #duo1 .pairB{ grid-area: pairB; }
+
+  #duo1 .h2{
+    font-family:"Comfortaa", system-ui, sans-serif; font-weight:700;
+    font-size:clamp(22px, 6vw, 38px); line-height:1.12;
+    margin:0 0 10px 0; text-align:left;
+  }
+  #duo1 .line{
+    width:0; height:8px; border-radius:6px; margin:6px 0 12px 0;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+  }
+
+  /* Slider (16:9; imagens 1920x1080) */
+  #duo1 .slider{
+    position:relative; width:100%;
+    background:#fff; border:1px solid #eee; border-radius:16px;
+    padding:12px; box-shadow:0 10px 24px rgba(0,0,0,.06); overflow:hidden;
+    aspect-ratio:16 / 9;
+  }
+  #duo1 .track{
+    display:flex; width:100%; height:100%;
+    transition: transform .6s cubic-bezier(.22,.61,.36,1);
+    will-change: transform;
+  }
+  #duo1 .slide{ min-width:100%; height:100%; }
+  #duo1 .slide img{
+    width:100%; height:100%; object-fit:cover; object-position:center; display:block;
+    border-radius:8px;
+  }
+
+  /* Dots + setas */
+  #duo1 .dots{
+    position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+    display:flex; gap:8px; z-index:2; padding:6px 8px; border-radius:999px;
+    background:rgba(255,255,255,.75); backdrop-filter:blur(6px);
+  }
+  #duo1 .dot{ width:8px; height:8px; border-radius:50%; background:rgba(0,0,0,.25); border:2px solid rgba(255,255,255,.9); cursor:pointer; }
+  #duo1 .dot.active{ background:var(--gold); }
+  #duo1 .arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:36px; height:36px; border-radius:999px; border:0; cursor:pointer;
+    display:grid; place-items:center; color:#fff;
+    background:rgba(0,0,0,.36); backdrop-filter:blur(4px); z-index:2;
+  }
+  #duo1 .prev{ left:10px; }  #duo1 .next{ right:10px; }
+  @media (max-width:767px){ #duo1 .arrow{ display:none; } }
+
+  /* Animações de entrada */
+  #duo1 .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  #duo1 .reveal.in{ opacity:1; transform:none; }
+</style>
+
+<section id="duo1" role="region" aria-label="Duas consciências: média do mundo vs. luz interior">
+  <div class="wrap">
+
+    <!-- Par A -->
+    <div class="pairA">
+      <h2 class="h2 reveal">Você é acorrentado pela <span style="color:#d93025">média</span> desse mundo?</h2>
+      <div class="line reveal" aria-hidden="true"></div>
+
+      <div class="slider sA" data-autoplay="4000">
+        <div class="track">
+          <figure class="slide">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/Design-sem-nome-8.png" alt="Acorrentado pela média — variação 1" loading="lazy">
+          </figure>
+          <figure class="slide">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/Design-sem-nome-11.png" alt="Acorrentado pela média — variação 2" loading="lazy">
+          </figure>
+        </div>
+
+        <button class="arrow prev" aria-label="Anterior">‹</button>
+        <button class="arrow next" aria-label="Próximo">›</button>
+        <div class="dots" aria-label="Navegação"></div>
+      </div>
+    </div>
+
+    <!-- Par B -->
+    <div class="pairB">
+      <h2 class="h2 reveal">Ou, desenvolve sua própria <span style="color:#f5c84c">Luz interior</span></h2>
+      <div class="line reveal" aria-hidden="true"></div>
+
+      <div class="slider sB" data-autoplay="4000">
+        <div class="track">
+          <figure class="slide">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/Design-sem-nome-9.png" alt="Luz interior — variação 1" loading="lazy">
+          </figure>
+          <figure class="slide">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/06/Design-sem-nome-10.png" alt="Luz interior — variação 2" loading="lazy">
+          </figure>
+        </div>
+
+        <button class="arrow prev" aria-label="Anterior">‹</button>
+        <button class="arrow next" aria-label="Próximo">›</button>
+        <div class="dots" aria-label="Navegação"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('duo1');
+
+  // anima títulos e linhas
+  const ioReveal = new IntersectionObserver(([e])=>{
+    if(e.isIntersecting){
+      sec.querySelectorAll('.reveal').forEach(el=> el.classList.add('in'));
+      sec.querySelectorAll('.line').forEach(line=>{
+        requestAnimationFrame(()=> line.style.width = '100%');
+      });
+      ioReveal.disconnect();
+    }
+  }, {threshold:.2});
+  ioReveal.observe(sec);
+
+  // função genérica p/ sliders
+  function initSlider(slider){
+    const track = slider.querySelector('.track');
+    const slides = Array.from(track.children);
+    const prev = slider.querySelector('.prev');
+    const next = slider.querySelector('.next');
+    const dotsBox = slider.querySelector('.dots');
+    const delay = parseInt(slider.dataset.autoplay || '4000', 10);
+
+    // criar dots
+    slides.forEach((_,i)=>{
+      const b=document.createElement('button');
+      b.className='dot'+(i===0?' active':'');
+      b.setAttribute('aria-label','Ir para slide '+(i+1));
+      b.addEventListener('click', ()=> go(i));
+      dotsBox.appendChild(b);
+    });
+    const dots = Array.from(dotsBox.children);
+
+    let idx=0, timer=null, inView=false;
+
+    function setActiveDot(){ dots.forEach((d,i)=> d.classList.toggle('active', i===idx)); }
+    function go(i){
+      idx=(i+slides.length)%slides.length;
+      track.style.transform = `translateX(-${idx*100}%)`;
+      setActiveDot();
+    }
+    function nextSlide(){ go(idx+1); }
+    function prevSlide(){ go(idx-1); }
+    function start(){ stop(); timer=setInterval(nextSlide, delay); }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+
+    // autoplay quando em viewport
+    const ioPlay = new IntersectionObserver(([e])=>{
+      inView = e.isIntersecting;
+      if(inView){ start(); } else { stop(); }
+    }, { rootMargin:'0px 0px -20% 0px', threshold:.15 });
+    ioPlay.observe(slider);
+
+    setTimeout(()=>{ if(inView && !timer) start(); }, 1200);
+
+    next.addEventListener('click', ()=>{ nextSlide(); if(inView) start(); });
+    prev.addEventListener('click', ()=>{ prevSlide(); if(inView) start(); });
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', ()=> { if(inView) start(); });
+    document.addEventListener('visibilitychange', ()=> { if(document.hidden) stop(); else if(inView) start(); });
+
+    // inicia no primeiro
+    go(0);
+  }
+
+  // inicializa os dois sliders do bloco
+  sec.querySelectorAll('.slider').forEach(initSlider);
+})();
+</script>
+
+<!-- ============ / BLOCO 1 • A VIRADA ============ -->
+<!-- ============ PROVA SOCIAL • FAIXA 1 (após #virada1) ============ -->
+<style>
+  /* Escopo local para não conflitar com outros estilos */
+  #ps-faixa1{ max-width:980px; margin:22px auto; padding:0 16px; }
+  #ps-faixa1 .ps-row{ display:grid; gap:16px; }
+  @media (min-width:768px){ #ps-faixa1 .ps-row{ grid-template-columns: 1fr 1fr; } }
+
+  #ps-faixa1 .ps-card{
+    display:grid; grid-template-columns: 56px 1fr; gap:12px;
+    background:#fff; border:1px solid #eee; border-radius:18px;
+    padding:16px 18px; box-shadow:0 10px 24px rgba(0,0,0,.06);
+    opacity:0; transform:translateY(12px); transition:.45s ease; /* reveal */
+  }
+  #ps-faixa1 .ps-card.in{ opacity:1; transform:none; }
+
+  #ps-faixa1 .ps-avatar{ width:56px; height:56px; border-radius:50%; overflow:hidden; position:relative; }
+  #ps-faixa1 .ps-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  #ps-faixa1 .ps-avatar::after{
+    content:""; position:absolute; inset:-3px; border-radius:50%;
+    border:2px solid rgba(245,200,76,.55);
+    box-shadow:0 0 0 3px rgba(245,200,76,.12);
+  }
+
+  #ps-faixa1 .ps-txt{ align-self:center; font-family:Questrial,system-ui; color:#2b2e31; }
+  #ps-faixa1 .ps-quote{
+    font-style:italic; font-size:15.5px; line-height:1.55; margin:0 0 10px; color:#1f2326;
+    position:relative;
+  }
+  #ps-faixa1 .ps-quote::before{ content:"“"; margin-right:2px; color:#000; opacity:.25; }
+  #ps-faixa1 .ps-quote::after { content:"”"; margin-left:2px; color:#000; opacity:.25; }
+
+  #ps-faixa1 .ps-sign{ font-size:13.5px; color:#1a1a1a; font-weight:700; }
+  #ps-faixa1 .ps-role{ font-size:12px; color:#6c6f73; margin-left:6px; font-weight:400; }
+
+  @media (max-width:480px){
+    #ps-faixa1 .ps-card{ padding:14px; grid-template-columns:48px 1fr; border-radius:16px; }
+    #ps-faixa1 .ps-avatar{ width:48px; height:48px; }
+    #ps-faixa1 .ps-quote{ font-size:14.5px; }
+    #ps-faixa1 .ps-sign{ font-size:12.5px; }
+  }
+</style>
+
+<section id="ps-faixa1" aria-label="Relatos de quem se viu por dentro">
+  <div class="ps-row">
+    <!-- Card 1 — Médica da família -->
+    <article class="ps-card">
+      <div class="ps-avatar">
+        <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/marielle.webp"
+             alt="Marielle — Médica da família" loading="lazy" decoding="async" width="400" height="400">
+      </div>
+      <div class="ps-txt">
+        <p class="ps-quote">
+          Existe um antes e um depois dessas aulas. Hoje enxergo tudo com
+          <strong>clareza e compaixão</strong>. É curto, real e me acompanha no dia.
+        </p>
+        <div><span class="ps-sign">Marielle</span><span class="ps-role"> — Médica de familia e comunidade </span></div>
+      </div>
+    </article>
+
+    <!-- Card 2 — Empresário -->
+    <article class="ps-card">
+      <div class="ps-avatar">
+        <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/gerson.webp"
+             alt="Gerson Teles — Empresário" loading="lazy" decoding="async" width="400" height="400">
+      </div>
+      <div class="ps-txt">
+        <p class="ps-quote">
+          Se eu tivesse encontrado isso há 30 anos…  <strong>Descobri forças simples que ordenam saúde e dia.</strong> O que mudou? Tudo ficou mais leve. Gratidão! 
+        </p>
+        <div><span class="ps-sign">Gerson Teles</span><span class="ps-role"> — Empresário aposentado</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script>
+  // Reveal suave quando os cards entram na viewport
+  (function(){
+    const faixa = document.getElementById('ps-faixa1');
+    if(!faixa) return;
+    const io = new IntersectionObserver((ents,obs)=>{
+      ents.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+      });
+    }, {threshold:.12});
+    faixa.querySelectorAll('.ps-card').forEach(c=> io.observe(c));
+  })();
+</script>
+<!-- ============ BLOCO • AUTOR (id: #autor) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #autor{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c;
+    background:var(--bg); color:var(--ink);
+  }
+  #autor .wrap{
+    max-width:1200px; margin:0 auto; padding:28px 16px;
+    display:grid; gap:22px;
+  }
+  @media (min-width:1024px){
+    #autor .wrap{
+      padding:64px 24px;
+      grid-template-columns: 1.05fr 1fr;
+      gap:40px; align-items:center;
+    }
+  }
+  #autor .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08;
+    margin:0 0 8px;
+  }
+  #autor .subline{
+    width:100%; height:8px; border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+    margin:6px 0 12px;
+  }
+  #autor .bio{
+    font-family:Questrial,system-ui;
+    font-size:clamp(14px,2.2vw,18px);
+    color:#2b2e31; opacity:.95;
+    margin:0 0 8px;
+    max-width:65ch;
+  }
+  #autor .media{
+    position:relative; width:100%;
+    border-radius:16px; overflow:hidden;
+    background:#fff;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+    border:1px solid #eee;
+  }
+  #autor .media img{
+    width:100%; height:auto; display:block;
+  }
+  #autor .reveal{
+    opacity:0; transform:translateY(14px);
+    transition:opacity .55s ease, transform .55s ease;
+  }
+  #autor .reveal.in{
+    opacity:1; transform:none;
+  }
+  #autor .d1{ transition-delay:.08s }
+  #autor .d2{ transition-delay:.16s }
+</style>
+
+<section id="autor" aria-label="Quem está por trás do método">
+  <div class="wrap">
+
+    <div class="col-text">
+      <h2 class="h2 reveal">Quem está por trás do método</h2>
+      <div class="subline reveal d1" aria-hidden="true"></div>
+
+      <p class="bio reveal d2">
+        <strong>Eu não venho de um mosteiro, de longos retiros espirituais, nem de uma formação acadêmica em psicologia ou psiquiatria.</strong><br>
+        Venho da vida real — de empreender, trabalhar, lidar com pressão, contas, prazos, decisões e guerras internas que quase ninguém vê.
+      </p>
+
+      <p class="bio reveal d2">
+        Sou engenheiro de formação, empresário, alguém que já correu atrás de metas, ganhou prêmios e conquistou o que o mundo chama de “sucesso”.
+        Mas descobri que nada disso sustenta a vida se a alma estiver desalinhada.
+      </p>
+
+      <p class="bio reveal d2">
+        Assim como você, eu <strong>não tinha o luxo</strong> de sumir do mundo para me encontrar:
+        não podia morar num mosteiro, nem fazer uma graduação inteira em psicologia e outra em psiquiatria.
+        Eu precisava viver, trabalhar, cuidar de pessoas — ao mesmo tempo em que lidava com mais de <strong>6.000 pensamentos por dia</strong>.
+      </p>
+
+      <p class="bio reveal d2">
+        Foi nesse lugar, entre responsabilidades e conflitos internos, que comecei uma busca profunda:
+        neurociência emocional, psicologia prática, tradições espirituais antigas, hermetismo, Bíblia, meditação, terapias somáticas — e, principalmente,
+        a escola dura da própria vida, caindo e levantando muitas vezes.
+      </p>
+
+      <p class="bio reveal d2">
+        Depois de anos enfrentando meus próprios ciclos de ansiedade, impulsos, vícios sutis e até fases em que precisei de medicação para estabilizar o humor,
+        ficou claro para mim que <strong>ninguém nos ensinou a ler a própria alma</strong>.
+        E que esse conhecimento precisava ser traduzido para quem vive “no mundo”, não fora dele.
+      </p>
+
+      <p class="bio reveal d2">
+        Foi assim que nasceu o <strong>Canva Espiritual</strong>:
+        um método que junta ciência emocional, espiritualidade viva e linguagem simples, em passos de <strong>3 a 8 minutos</strong>,
+        pensado para pessoas comuns — trabalhadores, pais, mães, empreendedores, estudantes — que querem paz, clareza e governo interior em meio à rotina.
+      </p>
+
+      <p class="bio reveal d2">
+        Eu sou <strong>Gustavo Prado</strong>.<br>
+        Se esse mapa iluminou o meu caminho, agora coloco essa mesma luz nas suas mãos.
+      </p>
+    </div>
+
+    <figure class="media reveal d1">
+      <img
+        src="https://canvaspiritual.com/wp-content/uploads/2025/09/Gustavo-Prado.png"
+        alt="Gustavo Prado — engenheiro, empresário e pesquisador que desenvolveu o Canva Espiritual"
+        loading="lazy" decoding="async">
+    </figure>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('autor');
+  if(!sec) return;
+  const io = new IntersectionObserver((es,obs)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, {threshold:.14});
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO • AUTOR ============ -->
+
+
+
+<!-- ============ PROVA SOCIAL • FAIXA (Agente + Corretora) ============ -->
+<style>
+  /* Escopo local */
+  #ps-faixa-ag-cor{ max-width:980px; margin:22px auto; padding:0 16px; }
+  #ps-faixa-ag-cor .ps-row{ display:grid; gap:16px; }
+  @media (min-width:768px){ #ps-faixa-ag-cor .ps-row{ grid-template-columns: 1fr 1fr; } }
+
+  #ps-faixa-ag-cor .ps-card{
+    display:grid; grid-template-columns:56px 1fr; gap:12px;
+    background:#fff; border:1px solid #eee; border-radius:18px;
+    padding:16px 18px; box-shadow:0 10px 24px rgba(0,0,0,.06);
+    opacity:0; transform:translateY(12px); transition:.45s ease; /* reveal */
+  }
+  #ps-faixa-ag-cor .ps-card.in{ opacity:1; transform:none; }
+
+  #ps-faixa-ag-cor .ps-avatar{ width:56px; height:56px; border-radius:50%; overflow:hidden; position:relative; }
+  #ps-faixa-ag-cor .ps-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  #ps-faixa-ag-cor .ps-avatar::after{
+    content:""; position:absolute; inset:-3px; border-radius:50%;
+    border:2px solid rgba(245,200,76,.55); box-shadow:0 0 0 3px rgba(245,200,76,.12);
+  }
+
+  #ps-faixa-ag-cor .ps-txt{ align-self:center; font-family:Questrial,system-ui; color:#2b2e31; }
+  #ps-faixa-ag-cor .ps-quote{
+    font-style:italic; font-size:15.5px; line-height:1.55; margin:0 0 10px; color:#1f2326; position:relative;
+  }
+  #ps-faixa-ag-cor .ps-quote::before{ content:"“"; margin-right:2px; color:#000; opacity:.25; }
+  #ps-faixa-ag-cor .ps-quote::after { content:"”"; margin-left:2px; color:#000; opacity:.25; }
+
+  #ps-faixa-ag-cor .ps-sign{ font-size:13.5px; color:#1a1a1a; font-weight:700; }
+  #ps-faixa-ag-cor .ps-role{ font-size:12px; color:#6c6f73; margin-left:6px; font-weight:400; }
+
+  @media (max-width:480px){
+    #ps-faixa-ag-cor .ps-card{ padding:14px; grid-template-columns:48px 1fr; border-radius:16px; }
+    #ps-faixa-ag-cor .ps-avatar{ width:48px; height:48px; }
+    #ps-faixa-ag-cor .ps-quote{ font-size:14.5px; }
+    #ps-faixa-ag-cor .ps-sign{ font-size:12.5px; }
+  }
+</style>
+
+<section id="ps-faixa-ag-cor" aria-label="Relatos de quem se viu por dentro">
+  <div class="ps-row">
+    <!-- Card 1 — Agente federal -->
+    <article class="ps-card">
+      <div class="ps-avatar">
+        <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/nat.webp"
+             alt="Natália Oliveira — Agente federal" loading="lazy" decoding="async" width="400" height="400">
+      </div>
+      <div class="ps-txt">
+        <p class="ps-quote">
+          Descobri um <strong>universo</strong> dentro de mim. Isso deveria ser básico para todo ser humano —
+          <strong>verdade quieta</strong>, sincronias à vista.
+        </p>
+        <div><span class="ps-sign">Natália Oliveira</span><span class="ps-role"> — Servidora pública</span></div>
+      </div>
+    </article>
+
+    <!-- Card 2 — Corretora de imóveis -->
+    <article class="ps-card">
+      <div class="ps-avatar">
+        <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/Design-sem-nome-4.png"
+             alt="Laura Moura — Corretora de imóveis" loading="lazy" decoding="async" width="400" height="400">
+      </div>
+      <div class="ps-txt">
+        <p class="ps-quote">
+          Hoje enxergo o <strong>motivo real</strong> de cada negociação. A ansiedade virou
+          <strong>clareza e ordem</strong>; as conversas fluem e o fechamento acontece no tempo certo.
+        </p>
+        <div><span class="ps-sign">Laura Moura</span><span class="ps-role"> — Corretora de imóveis</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script>
+  // Reveal suave quando os cards entram na viewport
+  (function(){
+    const faixa = document.getElementById('ps-faixa-ag-cor');
+    if(!faixa) return;
+    const io = new IntersectionObserver((ents,obs)=>{
+      ents.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+      });
+    }, {threshold:.12});
+    faixa.querySelectorAll('.ps-card').forEach(c=> io.observe(c));
+  })();
+</script>
+<!-- ============ / PROVA SOCIAL • FAIXA (Agente + Corretora) ============ -->
+
+<!-- ============ BLOCO 4 • CHAVES & SELOS (com popups) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #chaves{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c;
+    background:var(--bg); color:var(--ink);
+  }
+  #chaves .wrap{
+    max-width:1200px; margin:0 auto; padding:28px 16px; display:grid; gap:20px;
+  }
+  @media (min-width:1024px){ #chaves .wrap{ padding:64px 24px; } }
+
+  /* Título */
+  #chaves .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08; margin:0 0 8px;
+  }
+  #chaves .sub{ font-family:Questrial,system-ui; color:#2b2e31; opacity:.92; margin:0 0 8px; }
+  #chaves .subline{
+    width:100%; height:8px; border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+  }
+
+  /* Grade de Chaves */
+  #chaves .grid{ display:grid; gap:14px; }
+  @media (min-width:1024px){ #chaves .grid{ grid-template-columns: repeat(3, 1fr); } }
+
+  #chaves .card{
+    border:1px solid #eee; border-radius:16px; background:#fff;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+    padding:14px; display:flex; gap:12px; align-items:flex-start;
+  }
+
+  /* Ícone vira THUMB da imagem */
+  #chaves .icon{
+    width:72px; height:72px; flex:0 0 72px;
+    border-radius:14px;
+    overflow:hidden;
+    background:rgba(245,200,76,.10);
+    display:block;
+  }
+  #chaves .icon img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  #chaves .body{ display:grid; gap:6px; }
+  #chaves .title{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    margin:0; font-size:clamp(16px,2.8vw,20px);
+  }
+  #chaves .line{
+    font-family:Questrial,system-ui; color:#2b2e31;
+    margin:0; font-size:clamp(14px,2.2vw,16px);
+  }
+
+  /* Botão slim no card */
+  #chaves .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700; font-family:Questrial,system-ui;
+    border-radius:12px; padding:8px 14px; font-size:14px; line-height:1.05; box-shadow:0 6px 14px rgba(0,0,0,.08);
+    background:var(--gold); color:#121212; width:max-content;
+  }
+  #chaves .btn:hover{ filter:brightness(.95); }
+
+  /* CTAs gerais */
+  #chaves .ctas{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  #chaves .btn-ghost{
+    background:transparent; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15);
+  }
+  #chaves .btn-ghost:hover{ border-color:var(--gold); }
+/* ====== AJUSTE PARA DEIXAR AS IMAGENS DOS MÓDULOS MAIORES ====== */
+
+/* Aumenta a área da imagem (antes 72×72px) */
+#chaves .icon{
+  width: 96px;          /* maior no mobile */
+  height: 96px;
+  flex: 0 0 96px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(245,200,76,.10);
+}
+
+/* Garante que a imagem ocupe bem */
+#chaves .icon img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Aumenta a altura vertical do card */
+#chaves .card{
+  padding: 18px;        /* mais espaçamento interno */
+  gap: 16px;            /* mais espaço entre imagem e texto */
+  min-height: 130px;    /* força o card a ficar mais espesso */
+  align-items: center;   /* centraliza imagem e texto verticalmente */
+}
+
+/* Ajuste suave dos textos para subir com a imagem maior */
+#chaves .title{
+  font-size: clamp(16px, 4.2vw, 20px);
+}
+
+#chaves .line{
+  font-size: clamp(14px, 3.6vw, 16px);
+}
+
+/* ===== DESKTOP – ainda maior e mais bonito ===== */
+@media (min-width: 1024px){
+  #chaves .icon{
+    width: 110px;
+    height: 110px;
+    flex: 0 0 110px;
+  }
+  
+  #chaves .card{
+    min-height: 150px;
+    padding: 20px;
+    gap: 18px;
+  }
+}
+
+  /* Popups (resto do CSS permanece igual) */
+  .modal{
+    position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:99999;
+  }
+  .modal.open{ display:flex; }
+  .modal__dialog{
+    width:min(720px, 92vw); border-radius:16px; background:#fff; border:1px solid #eee;
+    box-shadow:0 24px 60px rgba(0,0,0,.2); overflow:hidden; display:grid;
+    grid-template-rows:auto 1fr auto;
+  }
+  .modal__head{ padding:14px 16px; background:linear-gradient(180deg, rgba(245,200,76,.15), rgba(245,200,76,.0)); }
+  .modal__title{ font-family:Comfortaa,system-ui; font-weight:700; margin:0; font-size:20px; }
+  .modal__content{ padding:14px 16px; display:grid; gap:8px; }
+  .modal__content ul{ margin:0; padding-left:18px; font-family:Questrial,system-ui; }
+  .modal__content li{ margin:6px 0; }
+
+  /* (restante do CSS dos modais e CTA flutuante igual ao seu original – mantive) */
+
+  /* ===== OVERRIDE SÓ DESKTOP (vale para todos os modais) ===== */
+  @media (min-width:1024px){
+    .modal__dialog{
+      width: min(720px, 92vw);
+      max-height: 80vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      box-sizing: border-box;
+    }
+    .modal__content{
+      overflow: auto;
+      min-height: 0;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      word-break: break-word;
+    }
+    .modal__close{
+      position:absolute; top:10px; right:10px;
+      width:34px; height:34px; border:0; border-radius:10px;
+      background:rgba(0,0,0,.55); color:#fff; cursor:pointer;
+      display:grid; place-items:center; font-size:18px;
+      box-shadow:0 6px 14px rgba(0,0,0,.18);
+      z-index:100;
+    }
+    .modal__close:focus-visible{
+      outline:2px solid var(--gold); outline-offset:2px;
+    }
+    .modal__title{
+      font-family: Comfortaa, system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: .01em;
+      margin: 0;
+    }
+    .modal__content{
+      font-family: Questrial, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #1f2326;
+    }
+    .modal__content ul{ padding-left: 18px; margin: 0; }
+    .modal__content li{ margin: 6px 0 10px; }
+  }
+
+  #chaves .modal__content ul,
+  #chaves .modal__content ul li{ font-weight:400 !important; }
+  #chaves .modal__content ul li strong{ font-weight:700 !important; }
+
+  .modal__foot{ padding:12px 16px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid #f0f0f0; }
+  .modal .m-btn{ border:0; border-radius:12px; padding:8px 14px; font-weight:700; font-family:Questrial,system-ui; cursor:pointer; }
+  .modal .m-primary{ background:var(--gold); color:#121212; box-shadow:0 6px 14px rgba(0,0,0,.12); }
+  .modal .m-secondary{ background:#fff; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15); }
+
+  #chaves .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  #chaves .reveal.in{ opacity:1; transform:none; }
+  #chaves .d1{ transition-delay:.08s } .d2{ transition-delay:.16s } .d3{ transition-delay:.24s }
+/* =============== PADRONIZAÇÃO DE TODOS OS MODAIS (M1…M6) =============== */
+/* Tipografia suave (título 600; conteúdo leve) */
+#m1 .modal__title, #m2 .modal__title, #m3 .modal__title,
+#m4 .modal__title, #m5 .modal__title, #m6 .modal__title{
+  font-family: Comfortaa, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: .01em;
+  margin: 0;
+}
+#m1 .modal__content, #m2 .modal__content, #m3 .modal__content,
+#m4 .modal__content, #m5 .modal__content, #m6 .modal__content{
+  font-family: Questrial, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1f2326;
+}
+
+/* Só o TÍTULO da aula em negrito (strong); frase normal */
+#m1 .modal__content ul, #m2 .modal__content ul, #m3 .modal__content ul,
+#m4 .modal__content ul, #m5 .modal__content ul, #m6 .modal__content ul,
+#m1 .modal__content ul li, #m2 .modal__content ul li, #m3 .modal__content ul li,
+#m4 .modal__content ul li, #m5 .modal__content ul li, #m6 .modal__content ul li{
+  font-weight: 400 !important;   /* texto normal */
+}
+#m1 .modal__content ul li strong, #m2 .modal__content ul li strong, #m3 .modal__content ul li strong,
+#m4 .modal__content ul li strong, #m5 .modal__content ul li strong, #m6 .modal__content ul li strong{
+  font-weight: 600 !important;   /* só o título bold (semi) */
+}
+
+/* Espaçamento/bullets consistente */
+#m1 .modal__content ul, #m2 .modal__content ul, #m3 .modal__content ul,
+#m4 .modal__content ul, #m5 .modal__content ul, #m6 .modal__content ul{
+  padding-left: 18px; margin: 0;
+}
+#m1 .modal__content li, #m2 .modal__content li, #m3 .modal__content li,
+#m4 .modal__content li, #m5 .modal__content li, #m6 .modal__content li{
+  margin: 6px 0 10px;
+}
+
+/* ===== Somente DESKTOP (>=1024px): altura segura + scroll + botão fechar ===== */
+@media (min-width:1024px){
+  #m1 .modal__dialog, #m2 .modal__dialog, #m3 .modal__dialog,
+  #m4 .modal__dialog, #m5 .modal__dialog, #m6 .modal__dialog{
+    width: min(720px, 92vw);
+    max-height: 80vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* head | content(scroll) | foot */
+    box-sizing: border-box;
+  }
+  #m1 .modal__content, #m2 .modal__content, #m3 .modal__content,
+  #m4 .modal__content, #m5 .modal__content, #m6 .modal__content{
+    overflow: auto; min-height: 0; overscroll-behavior: contain;
+    scrollbar-gutter: stable; word-break: break-word;
+  }
+  #m1 .modal__close, #m2 .modal__close, #m3 .modal__close,
+  #m4 .modal__close, #m5 .modal__close, #m6 .modal__close{
+    position:absolute; top:10px; right:10px;
+    width:34px; height:34px; border:0; border-radius:10px;
+    background:rgba(0,0,0,.55); color:#fff; cursor:pointer;
+    display:grid; place-items:center; font-size:18px;
+    box-shadow:0 6px 14px rgba(0,0,0,.18); z-index:100;
+  }
+  #m1 .modal__close:focus-visible, #m2 .modal__close:focus-visible, #m3 .modal__close:focus-visible,
+  #m4 .modal__close:focus-visible, #m5 .modal__close:focus-visible, #m6 .modal__close:focus-visible{
+    outline:2px solid var(--gold); outline-offset:2px;
+  }
+}
+/* ===== AJUSTE FINAL EXCLUSIVO DO MÓDULO 1 ===== */
+#m1 .modal__content * {            /* zera bold herdado no conteúdo */
+  font-weight: 400 !important;
+}
+#m1 .modal__content strong {       /* título continua em destaque */
+  font-weight: 600 !important;
+}
+/* === CTA FLUTUANTE === */
+/* barra */
+.cta-float{
+  position: fixed; left: 0; right: 0; bottom: 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  display: flex; justify-content: center; gap: 10px;
+  z-index: 99998; pointer-events: none;
+  transform: translateY(110%); opacity: 0;
+  transition: transform .35s ease, opacity .35s ease;
+  backdrop-filter: saturate(1.1) blur(6px);
+}
+.cta-float.show{ transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+.cta-float__btn{
+  appearance:none; border:0; cursor:pointer;
+  font: 700 14.5px/1.1 Questrial, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  padding: 12px 18px; border-radius: 14px;
+  background: var(--gold, #f5c84c); color:#121212; text-decoration:none;
+  box-shadow: 0 10px 24px rgba(0,0,0,.18), 0 2px 0 rgba(0,0,0,.06) inset;
+  white-space: nowrap;
+}
+.cta-float__close{
+  appearance:none; border:0; cursor:pointer;
+  width: 32px; height: 32px; border-radius: 10px;
+  background: rgba(0,0,0,.45); color:#fff; font-size:20px; line-height:1;
+  display:grid; place-items:center;
+}
+
+@media (min-width:1024px){
+  .cta-float__btn{ min-width: 420px; font-size: 15.5px; padding: 12px 20px; }
+}
+
+
+</style>
+
+<section id="chaves" aria-label="Chaves e Selos da Travessia">
+  <div class="wrap">
+    <h2 class="h2 reveal">Chaves &amp; Selos</h2>
+    <p class="sub reveal d1">Seu percurso em degraus simples: ver, governar, transmutar — e sustentar.</p>
+    <div class="subline reveal d1" aria-hidden="true"></div>
+
+    <div class="grid">
+      <!-- CHAVE 1 -->
+      <article class="card reveal d1">
+        <div class="icon">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-06_13_30.png" alt="Imagem módulo 1">
+        </div>
+        <div class="body">
+          <h3 class="title">Chave 1 — Autodiagnóstico</h3>
+          <p class="line">Reconheça com precisão <strong>onde você está</strong>.</p>
+          <button class="btn" data-modal-open="#m1">Ver conteúdo completo do módulo</button>
+        </div>
+      </article>
+
+      <!-- CHAVE 2 -->
+      <article class="card reveal d2">
+        <div class="icon">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-18_27_49.png" alt="Imagem módulo 2">
+        </div>
+        <div class="body">
+          <h3 class="title">Chave 2 — Autogoverno (Leis &amp; Mapa)</h3>
+          <p class="line">Da teoria à prática: governe seus <strong>estados</strong>.</p>
+          <button class="btn" data-modal-open="#m2">Ver conteúdo completo do módulo</button>
+        </div>
+      </article>
+
+      <!-- CHAVE 3 -->
+      <article class="card reveal d3">
+        <div class="icon">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-18_15_52.png" alt="Imagem módulo 3">
+        </div>
+        <div class="body">
+          <h3 class="title">Chave 3 — Autoproteção</h3>
+          <p class="line"><strong>Corte</strong> o que te derruba — com direção e misericórdia.</p>
+          <button class="btn" data-modal-open="#m3">Ver conteúdo completo do módulo</button>
+        </div>
+      </article>
+
+      <!-- CHAVE 4 -->
+      <article class="card reveal d4">
+        <div class="icon">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-17_51_54.png" alt="Imagem módulo 4">
+        </div>
+        <div class="body">
+          <h3 class="title">Chave 4 — Transmutação &amp; Blindagem</h3>
+          <p class="line"><strong>3–8 minutos</strong> por período — consistência gentil.</p>
+          <button class="btn" data-modal-open="#m4">Ver conteúdo completo do módulo</button>
+        </div>
+      </article>
+
+      <!-- CHAVE 5 -->
+      <article class="card reveal d5">
+        <div class="icon">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-07_37_44.png" alt="Imagem módulo 5">
+        </div>
+        <div class="body">
+          <h3 class="title">Chave 5 — Deserto Interior</h3>
+          <p class="line">No silêncio, o <strong>Eu verdadeiro</strong> aparece.</p>
+          <button class="btn" data-modal-open="#m5">Ver conteúdo completo do módulo</button>
+        </div>
+      </article>
+
+      <!-- CHAVE 6 -->
+      <article class="card reveal d6">
+        <div class="icon">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-17_31_11.png" alt="Imagem módulo 6">
+        </div>
+        <div class="body">
+          <h3 class="title">Chave 6 — Cosmovisão &amp; Missão</h3>
+          <p class="line">Veja o mundo com <strong>novos olhos</strong> — e seu lugar nele.</p>
+          <button class="btn" data-modal-open="#m6">Ver conteúdo completo do módulo</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="ctas">
+      <a class="btn" href="#recebe">Quero uma visão geral</a>
+      <a class="btn btn-ghost" href="#preco">Começar minha travessia</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======= POPUPS ======= -->
+<!-- M1 -->
+<div class="modal" id="m1" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m1title">
+  <div class="modal__dialog">
+    <header class="modal__head">
+      <h3 class="modal__title" id="m1title">Chave 1 — Autodiagnóstico da Alma e da Mente</h3>
+    </header>
+    <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+
+    <div class="modal__content">
+<li><strong>Aula 1 – Introdução ao Canva Espiritual:</strong> <span class="lite">um primeiro olhar para o mapa que revela sua essência.</span></li>
+<li><strong>Aula 2 – Qual é o Método?</strong> <span class="lite">um caminho claro para compreender sua vibração com segurança.</span></li>
+<li><strong>Aula 3 – O Espelho Completo da Alma:</strong> <span class="lite">um reflexo honesto de onde você está agora.</span></li>
+<li><strong>Aula 4 – Virtudes, Zonas da Alma e a Lei da Vibração:</strong> <span class="lite">forças sutis que organizam escolhas e estados.</span></li>
+<li><strong>Aula 5 – O Mapa Completo da Alma:</strong> <span class="lite">a estrutura que coloca cada fruto no seu lugar.</span></li>
+<li><strong>Aula 6 – Pintando a Verdade:</strong> <span class="lite">o mesmo espelho aplicado à vida familiar, social, profissional e individual.</span></li>
+<li><strong>Aula 7 – Sinais Comportamentais da Alma:</strong> <span class="lite">pequenos gestos que revelam fidelidade… ou desvio.</span></li>
+<li><strong>Aula 8 – Sinais Físicos da Alma:</strong> <span class="lite">quando o corpo sussurra aquilo que a mente não disse.</span></li>
+<li><strong>Aula 9 – Reflexos na Saúde Física e Mental:</strong> <span class="lite">a constância da vibração construindo… ou cobrando.</span></li>
+<li><strong>Aula 10 – Gatilhos Sensoriais:</strong> <span class="lite">imagens, sons e toques que elevam — ou distraem.</span></li>
+
+
+
+      <p><strong>Resultado:</strong> clareza imediata do seu estado e do próximo passo.</p>
+    </div>
+    <footer class="modal__foot">
+      <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+      <a class="m-btn m-primary" href="#preco">Quero viver esta Chave</a>
+    </footer>
+  </div>
+</div>
+
+<!-- M2 -->
+<div class="modal" id="m2" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m2title">
+  <div class="modal__dialog">
+    <header class="modal__head"><h3 class="modal__title" id="m2title">Chave 2 — Autogoverno (Leis & Mapa)</h3></header>
+    <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+
+    <div class="modal__content">
+     <ul>
+  <li><strong>Aula 1 – Apresentação do Mapa Espiritual:</strong> uma visão do campo de forças que opera por dentro.</li>
+  <li><strong>Aula 2 – Escalas do Mapa Espiritual (Fé ↔ Descrença):</strong> como localizar sua vibração e o que isso influencia.</li>
+  <li><strong>Aula 3 – Introdução ao Hermetismo:</strong> princípios antigos que explicam leis invisíveis do universo.</li>
+  <li><strong>Aula 4 – O Todo é Mental:</strong> antes da forma, existe a ideia — tudo começa no invisível.</li>
+  <li><strong>Aula 5 – A Lei da Correspondência:</strong> assim no interior, assim no exterior — o reflexo na vida prática.</li>
+  <li><strong>Aula 6 – A Lei do Gênero Mental:</strong> harmonizando polos da mente para agir com equilíbrio.</li>
+  <li><strong>Aula 7 – A Escala Servidão ↔ Escravidão:</strong> quando o propósito governa… ou quando as ilusões comandam.</li>
+  <li><strong>Aula 8 – Revisão Geral do Mapa Espiritual:</strong> síntese das leis e escalas para seguir com clareza.</li>
+</ul>
+
+      <p><strong>Resultado:</strong> decisões mais simples e coerentes com quem você quer ser.</p>
+    </div>
+    <footer class="modal__foot">
+      <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+      <a class="m-btn m-primary" href="#preco">Dominar meu estado</a>
+    </footer>
+  </div>
+</div>
+
+<!-- M3 -->
+<div class="modal" id="m3" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m3title">
+  <div class="modal__dialog">
+    <header class="modal__head"><h3 class="modal__title" id="m3title">Chave 3 — Autoproteção</h3></header>
+    <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+
+    <div class="modal__content">
+      <ul>
+  <li><strong>Aula 1 – Introdução às Combinações da Alma:</strong> como forças internas se unem e criam ciclos invisíveis.</li>
+  <li><strong>Aula 2 – Combinações Degradantes:</strong> quando vícios se associam e formam ecossistemas de autoengano.</li>
+  <li><strong>Aula 3 – Combinações Neutras:</strong> o perigo da vida morna e do piloto automático.</li>
+  <li><strong>Aula 4 – Combinações Virtuosas:</strong> sinergias que aceleram o crescimento espiritual real.</li>
+  <li><strong>Aula 5 – Hierarquia das Virtudes:</strong> como cada virtude ocupa um lugar vital no “corpo” da alma.</li>
+  <li><strong>Aula 6 – A Guerra Interior: Virtude x Poder:</strong> a batalha que importa não é fora — é por dentro.</li>
+</ul>
+
+      <p><strong>Resultado:</strong> recaídas mais raras e retomadas mais rápidas.</p>
+    </div>
+    <footer class="modal__foot">
+      <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+      <a class="m-btn m-primary" href="#preco">Blindar minha casa interior</a>
+    </footer>
+  </div>
+</div>
+
+<!-- M4 -->
+<div class="modal" id="m4" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m4title">
+  <div class="modal__dialog">
+    <header class="modal__head"><h3 class="modal__title" id="m4title">Chave 4 — Transmutação & Blindagem</h3></header>
+    <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+
+    <div class="modal__content">
+     <ul>
+  <li><strong>Aula 1 – O Caminho da Transformação Real:</strong> do espelho da alma para a construção de um novo ser.</li>
+  <li><strong>Aula 2 – Quando a Espiritualidade Vira Centro:</strong> rigor e ordem para restaurar sua força interior.</li>
+  <li><strong>Aula 3 – O Hoje Sagrado:</strong> como santificar o presente e transformar rotina em ritual.</li>
+  <li><strong>Aula 4 – Oração Viva:</strong> o Pai Nosso como roteiro diário de reorganização espiritual.</li>
+  <li><strong>Aula 5 – Piscadas do Céu:</strong> sincronicidades e sinais sutis como respostas do Todo.</li>
+  <li><strong>Aula 6 – Idolatria Oculta:</strong> reposicionando o coração para devolver o trono a Deus.</li>
+  <li><strong>Aula 7 – Santificação dos Sentidos:</strong> sons, imagens, cheiros e alimentos que elevam — ou pesam.</li>
+  <li><strong>Aula 8 – O Reino Interior e o Xadrez Espiritual:</strong> Rei, Rainha, torres e peões como mapa da mente.</li>
+  <li><strong>Aula 9 – O Rei se Assenta no Trono:</strong> meditação, dízimo do tempo e presença soberana no agora.</li>
+  <li><strong>Aula 10 – Meditação Guiada: O Observador da Estrada:</strong> observar pensamentos sem ser arrastado por eles.</li>
+  <li><strong>Aula 11 – O Primeiro Sacrifício Vivo:</strong> vencer o pecado ainda na gestação com culto racional.</li>
+  <li><strong>Aula 12 – O Corpo sob o Governo do Rei:</strong> meditação de luz que integra corpo, alma e espírito.</li>
+  <li><strong>Aula 13 – A Liberdade da Rainha:</strong> imaginação criativa guiada pelo olhar firme do Rei.</li>
+  <li><strong>Aula 14 – O Primeiro Altar Exterior:</strong> quarto, casa e rotina como extensão do templo interior.</li>
+  <li><strong>Aula 15 – Ritual de Sustentação:</strong> exercícios e jejuns para viver leve, alinhado e inabalável.</li>
+</ul>
+
+      <p><strong>Resultado:</strong> paz sustentada e energia mais limpa.</p>
+    </div>
+    <footer class="modal__foot">
+      <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+      <a class="m-btn m-primary" href="#preco">Implementar agora</a>
+    </footer>
+  </div>
+</div>
+
+<!-- M5 -->
+<div class="modal" id="m5" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m5title">
+  <div class="modal__dialog">
+    <header class="modal__head"><h3 class="modal__title" id="m5title">Chave 5 — Deserto Interior</h3></header>
+    <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+
+    <div class="modal__content">
+      <ul>
+  <li><strong>Aula 1 – O Deserto: Tempo de Lapidação Interior:</strong> silêncio, desapego e presença que derrubam máscaras e fortalecem a essência.</li>
+  <li><strong>Aula 2 – Animais Sagrados: Sabedoria da Criação:</strong> contemplar a natureza e aprender virtudes vivas — coragem do leão, diligência da formiga, visão da águia.</li>
+  <li><strong>Aula 3 – Anatomia Espiritual: O Corpo como Síntese da Criação:</strong> cada órgão como reflexo de uma virtude — coração/amor, coluna/verdade, olhos/fidelidade.</li>
+  <li><strong>Aula 4 – A Referência de Perfeição:</strong> por que Cristo é a convergência das sabedorias e a medida do humano perfeito.</li>
+  <li><strong>Aula 5 – O Batismo nas Águas: A Entrega à Referência Perfeita:</strong> o selo de aliança, decisão pública de recomeçar e caminhar guiado pelo Espírito.</li>
+</ul>
+
+      <p><strong>Resultado:</strong> identidade mais estável e direção profunda.</p>
+    </div>
+    <footer class="modal__foot">
+      <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+      <a class="m-btn m-primary" href="#preco">Entrar no Deserto</a>
+    </footer>
+  </div>
+</div>
+
+<!-- M6 -->
+<div class="modal" id="m6" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m6title">
+  <div class="modal__dialog">
+    <header class="modal__head"><h3 class="modal__title" id="m6title">Chave 6 — Cosmovisão & Missão</h3></header>
+    <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+
+    <div class="modal__content">
+      <ul>
+  <li><strong>Aula 1 – Cosmovisão: O Olhar do Todo:</strong> enxergar o mundo como campo vivo de forças e propósitos.</li>
+  <li><strong>Aula 2 – Cristo como Convergência:</strong> a síntese entre Oriente e Ocidente, mística e razão, silêncio e ação.</li>
+  <li><strong>Aula 3 – As Nações como Organismos Vivos:</strong> símbolos, vocações e quedas coletivas à luz do espírito.</li>
+  <li><strong>Aula 4 – Brasil no Mapa Espiritual:</strong> identidade, dons e responsabilidades sem ego — serviço como missão.</li>
+  <li><strong>Aula 5 – Missão Pessoal no Tempo:</strong> alinhar dons, rotina e decisões ao propósito que permanece.</li>
+  <li><strong>Aula Extra – As Estações da Vida:</strong> primavera, verão, outono e inverno como metáforas da alma.</li>
+  <li><strong>Aula Extra – O Chamado de Melquisedeque:</strong> viver como rei e sacerdote em um reino eterno.</li>
+  <li><strong>Aula Extra – Embaixadores e Peregrinos:</strong> consciência de que pertencemos a um reino que não é deste mundo.</li>
+  <li><strong>+ Novas Aulas em Atualização Contínua:</strong> este módulo é vivo, em expansão, sempre recebendo novos conteúdos de cosmovisão.</li>
+</ul>
+
+      <p><strong>Resultado:</strong> propósito vivo que respira no cotidiano.</p>
+    </div>
+    <footer class="modal__foot">
+      <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+      <a class="m-btn m-primary" href="#preco">Ver o mundo com novos olhos</a>
+    </footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  // reveal
+  const sec = document.getElementById('chaves');
+  const io = new IntersectionObserver((es,obs)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, {threshold:.14});
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+  // popups
+  const body = document.body;
+  function openModal(el){
+    el.classList.add('open');
+    el.setAttribute('aria-hidden','false');
+    body.style.overflow='hidden';
+  }
+  function closeModal(el){
+    el.classList.remove('open');
+    el.setAttribute('aria-hidden','true');
+    body.style.overflow='';
+  }
+  document.querySelectorAll('[data-modal-open]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.getAttribute('data-modal-open');
+      const m = document.querySelector(id);
+      if(m) openModal(m);
+    });
+  });
+  document.querySelectorAll('[data-modal-close]').forEach(btn=>{
+    btn.addEventListener('click', ()=> closeModal(btn.closest('.modal')));
+  });
+  document.querySelectorAll('.modal').forEach(m=>{
+    m.addEventListener('click', (e)=>{ if(e.target === m) closeModal(m); });
+  });
+  window.addEventListener('keydown', (e)=>{
+    if(e.key==='Escape'){
+      document.querySelectorAll('.modal.open').forEach(m=> closeModal(m));
+    }
+  });
+})();
+</script>
+<!-- ============ / BLOCO 4 • CHAVES & SELOS ============ --> 
+<!-- ===== CTA FLUTUANTE (mobile & desktop) ===== -->
+<!-- ===== CTA FLUTUANTE (mobile & desktop) ===== -->
+<div id="ctaFloat" class="cta-float" role="region" aria-label="Acesso rápido ao checkout">
+  <a href="#preco" class="cta-float__btn">
+    👉 Começar agora – 12× R$41,37</a>
+  <button type="button" class="cta-float__close" aria-label="Ocultar botão">×</button>
+</div>
+
+<script>
+(function(){
+  const bar     = document.getElementById('ctaFloat');
+  const price   = document.getElementById('preco');
+  const footer  = document.querySelector('footer, #footer, .site-footer'); // tenta detectar rodapé
+  const trigger = document.getElementById('denuncia1'); // 2º bloco como gatilho
+  const closeBt = bar?.querySelector('.cta-float__close');
+
+  if(!bar) return;
+
+  let allowShow = false;      // liberado após passar pelo gatilho
+  let userHide  = false;      // usuário clicou no X (esconder)
+  let hideUntil = 0;          // timestamp para “não exibir por 60s”
+
+  function now(){ return Date.now(); }
+
+  function setShow(val){
+    if(!bar) return;
+    if(val){ bar.classList.add('show'); }
+    else   { bar.classList.remove('show'); }
+  }
+
+  function refresh(){
+    const canShow = allowShow && !userHide && (now() > hideUntil);
+    // Se não pode mostrar, garante oculto
+    if(!canShow){ setShow(false); return; }
+    // Se está muito no topo, evita piscar
+    if(window.scrollY < 80){ setShow(false); return; }
+    // Caso padrão: mostra
+    setShow(true);
+  }
+
+  // 1) Libera exibição quando o 2º bloco entra ~40% na viewport
+  if('IntersectionObserver' in window && trigger){
+    const io2 = new IntersectionObserver(([e])=>{
+      allowShow = e.isIntersecting;
+      refresh();
+    }, { threshold: .4 });
+    io2.observe(trigger);
+  } else {
+    // fallback: libera após 300px
+    window.addEventListener('scroll', ()=>{ allowShow = (window.scrollY > 300); refresh(); }, {passive:true});
+  }
+
+  // 2) Oculta quando a SEÇÃO DE PREÇO estiver visível (mais robusto)
+  if('IntersectionObserver' in window && price){
+    const ioPrice = new IntersectionObserver((ents)=>{
+      const onPrice = ents.some(e => e.isIntersecting);
+      if(onPrice) setShow(false); else refresh();
+    }, { root: null, rootMargin: '0px 0px -20% 0px', threshold: .1 });
+    ioPrice.observe(price);
+  }
+
+  // 3) Também oculta quando o RODAPÉ entrar (evita conflito com rodapé/checkout)
+  if('IntersectionObserver' in window && footer){
+    const ioFoot = new IntersectionObserver((ents)=>{
+      const onFoot = ents.some(e => e.isIntersecting);
+      if(onFoot) setShow(false); else refresh();
+    }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: .05 });
+    ioFoot.observe(footer);
+  }
+
+  // 4) Oculta quando QUALQUER modal estiver aberto
+  setInterval(()=>{
+    const modalOpen = document.querySelector('.modal.open');
+    bar.style.display = modalOpen ? 'none' : '';
+  }, 250);
+
+  // 5) Clique no X: esconde por 60s (evita incômodo)
+  closeBt?.addEventListener('click', ()=>{
+    userHide  = true;
+    hideUntil = now() + 60_000; // 60s
+    refresh();
+    // Depois de 60s, permite reaparecer se as condições voltarem a ser verdadeiras
+    setTimeout(()=>{ userHide = false; refresh(); }, 60_100);
+  });
+
+  // 6) Atualiza em scroll/resize
+  window.addEventListener('scroll', refresh, { passive:true });
+  window.addEventListener('resize', refresh);
+
+  // Primeira avaliação
+  refresh();
+})();
+</script>
+
+
+<!-- ============ BLOCO 5 • O QUE VOCÊ RECEBE (id: #recebe) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #recebe{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c;
+    background:var(--bg); color:var(--ink);
+  }
+  #recebe .wrap{
+    max-width:1200px; margin:0 auto; padding:28px 16px; display:grid; gap:22px;
+  }
+  @media (min-width:1024px){
+    #recebe .wrap{ padding:72px 24px; grid-template-columns: 1.05fr 1fr; gap:40px; align-items:center; }
+  }
+
+  /* Título */
+  #recebe .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08; margin:0 0 8px;
+  }
+  #recebe .sub{ font-family:Questrial,system-ui; color:#2b2e31; opacity:.92; margin:0 0 12px; }
+  #recebe .subline{
+    width:100%; height:8px; border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+    margin-bottom:12px;
+  }
+
+  /* Checklist */
+  #recebe .list{ display:grid; gap:12px; }
+  @media (min-width:1024px){ #recebe .list{ grid-template-columns: 1fr 1fr; } }
+  #recebe .item{ display:flex; gap:10px; align-items:flex-start; }
+  #recebe .item svg{ width:20px; height:20px; flex:0 0 20px; }
+  #recebe .item p{ margin:0; font-family:Questrial,system-ui; font-size:clamp(14px,2.2vw,18px); color:#2b2e31; }
+
+  /* Badges */
+  #recebe .badges{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  #recebe .badge{
+    font:700 12px/1 Questrial,system-ui; color:#1a1a1a;
+    background:rgba(245,200,76,.18); border:1px solid rgba(245,200,76,.35);
+    padding:6px 10px; border-radius:999px;
+  }
+
+  /* CTAs slim */
+  #recebe .ctas{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  #recebe .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700; font-family:Questrial,system-ui;
+    border-radius:12px; padding:8px 14px; font-size:14px; line-height:1.05; box-shadow:0 6px 14px rgba(0,0,0,.1);
+  }
+  #recebe .btn-gold{ background:var(--gold); color:#121212; }
+  #recebe .btn-ghost{ background:transparent; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15); }
+  #recebe .btn-gold:hover{ filter:brightness(.95); }
+  #recebe .btn-ghost:hover{ border-color:var(--gold); }
+
+  /* Imagem (kit) */
+  #recebe .media{ position:relative; width:100%; border-radius:16px; overflow:hidden; background:#fff;
+    box-shadow:0 10px 24px rgba(0,0,0,.06); }
+  #recebe .media img{ width:100%; height:auto; display:block; }
+
+  /* Reveal */
+  #recebe .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  #recebe .reveal.in{ opacity:1; transform:none; }
+  #recebe .d1{ transition-delay:.08s } .d2{ transition-delay:.16s } .d3{ transition-delay:.24s } .d4{ transition-delay:.32s } .d5{ transition-delay:.40s } .d6{ transition-delay:.48s }
+</style>
+
+<section id="recebe" aria-label="O que você recebe na Travessia">
+  <div class="wrap">
+    <!-- COLUNA TEXTO -->
+    <div class="col-text">
+      <h2 class="h2 reveal">Tudo que você precisa para sustentar a Luz</h2>
+      <p class="sub reveal d1">Entregáveis claros para praticar, medir e manter sua vibração elevada.</p>
+      <div class="subline reveal d1" aria-hidden="true"></div>
+
+      <div class="list">
+        <div class="item reveal d1">
+          <!-- ✔️ -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18Z" stroke="#1a1a1a" stroke-width="1.6"/><path d="M8.5 12.5l2.2 2.2 5-5" stroke="#f5c84c" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <p>Acesso completo às <strong>6 Chaves (MÓDULOS)</strong> e todos os <strong>50 Selos (AULAS)</strong> (vídeo + PDF).</p>
+        </div>
+        <div class="item reveal d2">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 6l6-3 4 3 6-3v12l-6 3-4-3-6 3V6Z" stroke="#1a1a1a" stroke-width="1.6"/><path d="M10 8h4M10 12h7" stroke="#f5c84c" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <p><strong>Espelho da Alma</strong> (quiz) + <strong>escalas</strong> em planilhas para download.</p>
+        </div>
+        <div class="item reveal d3">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1a1a1a" stroke-width="1.6"/><path d="M12 7v10M8 12h8" stroke="#f5c84c" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <p>Protocolos de prática: <strong>respiração</strong>, <strong>oração viva</strong>, <strong>jejum mental/sensorial</strong>.</p>
+        </div>
+        <div class="item reveal d4">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="7" cy="12" r="3" stroke="#1a1a1a" stroke-width="1.6"/><circle cx="17" cy="8" r="3" stroke="#1a1a1a" stroke-width="1.6"/><circle cx="17" cy="16" r="3" stroke="#f5c84c" stroke-width="1.6"/></svg>
+          <p>Ciclos de foco <strong>7/21/40 dias</strong> para criar consistência.</p>
+        </div>
+        <div class="item reveal d5">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16v10H4z" stroke="#1a1a1a" stroke-width="1.6"/><path d="M7 10h10" stroke="#f5c84c" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <p>Áudios/ambientes para meditação e foco.</p>
+        </div>
+        <div class="item reveal d6">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 6h12v12H6z" stroke="#1a1a1a" stroke-width="1.6"/><path d="M6 10h12M10 6v12" stroke="#f5c84c" stroke-width="1.6"/></svg>
+          <p>Atualizações e materiais complementares ao longo da Travessia.</p>
+        </div>
+      </div>
+
+      <div class="badges reveal d4">
+        <span class="badge">PDFs & Planilhas</span>
+        <span class="badge">Ciclos 7/21/40</span>
+        <span class="badge">Aulas 3–8 min</span>
+      </div>
+
+      <div class="ctas">
+        <a class="btn btn-gold reveal d4" href="#preco">Quero receber tudo isso</a>
+        <a class="btn btn-ghost reveal d5" href="#bonus">Ver bônus</a>
+      </div>
+    </div>
+
+    <!-- COLUNA IMAGEM (KIT) -->
+    <div class="col-media">
+      <figure class="media reveal d2">
+        <picture>
+          <!-- Mobile 4:5 (substitua pelos seus arquivos) -->
+          <source media="(max-width: 767px)" srcset="https://canvaspiritual.com/wp-content/uploads/2025/09/ChatGPT-Image-3-de-set.-de-2025-09_32_572.png">
+          <!-- Desktop 16:9 -->
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/ChatGPT-Image-3-de-set.-de-2025-09_32_572.png" alt="Kit espiritual minimal: caderno, relógio 3 marcas, vela, óculos em luz dourada" loading="lazy" width="1600" height="900">
+        </picture>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('recebe');
+  const io = new IntersectionObserver((es,obs)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+  }, {threshold:.14});
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO 5 • O QUE VOCÊ RECEBE ============ --><!-- ============ BLOCO 6 • BÔNUS (id: #bonus) ============ -->
+<!-- ============ BLOCO 6 • BÔNUS (prioridade 3 e-books) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #bonus{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c;
+    background:var(--bg); color:var(--ink);
+  }
+  #bonus .wrap{
+    max-width:1200px; margin:0 auto; padding:28px 16px; display:grid; gap:20px;
+  }
+  @media (min-width:1024px){ #bonus .wrap{ padding:64px 24px; } }
+
+  /* Título */
+  #bonus .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08; margin:0 0 8px;
+  }
+  #bonus .sub{ font-family:Questrial,system-ui; color:#2b2e31; opacity:.92; margin:0 0 12px; }
+  #bonus .subline{
+    width:100%; height:8px; border-radius:6px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+  }
+
+  /* Grid 3 e-books (cards) */
+  #bonus .grid{ display:grid; gap:14px; }
+  @media (min-width:1024px){ #bonus .grid{ grid-template-columns: repeat(3, 1fr); } }
+
+  #bonus .card{
+    border:1px solid #eee; border-radius:16px; background:#fff;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+    padding:14px; display:grid; gap:10px; align-content:start;
+  }
+  /* ícone vistoso */
+  #bonus .icon{
+    width:56px; height:56px; border-radius:14px;
+    background: radial-gradient(100% 100% at 30% 20%, #ffe89a 0%, #f5c84c 60%, #e0b100 100%);
+    display:grid; place-items:center; box-shadow:0 8px 20px rgba(245,200,76,.35);
+  }
+  #bonus .icon svg{ width:28px; height:28px; }
+
+  #bonus .title{ font-family:Comfortaa,system-ui; font-weight:700; margin:0; font-size:clamp(16px,2.8vw,20px); }
+  #bonus .desc{ font-family:Questrial,system-ui; color:#2b2e31; margin:0; font-size:clamp(14px,2.2vw,16px); }
+
+  /* “e muito mais …” mini-lista */
+  #bonus .more{
+    margin-top:6px; border:1px dashed rgba(0,0,0,.12); border-radius:14px; padding:12px;
+    background:#fff;
+  }
+  #bonus .more h4{
+    font-family:Comfortaa,system-ui; font-weight:700; margin:0 0 8px; font-size:clamp(14px,2.4vw,18px);
+  }
+  #bonus .more ul{ margin:0; padding-left:18px; font-family:Questrial,system-ui; }
+  #bonus .more li{ margin:4px 0; color:#2b2e31; font-size:clamp(13px,2.1vw,16px); }
+
+  /* CTAs slim */
+  #bonus .ctas{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  #bonus .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700; font-family:Questrial,system-ui;
+    border-radius:12px; padding:8px 14px; font-size:14px; line-height:1.05; box-shadow:0 6px 14px rgba(0,0,0,.1);
+  }
+  #bonus .btn-gold{ background:var(--gold); color:#121212; }
+  #bonus .btn-ghost{ background:transparent; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15); }
+  #bonus .btn-gold:hover{ filter:brightness(.95); }
+  #bonus .btn-ghost:hover{ border-color:var(--gold); }
+
+  /* Reveal */
+  #bonus .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  #bonus .reveal.in{ opacity:1; transform:none; }
+  #bonus .d1{ transition-delay:.08s } .d2{ transition-delay:.16s } .d3{ transition-delay:.24s } .d4{ transition-delay:.32s }
+</style>
+
+<section id="bonus" aria-label="Bônus da Travessia">
+  <div class="wrap">
+    <h2 class="h2 reveal">Bônus da Travessia</h2>
+    <p class="sub reveal d1">Materiais premium para acelerar sua prática e manter o foco — com prioridade para os três e-books principais.</p>
+    <div class="subline reveal d1" aria-hidden="true"></div>
+
+    <div class="grid">
+      <!-- E-book 1 -->
+     <article class="card reveal d1">
+  <div class="icon">
+    <!-- pode manter o ícone atual ou trocar depois -->
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M4 6.5c0-1.1.9-2 2-2h12a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6.5Z" stroke="#1a1a1a" stroke-width="1.6"/>
+      <path d="M4 9.5h16" stroke="#f5c84c" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="12" cy="12" r="1" fill="#f5c84c"/>
+    </svg>
+  </div>
+  <h3 class="title">Cofre da Travessia</h3>
+  <p class="desc">
+    Uma biblioteca viva de catálogos espirituais e emocionais para consultar ao longo das aulas.
+  </p>
+</article>
+
+      <!-- E-book 2 -->
+      <article class="card reveal d2">
+  <div class="icon">
+    <svg viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="8" stroke="#1a1a1a" stroke-width="1.6"/>
+      <circle cx="12" cy="12" r="3" fill="#f5c84c"/>
+      <path d="M12 4v3M12 17v3M4 12h3M17 12h3" stroke="#f5c84c" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h3 class="title">Mapa da Alma Interativo</h3>
+  <p class="desc">
+    Uma ferramenta viva que atravessa as 12 naturezas emocionais como um quiz diagnóstico em movimento.
+  </p>
+</article>
+
+      <!-- E-book 3 -->
+      <article class="card reveal d3">
+  <div class="icon">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 3v18" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M7 7h10M7 12h10M7 17h6" stroke="#f5c84c" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h3 class="title">Protocolos Guiados de Transmutação</h3>
+  <p class="desc">
+    Práticas curtas para dissolver vícios, restaurar foco e integrar mente, alma, corpo e espírito.
+  </p>
+</article>
+    </div>
+
+    <!-- Mini-lista “e muito mais …” -->
+    <div class="more reveal d4" aria-label="Bônus adicionais">
+      <h4>E muito mais… você recebe ainda, como correspondência a cada aula:</h4>
+     <ul>
+  <li>Catálogo dos Arquétipos de Animais e suas correspondências emocionais;</li>
+  <li>Catálogo das Idolatrias Ocultas — crenças invisíveis que travam o fluxo da consciência;</li>
+  <li>Catálogo das Combinações Virtuosas e Degradantes das emoções;</li>
+  <li>Catálogo dos Alimentos Prânicos e Elementos Naturais;</li>
+  <li>Catálogo das Plantas e suas Mensagens Espirituais e Emocionais;</li>
+  <li>Catálogo das pré-disposições fisiológicas e psicológicas das emoções.</li>
+</ul>
+
+    </div>
+
+    <div class="ctas">
+      <a class="btn btn-gold reveal d4" href="#preco">Liberar bônus com minha matrícula</a>
+      <a class="btn btn-ghost reveal d4" href="#garantia">Ver garantia</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('bonus');
+  const io = new IntersectionObserver((es,obs)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+  }, {threshold:.14});
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO 6 • BÔNUS ============ -->
+<!-- ============ BLOCO 7 • PREÇO & CHECKOUT (id: #preco) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #preco{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c; --soft:#f9f6e8;
+    background:var(--bg); color:var(--ink);
+  }
+  #preco .wrap{
+    max-width:1100px; margin:0 auto; padding:28px 16px; display:grid; gap:20px;
+  }
+  @media (min-width:1024px){ #preco .wrap{ padding:64px 24px; } }
+
+  /* Cabeçalho */
+  #preco .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08; margin:0 0 8px;
+    text-align:center;
+  }
+  #preco .lead{
+    font-family:Questrial,system-ui; color:#2b2e31; opacity:.95; margin:0 auto 8px; text-align:center;
+    max-width:70ch; font-size:clamp(14px,2.2vw,18px);
+  }
+  #preco .subline{
+    width:min(720px, 90%); height:8px; border-radius:6px; margin:0 auto 14px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+  }
+
+  /* Card de preço */
+  #preco .card{
+    border:1px solid #eee; border-radius:18px; background:#fff; box-shadow:0 14px 36px rgba(0,0,0,.08);
+    padding:18px; max-width:880px; margin:0 auto; display:grid; gap:14px;
+  }
+  @media (min-width:1024px){
+    #preco .card{ grid-template-columns: 1.1fr .9fr; align-items:center; }
+  }
+
+  /* Coluna esquerda: valor e copy */
+  #preco .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+    background:rgba(245,200,76,.18); border:1px solid rgba(245,200,76,.35);
+    font:700 12px/1 Questrial,system-ui; width:max-content;
+  }
+  #preco .price{
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin:4px 0 6px;
+  }
+  #preco .price .big{
+    font-family:Comfortaa,system-ui; font-weight:700; font-size:clamp(28px,6vw,48px);
+  }
+  #preco .price .split{
+    font-family:Comfortaa,system-ui; font-weight:700; font-size:clamp(18px,4.2vw,26px); color:#1a1a1a;
+  }
+  #preco .note{
+    font-family:Questrial,system-ui; color:#2b2e31; opacity:.9; font-size:clamp(13px,2vw,16px);
+  }
+
+  /* Lista curta de valor */
+  #preco .bullets{ display:grid; gap:8px; margin-top:4px; }
+  #preco .item{ display:flex; gap:10px; align-items:flex-start; }
+  #preco .item svg{ width:18px; height:18px; flex:0 0 18px; }
+  #preco .item p{ margin:0; font-family:Questrial,system-ui; font-size:clamp(14px,2.2vw,16px); color:#2b2e31; }
+
+  /* Coluna direita: CTA box */
+  #preco .cta-box{
+    border:1px solid #eee; border-radius:16px; background:var(--soft);
+    padding:14px; display:grid; gap:10px;
+  }
+  #preco .cta-box .trust{
+    font-family:Questrial,system-ui; color:#6c6f73; font-size:12px; text-align:center;
+  }
+
+  /* Botões slim */
+  #preco .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700; font-family:Questrial,system-ui;
+    border-radius:12px; padding:10px 16px; font-size:15px; line-height:1.05; box-shadow:0 8px 18px rgba(0,0,0,.12);
+    text-align:center; display:block;
+  }
+  #preco .btn-gold{ background:var(--gold); color:#121212; }
+  #preco .btn-ghost{ background:#fff; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15); }
+  #preco .btn-gold:hover{ filter:brightness(.95); }
+  #preco .btn-ghost:hover{ border-color:var(--gold); }
+
+  /* Urgência sutil */
+  #preco .urgency{
+    font-family:Questrial,system-ui; font-size:12px; color:#6c6f73; text-align:center;
+  }
+
+  /* Reveal */
+  #preco .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  #preco .reveal.in{ opacity:1; transform:none; }
+  #preco .d1{ transition-delay:.08s } .d2{ transition-delay:.16s } .d3{ transition-delay:.24s } .d4{ transition-delay:.32s }
+  /* === Destaque animado para "Condição de lançamento" (badge) === */
+#preco .badge{
+  position: relative;
+  isolation: isolate;                      /* garante que o halo fique por trás */
+  padding: 8px 14px;                       /* um pouco maior */
+  border-radius: 999px;
+  font: 700 12.5px/1 Questrial, system-ui;
+  letter-spacing: .02em;
+  background: linear-gradient(180deg, #fff7d1 0%, #ffe089 65%, #f5c84c 100%);
+  border: 1px solid rgba(245,200,76,.55);
+  box-shadow: 0 8px 20px rgba(245,200,76,.25);
+  color: #1a1a1a;
+}
+
+/* Anel pulsante (expande e some) */
+#preco .badge::after{
+  content:"";
+  position:absolute; inset:-6px;
+  border-radius: inherit;
+  border: 2px solid rgba(245,200,76,.55);
+  opacity:.6;
+  animation: preco-ping 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+/* Halo respirando (brilho suave) */
+#preco .badge::before{
+  content:"";
+  position:absolute; inset:-2px;
+  border-radius: inherit;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(245,200,76,.30), rgba(245,200,76,0) 60%);
+  filter: blur(2px);
+  opacity:.7;
+  animation: preco-halo 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes preco-ping{
+  0%   { transform: scale(0.96); opacity:.6; }
+  70%  { transform: scale(1.18); opacity:0; }
+  100% { opacity:0; }
+}
+@keyframes preco-halo{
+  0%,100% { opacity:.45; }
+  50%     { opacity:.85; }
+}
+
+/* Respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce){
+  #preco .badge::before,
+  #preco .badge::after{ animation:none !important; }
+}
+/* === BADGE TURBO: Condição de lançamento (pulso + anel + brilho) === */
+#preco .badge{
+  position: relative;
+  isolation: isolate;
+  padding: 10px 16px;                           /* um pouco maior */
+  border-radius: 999px;
+  font: 700 13px/1 Questrial, system-ui;
+  letter-spacing: .02em;
+  background: linear-gradient(180deg, #fff5c2 0%, #ffdf7f 58%, #f5c84c 100%);
+  border: 1px solid rgba(245,200,76,.65);
+  color: #1a1a1a;
+  box-shadow:
+    0 10px 26px rgba(245,200,76,.30),
+    0 0 0 0 rgba(245,200,76,0);                 /* animo no keyframe */
+  transform-origin: center;
+  animation: badge-pop 1.8s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+
+/* ANEL que expande e some */
+#preco .badge::after{
+  content:"";
+  position:absolute; inset:-8px;
+  border-radius: inherit;
+  border: 3px solid rgba(245,200,76,.65);
+  opacity:.85;
+  animation: ring-ping 2s ease-out infinite;
+  pointer-events: none;
+}
+
+/* HALO + FAIXA DE BRILHO (dois fundos na mesma pseudo) */
+#preco .badge::before{
+  content:"";
+  position:absolute; inset:-3px; border-radius:inherit;
+  background:
+    linear-gradient(120deg, transparent 0%, rgba(255,255,255,.95) 50%, transparent 100%),  /* sheeeen */
+    radial-gradient(60% 60% at 50% 50%, rgba(245,200,76,.45), rgba(245,200,76,0) 65%);     /* halo */
+  background-size: 220% 100%, 100% 100%;
+  background-position: -120% 0, 50% 50%;
+  filter: blur(1.5px);
+  mix-blend-mode: screen;
+  animation: sheen-sweep 2.1s ease-in-out infinite, halo-breathe 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* PULSO do “pill” */
+@keyframes badge-pop{
+  0%   { transform: scale(1);    box-shadow: 0 10px 26px rgba(245,200,76,.30), 0 0 0 0 rgba(245,200,76,0); }
+  40%  { transform: scale(1.065); box-shadow: 0 14px 34px rgba(245,200,76,.42), 0 0 24px 3px rgba(245,200,76,.35); }
+  100% { transform: scale(1.03);  box-shadow: 0 12px 30px rgba(245,200,76,.34), 0 0 0 0 rgba(245,200,76,0); }
+}
+
+/* ANEL que cresce mais (boom) */
+@keyframes ring-ping{
+  0%   { transform: scale(.9);  opacity:.85; }
+  70%  { transform: scale(1.55); opacity:0;  }
+  100% { opacity:0; }
+}
+
+/* HALO respirando (intensidade) */
+@keyframes halo-breathe{
+  0%,100% { opacity:.45; }
+  50%     { opacity:.95; }
+}
+
+/* FAIXA de brilho correndo */
+@keyframes sheen-sweep{
+  0%   { background-position: -120% 0, 50% 50%; }
+  100% { background-position: 220% 0,   50% 50%; }
+}
+
+/* Acessibilidade: respeita usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce){
+  #preco .badge,
+  #preco .badge::before,
+  #preco .badge::after{ animation:none !important; }
+}
+
+</style>
+
+<section id="preco" aria-label="Preço e checkout">
+  <div class="wrap">
+    <h2 class="h2 reveal">Quanto vou pagar por tudo isso?</h2>
+    <p class="lead reveal d1">
+      Desenvolvimento espiritual **do zero ao avançado**, reunindo a sabedoria **judaico-cristã**, **oriental** e **ocidental** em um só lugar — em aulas **curtas, ilustradas e leves**.
+    </p>
+    <div class="subline reveal d1" aria-hidden="true"></div>
+
+    <div class="card">
+      <!-- COL ESQ -->
+      <div class="col reveal d2">
+        <span class="badge">Condição de lançamento</span>
+        <div class="price">
+          <span class="big">12x de R$ 41,37</span>
+          <span class="split">ou R$ 400,00</span>
+        </div>
+        <p class="note">Valor **simbólico e democrático** para melhorar a média do máximo de pessoas.</p>
+
+        <div class="bullets" style="margin-top:8px">
+          <div class="item">
+            <!-- selo -->
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.7 5.5 6 1-4.3 4.2 1 6L12 17l-5.4 2.7 1-6L3.4 9.5l6-1L12 3Z" stroke="#1a1a1a" stroke-width="1.4"/><path d="M12 8v9" stroke="#f5c84c" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <p>**6 Chaves & Selos** completos + materiais de apoio.</p>
+          </div>
+          <div class="item">
+            <!-- livro -->
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 4h9l3 3v13H6z" stroke="#1a1a1a" stroke-width="1.6"/><path d="M15 4v3h3" stroke="#f5c84c" stroke-width="1.6"/></svg>
+            <p>**3 E-books premium** (Guia 70p, Mapa da Alma, Mapa Espiritual 12 pares).</p>
+          </div>
+          <div class="item">
+            <!-- relógio -->
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1a1a1a" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="#f5c84c" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <p>**+ de 50 Aulas 3–8 min** com animação e som — mobile-first.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- COL DIR (CTA) -->
+      <div class="cta-box reveal d3">
+        <a class="btn btn-gold" href="https://pay.kiwify.com.br/otZkPSG">Começar minha travessia agora</a>
+        <a class="btn btn-ghost" href="https://pay.kiwify.com.br/otZkPSG">Liberar Acesso (12 x R$ 41,37 ou R$400,00)</a>
+        <div class="trust">Pagamento seguro • Acesso imediato • Aulas 3–8 min • Mobile-first</div>
+        <div class="urgency">Condição de lançamento: pode ser ajustada nos próximos lotes conforme novos materiais forem adicionados.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('preco');
+  const io  = new IntersectionObserver((es,obs)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+  }, {threshold:.14});
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO 7 • PREÇO & CHECKOUT ============ -->
+<!-- ============ BLOCO 8 • GARANTIA (poético) (id: #garantia) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #garantia{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c; --soft:#f9f6e8;
+    background:var(--bg); color:var(--ink);
+  }
+  #garantia .wrap{
+    max-width:1100px; margin:0 auto; padding:28px 16px; display:grid; gap:20px;
+  }
+  @media (min-width:1024px){
+    #garantia .wrap{ padding:72px 24px; grid-template-columns: 1.05fr .95fr; gap:40px; align-items:center; }
+  }
+
+  /* Título */
+  #garantia .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08; margin:0 0 10px;
+  }
+
+  /* Poema / texto */
+  #garantia .poem{
+    font-family:Questrial,system-ui; font-size:clamp(14px,2.2vw,18px); color:#2b2e31; opacity:.95;
+    margin:0 0 12px; max-width:60ch;
+  }
+  #garantia .poem em{ font-style:normal; color:#1a1a1a; }
+
+  /* Selo / cartão */
+  #garantia .seal{
+    border:1px solid #eee; border-radius:18px; background:var(--soft);
+    box-shadow:0 14px 36px rgba(0,0,0,.08); padding:18px; display:grid; gap:12px;
+  }
+  #garantia .seal .top{
+    display:flex; align-items:center; gap:12px;
+  }
+  #garantia .medal{
+    width:56px; height:56px; border-radius:14px;
+    background: radial-gradient(100% 100% at 30% 20%, #ffe89a 0%, #f5c84c 60%, #e0b100 100%);
+    display:grid; place-items:center; box-shadow:0 8px 20px rgba(245,200,76,.35);
+    flex:0 0 56px;
+  }
+  #garantia .medal svg{ width:28px; height:28px; }
+  #garantia .seal h3{
+    font-family:Comfortaa,system-ui; font-weight:700; margin:0; font-size:clamp(16px,2.8vw,20px);
+  }
+  #garantia .mini{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  #garantia .badge{
+    font:700 12px/1 Questrial,system-ui; color:#1a1a1a;
+    background:#fff; border:1px solid rgba(0,0,0,.12); border-radius:999px; padding:6px 10px;
+  }
+
+  /* CTA slim */
+  #garantia .ctas{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+  #garantia .btn{
+    appearance:none; border:0; cursor:pointer; text-decoration:none; font-weight:700; font-family:Questrial,system-ui;
+    border-radius:12px; padding:10px 16px; font-size:15px; line-height:1.05; box-shadow:0 8px 18px rgba(0,0,0,.12);
+  }
+  #garantia .btn-gold{ background:var(--gold); color:#121212; }
+  #garantia .btn-ghost{ background:#fff; color:#1a1a1a; border:1.5px solid rgba(0,0,0,.15); }
+  #garantia .btn-gold:hover{ filter:brightness(.95); }
+  #garantia .btn-ghost:hover{ border-color:var(--gold); }
+
+  /* Nota de transparência */
+  #garantia .note{
+    font-family:Questrial,system-ui; font-size:12px; color:#6c6f73; margin-top:6px;
+  }
+
+  /* Reveal */
+  #garantia .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  #garantia .reveal.in{ opacity:1; transform:none; }
+  #garantia .d1{ transition-delay:.08s } .d2{ transition-delay:.16s } .d3{ transition-delay:.24s } .d4{ transition-delay:.32s }
+</style>
+
+<section id="garantia" aria-label="Garantia de 7 dias">
+  <div class="wrap">
+    <!-- TEXTO POÉTICO -->
+    <div class="col-text">
+      <h2 class="h2 reveal">Garantia de 7 dias — vibração real</h2>
+      <p class="poem reveal d1">
+        Em <em>sete amanheceres</em> de prática, se você não perceber um sopro novo de presença —
+        mais silêncio por dentro, mais clareza no olhar — nós desfazemos o caminho do pagamento.
+        Sem perguntas. Com respeito pela sua travessia.
+      </p>
+      <p class="poem reveal d1">
+        Porque a Luz não se impõe: ela <em>convida</em>. E se não brilhar em você, nós acolhemos sua decisão.
+      </p>
+
+      <div class="ctas reveal d3">
+        <a class="btn btn-gold" href="https://pay.kiwify.com.br/KxpXn2t">Quero começar sem risco</a>
+        <a class="btn btn-ghost" href="#faq">Ver perguntas frequentes</a>
+      </div>
+    </div>
+
+    <!-- SELO / CARD -->
+    <aside class="seal reveal d2">
+      <div class="top">
+        <div class="medal" aria-hidden="true">
+          <!-- selo check -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="#1a1a1a" stroke-width="1.6"/>
+            <path d="M8.5 12.5l2.2 2.2 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Sem letras miúdas</h3>
+      </div>
+
+      <div class="mini">
+        <span class="badge">7 dias</span>
+        <span class="badge">100% de volta</span>
+        <span class="badge">Acesso imediato</span>
+      </div>
+
+      <p class="note">Basta solicitar dentro de 7 dias a partir da compra. Transparência total.</p>
+    </aside>
+  </div>
+</section>
+
+<script>
+(function(){
+  const sec = document.getElementById('garantia');
+  const io  = new IntersectionObserver((es,obs)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+  }, {threshold:.14});
+  sec.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+})();
+</script>
+<!-- ============ / BLOCO 8 • GARANTIA (poético) ============ -->
+<!-- ============ BLOCO 9 • FAQ (sanfona elegante) (id: #faq) ============ -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  #faq{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6c6f73; --gold:#f5c84c; --soft:#faf7ea;
+    background:var(--bg); color:var(--ink); scroll-margin-top: 80px;
+  }
+  #faq .wrap{
+    max-width:1100px; margin:0 auto; padding:28px 16px; display:grid; gap:20px;
+  }
+  @media (min-width:1024px){ #faq .wrap{ padding:72px 24px; } }
+
+  /* Título */
+  #faq .h2{
+    font-family:Comfortaa,system-ui; font-weight:700;
+    font-size:clamp(24px,5.2vw,40px); line-height:1.08; margin:0 0 8px; text-align:center;
+  }
+  #faq .lead{
+    font-family:Questrial,system-ui; color:#2b2e31; opacity:.92; text-align:center;
+    max-width:70ch; margin:0 auto 10px; font-size:clamp(14px,2.2vw,18px);
+  }
+  #faq .subline{
+    width:min(720px, 90%); height:8px; border-radius:6px; margin:0 auto 14px;
+    background:linear-gradient(90deg, rgba(245,200,76,.15), rgba(245,200,76,.75));
+  }
+
+  /* Accordion */
+  .acc{ border:1px solid #eee; border-radius:16px; background:#fff; box-shadow:0 10px 24px rgba(0,0,0,.06); }
+  .acc + .acc{ margin-top:10px; }
+  .acc-head{
+    width:100%; display:flex; align-items:center; gap:12px;
+    padding:12px 14px; background:#fff; border:0; cursor:pointer; text-align:left;
+    font-family:Questrial,system-ui; font-weight:700; font-size:clamp(14px,2.2vw,16px);
+    border-radius:16px;
+  }
+  .acc-head:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .acc-head .ico{
+    width:28px; height:28px; border-radius:8px; display:grid; place-items:center;
+    background:radial-gradient(100% 100% at 30% 20%, #ffe89a 0%, #f5c84c 60%, #e0b100 100%);
+    box-shadow:0 6px 14px rgba(245,200,76,.35); flex:0 0 28px;
+  }
+  .acc-head .chev{ margin-left:auto; width:18px; height:18px; transition:transform .25s ease; }
+  .acc-head[aria-expanded="true"] .chev{ transform:rotate(180deg); }
+
+  .acc-panel{
+    overflow:hidden; max-height:0; transition:max-height .35s ease;
+    border-top:1px solid #f1f1f1; background:#fff;
+  }
+  .acc-inner{ padding:12px 14px; font-family:Questrial,system-ui; color:#2b2e31;
+    font-size:clamp(14px,2.2vw,16px); }
+  .acc-inner p{ margin:0 0 8px; }
+  .acc-inner ul{ margin:6px 0 0 18px; }
+  .muted{ color:#6c6f73; }
+
+  /* Reveal */
+  #faq .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  #faq .reveal.in{ opacity:1; transform:none; }
+  /* === FAQ CLEAN BRANCO + FILETE DOURADO === */
+#faq .acc{
+  background:#fff !important;
+  border:1px solid rgba(245,200,76,.35) !important; /* fio dourado suave */
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.04);            /* sombra leve */
+}
+#faq .acc + .acc{ margin-top:12px; }
+
+/* Cabeçalho sem gradiente */
+#faq .acc-head{
+  background:#fff !important;
+  padding:12px 16px;
+  border-radius:16px;
+}
+
+/* Ícone com dourado translúcido (sem “glow” forte) */
+#faq .acc-head .ico{
+  background:rgba(245,200,76,.18) !important;
+  box-shadow:none !important;
+}
+
+/* Chevron/ícone — preto no normal, sem cor azul */
+#faq .acc-head .chev path{ stroke:#1a1a1a !important; }
+
+/* Linha do painel com dourado bem sutil */
+#faq .acc-panel{
+  border-top:1px solid rgba(245,200,76,.22) !important;
+}
+
+/* Estado aberto: realce discreto (wash dourado) */
+#faq .acc-head[aria-expanded="true"]{
+  background:
+    linear-gradient(0deg, rgba(245,200,76,.06), rgba(245,200,76,.06)),
+    #fff !important;
+}
+
+/* Hover/Focus elegantes (sem exagero) */
+#faq .acc-head:hover{
+  box-shadow:0 8px 20px rgba(245,200,76,.12);
+}
+#faq .acc-head:focus-visible{
+  outline:2px solid #f5c84c; outline-offset:2px;
+}
+
+</style>
+
+<section id="faq" aria-label="Perguntas Frequentes">
+  <div class="wrap">
+    <h2 class="h2 reveal">Perguntas frequentes</h2>
+    <p class="lead reveal">Tudo o que você precisa saber para começar com leveza.</p>
+    <div class="subline reveal" aria-hidden="true"></div>
+
+    <!-- 1 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p1" id="h1">
+        <span class="ico" aria-hidden="true">✨</span>
+        O que realmente serei capaz de enxergar após este curso?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p1" role="region" aria-labelledby="h1" hidden>
+        <div class="acc-inner">
+          <p>Um <strong>mapa vivo da sua alma</strong> — camadas, zonas e raízes antes ocultas. Você identifica <strong>vibrações dominantes</strong>, entende <strong>ciclos</strong> e aprende a agir com <strong>consciência</strong> sobre dons e feridas.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p2" id="h2">
+        <span class="ico" aria-hidden="true">📚</span>
+        O que exatamente compõe o Canva Espiritual?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p2" role="region" aria-labelledby="h2" hidden>
+        <div class="acc-inner">
+          <p><strong>6 Chaves</strong> (etapas) guiando do <em>ver</em> ao <em>governar</em> e <em>transmutar</em>, com ~<strong>40 Selos</strong> audiovisuais (3–8 min; máx. 10 min) e materiais premium que acompanham sua prática.</p>
+          <ul>
+            <li><strong>Chave 1</strong> — Autodiagnóstico (Espelho & Escalas)</li>
+            <li><strong>Chave 2</strong> — Autogoverno (Leis & Mapa)</li>
+            <li><strong>Chave 3</strong> — Autoproteção (Transmutação)</li>
+            <li><strong>Chave 4</strong> — Transmutação & Blindagem (Rotina 3–8 min)</li>
+            <li><strong>Chave 5</strong> — Deserto Interior</li>
+            <li><strong>Chave 6</strong> — Cosmovisão & Missão</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p3" id="h3">
+        <span class="ico" aria-hidden="true">🧾</span>
+        O que eu recebo além das aulas?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p3" role="region" aria-labelledby="h3" hidden>
+        <div class="acc-inner">
+          <p><strong>3 E-books prioritários:</strong> Guia (70 págs.), Mapa da Alma e Mapa Espiritual (12 pares). E, como correspondência a cada aula: roteiros de meditação, tabela prânica, checklists, áudios/ambientes e planilhas extras.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p4" id="h4">
+        <span class="ico" aria-hidden="true">🔁</span>
+        Por quanto tempo terei acesso?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p4" role="region" aria-labelledby="h4" hidden>
+        <div class="acc-inner">
+          <p><strong>12 meses</strong> de acesso total. É um <em>altar digital</em>: volte quando precisar realinhar.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p5" id="h5">
+        <span class="ico" aria-hidden="true">📱</span>
+        Posso estudar no celular?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p5" role="region" aria-labelledby="h5" hidden>
+        <div class="acc-inner">
+          <p>Sim. Tudo é <strong>mobile-first</strong>, leve e pensado para 3–8 min por período.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p6" id="h6">
+        <span class="ico" aria-hidden="true">🧭</span>
+        Qual é o ritmo recomendado?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p6" role="region" aria-labelledby="h6" hidden>
+        <div class="acc-inner">
+          <p><strong>Degraus curtos:</strong> 3–8 min manhã • meio-dia • noite; 1–2 Selos/dia; ciclos de <strong>7/21/40</strong> dias.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p7" id="h7">
+        <span class="ico" aria-hidden="true">🌈</span>
+        Serve para qualquer fé?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p7" role="region" aria-labelledby="h7" hidden>
+        <div class="acc-inner">
+          <p>Sim. Honramos tradições que buscam <strong>verdade, luz e bem</strong>. Não impomos doutrina — expomos <strong>leis universais</strong>.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p8" id="h8">
+        <span class="ico" aria-hidden="true">❓</span>
+        Preciso acreditar em algo específico?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p8" role="region" aria-labelledby="h8" hidden>
+        <div class="acc-inner">
+          <p>Não. Precisa apenas <strong>praticar</strong> e observar a própria experiência.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p9" id="h9">
+        <span class="ico" aria-hidden="true">🛡️</span>
+        E se eu cair no caminho?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p9" role="region" aria-labelledby="h9" hidden>
+        <div class="acc-inner">
+          <p>Faz parte do humano. Você terá <strong>protocolos de retomada</strong> (7/21/40), sem culpa, com direção.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 10 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p10" id="h10">
+        <span class="ico" aria-hidden="true">🧠</span>
+        É terapia? Substitui tratamento?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p10" role="region" aria-labelledby="h10" hidden>
+        <div class="acc-inner">
+          <p><strong>Não.</strong> É um método educacional/espiritual. Se você está em tratamento, <strong>siga seu profissional</strong>. Em crise, procure ajuda especializada.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p11" id="h11">
+        <span class="ico" aria-hidden="true">💳</span>
+        Como posso pagar?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p11" role="region" aria-labelledby="h11" hidden>
+        <div class="acc-inner">
+          <p>Pelo checkout (Kiwify) com <strong>cartão</strong>, <strong>Pix</strong> e outras opções da plataforma. Acesso <strong>imediato</strong> após confirmação.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 12 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p12" id="h12">
+        <span class="ico" aria-hidden="true">💸</span>
+        E se eu não gostar? Posso pedir reembolso?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p12" role="region" aria-labelledby="h12" hidden>
+        <div class="acc-inner">
+          <p>Sim. <strong>Garantia de 7 dias</strong>, incondicional. Solicite direto na plataforma — simples, sem justificativas.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 13 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p13" id="h13">
+        <span class="ico" aria-hidden="true">💠</span>
+        O preço pode mudar?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p13" role="region" aria-labelledby="h13" hidden>
+        <div class="acc-inner">
+          <p>É uma <strong>condição de lançamento</strong>. Com novos materiais, o valor pode ser ajustado nos próximos lotes. Você mantém as condições da sua compra.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 14 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p14" id="h14">
+        <span class="ico" aria-hidden="true">🎯</span>
+        Para quem é — e para quem não é?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p14" role="region" aria-labelledby="h14" hidden>
+        <div class="acc-inner">
+          <p><strong>É para quem</strong> quer praticar de forma leve e consistente. <strong>Não é para quem</strong> busca pílula mágica sem dedicação diária.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 15 • Novo: Certificado -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p15" id="h15">
+        <span class="ico" aria-hidden="true">📜</span>
+        Receberei certificado ao concluir?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p15" role="region" aria-labelledby="h15" hidden>
+        <div class="acc-inner">
+          <p>Sim. Emitimos um <strong>certificado digital</strong> ao final da travessia, mediante conclusão dos Selos básicos (orientaremos na plataforma).</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 16 • Novo: Presente/Desconto -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p16" id="h16">
+        <span class="ico" aria-hidden="true">🎁</span>
+        Posso presentear alguém?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="acc-panel" id="p16" role="region" aria-labelledby="h16" hidden>
+        <div class="acc-inner">
+          <p>Sim — e com vantagem: após a compra, há uma <strong>aula-surpresa no meio do curso</strong> com um <strong>link de desconto</strong> para você presentear alguém querido.</p>
+          <p class="muted">*Disponível para compras individuais; detalhes do cupom e validade estão nessa aula.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 17 -->
+    <article class="acc reveal">
+      <button class="acc-head" aria-expanded="false" aria-controls="p17" id="h17">
+        <span class="ico" aria-hidden="true">📨</span>
+        Como falo com vocês?
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+            <div class="acc-panel" id="p17" role="region" aria-labelledby="h17" hidden>
+        <div class="acc-inner">
+          <p>Você pode nos contatar pelo <strong>e-mail de suporte informado no checkout</strong>. Tempo de resposta: <strong>24–48h úteis</strong>.</p>
+          <p class="muted">Se houver qualquer dificuldade de acesso, descreva seu pedido e o e-mail utilizado na compra.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- CTA opcional ao final da FAQ -->
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
+      <a href="#preco" class="acc-head" style="border:1.5px solid rgba(0,0,0,.15); width:auto; padding:8px 14px; border-radius:12px; font-weight:700;">Ver preço</a>
+      <a href="https://pay.kiwify.com.br/KxpXn2t" class="acc-head" style="background:#f5c84c; border:none; width:auto; padding:8px 14px; border-radius:12px; font-weight:700; color:#121212;">Começar agora</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  // Reveal (entra suave ao rolar)
+  const faq = document.getElementById('faq');
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .14 });
+  faq.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+  // Sanfona acessível
+  const heads = faq.querySelectorAll('.acc-head');
+  function closePanel(panel, head){
+    if(!panel) return;
+    head.setAttribute('aria-expanded','false');
+    panel.style.maxHeight = '0px';
+    // esconder após a transição para leitores de tela
+    panel.addEventListener('transitionend', function onEnd(){
+      if(head.getAttribute('aria-expanded') === 'false'){
+        panel.hidden = true;
+      }
+      panel.removeEventListener('transitionend', onEnd);
+    });
+  }
+  function openPanel(panel, head){
+    if(!panel) return;
+    head.setAttribute('aria-expanded','true');
+    panel.hidden = false;
+    // calcula altura real
+    panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+
+  // Comportamento: múltiplos abertos OU só um?
+  const singleOpen = true; // mude para false se quiser abrir vários
+
+  heads.forEach((btn)=>{
+    const panelId = btn.getAttribute('aria-controls');
+    const panel   = document.getElementById(panelId);
+
+    // estado inicial
+    panel.style.maxHeight = '0px';
+
+    btn.addEventListener('click', ()=>{
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      if(expanded){
+        closePanel(panel, btn);
+      }else{
+        if(singleOpen){
+          // fecha outros abertos
+          heads.forEach(h=>{
+            if(h !== btn && h.getAttribute('aria-expanded') === 'true'){
+              const other = document.getElementById(h.getAttribute('aria-controls'));
+              closePanel(other, h);
+            }
+          });
+        }
+        openPanel(panel, btn);
+      }
+    });
+  });
+
+  // Suporte a hash (#p3/#h3) para abrir direto uma pergunta
+  function openByHash(){
+    const hash = location.hash.replace('#','');
+    if(!hash) return;
+    const head = document.getElementById(hash.startsWith('p') ? hash.replace('p','h') : hash);
+    const panel = document.getElementById(hash.startsWith('h') ? hash.replace('h','p') : hash);
+    if(head && panel){
+      heads.forEach(h=>{
+        const p = document.getElementById(h.getAttribute('aria-controls'));
+        closePanel(p, h);
+      });
+      openPanel(panel, head);
+      head.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+  window.addEventListener('hashchange', openByHash);
+  openByHash();
+
+  // Recalcular altura ao redimensionar (painéis abertos)
+  window.addEventListener('resize', ()=>{
+    heads.forEach(h=>{
+      if(h.getAttribute('aria-expanded') === 'true'){
+        const p = document.getElementById(h.getAttribute('aria-controls'));
+        p.style.maxHeight = p.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+</script>
+

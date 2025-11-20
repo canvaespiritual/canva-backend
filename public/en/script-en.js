@@ -206,12 +206,19 @@ function fruitFromCode(code){
 }
 
 function imageForZone(zone, cls="w-48 h-48 mx-auto rounded"){
+  // converte o texto da zona EN para o nome do arquivo em PT
+  const fileZone =
+    zone === 'virtue'      ? 'virtude' :
+    zone === 'transition'  ? 'transicao' :
+    /* degradation */        'degradacao';
+
   return `
   <picture>
-    <source srcset="../assets/imagens/zona_${zone}.webp" type="image/webp" />
-    <img src="../assets/imagens/zona_${zone}.png" alt="Zone ${zone}" class="${cls}" loading="lazy" />
+    <source srcset="../assets/imagens/zona_${fileZone}.webp" type="image/webp" />
+    <img src="../assets/imagens/zona_${fileZone}.png" alt="Zone ${zone}" class="${cls}" loading="lazy" />
   </picture>`;
 }
+
 
 /* ——— Loader ——— */
 function showLoader(msg="Processing..."){
@@ -247,6 +254,24 @@ function updateProgress(i){
   if(p) p.style.width=pct+'%';
   if(t) t.textContent=pct+'%';
 }
+function fruitDataFromCode(code){
+  const p = code.slice(0,2);
+  const map = {
+    PC: { key: 'paciência',      label: 'patience' },
+    AL: { key: 'alegria',        label: 'joy' },
+    PA: { key: 'paz',            label: 'peace' },
+    CA: { key: 'castidade',      label: 'chastity' },
+    CO: { key: 'continência',    label: 'continence' },
+    MA: { key: 'domínio',        label: 'self-mastery' },
+    MO: { key: 'modéstia',       label: 'modesty' },
+    FI: { key: 'fidelidade',     label: 'fidelity' },
+    AM: { key: 'amor',           label: 'love' },
+    BE: { key: 'benignidade',    label: 'benignity' },
+    BO: { key: 'bondade',        label: 'kindness' },
+    LO: { key: 'longanimidade',  label: 'longsuffering' },
+  };
+  return map[p] || { key: 'fruto', label: 'fruit' };
+}
 
 /* ——— Previous mirror (top toast) ——— */
 function mirrorBlock(i){
@@ -255,20 +280,30 @@ function mirrorBlock(i){
   if(!code) return '';
   const zone = zoneFromCode(code);
   const pct  = percentFromCode(code);
-  const fruit= fruitFromCode(code);
-  const icons = { virtue:"🌟", transition:"⏳", degradation:"🔥" };
-  const icon  = icons[zone];
+  const fruitData = fruitDataFromCode(code);
+const fruitKey   = fruitData.key;   // usado no NOME do arquivo
+const fruitLabel = fruitData.label; // usado no texto em inglês
+
+const fileZone =
+  zone === 'virtue'     ? 'virtude' :
+  zone === 'transition' ? 'transicao' :
+                           'degradacao';
+
+const icons = { virtue:"🌟", transition:"⏳", degradation:"🔥" };
+const icon  = icons[zone];
 
   return `
     <div id="mirror-block" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-[#fefce8] border border-yellow-500 rounded-xl shadow-lg px-4 py-4 w-[90%] max-w-md text-center">
       <div class="flex flex-col items-center justify-center space-y-2 mb-2">
         <picture>
-          <source srcset="../assets/icones/${fruit}_${zone}.webp" type="image/webp" />
-          <img src="../assets/icones/${fruit}_${zone}.png" class="w-20 h-20" alt="${fruit} icon">
-        </picture>
+  <source srcset="../assets/icones/${fruitKey}_${fileZone}.webp" type="image/webp" />
+  <img src="../assets/icones/${fruitKey}_${fileZone}.png" class="w-20 h-20" alt="${fruitLabel} icon">
+</picture>
         <p class="text-[13px] text-gray-700 font-medium">Keep observing. Your last choice shows a living vibration inside you.</p>
       </div>
-      <p class="text-sm text-gray-800 font-semibold mt-2">Your ${fruit} is at <span class="text-yellow-600">${pct}%</span></p>
+      <p class="text-sm text-gray-800 font-semibold mt-2">
+  Your ${fruitLabel} is at <span class="text-yellow-600">${pct}%</span>
+</p>
       <div class="relative w-full h-4 mt-4 mb-2 rounded bg-gradient-to-r from-red-500 via-white to-blue-600">
         <div class="absolute -top-2 left-[${pct}%] -translate-x-1/2 z-10 text-2xl animate-pulse">${icon}</div>
       </div>

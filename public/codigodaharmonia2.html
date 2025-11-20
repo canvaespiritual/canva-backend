@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- ===== PIXELS AULA SECRETA: CÓDIGO DA HARMONIA ===== -->
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "tg0bonz3au");
+</script>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '734281049586138');   // seu Pixel
+fbq('track', 'PageView');
+/* ViewContent específico desta página (VSL) */
+fbq('track', 'ViewContent', {
+  content_name: 'Aula Secreta — Código da Harmonia',
+  content_category: 'vsl'
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"
+/></noscript>
+
+<!-- GA4 + Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  /* GA4 */
+  gtag('config', 'G-9QDEN04CQM');
+
+  /* Google Ads (conta) */
+  gtag('config', 'AW-936695843');
+
+  /* View de item/contéudo para GA4 */
+  gtag('event', 'view_item', {
+    currency: 'BRL',
+    value: 0,
+    items: [{
+      item_id: 'vsl-codigo-harmonia',
+      item_name: 'Aula Secreta — Código da Harmonia',
+      item_category: 'vsl'
+    }]
+  });
+</script>
+
+<!-- ===== Retenção por marcos (Meta + GA4; Ads opcional) ===== -->
+<script>
+(function(){
+  var VIDEO_ID = window.VIDEO_ID || '69050dfc21067174bb51c90b';
+  var REVEAL_AT_SECONDS = window.REVEAL_AT_SECONDS || 1817; // 30:17
+  var WATCH_MARKS = window.WATCH_MARKS || [30, 90, 180, 360, 800, REVEAL_AT_SECONDS];
+
+  var firedMarksKey = 'vturb_marks_fired_' + VIDEO_ID;
+  function getFired(){ try { return JSON.parse(localStorage.getItem(firedMarksKey) || '[]'); } catch(e){ return []; } }
+  function setFired(arr){ try { localStorage.setItem(firedMarksKey, JSON.stringify(arr)); } catch(e){} }
+
+  function fireOnce(mark, secNow){
+    var fired = new Set(getFired());
+    if (fired.has(mark)) return;
+
+    // Meta Pixel
+    if (typeof fbq === 'function') {
+      fbq('trackCustom', 'VideoWatch_'+mark+'s', {
+        video_id: VIDEO_ID,
+        seconds: Math.floor(secNow)
+      });
+    }
+
+    // GA4
+    if (typeof gtag === 'function') {
+      gtag('event', 'video_watch_'+mark+'s', {
+        video_id: VIDEO_ID,
+        seconds: Math.floor(secNow),
+        engagement_time_msec: mark*1000
+      });
+    }
+
+    // Google Ads (opcional): crie conversões e ative por mark
+    // if (mark === 180) { gtag('event', 'conversion', { 'send_to': 'AW-936695843/SEU_LABEL_180' }); }
+    // if (mark === 360) { gtag('event', 'conversion', { 'send_to': 'AW-936695843/SEU_LABEL_360' }); }
+    // if (mark === 800) { gtag('event', 'conversion', { 'send_to': 'AW-936695843/SEU_LABEL_800' }); }
+    // if (mark === REVEAL_AT_SECONDS) { gtag('event', 'conversion', { 'send_to': 'AW-936695843/SEU_LABEL_1817' }); }
+
+    fired.add(mark);
+    setFired(Array.from(fired));
+  }
+
+  // Exposto para seu script principal chamar com o currentTime
+  window.__watchMarks = WATCH_MARKS;
+  window.__fireMarksIfNeeded = function(sec){
+    if (sec == null || !isFinite(sec)) return;
+    for (var i=0;i<WATCH_MARKS.length;i++){
+      if (sec >= WATCH_MARKS[i]) fireOnce(WATCH_MARKS[i], sec);
+    }
+  };
+})();
+</script>
+<!-- ===== FIM PIXELS ===== -->
+
+  <title>Código da Harmonia — Aula Secreta</title>
+  <meta name="description" content="Aula secreta do Código da Harmonia. Assista e veja o método na prática.">
+  <style>
+    :root{ --bg:#0c0a09; --fg:#e7e5e4; --muted:#a8a29e; --brand:#eab308; --card:#13110f; --maxw:980px; }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif }
+    .wrap{ max-width:var(--maxw); margin:0 auto; padding:20px }
+    .center{ text-align:center }
+    h1{ margin:16px 0 4px; font-size:30px; line-height:1.15; font-weight:800 }
+    .sub{ margin:0 0 12px; color:#e7e5e4; opacity:.95 }
+
+    /* Player responsivo — iOS-safe (ajustado para 9:16) */
+    .player-box{ position:relative; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.4) }
+    .ratio{ height:0; padding-top:177.7777%; } /* 9:16 — se mudar pra 16:9 use 56.25% */
+    /* Área absoluta que recebe o smartplayer */
+    .player-abs{ position:absolute; inset:0; }
+    .player-abs vturb-smartplayer{
+      position:absolute; inset:0; width:100%; height:100%; display:block;
+    }
+
+    /* CTA */
+    .cta-area{ margin:18px 0 8px; display:flex; justify-content:center }
+    .btn{
+      appearance:none; border:0; border-radius:999px; padding:14px 22px; cursor:pointer;
+      background:var(--brand); color:#1c1917; font-weight:700; font-size:16px; letter-spacing:.2px;
+      box-shadow:0 6px 20px rgba(234,179,8,.25);
+    }
+    .hint{ color:var(--muted); font-size:.95rem; text-align:center }
+    .hidden{ display:none !important }
+
+    /* Bio */
+    .card{ background:var(--card); border:1px solid #1c1917; border-radius:14px; padding:18px; margin-top:28px }
+    .bio h3{ margin:0 0 6px; font-size:20px }
+    .bio p{ margin:0; color:var(--muted) }
+    .avatar{
+      width:160px; height:160px; object-fit:cover; border-radius:100%;
+      margin:-70px auto 16px; border:2px solid #2d2a28; display:block; box-shadow:0 10px 25px rgba(0,0,0,.35)
+    }
+    .bio-top-spacer{ height:56px }
+    .footer{ color:#78716c; font-size:.85rem; margin:40px 0; text-align:center }
+
+    /* ===== POPUP ===== */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1000}
+    .modal{width:92vw;max-width:520px;background:#141211;border:1px solid #262320;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .modal header{padding:18px 18px 10px}
+    .modal h3{margin:0;font-size:20px}
+    .modal .subm{margin:6px 0 0 0;color:var(--muted);font-size:14px}
+    .modal .content{padding:12px 18px 18px}
+    .modal label{display:block;font-size:13px;margin:12px 0 6px}
+    .modal input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #2b2724;background:#181614;color:var(--fg)}
+    .modal .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:18px}
+    .modal .cancel{background:transparent;color:var(--fg);border:1px solid #2b2724}
+    .modal .error{color:#fca5a5;font-size:13px;margin-top:6px;display:none}
+    .close-x{position:absolute;right:10px;top:10px;background:transparent;border:0;color:#a9a29d;font-size:20px;cursor:pointer}
+    .show{display:flex}
+      /* ===== FAQ ===== */
+    .faq-area{
+      margin-top:28px;
+      text-align:left;
+    }
+    .faq-area h3{
+      margin:0 0 12px;
+      font-size:20px;
+      font-weight:700;
+    }
+    .faq-area details{
+      border:1px solid #27231f;
+      border-radius:999px;
+      padding:10px 16px;
+      margin-bottom:10px;
+      background:#14110f;
+    }
+    .faq-area summary{
+      list-style:none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:14px;
+      font-weight:500;
+    }
+    .faq-area summary::-webkit-details-marker{display:none}
+    .faq-area details[open]{
+      border-radius:16px;
+    }
+    .faq-area details[open] summary{
+      margin-bottom:8px;
+    }
+    .faq-area p{
+      margin:0 0 6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+.beneficios-section {
+  margin-top: 32px;
+  padding: 20px;
+  background: #0c0a09;
+  border-radius: 14px;
+  border: 1px solid #1f1c19;
+}
+
+.beneficios-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #eab308;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.beneficios-wrap {
+  width: 100%;
+  overflow-x: auto;      /* 👉 no mobile, tabela rola pro lado */
+}
+
+.beneficios-table {
+  width: 100%;
+  min-width: 720px;      /* garante 4 colunas legíveis */
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.beneficios-table th {
+  color: #e7e5e4;
+  padding: 12px 6px;
+  border-bottom: 1px solid #2f2b27;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.beneficios-table td {
+  padding: 12px 6px;
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+/* Linhas alternadas */
+.beneficios-table tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Cores das colunas */
+.col-eixo {
+  color: #eab308; /* dourado */
+  font-weight: 700;
+}
+
+.col-antes {
+  color: #f87171; /* vermelho claro */
+}
+
+.col-depois {
+  color: #60a5fa; /* azul leve */
+}
+
+.col-identidade {
+  color: #e7e5e4;
+  font-weight: 700;
+}
+
+  </style>
+
+</head>
+<body>
+  <header class="wrap center">
+    <h1>Código da Harmonia</h1>
+    <p class="sub">O método que explica as doenças invisíveis da alma</p>
+  </header>
+
+  <main class="wrap">
+    <!-- PLAYER (agora com Web Component atualizado do VTurb) -->
+    <section class="player-box">
+      <div class="ratio"></div>
+      <div class="player-abs">
+        <!-- Embed novo colado do painel -->
+        <vturb-smartplayer id="vid-69050dfc21067174bb51c90b" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+<script type="text/javascript">
+  var s=document.createElement("script");
+  s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/69050dfc21067174bb51c90b/v4/player.js",
+  s.async=!0,document.head.appendChild(s);
+</script>
+
+      </div>
+    </section>
+
+    <!-- CTA (um único botão → abre POPUP) -->
+    <section class="cta-area center hidden" id="ctaBox">
+      <button id="cta" class="btn">QUERO ATRAVESSAR O INVISÍVEL DA MINHA ALMA</button>
+    </section>
+    <p class="hint" id="timerHint"></p>
+<section id="faqArea" class="card faq-area hidden">
+      <h3>Perguntas que sua alma faria agora:</h3>
+
+      <details>
+        <summary>💡 O que realmente serei capaz de enxergar após este curso?</summary>
+        <p>Você vai aprender a ler seus estados internos com clareza, entender em qual zona emocional está (virtuosa, neutra ou degradante) e enxergar os ciclos invisíveis que drenam sua energia. Em vez de só sentir ansiedade, irritação ou desânimo, você passa a mapear, nomear e transmutar essas emoções de forma consciente.</p>
+      </details>
+
+      <details>
+        <summary>📚 O que exatamente compõe a Engenharia da Consciência?</summary>
+        <p>Você recebe um passo a passo completo de Reconstrução Emocional Simplificada, com módulos sobre Autodiagnóstico, Autogoverno, Autoblindagem e o Deserto. Além das aulas, há mapas, exercícios práticos e espelhos da alma para aplicar tudo na vida real.</p>
+      </details>
+
+      <details>
+        <summary>🎁 O que eu recebo além das aulas principais?</summary>
+        <p>Você acessa bônus como Cosmovisão Viva, o Cofre da Travessia, o Mapa da Alma Interativo e Protocolos Guiados de Transmutação — material contínuo para aprofundar e manter sua clareza emocional.</p>
+      </details>
+
+      <details>
+        <summary>🎯 Para quem é — e para quem não é?</summary>
+        <p>É para quem sente que já tentou de tudo e ainda vive em ciclos de ansiedade, culpa e recaída. Não é para quem procura fórmula mágica ou não está disposto a olhar honestamente para dentro.</p>
+      </details>
+
+      <details>
+        <summary>🙏 Serve para qualquer fé? Preciso acreditar em algo específico?</summary>
+        <p>Sim. O método é espiritual, mas não doutrinário. Ele organiza as emoções com base em leis simples e prática diária. Você vive isso dentro da sua própria caminhada espiritual, com ou sem religião.</p>
+      </details>
+
+      <details>
+        <summary>🧠 É terapia? Substitui tratamento médico ou psicológico?</summary>
+        <p>Não. É um método de autoconhecimento e reprogramação emocional que pode complementar terapias ou acompanhamentos médicos, mas não os substitui.</p>
+      </details>
+
+      <details>
+        <summary>😰 Isso ajuda em estresse, ansiedade, foco ou desequilíbrio emocional?</summary>
+        <p>Sim. O método trabalha na origem emocional desses estados, ensinando a identificar gatilhos, reorganizar pensamentos e transmutar emoções em tempo real.</p>
+      </details>
+
+      <details>
+        <summary>💼 Como isso me ajuda no trabalho ou no dinheiro?</summary>
+        <p>Toda prosperidade nasce de uma mente clara. Ao organizar suas emoções, você melhora foco, decisões, presença e poder de negociação — e isso se reflete diretamente em resultados profissionais e financeiros.</p>
+      </details>
+
+      <details>
+        <summary>🔁 E se eu cair no caminho ou voltar a antigos padrões?</summary>
+        <p>Recaídas fazem parte do processo. Aqui você aprende protocolos para voltar ao eixo: sabe em qual escala está, qual próximo passo dar e como se levantar mais rápido, com mais sabedoria.</p>
+      </details>
+
+      <details>
+        <summary>⏱ As aulas são longas? Qual é o ritmo recomendado? Consigo estudar no celular?</summary>
+        <p>As aulas são objetivas, pensadas para vidas corridas. Você pode assistir em blocos curtos, no celular, tablet ou computador — no seu ritmo, sem perder a profundidade.</p>
+      </details>
+
+      <details>
+        <summary>⌛ Por quanto tempo terei acesso?</summary>
+        <p>Você terá 12 meses de acesso completo ao conteúdo, às atualizações e aos bônus já liberados, podendo rever as aulas e refazer exercícios sempre que quiser.</p>
+      </details>
+
+      <details>
+        <summary>💳 Como posso pagar?</summary>
+        <p>O pagamento é feito pela Kiwify, uma plataforma segura. Você pode pagar com cartão de crédito, PIX ou boleto. Assim que o pagamento é confirmado, o acesso é liberado automaticamente.</p>
+      </details>
+
+      <details>
+        <summary>💸 E se eu não gostar? Posso pedir reembolso?</summary>
+        <p>Sim. Você tem 7 dias de garantia incondicional. Se não for o seu momento, basta solicitar o reembolso e o valor é devolvido integralmente.</p>
+      </details>
+
+      <details>
+        <summary>💠 O preço pode mudar?</summary>
+        <p>Sim. O valor atual é especial para quem entra nesta fase inicial. Com novos módulos e bônus, o preço tende a subir com o tempo.</p>
+      </details>
+
+      <details>
+        <summary>🎁 Posso presentear alguém com o acesso?</summary>
+        <p>Pode. Você pode comprar usando o e-mail da pessoa presenteada ou falar com o suporte após a compra para ajustar os dados de acesso.</p>
+      </details>
+
+      <details>
+        <summary>📜 Receberei certificado ao concluir?</summary>
+        <p>Sim, você poderá emitir um certificado digital de conclusão para registrar suas horas de estudo e desenvolvimento emocional.</p>
+      </details>
+
+      <details>
+        <summary>📬 Como falo com vocês se tiver dúvida ou problema de acesso?</summary>
+        <p>Você pode nos contatar pelo e-mail de suporte informado no checkout. O tempo médio de resposta é de 24 a 48 horas úteis.</p>
+      </details>
+    </section>
+  
+
+<section class="beneficios-section">
+  <h3 class="beneficios-title">Por que a alfabetização emocional muda tudo na sua vida</h3>
+
+  <div class="beneficios-wrap">
+    <table class="beneficios-table">
+      <thead>
+        <tr>
+          <th>Eixo</th>
+          <th>Antes</th>
+          <th>Depois</th>
+          <th>Quem você se torna</th>
+        </tr>
+      </thead>
+      
+    <tbody>
+  <tr>
+    <td class="col-eixo">🕊️ Ansiedade → Clareza</td>
+    <td class="col-antes">Mente acelerada, medo do futuro.</td>
+    <td class="col-depois">Decisões firmes e tranquilas.</td>
+    <td class="col-identidade">O porto seguro da própria vida.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">👁️ Emoções → Leitura da alma</td>
+    <td class="col-antes">Reage ao caos dos outros.</td>
+    <td class="col-depois">Entende a alma por trás do comportamento.</td>
+    <td class="col-identidade">Referência emocional da família.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🌿 Recaídas → Estabilidade</td>
+    <td class="col-antes">Ciclos de ansiedade, culpa e fuga.</td>
+    <td class="col-depois">Percebe a queda e corrige rápido.</td>
+    <td class="col-identidade">Constante, previsível, confiável.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🔥 Foco → Prosperidade</td>
+    <td class="col-antes">Dispersão, tarefas pela metade.</td>
+    <td class="col-depois">Foco natural no que importa.</td>
+    <td class="col-identidade">A pessoa mais valiosa da equipe.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🛡️ Limites → Respeito</td>
+    <td class="col-antes">Diz “sim” pra tudo, vive exausto.</td>
+    <td class="col-depois">Limites firmes, energia preservada.</td>
+    <td class="col-identidade">Admirado e respeitado.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">⚡ Tóxicos → Blindagem</td>
+    <td class="col-antes">Cai em manipulações e drenos.</td>
+    <td class="col-depois">Detecta vibração tóxica à distância.</td>
+    <td class="col-identidade">Inacessível para manipuladores.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🌙 Hábitos → Identidade</td>
+    <td class="col-antes">Tenta mudar na força de vontade.</td>
+    <td class="col-depois">Muda a vibração; o comportamento segue.</td>
+    <td class="col-identidade">Uma nova pessoa.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">💡 Aprendizado → Velocidade</td>
+    <td class="col-antes">Mente pesada, dificuldade de absorver.</td>
+    <td class="col-depois">Mente leve, absorção rápida.</td>
+    <td class="col-identidade">Aprende em dias o que outros levam meses.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">✨ Paz → Presença</td>
+    <td class="col-antes">Insegurança, comparação.</td>
+    <td class="col-depois">Presença firme, olhar seguro.</td>
+    <td class="col-identidade">Alguém que é sentido quando entra.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🌞 Domínio → Prosperidade integral</td>
+    <td class="col-antes">Finanças e escolhas oscilando com humor.</td>
+    <td class="col-depois">Coerência e constância.</td>
+    <td class="col-identidade">Senhor do próprio destino.</td>
+  </tr>
+</tbody>
+
+    </table>
+  </div>
+</section>
+
+    <!-- BIO -->
+    <section id="bio" class="card bio center">
+      <div class="bio-top-spacer"></div>
+      <img class="avatar" src="https://canvaspiritual.com/wp-content/uploads/2025/10/IMG_4316.jpg" alt="Gustavo Prado">
+      <h3>Gustavo Prado</h3>
+      <p><em>Engenheiro e Pesquisador</em></p>
+      <div style="height:14px"></div>
+      <p>Após anos construindo casas e estruturando equipes no mundo físico, descobri que a verdadeira engenharia era a da alma.
+      Foram mais de 10 anos de estudos em comportamento humano, espiritualidade e engenharia emocional, até decifrar o código que revelo nesta aula —
+      uma estrutura que transformou crises, remédios e vícios em propósito, cura e identidade.</p>
+    </section>
+
+    <div class="footer">© Canva Espiritual — Engenharia da Consciência </div>
+  </main>
+    <!-- FAQ (aparece junto com o botão, começa escondida) -->
+    
+
+  <!-- ===== MODAL / POPUP ===== -->
+  <div id="checkoutModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ttl">
+      <button class="close-x" aria-label="Fechar" id="closeX">×</button>
+      <header>
+        <h3 id="ttl">Crie seu acesso no Engenharia da Consciência</h3>
+        <p class="subm"></p>
+      </header>
+      <div class="content">
+        <form id="accessForm" novalidate>
+          <label for="name">Nome completo</label>
+          <input id="name" name="name" type="text" placeholder="Insira seu nome completo" autocomplete="name" required>
+
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" placeholder="Insira seu melhor e-mail" autocomplete="email" inputmode="email" required>
+
+          <label for="phone">WhatsApp</label>
+          <input id="phone" name="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" inputmode="numeric" required>
+
+          <div id="err" class="error">Verifique os campos. O WhatsApp deve ter DDD e 9 dígitos (ex.: (11) 98888-7777).</div>
+
+          <div class="actions">
+            <button type="button" class="btn cancel" id="cancel">Cancelar</button>
+            <button type="submit" class="btn">Continuar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ====== CONFIG GERAL ====== */
+    const VIDEO_ID = '69050dfc21067174bb51c90b';
+    const REVEAL_AT_SECONDS = 10; // 30:17 (timeline do vídeo)
+    const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
+
+    /* ====== CONFIG KIWIFY ====== */
+    const KIWIFY_BASE = 'https://pay.kiwify.com.br/otZkPSG';
+    const COUPON = 'CODIGO10';
+
+    /* ====== ELEMENTOS ====== */
+    const ctaBox   = document.getElementById('ctaBox');
+    const ctaBtn   = document.getElementById('cta');
+    const timerHint= document.getElementById('timerHint');
+    const faqArea  = document.getElementById('faqArea');
+
+
+    const modal    = document.getElementById('checkoutModal');
+    const openBtn  = ctaBtn; // CTA abre o modal
+    const closeBtn = document.getElementById('closeX');
+    const cancelBtn= document.getElementById('cancel');
+    const form     = document.getElementById('accessForm');
+    const nameEl   = document.getElementById('name');
+    const emailEl  = document.getElementById('email');
+    const phoneEl  = document.getElementById('phone');
+    const errEl    = document.getElementById('err');
+
+    /* ====== FUNÇÕES POPUP ====== */
+    function openModal(){
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      setTimeout(()=> nameEl.focus(), 50);
+      document.documentElement.style.overflow='hidden';
+      document.body.style.overflow='hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow='';
+      document.body.style.overflow='';
+    }
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('show')) closeModal(); });
+
+    /* ====== MÁSCARA WHATSAPP ====== */
+    function formatPhoneNumber(){
+      let v = phoneEl.value.replace(/\D/g,'');
+      if (v.length > 11) v = v.slice(0,11);
+      if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      if (v.length > 10) v = `${v.slice(0,10)}-${v.slice(10)}`;
+      phoneEl.value = v;
+    }
+    function digitsOnly(){ return phoneEl.value.replace(/\D/g,''); }
+    phoneEl.addEventListener('focus', formatPhoneNumber);
+    phoneEl.addEventListener('keyup', formatPhoneNumber);
+    phoneEl.addEventListener('blur', formatPhoneNumber);
+
+    /* ====== SUBMIT → REDIRECIONA ====== */
+    function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email); }
+    function isValidPhoneDigits(d){ return d.length === 11; } // 2 DDD + 9 dígitos
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      errEl.style.display='none';
+
+      const name  = nameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+      let phone   = digitsOnly(); // só números
+
+      if (!name || !isValidEmail(email) || !isValidPhoneDigits(phone)){
+        errEl.style.display='block';
+        return;
+      }
+      if (!phone.startsWith('55')) phone = '55' + phone;
+
+      const url = `${KIWIFY_BASE}?coupon=${encodeURIComponent(COUPON)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+      window.location.href = url;
+    });
+
+    /* ====== DELAY DO CTA POR TEMPO DE VÍDEO ====== */
+       function showCTA(){
+      if (ctaBox.classList.contains('hidden')){
+        ctaBox.classList.remove('hidden');
+        if (timerHint) timerHint.textContent = '';
+      }
+      if (faqArea && faqArea.classList.contains('hidden')){
+        faqArea.classList.remove('hidden');
+      }
+    }
+
+    function saveProgress(sec){
+      try { localStorage.setItem(STORAGE_KEY, String(Math.floor(sec))); } catch(e){}
+    }
+    function getProgress(){
+      try { return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10); } catch(e){ return 0; }
+    }
+
+    // Desbloqueio imediato se já passou do tempo antes
+    if (getProgress() >= REVEAL_AT_SECONDS) showCTA();
+
+    // Ouvir o tempo do vídeo via postMessage
+    function extractSeconds(data){
+      if (!data || typeof data !== 'object') return null;
+      const keys = ['currentTime','time','seconds','position','current_time'];
+      for (const k of keys){ if (k in data && isFinite(Number(data[k]))) return Number(data[k]); }
+      if (data.payload && typeof data.payload === 'object'){
+        for (const k of keys){ if (k in data.payload && isFinite(Number(data.payload[k]))) return Number(data.payload[k]); }
+      }
+      return null;
+    }
+
+    window.addEventListener('message', (event)=>{
+      try{
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        const sec = extractSeconds(data);
+if (sec != null){
+  saveProgress(sec);
+  if (typeof __fireMarksIfNeeded === 'function') { __fireMarksIfNeeded(sec); }  // << ADICIONAR
+  if (sec >= REVEAL_AT_SECONDS) showCTA();
+
+
+        }
+      }catch(e){}
+    });
+
+    // Fallback gentil (se nenhum evento chegar)
+    setTimeout(()=>{
+      if (!ctaBox.classList.contains('hidden')) return;
+      let elapsed = getProgress();
+      const t = setInterval(()=>{
+        if (!ctaBox.classList.contains('hidden')) { clearInterval(t); return; }
+        elapsed += 1; saveProgress(elapsed);
+        if (elapsed >= REVEAL_AT_SECONDS){ clearInterval(t); showCTA(); }
+      }, 1000);
+    }, 5000);
+  </script>
+</body>
+</html>
