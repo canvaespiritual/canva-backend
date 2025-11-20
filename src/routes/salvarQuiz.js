@@ -173,26 +173,49 @@ try {
   console.warn("⚠️ Não foi possível cadastrar no Brevo agora:", e.message || e);
 }
 
-    // Só grava o JSON após sucesso no banco
-    await fs.promises.writeFile(caminho, JSON.stringify(dadosCompletos, null, 2), "utf8");
-        // ---------------------------
+        // Só grava o JSON após sucesso no banco
+    await fs.promises.writeFile(
+      caminho,
+      JSON.stringify(dadosCompletos, null, 2),
+      "utf8"
+    );
+
+    // ---------------------------
     // ✉️ E-mail pós-quiz (remarketing leve)
     // ---------------------------
     try {
-      const delayMs = 1 * 60 * 1000; // 5 minutos
+      const delayMs = 60 * 1000; // 1 minuto
 
       setTimeout(async () => {
         try {
           const lang = String(idioma || "pt").toLowerCase();
           const isEn = lang.startsWith("en");
 
-          // URL base do seu front (ajuste para seu domínio real)
-          const baseUrl = process.env.FRONT_URL || "https://seu-dominio.com";
+          // Domínio base (produção)
+          const rawBaseUrl =
+            process.env.FRONT_URL || "https://api.canvaspiritual.com";
 
-          // Página de retorno com VSL + pagamento
+          // remove barra final se tiver
+          const baseUrl = rawBaseUrl.replace(/\/$/, "");
+
+          const sessionId = dadosCompletos.session_id;
+          const affiliateRef = dadosCompletos.affiliate_ref || null;
+
+          // monta parte do ?ref=... se tiver afiliado
+          const refPart = affiliateRef
+            ? `&ref=${encodeURIComponent(String(affiliateRef))}`
+            : "";
+
+          // 🔗 Links finais que você me passou:
+          // PT: https://api.canvaspiritual.com/pagar-mini.html?tipo=completo&session_id=sessao-...
+          // EN: https://api.canvaspiritual.com/en/pay.html?session_id=sess-...
           const linkVsl = isEn
-            ? `${baseUrl}/pay.html`
-            : `${baseUrl}/pagar-mini.html`;
+            ? `${baseUrl}/en/pay.html?session_id=${encodeURIComponent(
+                sessionId
+              )}${refPart}`
+            : `${baseUrl}/pagar-mini.html?tipo=completo&session_id=${encodeURIComponent(
+                sessionId
+              )}${refPart}`;
 
           const nome = dadosCompletos.nome;
           const email = dadosCompletos.email;
@@ -205,7 +228,7 @@ try {
             ? `
               <p>Hi <strong>${nome}</strong>,</p>
               <p>You’ve just completed your Soul Map quiz. Your personalized report is almost ready on our side.</p>
-              <p>While the system prepares everything, here is your access link to revisit the explanation and unlock your full report when it’s the right moment for you:</p>
+              <p>While the system processes your answers, here is your access link to revisit the explanation and unlock your full report when it’s the right moment for you:</p>
               <p style="margin:20px 0;">
                 <a href="${linkVsl}" target="_blank"
                    style="background:#16a34a;color:#fff;padding:12px 22px;text-decoration:none;border-radius:999px;font-weight:700;">
@@ -221,7 +244,7 @@ try {
               <p>Olá <strong>${nome}</strong>,</p>
               <p>Você acabou de concluir o seu autodiagnóstico espiritual. Seu Mapa da Alma já está quase pronto do nosso lado.</p>
               <p>Enquanto o sistema organiza tudo, deixo aqui o seu link de acesso para rever a explicação e liberar o relatório completo quando for o melhor momento pra você:</p>
-              <p style="margin:20px 0;">
+              <p style="margin:20px 0%;">
                 <a href="${linkVsl}" target="_blank"
                    style="background:#16a34a;color:#fff;padding:12px 22px;text-decoration:none;border-radius:999px;font-weight:700;">
                   👉 Acessar sua leitura espiritual
@@ -239,21 +262,16 @@ try {
             subject,
             htmlContent,
             tags: ["pos_quiz", "vsl_reminder"],
-          });
-
+            });
         } catch (e) {
           console.error("❌ Erro ao enviar e-mail pós-quiz:", e.message || e);
         }
-      }, delayMs);
-
+        }, delayMs);
     } catch (e) {
       console.error("⚠️ Falha ao agendar e-mail pós-quiz:", e.message || e);
-    }
+     }
 
-    console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
-    res.status(200).send("Sessão salva com sucesso.");
-
-    console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
+      console.log(`✅ Sessão ${dados.session_id} salva com sucesso.`);
     res.status(200).send("Sessão salva com sucesso.");
   } catch (error) {
     console.error("❌ Erro ao salvar sessão:", error);
