@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Segunda via do seu Relatório da Alma</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050608;
+      --card: #111217;
+      --card-soft: #151821;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #fbbf24;
+      --accent-soft: rgba(251, 191, 36, 0.12);
+      --danger: #f87171;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .container {
+      width: 100%;
+      max-width: 560px;
+      background: linear-gradient(135deg, #020617 0, #050816 35%, #020617 100%);
+      border-radius: 24px;
+      padding: 28px 22px 26px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    form {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+    .field-row {
+      display: flex;
+      gap: 8px;
+    }
+    input[type="email"] {
+      flex: 1;
+      padding: 11px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+    input[type="email"]::placeholder {
+      color: #6b7280;
+    }
+    button {
+      padding: 11px 18px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      color: #111827;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 32px rgba(234, 179, 8, 0.35);
+    }
+    button:disabled {
+      opacity: 0.7;
+      cursor: default;
+      box-shadow: none;
+    }
+    button span.icon {
+      font-size: 15px;
+    }
+    .status {
+      font-size: 13px;
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+    .status.error {
+      color: var(--danger);
+    }
+    .status.info {
+      color: var(--muted);
+    }
+    .results {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 12px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .card-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-download {
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      background: #16a34a;
+      color: #ecfdf5;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-download span.icon {
+      font-size: 14px;
+    }
+    .help {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .help a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 22px 18px 22px;
+      }
+      .field-row {
+        flex-direction: column;
+      }
+      button {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Recuperar seu Relatório da Alma</h1>
+    <p class="subtitle">
+      Digite o e-mail que você usou no pagamento.<br />
+      Vamos buscar seus relatórios pagos dos últimos 7 dias.
+    </p>
+
+    <form id="form-segunda-via">
+      <label for="email">
+        E-mail usado na compra
+      </label>
+      <div class="field-row">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="seuemail@exemplo.com"
+          required
+        />
+        <button type="submit" id="btn-buscar">
+          <span class="icon">🔎</span>
+          <span>Buscar</span>
+        </button>
+      </div>
+    </form>
+
+    <div id="status" class="status info"></div>
+
+    <section id="results" class="results"></section>
+
+    <p class="help">
+      Se não encontrar nenhum relatório, escreva para
+      <a href="mailto:suporte@canvaspiritual.com">suporte@canvaspiritual.com</a>.
+    </p>
+  </main>
+
+  <script>
+    const form = document.getElementById("form-segunda-via");
+    const statusEl = document.getElementById("status");
+    const resultsEl = document.getElementById("results");
+    const btnBuscar = document.getElementById("btn-buscar");
+
+    function formatDateTime(isoString) {
+      if (!isoString) return "-";
+      const d = new Date(isoString);
+      return d.toLocaleString("pt-BR", {
+        dateStyle: "short",
+        timeStyle: "short",
+      });
+    }
+
+    function formatCurrency(valor, moeda) {
+      if (valor == null) return "-";
+      const num = Number(valor);
+      if (Number.isNaN(num)) return "-";
+      const m = moeda || "BRL";
+      try {
+        return new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: m === "BRL" || m === "R$" ? "BRL" : m,
+        }).format(num);
+      } catch (e) {
+        return (moeda || "R$") + " " + num.toFixed(2).replace(".", ",");
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      resultsEl.innerHTML = "";
+      statusEl.textContent = "";
+      statusEl.className = "status info";
+
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        statusEl.textContent = "Por favor, informe seu e-mail.";
+        statusEl.className = "status error";
+        return;
+      }
+
+      btnBuscar.disabled = true;
+      btnBuscar.querySelector("span:nth-child(2)").textContent = "Buscando...";
+
+      try {
+        const resp = await fetch("/api/segunda-via-relatorios", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          statusEl.textContent =
+            data.error ||
+            "Não foi possível buscar seus relatórios. Tente novamente.";
+          statusEl.className = "status error";
+          return;
+        }
+
+        const reports = data.reports || [];
+
+        if (!reports.length) {
+          statusEl.textContent =
+            "Não encontramos nenhum relatório pago nos últimos 7 dias para este e-mail.";
+          statusEl.className = "status info";
+          return;
+        }
+
+        statusEl.textContent =
+          reports.length === 1
+            ? "Encontramos 1 relatório para este e-mail."
+            : `Encontramos ${reports.length} relatórios para este e-mail.`;
+        statusEl.className = "status info";
+
+        reports.forEach((r, idx) => {
+          const div = document.createElement("article");
+          div.className = "card";
+
+          const titulo =
+            (r.tipo_relatorio || "relatório").charAt(0).toUpperCase() +
+            (r.tipo_relatorio || "relatório").slice(1);
+
+          const dataRef = r.data_pagamento || r.criado_em;
+
+          div.innerHTML = `
+            <div class="card-header">
+              <div class="card-title">${titulo}</div>
+              <div class="badge">${
+                r.status_pagamento === "pago" ? "PAGO" : r.status_pagamento
+              }</div>
+            </div>
+            <div class="card-meta">
+              <div>Gerado em: ${formatDateTime(dataRef)}</div>
+              <div>Valor: ${formatCurrency(r.valor_pago, r.moeda)}</div>
+            </div>
+            <div class="card-footer">
+              <a href="${r.pdf_url}" target="_blank" class="btn-download">
+                <span class="icon">📄</span>
+                <span>Baixar PDF</span>
+              </a>
+            </div>
+          `;
+
+          resultsEl.appendChild(div);
+        });
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent =
+          "Erro inesperado ao buscar seus relatórios. Tente novamente.";
+        statusEl.className = "status error";
+      } finally {
+        btnBuscar.disabled = false;
+        btnBuscar.querySelector("span:nth-child(2)").textContent = "Buscar";
+      }
+    });
+  </script>
+</body>
+</html>

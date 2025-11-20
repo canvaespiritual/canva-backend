@@ -250,6 +250,8 @@ app.use('/gerar', rotaGerar);
 app.use('/api/teste', testeSimulacaoRouter);
 app.use('/api/brevo', brevoRoutes);
 app.use('/ping/sincronizar', pingSincronizar);
+const segundaViaRelatoriosRouter = require("./src/routes/segundaViaRelatorios");
+app.use("/api/segunda-via-relatorios", segundaViaRelatoriosRouter);
 // ★ HARD OVERRIDE: status da subconta (DB-first) — destrava o dashboard
 // ★ OVERRIDE ÚNICO de status: DB-first + auto-enable do link
 app.get("/affiliates/me/asaas/status", async (req, res) => {
