@@ -112,14 +112,16 @@
   document.addEventListener("DOMContentLoaded", () => {
     /* =================== CONFIG =================== */
     const VTURB_ACCOUNT_ID = 'ab0d5dbd-353e-4147-a5c6-52ab96121828';
-    const VTURB_PLAYER_ID  = '68fbab9e0daa4ea4dd6dbddd';
+    const VTURB_PLAYER_ID  = '6921afb3e478a90f43adb12f';
     const ASPECT_RATIO     = '9:16';
     
 
     // Gate (seconds of watched/started)
-    const UNLOCK_CONTRIB_SECONDS = 3;
-    const UNLOCK_REPORT_SECONDS  = 3;
+    const UNLOCK_CONTRIB_SECONDS = 20;
+    const UNLOCK_REPORT_SECONDS  = 10;
     const STORAGE_KEY = 'vsl_unlocked_en_v1';
+    const STORAGE_KEY_LOCAL = 'vsl_unlocked_en_v1_local';
+
     /* ============================================== */
 
     // Ratio
@@ -141,22 +143,29 @@
     const contribBlock = document.getElementById('solidario');
     const receiveBlock = document.getElementById('receiveBlock');
 
-    if (sessionStorage.getItem(STORAGE_KEY) === '1') {
-      contribBlock.classList.remove('hidden');
-      receiveBlock.classList.remove('hidden');
-    } else {
+    if (
+  sessionStorage.getItem(STORAGE_KEY) === '1' ||
+  localStorage.getItem(STORAGE_KEY_LOCAL) === '1'
+) {
+  contribBlock.classList.remove('hidden');
+  receiveBlock.classList.remove('hidden');
+} else {
       let started=false, seconds=0, timer=null;
 
       function tick(){
         seconds++;
         if(seconds>=UNLOCK_CONTRIB_SECONDS) contribBlock.classList.remove('hidden');
-        if(seconds>=UNLOCK_REPORT_SECONDS){
-          receiveBlock.classList.remove('hidden');
-          sessionStorage.setItem(STORAGE_KEY,'1');
-          clearInterval(timer);
-        }
+        if (seconds >= UNLOCK_REPORT_SECONDS) {
+  receiveBlock.classList.remove('hidden');
+  sessionStorage.setItem(STORAGE_KEY, '1');
+  localStorage.setItem(STORAGE_KEY_LOCAL, '1'); // 👈 grava também em localStorage
+  clearInterval(timer);
+}
+
       }
       function startCount(){ if(started) return; started=true; timer=setInterval(tick,1000); }
+      startCount();
+
 
       // Start on VTurb messages (play/started)
       window.addEventListener('message',ev=>{
@@ -170,9 +179,11 @@
       // Fallbacks
       setTimeout(()=>contribBlock.classList.remove('hidden'),30000);
       setTimeout(()=>{
-        receiveBlock.classList.remove('hidden');
-        sessionStorage.setItem(STORAGE_KEY,'1');
-      },120000);
+  receiveBlock.classList.remove('hidden');
+  sessionStorage.setItem(STORAGE_KEY, '1');
+  localStorage.setItem(STORAGE_KEY_LOCAL, '1'); // 👈 idem aqui
+}, 120000);
+
     }
 
     // ===== contribution logic + tiers/impact =====

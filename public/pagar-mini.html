@@ -46,7 +46,8 @@
     </section>
 
     <!-- BLOCO SOLIDÁRIO -->
-    <section id="solidario" style="max-width:520px;margin:24px auto 0;padding:0 12px;text-align:center">
+    <section id="solidario" class="hidden" style="max-width:520px;margin:24px auto 0;padding:0 12px;text-align:center">
+
       <h3 style="margin:0 0 8px;font:800 18px/1.2 system-ui">💛 Contribuição solidária</h3>
       <p style="margin:0 0 12px;color:#9ca3af;font:14px system-ui">
         A partir de <strong>R$10</strong> — quanto mais você puder contribuir, mais essa mensagem alcança outras pessoas. 🌍
@@ -77,33 +78,111 @@
         O relatório completo será liberado imediatamente após a contribuição.
       </p>
     </section>
+        <!-- BLOCO: O QUE VAI NO RELATÓRIO -->
+    <section id="receiveBlock" class="card hidden" style="max-width:720px;margin:22px auto 0">
+      <h3 style="margin:0 0 10px;font:800 18px/1.2 system-ui">Você vai receber</h3>
+      <ul style="margin:0 0 8px 18px;line-height:1.55">
+        <li>🧭 Diagnóstico Corpo–Mente–Espírito</li>
+        <li>🌈 Para quem busca alinhar essência, saúde e propósito.</li>
+        <li>✔️ Espelho da alma (12 espelhos principais)</li>
+        <li>✔️ Reflexo na vida familiar</li>
+        <li>✔️ Reflexo na vida social</li>
+        <li>✔️ Reflexo na vida profissional</li>
+        <li>✔️ Arquétipo dominante (técnico e simbólico)</li>
+        <li>✔️ Exercício personalizado de elevação</li>
+        <li>🔓 Gatilhos sensoriais (olfato, visão, tato, paladar, audição)</li>
+        <li>🔓 Mapa da Alma (12 faces e 12 níveis)</li>
+        <li>🔓 Reflexão espiritual personalizada</li>
+        <li>🔓 Protocolo geral de elevação</li>
+        <li>🔐 Mapa Espiritual (10 faces e 13 níveis)</li>
+        <li>🔐 Sinais físicos e comportamentais</li>
+        <li>🔐 Predisposições fisiológicas (curto e longo prazo)</li>
+        <li>🔐 Predisposições de saúde mental (curto e longo prazo)</li>
+        <li>🎁 Bônus — Aula “Engenharia da Desconexão Espiritual” (videodiagnóstico da era da distração, vício e fragmentação interior)</li>
+      </ul>
+    </section>
+
   </main>
 
   <script>
   /* =================== CONFIG =================== */
+    /* =================== CONFIG =================== */
   const VTURB_ACCOUNT_ID = 'ab0d5dbd-353e-4147-a5c6-52ab96121828';
-  const VTURB_PLAYER_ID  = '68fbab9e0daa4ea4dd6dbddd';
+  const VTURB_PLAYER_ID  = '691f47676d14c557287d325a';
   const ASPECT_RATIO     = '9:16';
   const CHECKOUT_URL     = '/pagamento-opcao.html?tipo=completo';
+
+  // Gate de destrave por tempo (em segundos)
+  // 9 minutos e 20 segundos → 9*60 + 20 = 621
+  const UNLOCK_CONTRIB_SECONDS = 621;   // quando aparece o bloco solidário
+  const UNLOCK_REPORT_SECONDS  = 600;   // quando aparece o bloco "Você vai receber"
+
+  // Persistência entre visitas (remarketing)
+  const STORAGE_KEY       = 'vsl_unlocked_pt_v1';
+  const STORAGE_KEY_LOCAL = 'vsl_unlocked_pt_v1_local';
   /* ============================================== */
+
 
   // Player ratio
   (function setRatio(){
     const rb = document.getElementById('ratioBox');
     rb.style.paddingTop = (ASPECT_RATIO === '16:9') ? '56.25%' : '177.7777%';
   })();
-
-  // Player VTurb
-  (function mountVturb(){
+(function mountVturb(){
     const mount = document.getElementById('vturbMount');
+    if (!mount) return;
+
     const tag = document.createElement('vturb-smartplayer');
     tag.id = 'vid-' + VTURB_PLAYER_ID;
     tag.style.cssText = 'display:block;margin:0 auto;width:100%;max-width:480px;height:100%';
     mount.appendChild(tag);
+
     const s = document.createElement('script');
     s.src   = `https://scripts.converteai.net/${VTURB_ACCOUNT_ID}/players/${VTURB_PLAYER_ID}/v4/player.js`;
     s.async = true;
     document.head.appendChild(s);
+  })();
+    // =================== GATE POR TEMPO (VTURB) ===================
+  (function gateByTime(){
+    const contribBlock = document.getElementById('solidario');
+    const receiveBlock = document.getElementById('receiveBlock');
+    if (!contribBlock || !receiveBlock) return;
+
+    // Se já liberou em alguma visita anterior, destrava tudo na hora
+    if (
+      sessionStorage.getItem(STORAGE_KEY) === '1' ||
+      localStorage.getItem(STORAGE_KEY_LOCAL) === '1'
+    ) {
+      contribBlock.classList.remove('hidden');
+      receiveBlock.classList.remove('hidden');
+      return;
+    }
+
+    let started = false;
+    let seconds = 0;
+    let timer   = null;
+
+    function tick(){
+      seconds++;
+      if (seconds >= UNLOCK_CONTRIB_SECONDS) {
+        contribBlock.classList.remove('hidden');
+      }
+      if (seconds >= UNLOCK_REPORT_SECONDS) {
+        receiveBlock.classList.remove('hidden');
+        sessionStorage.setItem(STORAGE_KEY, '1');
+        localStorage.setItem(STORAGE_KEY_LOCAL, '1');
+        clearInterval(timer);
+      }
+    }
+
+    function startCount(){
+      if (started) return;
+      started = true;
+      timer = setInterval(tick, 1000); // conta em segundos
+    }
+
+    // Inicia o contador assim que a página carrega
+    startCount();
   })();
 
   // =================== BLOCO SOLIDÁRIO JS ===================

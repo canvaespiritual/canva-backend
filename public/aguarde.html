@@ -12,6 +12,10 @@
       padding: 40px 20px;
       color: #333;
     }
+.page-wrap{
+  max-width: 960px;
+  margin: 0 auto;
+}
 
     h1 {
       font-size: 22px;
@@ -128,6 +132,10 @@
       border-radius: 6px;
       text-decoration: none;
     }
+    #botao-curso{
+  position: relative;
+  z-index: 5;
+}
 
     @media (max-width: 640px) {
       #video-wrapper {
@@ -135,6 +143,817 @@
       }
     }
   </style>
+  <style id="course-offer-styles">
+  /* ===== BASE DO BLOCO PÓS-VÍDEO ===== */
+  #course-offer{
+    max-width:1100px;
+    margin:40px auto 64px auto;
+    padding:0 16px 40px;
+    font-family:Questrial,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#111827;
+  }
+  #course-offer section{ margin-bottom:56px; }
+
+  #course-offer h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5vw,34px);
+    line-height:1.15;
+    margin:0 0 6px;
+    text-align:left;
+  }
+  #course-offer .co-subline{
+    width:100%;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(245,200,76,.15),rgba(245,200,76,.8));
+    margin:6px 0 14px;
+  }
+  #course-offer .co-sub{
+    font-size:clamp(14px,2.2vw,17px);
+    color:#374151;
+    max-width:75ch;
+    margin:0 0 12px;
+  }
+
+  /* ===== TABELA TRANSFORMAÇÃO ===== */
+  #tabela-transformacao .table-wrap{
+    width:100%;
+    overflow-x:auto;
+  }
+  #tabela-transformacao table{
+    width:100%;
+    min-width:760px;
+    border-collapse:collapse;
+    font-size:0.95rem;
+  }
+  #tabela-transformacao th{
+    text-align:left;
+    padding:10px 6px;
+    border-bottom:2px solid rgba(0,0,0,.08);
+    font-weight:700;
+    color:#111827;
+  }
+  #tabela-transformacao td{
+    padding:10px 6px;
+    vertical-align:top;
+    line-height:1.5;
+  }
+  #tabela-transformacao tbody tr:nth-child(even){
+    background:#f9fafb;
+  }
+  #tabela-transformacao .col-eixo{ font-weight:700;color:#92400e;white-space:nowrap; }
+  #tabela-transformacao .col-antes{ color:#b91c1c; }
+  #tabela-transformacao .col-depois{ color:#1d4ed8; }
+  #tabela-transformacao .col-identidade{ font-weight:700;color:#111827; }
+
+  /* ===== 4 WAYS ===== */
+  #caminhos .grid{
+    display:grid;
+    gap:14px;
+  }
+  @media (min-width:1024px){
+    #caminhos .grid{ grid-template-columns:repeat(4,1fr); }
+  }
+  #caminhos .card{
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    background:#fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.04);
+    padding:14px;
+    display:grid;
+    gap:8px;
+  }
+  #caminhos .tag{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    color:#6b7280;
+  }
+  #caminhos .title{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(15px,2.6vw,19px);
+    margin:0;
+  }
+  #caminhos .label{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:#6b7280;
+    margin-top:2px;
+  }
+  #caminhos .text{
+    font-size:0.9rem;
+    color:#374151;
+    margin:0;
+  }
+  #caminhos .money{ font-size:0.85rem;color:#111827;margin-top:4px; }
+  #caminhos .alert{ font-size:0.8rem;color:#b91c1c;margin-top:2px; }
+  #caminhos .card--dest{
+    border-color:rgba(245,200,76,.7);
+    box-shadow:0 10px 26px rgba(245,200,76,.25);
+    position:relative;
+  }
+  #caminhos .card--dest::before{
+    content:"Recommended option";
+    position:absolute;top:10px;right:10px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:rgba(245,200,76,.12);
+    border:1px solid rgba(245,200,76,.6);
+    font:700 11px/1 Questrial,system-ui;
+    color:#1a1a1a;
+  }
+  #caminhos .anchor{
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:14px;
+    background:#fffbeb;
+    border:1px solid rgba(245,200,76,.55);
+    font-size:0.9rem;
+    color:#1f2937;
+  }
+
+  /* ===== PROVA SOCIAL ===== */
+  #ps-faixa1,#ps-faixa-ag-cor{
+    max-width:980px;margin:22px auto 0 auto;
+  }
+  #ps-faixa1 .ps-row,#ps-faixa-ag-cor .ps-row{
+    display:grid;gap:16px;
+  }
+  @media (min-width:768px){
+    #ps-faixa1 .ps-row,#ps-faixa-ag-cor .ps-row{
+      grid-template-columns:1fr 1fr;
+    }
+  }
+  #ps-faixa1 .ps-card,#ps-faixa-ag-cor .ps-card{
+    display:grid;grid-template-columns:56px 1fr;gap:12px;
+    background:#fff;border:1px solid #e5e7eb;border-radius:18px;
+    padding:16px 18px;box-shadow:0 8px 22px rgba(0,0,0,.06);
+  }
+  #ps-faixa1 .ps-avatar,#ps-faixa-ag-cor .ps-avatar{
+    width:56px;height:56px;border-radius:50%;overflow:hidden;position:relative;
+  }
+  #ps-faixa1 .ps-avatar img,#ps-faixa-ag-cor .ps-avatar img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  #ps-faixa1 .ps-avatar::after,#ps-faixa-ag-cor .ps-avatar::after{
+    content:"";position:absolute;inset:-3px;border-radius:50%;
+    border:2px solid rgba(245,200,76,.55);box-shadow:0 0 0 3px rgba(245,200,76,.15);
+  }
+  #ps-faixa1 .ps-txt,#ps-faixa-ag-cor .ps-txt{
+    align-self:center;font-family:Questrial,system-ui;color:#374151;
+  }
+  #ps-faixa1 .ps-quote,#ps-faixa-ag-cor .ps-quote{
+    font-style:italic;font-size:15px;line-height:1.55;margin:0 0 8px;color:#111827;
+  }
+  #ps-faixa1 .ps-sign,#ps-faixa-ag-cor .ps-sign{
+    font-size:13px;font-weight:700;color:#111827;
+  }
+  #ps-faixa1 .ps-role,#ps-faixa-ag-cor .ps-role{
+    font-size:12px;color:#6b7280;margin-left:6px;
+  }
+
+  /* ===== AUTOR ===== */
+  #autor .wrap{
+    max-width:1100px;margin:0 auto;padding:32px 0;display:grid;gap:22px;
+  }
+  @media (min-width:900px){
+    #autor .wrap{
+      grid-template-columns:1.1fr .9fr;align-items:center;
+    }
+  }
+  #autor .bio{
+    font-size:clamp(14px,2.2vw,18px);
+    color:#374151;margin:0 0 8px;max-width:65ch;
+  }
+  #autor .media{
+    border-radius:16px;overflow:hidden;
+    background:#fff;border:1px solid #e5e7eb;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
+  }
+  #autor .media img{ width:100%;display:block;height:auto; }
+
+  /* ===== KEYS & SEALS ===== */
+  #chaves .wrap{
+    max-width:1100px;margin:0 auto;padding:0;display:grid;gap:20px;
+  }
+  #chaves .grid{
+    display:grid;gap:14px;
+  }
+  @media (min-width:900px){
+    #chaves .grid{ grid-template-columns:repeat(3,1fr); }
+  }
+  #chaves .card{
+    border:1px solid #e5e7eb;border-radius:16px;background:#fff;
+    box-shadow:0 8px 22px rgba(0,0,0,.06);
+    padding:14px;display:flex;gap:14px;align-items:flex-start;
+  }
+  #chaves .icon{
+    width:80px;height:80px;border-radius:16px;overflow:hidden;flex:0 0 80px;
+  }
+  #chaves .icon img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  #chaves .body{ display:grid;gap:6px; }
+  #chaves .title{
+    font-family:Comfortaa,system-ui;font-weight:700;
+    font-size:clamp(16px,2.8vw,20px);margin:0;
+  }
+  #chaves .line{ font-size:0.95rem;color:#374151;margin:0; }
+  #chaves .btn{
+    appearance:none;border:0;cursor:pointer;text-decoration:none;
+    font:700 14px/1.05 Questrial,system-ui;
+    padding:8px 14px;border-radius:999px;
+    background:#f5c84c;color:#111827;
+    box-shadow:0 6px 16px rgba(0,0,0,.12);
+    width:max-content;
+  }
+  #chaves .btn:hover{ filter:brightness(.96); }
+  #chaves .ctas{
+    display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;
+  }
+  #chaves .btn-ghost{
+    background:transparent;border:1px solid rgba(0,0,0,.18);color:#111827;
+  }
+
+  /* MODAIS */
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.55);
+    display:none;align-items:center;justify-content:center;
+    z-index:9999;
+  }
+  .modal.open{ display:flex; }
+  .modal__dialog{
+    width:min(720px,92vw);max-height:80vh;
+    background:#fff;border-radius:16px;border:1px solid #e5e7eb;
+    box-shadow:0 24px 60px rgba(0,0,0,.4);
+    display:grid;grid-template-rows:auto 1fr auto;
+    position:relative;
+  }
+  .modal__head{
+    padding:14px 18px;
+    background:linear-gradient(180deg,rgba(245,200,76,.16),#fff);
+  }
+  .modal__title{
+    margin:0;font-family:Comfortaa,system-ui;font-weight:600;font-size:19px;
+  }
+  .modal__close{
+    position:absolute;right:10px;top:10px;
+    width:32px;height:32px;border-radius:10px;border:0;
+    background:rgba(0,0,0,.55);color:#fff;cursor:pointer;
+    display:grid;place-items:center;font-size:18px;
+  }
+  .modal__content{
+    padding:14px 18px;overflow:auto;min-height:0;
+    font-family:Questrial,system-ui;font-size:15px;color:#1f2937;
+  }
+  .modal__content ul{ margin:0;padding-left:18px; }
+  .modal__content li{ margin:6px 0 8px; }
+  .modal__foot{
+    padding:12px 18px;border-top:1px solid #e5e7eb;
+    display:flex;justify-content:flex-end;gap:10px;
+  }
+  .m-btn{
+    border-radius:12px;border:0;padding:8px 14px;cursor:pointer;
+    font-family:Questrial,system-ui;font-weight:700;
+  }
+  .m-primary{
+    background:#f5c84c;color:#111827;box-shadow:0 6px 16px rgba(0,0,0,.12);
+  }
+  .m-secondary{
+    background:#fff;border:1px solid #e5e7eb;color:#111827;
+  }
+  /* ========== JOURNEY BONUSES ========== */
+  #bonus{
+    max-width:1100px;
+    margin:48px auto 64px;
+    padding:0 16px;
+    font-family:Questrial,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#111827;
+    text-align:left;
+  }
+
+  #bonus h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5vw,32px);
+    line-height:1.15;
+    margin:0 0 4px;
+  }
+
+  #bonus .bonus-sub{
+    font-size:clamp(14px,2.2vw,17px);
+    color:#374151;
+    max-width:70ch;
+    margin:4px 0 14px;
+  }
+
+  #bonus .subline{
+    width:120px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(245,200,76,.18),rgba(245,200,76,.9));
+    margin:0 0 22px;
+  }
+
+  /* GRID DOS 3 PRINCIPAIS BÔNUS */
+  #bonus .bonus-grid{
+    display:grid;
+    gap:16px;
+    margin-bottom:24px;
+  }
+
+  @media(min-width:900px){
+    #bonus .bonus-grid{
+      grid-template-columns:repeat(3,1fr);
+    }
+  }
+
+  #bonus .bonus-card{
+    background:#fffbeb;
+    border-radius:18px;
+    border:1px solid rgba(245,200,76,.65);
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    padding:16px 18px;
+    display:grid;
+    gap:6px;
+  }
+
+  #bonus .bonus-card--main{
+    background:linear-gradient(135deg,rgba(245,200,76,.16),#fffbeb);
+    box-shadow:0 10px 26px rgba(245,200,76,.28);
+  }
+
+  #bonus .bonus-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    color:#92400e;
+  }
+
+  #bonus .bonus-title{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(15px,2.6vw,19px);
+    margin:0;
+  }
+
+  #bonus .bonus-text{
+    margin:0;
+    font-size:0.95rem;
+    line-height:1.6;
+    color:#374151;
+  }
+
+  /* LISTA DOS CATÁLOGOS EXTRA */
+  #bonus .bonus-extra{
+    background:#fff;
+    border-radius:18px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 8px 22px rgba(0,0,0,.05);
+    padding:18px 20px;
+  }
+
+  #bonus .bonus-extra-title{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(18px,3.2vw,22px);
+    margin:0 0 6px;
+  }
+
+  #bonus .bonus-extra-intro{
+    margin:0 0 10px;
+    font-size:0.96rem;
+    color:#374151;
+  }
+
+  #bonus .bonus-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap:6px;
+    font-size:0.95rem;
+    color:#1f2937;
+  }
+
+  #bonus .bonus-list li{
+    position:relative;
+    padding-left:22px;
+    line-height:1.55;
+  }
+
+  #bonus .bonus-list li::before{
+    content:"✔";
+    position:absolute;
+    left:0;
+    top:0;
+    font-size:0.9rem;
+    line-height:1.6;
+    color:#16a34a;
+  }
+  /* ========== PRICE BLOCK ========== */
+  #preco{
+    max-width:1100px;
+    margin:56px auto 80px;
+    padding:0 16px;
+    font-family:Questrial,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#111827;
+    text-align:left;
+  }
+
+  #preco h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5vw,32px);
+    line-height:1.15;
+    margin:0 0 6px;
+  }
+
+  #preco .price-sub{
+    font-size:clamp(14px,2.2vw,17px);
+    color:#374151;
+    max-width:70ch;
+    margin:4px 0 14px;
+  }
+
+  #preco .subline{
+    width:140px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(245,200,76,.18),rgba(245,200,76,.9));
+    margin:0 0 24px;
+  }
+
+  #preco .price-wrap{
+    display:grid;
+    gap:22px;
+  }
+
+  @media(min-width:880px){
+    #preco .price-wrap{
+      grid-template-columns:1.1fr .9fr;
+      align-items:stretch;
+    }
+  }
+
+  #preco .price-copy{
+    font-size:0.96rem;
+    color:#374151;
+    line-height:1.7;
+  }
+
+  #preco .price-card{
+    background:linear-gradient(135deg,#fffbeb,rgba(245,200,76,.18));
+    border-radius:20px;
+    border:1px solid rgba(245,200,76,.75);
+    box-shadow:0 14px 32px rgba(0,0,0,.08);
+    padding:18px 20px 20px;
+    display:grid;
+    gap:10px;
+  }
+
+  #preco .price-tag{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:#92400e;
+  }
+
+  #preco .price-main{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:8px;
+  }
+
+  #preco .price-main-valor{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(26px,5.4vw,34px);
+  }
+
+  #preco .price-main-parc{
+    font-size:0.95rem;
+    color:#4b5563;
+  }
+
+  #preco .price-note{
+    font-size:0.9rem;
+    color:#374151;
+  }
+
+  #preco .price-list{
+    list-style:none;
+    padding:0;
+    margin:6px 0 2px;
+    display:grid;
+    gap:4px;
+    font-size:0.95rem;
+    color:#111827;
+  }
+
+  #preco .price-list li{
+    position:relative;
+    padding-left:20px;
+    line-height:1.55;
+  }
+
+  #preco .price-list li::before{
+    content:"•";
+    position:absolute;
+    left:6px;
+    top:2px;
+    font-size:1rem;
+    color:#92400e;
+  }
+
+  #preco .btn-price{
+    margin-top:6px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:10px 18px;
+    border-radius:999px;
+    border:none;
+    text-decoration:none;
+    cursor:pointer;
+    font-family:Questrial,system-ui;
+    font-weight:700;
+    font-size:0.98rem;
+    background:#c026d3;
+    color:#fff;
+    box-shadow:0 10px 26px rgba(192,38,211,.35);
+  }
+
+  #preco .btn-price:hover{
+    filter:brightness(.96);
+  }
+
+  #preco .price-secure{
+    font-size:0.82rem;
+    color:#4b5563;
+    margin-top:4px;
+  }
+
+  #preco .price-launch-note{
+    margin-top:8px;
+    font-size:0.85rem;
+    color:#6b7280;
+  }
+    /* ========== GUARANTEE BLOCK ========== */
+  #garantia{
+    max-width:1100px;
+    margin:60px auto 70px;
+    padding:0 16px;
+    font-family:Questrial,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#111827;
+    text-align:left;
+  }
+
+  #garantia h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5vw,32px);
+    line-height:1.15;
+    margin:0 0 6px;
+  }
+
+  #garantia .gar-sub{
+    font-size:clamp(14px,2.2vw,17px);
+    color:#374151;
+    max-width:70ch;
+    margin:4px 0 16px;
+  }
+
+  #garantia .subline{
+    width:140px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(245,200,76,.18),rgba(245,200,76,.9));
+    margin:0 0 26px;
+  }
+
+  #garantia .gar-card{
+    background:#ffffff;
+    border-radius:20px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 14px 32px rgba(0,0,0,.06);
+    padding:22px 22px 26px;
+    display:grid;
+    gap:16px;
+  }
+
+  #garantia .gar-text{
+    font-size:0.97rem;
+    line-height:1.7;
+    color:#374151;
+  }
+
+  #garantia .gar-quote{
+    font-size:1.05rem;
+    color:#111827;
+    font-style:italic;
+    line-height:1.6;
+    margin:0;
+  }
+
+  /* Bullet list */
+  #garantia .gar-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap:6px;
+    font-size:0.95rem;
+    color:#1f2937;
+  }
+  #garantia .gar-list li{
+    position:relative;
+    padding-left:22px;
+    line-height:1.55;
+  }
+  #garantia .gar-list li::before{
+    content:"✔";
+    position:absolute;
+    left:0;
+    top:0;
+    font-size:0.9rem;
+    color:#16a34a;
+  }
+
+  /* CTA buttons */
+  #garantia .gar-ctas{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:10px;
+  }
+
+  #garantia .btn-gar{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px 18px;
+    border-radius:999px;
+    font-family:Questrial,system-ui;
+    font-weight:700;
+    font-size:0.95rem;
+    text-decoration:none;
+    cursor:pointer;
+    background:#c026d3;
+    color:#fff;
+    box-shadow:0 10px 26px rgba(192,38,211,.35);
+  }
+  #garantia .btn-gar:hover{ filter:brightness(.96); }
+
+  #garantia .btn-ghost{
+    background:transparent;
+    border:1px solid rgba(0,0,0,.18);
+    color:#111827;
+    box-shadow:none;
+  }
+    /* ========== FAQ / ACCORDION ========== */
+  #faq{
+    max-width:1100px;
+    margin:60px auto 90px;
+    padding:0 16px 10px;
+    font-family:Questrial,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#111827;
+    text-align:left;
+  }
+
+  #faq h2{
+    font-family:"Comfortaa",system-ui;
+    font-weight:700;
+    font-size:clamp(24px,5vw,32px);
+    line-height:1.15;
+    margin:0 0 6px;
+  }
+
+  #faq .faq-sub{
+    font-size:clamp(14px,2.2vw,17px);
+    color:#374151;
+    max-width:70ch;
+    margin:4px 0 16px;
+  }
+
+  #faq .subline{
+    width:150px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(245,200,76,.2),rgba(245,200,76,.95));
+    margin:0 0 24px;
+  }
+
+  #faq .faq-list{
+    display:grid;
+    gap:10px;
+  }
+
+  /* Accordion items */
+  #faq .acc{
+    border-radius:16px;
+    border:1px solid #e5e7eb;
+    background:#ffffff;
+    box-shadow:0 6px 18px rgba(0,0,0,.04);
+    overflow:hidden;
+  }
+
+  #faq .acc.open{
+    border-color:rgba(245,200,76,.85);
+    box-shadow:0 10px 26px rgba(245,200,76,.18);
+    background:#fffbeb;
+  }
+
+  #faq .acc-head{
+    width:100%;
+    border:0;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px 16px;
+    cursor:pointer;
+    font-family:Questrial,system-ui;
+    font-size:0.98rem;
+    text-align:left;
+    color:#111827;
+  }
+
+  #faq .acc-head .ico{
+    flex:0 0 auto;
+    font-size:1.2rem;
+  }
+
+  #faq .acc-head span:not(.ico){
+    flex:1 1 auto;
+  }
+
+  #faq .acc-head .chev{
+    width:18px;
+    height:18px;
+    flex:0 0 auto;
+    transition:transform .25s ease;
+  }
+
+  #faq .acc.open .acc-head .chev{
+    transform:rotate(180deg);
+  }
+
+  #faq .acc-panel{
+    padding:0 16px 14px;
+    border-top:1px solid #e5e7eb;
+    font-size:0.95rem;
+    color:#374151;
+  }
+
+  #faq .acc-inner{
+    padding-top:10px;
+    line-height:1.7;
+  }
+
+  #faq .acc-inner p{
+    margin:0 0 8px;
+  }
+
+  #faq .acc-inner ul{
+    margin:0 0 4px 18px;
+    padding:0;
+  }
+
+  #faq .acc-inner li{
+    margin:2px 0 4px;
+  }
+
+  #faq .muted{
+    font-size:0.85rem;
+    color:#6b7280;
+  }
+
+  @media (max-width:640px){
+    #faq .acc-head{
+      padding:12px 14px;
+      font-size:0.95rem;
+    }
+    #faq .acc-panel{
+      padding:0 14px 12px;
+    }
+  }
+  /* ===== REVEAL GENÉRICO ===== */
+  #course-offer .reveal{ opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease; }
+  #course-offer .reveal.in{ opacity:1;transform:none; }
+  #faq .reveal{
+  opacity:1;
+  transform:none;
+}
+
+</style>
   <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -197,7 +1016,12 @@ fbq('track', 'PageView');
     }]
   });
 </script>
-
+<script type="text/javascript">
+  var s=document.createElement("script");
+  s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js";
+  s.async=true;
+  document.head.appendChild(s);
+</script>
 </head>
 <body>
 
@@ -227,89 +1051,1055 @@ fbq('track', 'PageView');
     <p id="tempo-restante">20</p>
 
     <div id="video-wrapper">
-      <iframe src="https://player.vimeo.com/video/1090623287?h=9f5dccfe7b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        title="Convite espiritual">
+  <div id="ifr_6921af18929a71f0a170c388_wrapper"
+       style="position:absolute; inset:0; margin:0 auto; width:100%; height:100%;">
+    <div id="ifr_6921af18929a71f0a170c388_aspect"
+         style="position:relative; width:100%; height:100%;">
+      <iframe
+        frameborder="0"
+        allowfullscreen
+        src="about:blank"
+        id="ifr_6921af18929a71f0a170c388"
+        style="position:absolute; top:0; left:0; width:100%; height:100%;"
+        referrerpolicy="origin"
+        onload="
+          this.onload = null;
+          this.src =
+            'https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/6921af18929a71f0a170c388/v4/embed.html'
+            + (location.search || '?')
+            + '&vl=' + encodeURIComponent(location.href)
+        ">
       </iframe>
     </div>
+  </div>
+</div>
+</div>
 
-    <a href="https://pay.kiwify.com.br/KxpXn2t" id="botao-curso" style="display: none;">
+    <a href="https://pay.kiwify.com.br/otZkPSG?coupon=CODIGO10" id="botao-curso" style="display: none;">
   🎁 Quero desbloquear minha alma agora
 </a>
 
-<div id="faq-curso" style="display: none; max-width: 800px; margin: 40px auto 0 auto; text-align: left; font-family: 'Arial', sans-serif;">
 
-  <h2 style="font-size: 24px; text-align: center; font-weight: 300; margin-bottom: 24px; color: #111;">
-    🔓 Descubra o que está por trás da sua travessia espiritual...
-  </h2>
+    <!-- OFERTA DO CURSO – abre junto com o botão após 90s -->
+  <div id="course-offer" style="display:none;">
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🌀 O que realmente serei capaz de enxergar após este curso?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Um novo mapa da sua alma — com camadas, zonas e raízes que antes estavam ocultas. Você será capaz de identificar suas vibrações dominantes, entender seus ciclos e agir com consciência espiritual sobre seus dons e feridas.
+    <!-- 1) TABELA DE TRANSFORMAÇÃO -->
+    <section id="tabela-transformacao">
+      <div class="wrap">
+        <h2>Por que a alfabetização emocional muda tudo na sua vida</h2>
+        <div class="subline"></div>
+        <p>
+          Cada linha abaixo mostra um “antes e depois”: como você se sente hoje, o que muda depois de treinar sua performance emocional, e em quem você se torna na prática.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Eixo</th>
+                <th>Antes</th>
+                <th>Depois</th>
+                <th>Quem você se torna</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-eixo">🕊️ Ansiedade → Clareza</td>
+                <td class="col-antes">Mente acelerada, medo do futuro.</td>
+                <td class="col-depois">Decisões calmas e firmes.</td>
+                <td class="col-identidade">Um porto seguro para a própria vida.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">👁️ Emoções → Leitura da alma</td>
+                <td class="col-antes">Reagindo ao caos emocional dos outros.</td>
+                <td class="col-depois">Enxergando a alma por trás do comportamento.</td>
+                <td class="col-identidade">A referência emocional da família.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">🌿 Recaídas → Estabilidade</td>
+                <td class="col-antes">Ciclos de ansiedade, culpa e fuga.</td>
+                <td class="col-depois">Você percebe a queda e corrige rápido.</td>
+                <td class="col-identidade">Coerente, previsível, confiável.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">🔥 Foco → Prosperidade</td>
+                <td class="col-antes">Disperso, deixando tarefas pela metade.</td>
+                <td class="col-depois">Foco natural no que realmente importa.</td>
+                <td class="col-identidade">A pessoa mais valiosa da equipe.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">🛡️ Limites → Respeito</td>
+                <td class="col-antes">Dizendo “sim” para tudo, vivendo exausto.</td>
+                <td class="col-depois">Limites firmes, energia preservada.</td>
+                <td class="col-identidade">Admirado e respeitado.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">⚡ Pessoas tóxicas → Blindagem</td>
+                <td class="col-antes">Caindo em manipulações e drenagens de energia.</td>
+                <td class="col-depois">Detectando a vibração tóxica de longe.</td>
+                <td class="col-identidade">Indisponível para manipuladores.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">🌙 Hábitos → Identidade</td>
+                <td class="col-antes">Tentando mudar só na força de vontade.</td>
+                <td class="col-depois">Mudando a vibração — e o comportamento segue.</td>
+                <td class="col-identidade">Uma nova pessoa.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">💡 Aprendizado → Velocidade</td>
+                <td class="col-antes">Mente pesada, difícil absorver.</td>
+                <td class="col-depois">Mente leve, absorção rápida.</td>
+                <td class="col-identidade">Você aprende em dias o que outros levam meses.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">✨ Paz → Presença</td>
+                <td class="col-antes">Insegurança, comparação.</td>
+                <td class="col-depois">Presença firme, olhar confiante.</td>
+                <td class="col-identidade">Alguém que é sentido assim que entra no ambiente.</td>
+              </tr>
+              <tr>
+                <td class="col-eixo">🌞 Domínio → Prosperidade integral</td>
+                <td class="col-antes">Finanças e decisões oscilando com o humor.</td>
+                <td class="col-depois">Coerência e constância.</td>
+                <td class="col-identidade">Senhor do próprio caminho.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2) QUATRO CAMINHOS -->
+    <section id="caminhos">
+      <div class="wrap">
+        <h2>Os 4 caminhos para cuidar da sua saúde mental e espiritual — lado a lado.</h2>
+        <p class="sub">
+          Todo mundo acaba escolhendo um desses caminhos. Mas só um trata a raiz das emoções — não apenas o sintoma.
+        </p>
+        <div class="subline" aria-hidden="true"></div>
+
+        <div class="grid-4">
+          <article class="card-4">
+            <div class="tag">Opção 1</div>
+            <h3>Medicação e “analgésicos” emocionais</h3>
+            <div>
+              <div class="label">Vantagem</div>
+              <p class="text">Alívio rápido. Parece funcionar na hora.</p>
+            </div>
+            <div>
+              <div class="label">Problema</div>
+              <p class="text">Não trata a causa. Quando o efeito passa, o ciclo recomeça.</p>
+            </div>
+            <p class="money">Custo médio estimado: <strong>cerca de R$ 70–150 por ano</strong> em medicação.</p>
+            <p class="alert">Seu corpo paga o preço; sua alma continua sem ser ouvida.</p>
+          </article>
+
+          <article class="card-4">
+            <div class="tag">Opção 2</div>
+            <h3>Terapias, clínicas e especialistas</h3>
+            <div>
+              <div class="label">Vantagem</div>
+              <p class="text">Apoio para casos específicos, traumas e crises.</p>
+            </div>
+            <div>
+              <div class="label">Limite</div>
+              <p class="text">Exige tempo, dinheiro e constância. Não é um treino diário de autogoverno.</p>
+            </div>
+            <p class="money">Custo médio: <strong>de R$ 50 a R$ 200 por sessão</strong>.</p>
+            <p class="alert">Muita gente não consegue sustentar o tratamento por tempo suficiente.</p>
+          </article>
+
+          <article class="card-4">
+            <div class="tag">Opção 3</div>
+            <h3>Religião e espiritualidade tradicionais</h3>
+            <div>
+              <div class="label">Vantagem</div>
+              <p class="text">Oferece fé, consolo e direção espiritual.</p>
+            </div>
+            <div>
+              <div class="label">Limite</div>
+              <p class="text">Nem sempre entrega um método simples para lidar com as emoções no dia a dia.</p>
+            </div>
+            <p class="alert">Você se sente bem no culto… mas cai de novo na segunda-feira.</p>
+          </article>
+
+          <article class="card-4 card--dest">
+            <div class="tag">Opção 4</div>
+            <h3>Alfabetização Emocional Simples e Estruturada</h3>
+            <div>
+              <div class="label">Vantagem</div>
+              <p class="text">Treina você a ler suas emoções, reconhecer quedas, romper gatilhos e regular o próprio estado.</p>
+            </div>
+            <div>
+              <div class="label">Como funciona</div>
+              <p class="text">Um método leve, diário e cumulativo: <strong>3–8 minutos por bloco</strong>, com exercícios práticos e mapas claros.</p>
+            </div>
+            <p class="money">
+              Investimento na Jornada: <strong>12× de R$ 37,23 ou US$ 360,00 à vista</strong> (muitas vezes menos do que um único mês de terapia ou um ano de remédios).
+            </p>
+            <p class="alert">Aqui você não terceiriza a cura: aprende a cuidar da própria alma.</p>
+          </article>
+        </div>
+
+        <div class="anchor">
+          <strong>Comparando:</strong> remédios recorrentes (~R$ 70–150/ano), terapia a partir de R$ 50–200 por sessão, recaídas que custam anos de vida…  
+          A Jornada custa <strong>12× de R$ 37,23 ou R$ 360,00</strong> e te ensina a treinar sua saúde emocional todos os dias.
+        </div>
+      </div>
+    </section>
+
+    <!-- 3) PROVA SOCIAL 1 -->
+    <section id="ps-faixa1">
+      <div class="ps-row">
+        <article class="ps-card">
+          <div class="ps-avatar">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/marielle.webp"
+                 alt="Marielle — médica de família" loading="lazy">
+          </div>
+          <div class="ps-txt">
+            <p class="ps-quote">
+              Existe um antes e depois dessas aulas. Hoje eu enxergo tudo com
+              <strong>clareza e compaixão</strong>. É curto, real, e me acompanha ao longo do dia.
+            </p>
+            <div><span class="ps-sign">Marielle</span><span class="ps-role"> — Médica de família e comunidade</span></div>
+          </div>
+        </article>
+
+        <article class="ps-card">
+          <div class="ps-avatar">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/gerson.webp"
+                 alt="Gerson Teles — empreendedor" loading="lazy">
+          </div>
+          <div class="ps-txt">
+            <p class="ps-quote">
+              Se eu tivesse encontrado isso há 30 anos… <strong>descobri forças simples que organizam minha saúde e meu dia.</strong>
+              O que mudou? Tudo ficou mais leve. Gratidão!
+            </p>
+            <div><span class="ps-sign">Gerson Teles</span><span class="ps-role"> — Empreendedor aposentado</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4) PROVA SOCIAL 2 -->
+    <section id="ps-faixa-ag-cor">
+      <div class="ps-row">
+        <article class="ps-card">
+          <div class="ps-avatar">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/nat.webp"
+                 alt="Natália Oliveira — servidora pública" loading="lazy">
+          </div>
+          <div class="ps-txt">
+            <p class="ps-quote">
+              Eu descobri um verdadeiro <strong>universo</strong> dentro de mim. Isso deveria ser básico para todo ser humano —
+              uma <strong>verdade silenciosa</strong>, sincronicidades à vista.
+            </p>
+            <div><span class="ps-sign">Natália Oliveira</span><span class="ps-role"> — Servidora pública</span></div>
+          </div>
+        </article>
+
+        <article class="ps-card">
+          <div class="ps-avatar">
+            <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/Design-sem-nome-4.png"
+                 alt="Laura Moura — corretora de imóveis" loading="lazy">
+          </div>
+          <div class="ps-txt">
+            <p class="ps-quote">
+              Hoje eu vejo o <strong>motivo real</strong> por trás de cada negociação. Ansiedade virou
+              <strong>clareza e ordem</strong>; as conversas fluem e os negócios se fecham na hora certa.
+            </p>
+            <div><span class="ps-sign">Laura Moura</span><span class="ps-role"> — Corretora de imóveis</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5) AUTOR -->
+    <section id="autor">
+      <div class="wrap">
+        <div class="col-text">
+          <h2 class="h2 reveal">Quem está por trás do método</h2>
+          <div class="subline"></div>
+          <p class="bio">
+            <strong>Eu não vim de um mosteiro, de longos retiros espirituais ou de uma formação acadêmica em psicologia ou psiquiatria.</strong><br>
+            Eu vim da vida real — empreendedorismo, trabalho, pressão, boletos, prazos, decisões e guerras internas que quase ninguém vê.
+          </p>
+          <p class="bio">
+            Sou engenheiro de formação, empreendedor, alguém que correu atrás de metas, ganhou prêmios e chegou ao que o mundo chama de “sucesso”.
+            Mas descobri que nada disso sustenta a vida se a alma estiver desalinhada.
+          </p>
+          <p class="bio">
+            Assim como você, eu não tinha o luxo de desaparecer do mundo para me encontrar:
+            não podia viver em um mosteiro ou fazer uma graduação inteira em psicologia e outra em psiquiatria.
+            Eu precisava viver, trabalhar e cuidar de pessoas — enquanto lidava com mais de <strong>6.000 pensamentos por dia</strong>.
+          </p>
+          <p class="bio">
+            Foi nesse lugar, entre responsabilidades e conflitos internos, que comecei uma busca profunda:
+            neurociência emocional, psicologia prática, tradições espirituais antigas, hermetismo, a Bíblia, meditação, terapias somáticas — e, acima de tudo,
+            a dura escola da própria vida, caindo e levantando muitas vezes.
+          </p>
+          <p class="bio">
+            Depois de anos enfrentando meus próprios ciclos de ansiedade, impulsos, vícios sutis e até períodos em que precisei de medicação para estabilizar o humor,
+            ficou claro para mim que ninguém nunca nos ensinou a ler a nossa própria alma.
+          </p>
+          <p class="bio">
+            Foi assim que nasceu o <strong>Canva Espiritual</strong>: um método que une ciência emocional, espiritualidade viva e linguagem simples,
+            em passos de 3 a 8 minutos, pensado para gente comum — trabalhadores, pais, empreendedores, estudantes —
+            que querem paz, clareza e autogoverno em meio à vida real.
+          </p>
+          <p class="bio">
+            Eu sou <strong>Gustavo Prado</strong>.<br>
+            Se esse mapa trouxe luz ao meu caminho, agora coloco essa mesma luz nas suas mãos.
+          </p>
+        </div>
+        <figure class="media">
+          <img src="https://canvaspiritual.com/wp-content/uploads/2025/09/Gustavo-Prado.png"
+               alt="Gustavo Prado — engenheiro, empreendedor e pesquisador que desenvolveu o Canva Espiritual">
+        </figure>
+      </div>
+    </section>
+
+        <!-- 5) KEYS & SEALS (conteúdo programático) -->
+    <section id="chaves" aria-label="Keys & Seals of the Journey">
+      <div class="wrap">
+        <h2 class="h2 reveal">Chaves &amp; Selos</h2>
+        <p class="sub reveal d1">Seu caminho em passos simples: ver, governar, transmutar — e sustentar.</p>
+        <div class="subline reveal d1" aria-hidden="true"></div>
+
+        <div class="grid">
+          <!-- KEY 1 -->
+          <article class="card reveal d1">
+            <div class="icon">
+              <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-06_13_30.png" alt="Imagem do Módulo 1">
+            </div>
+            <div class="body">
+              <h3 class="title">Chave 1 — Autodiagnóstico</h3>
+              <p class="line">Reconheça com precisão <strong>onde você está</strong>.</p>
+              <button class="btn" data-modal-open="#m1">Ver conteúdo completo do módulo</button>
+            </div>
+          </article>
+
+          <!-- KEY 2 -->
+          <article class="card reveal d2">
+            <div class="icon">
+              <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-18_27_49.png" alt="Imagem do Módulo 2">
+            </div>
+            <div class="body">
+              <h3 class="title">Chave 2 — Autogoverno (Leis &amp; Mapa)</h3>
+              <p class="line">Da teoria à prática: governe seus <strong>estados</strong>.</p>
+              <button class="btn" data-modal-open="#m2">Ver conteúdo completo do módulo</button>
+            </div>
+          </article>
+
+          <!-- KEY 3 -->
+          <article class="card reveal d3">
+            <div class="icon">
+              <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-18_15_52.png" alt="Imagem do Módulo 3">
+            </div>
+            <div class="body">
+              <h3 class="title">Chave 3 — Autoproteção</h3>
+              <p class="line"><strong>Corte</strong> o que te derruba — com direção e misericórdia.</p>
+              <button class="btn" data-modal-open="#m3">Ver conteúdo completo do módulo</button>
+            </div>
+          </article>
+
+          <!-- KEY 4 -->
+          <article class="card reveal d4">
+            <div class="icon">
+              <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-17_51_54.png" alt="Imagem do Módulo 4">
+            </div>
+            <div class="body">
+              <h3 class="title">Chave 4 — Transmutação &amp; Blindagem</h3>
+              <p class="line"><strong>3–8 minutos</strong> por bloco — consistência gentil.</p>
+              <button class="btn" data-modal-open="#m4">Ver conteúdo completo do módulo</button>
+            </div>
+          </article>
+
+          <!-- KEY 5 -->
+          <article class="card reveal d5">
+            <div class="icon">
+              <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-07_37_44.png" alt="Imagem do Módulo 5">
+            </div>
+            <div class="body">
+              <h3 class="title">Chave 5 — Deserto Interior</h3>
+              <p class="line">No silêncio, o <strong>Eu verdadeiro</strong> aparece.</p>
+              <button class="btn" data-modal-open="#m5">Ver conteúdo completo do módulo</button>
+            </div>
+          </article>
+
+          <!-- KEY 6 -->
+          <article class="card reveal d6">
+            <div class="icon">
+              <img src="https://canvaspiritual.com/wp-content/uploads/2025/11/ChatGPT-Image-22-de-out.-de-2025-17_31_11.png" alt="Imagem do Módulo 6">
+            </div>
+            <div class="body">
+              <h3 class="title">Chave 6 — Cosmovisão &amp; Missão</h3>
+              <p class="line">Veja o mundo com <strong>novos olhos</strong> — e o seu lugar nele.</p>
+              <button class="btn" data-modal-open="#m6">Ver conteúdo completo do módulo</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="ctas">
+          <a class="btn" href="#preco">Ir para o investimento</a>
+          <a class="btn btn-ghost" href="#preco">Começar minha jornada</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= POPUPS ======= -->
+    <!-- M1 -->
+    <div class="modal" id="m1" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m1title">
+      <div class="modal__dialog">
+        <header class="modal__head">
+          <h3 class="modal__title" id="m1title">Chave 1 — Autodiagnóstico da Alma e da Mente</h3>
+        </header>
+        <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+        <div class="modal__content">
+          <ul>
+            <li><strong>Aula 1 – Introdução ao Canva Espiritual:</strong> um primeiro olhar para o mapa que revela a sua essência.</li>
+            <li><strong>Aula 2 – O que é o Método?</strong> um caminho claro para entender sua vibração com segurança.</li>
+            <li><strong>Aula 3 – O Espelho Completo da Alma:</strong> um reflexo honesto de onde você está agora.</li>
+            <li><strong>Aula 4 – Virtudes, Zonas da Alma e Lei da Vibração:</strong> forças sutis que organizam escolhas e estados.</li>
+            <li><strong>Aula 5 – O Mapa Completo da Alma:</strong> a estrutura que coloca cada fruto em seu devido lugar.</li>
+            <li><strong>Aula 6 – Pintando a Verdade:</strong> o mesmo espelho aplicado à vida familiar, social, profissional e individual.</li>
+            <li><strong>Aula 7 – Sinais Comportamentais da Alma:</strong> pequenos gestos que revelam fidelidade… ou desvio.</li>
+            <li><strong>Aula 8 – Sinais Físicos da Alma:</strong> quando o corpo sussurra o que a mente não disse.</li>
+            <li><strong>Aula 9 – Reflexões sobre Saúde Física e Mental:</strong> vibração ao longo do tempo, construindo… ou cobrando juros.</li>
+            <li><strong>Aula 10 – Gatilhos Sensoriais:</strong> imagens, sons e toques que podem te elevar — ou dispersar.</li>
+          </ul>
+          <p><strong>Resultado:</strong> clareza imediata sobre o seu estado e seu próximo passo.</p>
+        </div>
+        <footer class="modal__foot">
+          <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+          <a class="m-btn m-primary" href="#preco">Quero viver esta Chave</a>
+        </footer>
+      </div>
+    </div>
+
+    <!-- M2 -->
+    <div class="modal" id="m2" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m2title">
+      <div class="modal__dialog">
+        <header class="modal__head"><h3 class="modal__title" id="m2title">Chave 2 — Autogoverno (Leis &amp; Mapa)</h3></header>
+        <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+        <div class="modal__content">
+          <ul>
+            <li><strong>Aula 1 – Apresentação do Mapa Espiritual:</strong> uma visão do campo de forças que opera dentro de você.</li>
+            <li><strong>Aula 2 – Escalas do Mapa Espiritual (Fé ↔ Descrença):</strong> como localizar sua vibração e o que ela influencia.</li>
+            <li><strong>Aula 3 – Introdução ao Hermetismo:</strong> princípios antigos que explicam as leis invisíveis do universo.</li>
+            <li><strong>Aula 4 – O Todo é Mente:</strong> antes da forma, existe a ideia — tudo começa no invisível.</li>
+            <li><strong>Aula 5 – Lei da Correspondência:</strong> assim dentro, assim fora — o reflexo na vida prática.</li>
+            <li><strong>Aula 6 – Lei do Gênero Mental:</strong> harmonizando os polos da mente para agir com equilíbrio.</li>
+            <li><strong>Aula 7 – Escala Servidão ↔ Escravidão:</strong> quando o propósito governa… ou as ilusões comandam.</li>
+            <li><strong>Aula 8 – Revisão Geral do Mapa Espiritual:</strong> síntese das leis e escalas para seguir com clareza.</li>
+          </ul>
+          <p><strong>Resultado:</strong> decisões mais simples, coerentes com quem você deseja se tornar.</p>
+        </div>
+        <footer class="modal__foot">
+          <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+          <a class="m-btn m-primary" href="#preco">Dominar meu estado</a>
+        </footer>
+      </div>
+    </div>
+
+    <!-- M3 -->
+    <div class="modal" id="m3" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m3title">
+      <div class="modal__dialog">
+        <header class="modal__head"><h3 class="modal__title" id="m3title">Chave 3 — Autoproteção</h3></header>
+        <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+        <div class="modal__content">
+          <ul>
+            <li><strong>Aula 1 – Introdução às Combinações da Alma:</strong> como forças internas se unem e criam ciclos invisíveis.</li>
+            <li><strong>Aula 2 – Combinações Degradantes:</strong> quando vícios fazem alianças e formam ecossistemas de autoengano.</li>
+            <li><strong>Aula 3 – Combinações Neutras:</strong> o perigo da vida morna e do piloto automático.</li>
+            <li><strong>Aula 4 – Combinações Virtuosas:</strong> sinergias que aceleram o crescimento espiritual real.</li>
+            <li><strong>Aula 5 – Hierarquia das Virtudes:</strong> como cada virtude ocupa um lugar vital no “corpo” da alma.</li>
+            <li><strong>Aula 6 – A Guerra Interior: Virtude vs. Poder:</strong> a batalha que importa não está fora — está dentro.</li>
+          </ul>
+          <p><strong>Resultado:</strong> menos recaídas e retomadas mais rápidas.</p>
+        </div>
+        <footer class="modal__foot">
+          <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+          <a class="m-btn m-primary" href="#preco">Blindar minha casa interior</a>
+        </footer>
+      </div>
+    </div>
+
+    <!-- M4 -->
+    <div class="modal" id="m4" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m4title">
+      <div class="modal__dialog">
+        <header class="modal__head"><h3 class="modal__title" id="m4title">Chave 4 — Transmutação &amp; Blindagem</h3></header>
+        <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+        <div class="modal__content">
+          <ul>
+            <li><strong>Aula 1 – O Caminho da Transformação Real:</strong> do espelho da alma à construção de um novo ser.</li>
+            <li><strong>Aula 2 – Quando a Espiritualidade se Torna Centro:</strong> disciplina e ordem para restaurar suas forças internas.</li>
+            <li><strong>Aula 3 – O Hoje Sagrado:</strong> como santificar o presente e transformar rotina em ritual.</li>
+            <li><strong>Aula 4 – Oração Viva:</strong> o Pai Nosso como roteiro diário de reorganização espiritual.</li>
+            <li><strong>Aula 5 – Piscadas do Céu:</strong> sincronicidades e sinais sutis como respostas do Todo.</li>
+            <li><strong>Aula 6 – Idolatria Oculta:</strong> reposicionando o coração para devolver o trono a Deus.</li>
+            <li><strong>Aula 7 – Santificação dos Sentidos:</strong> sons, imagens, cheiros e alimentos que elevam — ou pesam.</li>
+            <li><strong>Aula 8 – O Reino Interior e o Xadrez Espiritual:</strong> Rei, Rainha, torres e peões como mapa da mente.</li>
+            <li><strong>Aula 9 – O Rei Assume o Trono:</strong> meditação, dízimo do tempo e presença soberana no agora.</li>
+            <li><strong>Aula 10 – Meditação Guiada: O Observador da Estrada:</strong> ver os pensamentos sem ser arrastado por eles.</li>
+            <li><strong>Aula 11 – O Primeiro Sacrifício Vivo:</strong> vencendo o pecado ainda em gestação, pelo culto racional.</li>
+            <li><strong>Aula 12 – O Corpo sob o Governo do Rei:</strong> escaneamento corporal com luz, integrando corpo, alma e espírito.</li>
+            <li><strong>Aula 13 – A Liberdade da Rainha:</strong> imaginação criativa guiada pelo olhar firme do Rei.</li>
+            <li><strong>Aula 14 – O Primeiro Altar Externo:</strong> quarto, casa e rotina como extensão do templo interior.</li>
+            <li><strong>Aula 15 – Ritual de Sustentação:</strong> exercícios e jejuns para viver leve, alinhado e inabalável.</li>
+          </ul>
+          <p><strong>Resultado:</strong> paz sustentada e energia mais limpa.</p>
+        </div>
+        <footer class="modal__foot">
+          <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+          <a class="m-btn m-primary" href="#preco">Quero implementar agora</a>
+        </footer>
+      </div>
+    </div>
+
+    <!-- M5 -->
+    <div class="modal" id="m5" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m5title">
+      <div class="modal__dialog">
+        <header class="modal__head"><h3 class="modal__title" id="m5title">Chave 5 — Deserto Interior</h3></header>
+        <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+        <div class="modal__content">
+          <ul>
+            <li><strong>Aula 1 – O Deserto: Tempo de Lapidação Interior:</strong> silêncio, desapego e presença que arrancam máscaras e fortalecem a essência.</li>
+            <li><strong>Aula 2 – Animais Sagrados: Sabedoria da Criação:</strong> contemplar a natureza e aprender virtudes vivas — a coragem do leão, a diligência da formiga, a visão da águia.</li>
+            <li><strong>Aula 3 – Anatomia Espiritual: O Corpo como Síntese da Criação:</strong> cada órgão como reflexo de uma virtude — coração/amor, coluna/verdade, olhos/fidelidade.</li>
+            <li><strong>Aula 4 – A Referência de Perfeição:</strong> por que Cristo é a convergência das tradições de sabedoria e a medida do humano perfeito.</li>
+            <li><strong>Aula 5 – Batismo nas Águas: Rendição à Referência Perfeita:</strong> o selo da aliança, decisão pública de recomeçar e caminhar guiado pelo Espírito.</li>
+          </ul>
+          <p><strong>Resultado:</strong> identidade mais estável e direção mais profunda.</p>
+        </div>
+        <footer class="modal__foot">
+          <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+          <a class="m-btn m-primary" href="#preco">Entrar no Deserto</a>
+        </footer>
+      </div>
+    </div>
+
+    <!-- M6 -->
+    <div class="modal" id="m6" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="m6title">
+      <div class="modal__dialog">
+        <header class="modal__head"><h3 class="modal__title" id="m6title">Chave 6 — Cosmovisão &amp; Missão</h3></header>
+        <button class="modal__close" aria-label="Fechar" data-modal-close>✕</button>
+        <div class="modal__content">
+          <ul>
+            <li><strong>Aula 1 – Cosmovisão: O Olhar do Todo:</strong> ver o mundo como um campo vivo de forças e propósitos.</li>
+            <li><strong>Aula 2 – Cristo como Convergência:</strong> a síntese entre Oriente e Ocidente, mística e razão, silêncio e ação.</li>
+            <li><strong>Aula 3 – Nações como Organismos Vivos:</strong> símbolos, chamados e quedas coletivas à luz do espírito.</li>
+            <li><strong>Aula 4 – O Brasil no Mapa Espiritual:</strong> identidade, dons e responsabilidades sem ego — serviço como missão.</li>
+            <li><strong>Aula 5 – Missão Pessoal no Tempo:</strong> alinhando dons, rotina e decisões a um propósito que permanece.</li>
+            <li><strong>Bônus – As Estações da Vida:</strong> primavera, verão, outono e inverno como metáforas da alma.</li>
+            <li><strong>Bônus – O Chamado de Melquisedeque:</strong> viver como rei e sacerdote em um reino eterno.</li>
+            <li><strong>Bônus – Embaixadores e Peregrinos:</strong> consciência de que pertencemos a um reino que não é deste mundo.</li>
+            <li><strong>+ Novas Aulas em Atualização Contínua:</strong> este módulo é vivo, em expansão, sempre recebendo novos conteúdos de cosmovisão.</li>
+          </ul>
+          <p><strong>Resultado:</strong> um senso vivo de propósito que respira no seu cotidiano.</p>
+        </div>
+        <footer class="modal__foot">
+          <button class="m-btn m-secondary" data-modal-close>Fechar</button>
+          <a class="m-btn m-primary" href="#preco">Ver o mundo com novos olhos</a>
+        </footer>
+      </div>
+    </div>
+
+      <section id="bonus" aria-label="Journey Bonuses">
+  <div class="bonus-wrap">
+    <h2>Bônus da Jornada</h2>
+    <p class="bonus-sub">
+      Materiais premium para acelerar a prática e te ajudar a manter o foco —
+      com prioridade para os três principais e-books.
     </p>
-  </details>
+    <div class="subline" aria-hidden="true"></div>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">📚 Qual é o conteúdo do curso Canva Espiritual?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      O curso é formado por <strong>40 selos audiovisuais</strong>, com até 10 minutos cada, organizados em <strong>5 módulos ritualísticos</strong>:<br><br>
-      🔍 <strong>Módulo 1 – Espelho da Alma:</strong> Diagnóstico emocional e espiritual.<br>
-      🔑 <strong>Módulo 2 – Mapa Espiritual:</strong> Leis espirituais e polaridades vibracionais.<br>
-      🛡️ <strong>Módulo 3 – Ferramentas de Transmutação:</strong> Técnicas de elevação e blindagem.<br>
-      🏜️ <strong>Módulo 4 – Deserto Interior:</strong> Exercícios de solidão, silêncio e soberania.<br>
-      🌎 <strong>Módulo 5 – Cosmovisão e Propósito:</strong> Chamado individual e visão do Todo.<br><br>
-      🧾 Além das aulas em vídeo, você receberá um <strong>material complementar robusto em PDF</strong>, com mapas da alma, exercícios, reflexões simbólicas e ferramentas práticas. Esses materiais são distribuídos ao longo das aulas para aprofundar sua jornada.
-    </p>
-  </details>
+    <div class="bonus-grid">
+      <!-- BÔNUS 1 -->
+      <article class="bonus-card bonus-card--main">
+        <div class="bonus-label">Bônus central</div>
+        <h3 class="bonus-title">Cofre da Jornada</h3>
+        <p class="bonus-text">
+          Uma biblioteca viva de catálogos espirituais e emocionais para consultar ao longo das aulas.
+          Você abre a aula, e o Cofre te entrega a referência certa, na hora certa.
+        </p>
+      </article>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🔁 Quantas vezes posso acessar os conteúdos?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Você terá acesso total por 12 meses. O curso é um altar digital — e você pode voltar sempre que precisar realinhar sua alma.
-    </p>
-  </details>
+      <!-- BÔNUS 2 -->
+      <article class="bonus-card">
+        <div class="bonus-label">Prática em movimento</div>
+        <h3 class="bonus-title">Mapa Interativo da Alma</h3>
+        <p class="bonus-text">
+          Uma ferramenta dinâmica que navega pelas 12 naturezas emocionais como um autodiagnóstico em movimento.
+          Você visualiza seu estado atual — e o próximo passo — em um único olhar.
+        </p>
+      </article>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🌈 Esse curso serve para qualquer fé?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Sim. O Canva Espiritual honra todas as tradições que buscam a verdade, a luz e o bem. Ele não impõe doutrinas — ele revela leis espirituais universais que ecoam em todas as culturas e tempos.
-    </p>
-  </details>
+      <!-- BÔNUS 3 -->
+      <article class="bonus-card">
+        <div class="bonus-label">Suporte diário</div>
+        <h3 class="bonus-title">Protocolos Guiados de Transmutação</h3>
+        <p class="bonus-text">
+          Práticas curtas para dissolver vícios, restaurar o foco e integrar mente, alma,
+          corpo e espírito em poucos minutos intencionais por dia.
+        </p>
+      </article>
+    </div>
 
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🔐 O que há por trás das “chaves espirituais”?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Cada chave representa uma travessia interior:<br><br>
-      • <strong>Leitura Espiritual:</strong> a alma se revela.<br>
-      • <strong>Autogoverno:</strong> você retoma o comando.<br>
-      • <strong>Blindagem Espiritual:</strong> escudo contra influências externas.<br>
-      • <strong>Transcendência:</strong> você aprende a voar por dentro.<br>
-      • <strong>Cosmovisão:</strong> você se alinha ao Todo.<br><br>
-      Juntas, essas chaves ativam áreas sutis e profundas do seu ser.
-    </p>
-  </details>
-
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">🤝 Por que não posso mais caminhar sozinho?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Porque agora você vê. E quem vê, não pode mais fingir que está cego. Este curso foi criado para te acompanhar na travessia — com verdade, clareza e suporte espiritual real.
-    </p>
-  </details>
-
-  <details style="border: 1px solid #ddd; border-radius: 8px; padding: 16px;">
-    <summary style="font-weight: bold; cursor: pointer; color: #333;">💸 E se eu não gostar? Posso pedir reembolso?</summary>
-    <p style="margin-top: 10px; color: #444;">
-      Sim. Você tem <strong>7 dias de garantia incondicional</strong>, disponível direto na plataforma. Após a compra, basta acessar sua conta e clicar em <em>“Reembolsar”</em>. Sem burocracias. Sem explicações obrigatórias.
-    </p>
-  </details>
-
-</div>
-
+    <div class="bonus-extra">
+      <h3 class="bonus-extra-title">E muito mais…</h3>
+      <p class="bonus-extra-intro">
+        Entregue como correspondência viva para cada aula:
+      </p>
+      <ul class="bonus-list">
+        <li>Catálogo de Arquétipos de Animais e suas correspondências emocionais;</li>
+        <li>Catálogo de Idolatrias Ocultas — crenças invisíveis que travam a consciência;</li>
+        <li>Catálogo de Combinações Emocionais Virtuosas e Degradantes;</li>
+        <li>Catálogo de Alimentos Prânicos e Elementos Naturais;</li>
+        <li>Catálogo de Plantas e suas Mensagens Emocionais/Espirituais;</li>
+        <li>Catálogo de predisposições emocionais, fisiológicas e psicológicas.</li>
+      </ul>
+    </div>
   </div>
+</section>
 
-  <script src="https://player.vimeo.com/api/player.js"></script>
+ <section id="preco" aria-label="Journey Investment">
+  <h2>Quanto vou investir em tudo isso?</h2>
+  <p class="price-sub">
+    Desenvolvimento espiritual <strong>do básico ao avançado</strong>, reunindo
+    sabedoria <strong>judaico-cristã</strong>, <strong>oriental</strong> e <strong>ocidental</strong> em um só lugar —
+    em <strong>aulas curtas, ilustradas e leves</strong>.
+  </p>
+  <div class="subline" aria-hidden="true"></div>
+
+  <div class="price-wrap">
+    <div class="price-copy">
+      <p>
+        Você não está comprando um curso qualquer. Está entrando em uma estrutura viva que
+        te ensina a <strong>ler, governar e elevar</strong> o próprio estado emocional e espiritual —
+        no meio da vida real.
+      </p>
+      <p>
+        Cada Chave &amp; Selo foi desenhada para que alguém com rotina corrida consiga viver
+        <strong>uma jornada interior completa</strong>, sem precisar desaparecer do mundo ou depender
+        para sempre da agenda de outra pessoa.
+      </p>
+      <p>
+        A condição de lançamento é intencionalmente <strong>simbólica e acessível</strong> — para que pessoas
+        de diferentes países e realidades possam experimentar esse mapa, e para que a média emocional
+        de muitas vidas seja elevada ao mesmo tempo.
+      </p>
+    </div>
+
+    <aside class="price-card">
+      <div class="price-tag">Condição de lançamento</div>
+
+      <div class="price-main">
+        <div class="price-main-valor">12× de R$ 37,23</div>
+        <div class="price-main-parc">ou R$ 360,00 à vista</div>
+      </div>
+
+      <p class="price-note">
+        Um valor simbólico e acessível para elevar a média emocional do maior número de pessoas possível.
+      </p>
+
+      <ul class="price-list">
+        <li>6 Chaves &amp; Selos completos + todos os materiais de apoio.</li>
+        <li>3 e-books premium (Guia de 70 páginas, Mapa da Alma, Mapa Espiritual).</li>
+        <li>50+ aulas de 3–8 minutos com animação e som — pensadas para o celular.</li>
+      </ul>
+
+      <a class="btn-price" href="https://pay.kiwify.com.br/otZkPSG?coupon=CODIGO10">
+        Começar minha Jornada agora
+      </a>
+      <div class="price-secure">
+        Libere o acesso (12× de R$ 37,23 ou R$ 360,00) • Pagamento seguro • Acesso imediato • Aulas de 3–8 min • Mobile-first
+      </div>
+
+      <div class="price-launch-note">
+        Condição de lançamento: pode ser ajustada nos próximos lotes à medida que novos materiais forem adicionados.
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="garantia" aria-label="Garantia">
+  <h2>Garantia de 7 dias — vibração real</h2>
+  <p class="gar-sub">
+    Em sete amanheceres de prática, se você não sentir um novo fôlego de presença — 
+    mais silêncio por dentro, mais clareza no olhar — nós desfazemos o pagamento.  
+    <strong>Sem perguntas.</strong> Com total respeito à sua jornada.
+  </p>
+  <div class="subline" aria-hidden="true"></div>
+
+  <div class="gar-card">
+    <p class="gar-text">
+      Porque a Luz não se impõe: ela convida.  
+      E se não brilhar dentro de você, nós honramos a sua decisão.
+    </p>
+
+    <p class="gar-quote">
+      “Comece com risco zero.”
+    </p>
+
+    <ul class="gar-list">
+      <li>Sem letras miúdas</li>
+      <li>7 dias</li>
+      <li>100% de reembolso</li>
+      <li>Acesso imediato</li>
+      <li>Transparência total</li>
+    </ul>
+
+    <p class="gar-text">
+      Basta solicitar o reembolso em até 7 dias após a compra. Nós honramos o seu processo — sempre.
+    </p>
+
+    <div class="gar-ctas">
+      <a class="btn-gar" href="https://pay.kiwify.com.br/otZkPSG?coupon=CODIGO10">
+        Começar com risco zero
+      </a>
+
+      <a class="btn-gar btn-ghost" href="#faq">
+        Ver perguntas frequentes
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="faq" aria-label="Perguntas frequentes">
+  <h2>Perguntas Frequentes</h2>
+  <p class="faq-sub">
+    Se ainda ficou alguma dúvida antes de começar a Jornada, leia com calma
+    as perguntas abaixo. Elas existem para te deixar em paz com a sua decisão.
+  </p>
+  <div class="subline" aria-hidden="true"></div>
+
+  <div class="faq-list">
+    <!-- 1 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p1" id="h1">
+        <span class="ico" aria-hidden="true">✨</span>
+        <span>O que eu realmente vou conseguir enxergar depois deste curso?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p1" role="region" aria-labelledby="h1" hidden>
+        <div class="acc-inner">
+          <p>
+            Um <strong>mapa vivo da sua alma</strong> — camadas, zonas e raízes que antes estavam ocultas.
+            Você identifica suas <strong>vibrações dominantes</strong>, entende seus <strong>ciclos</strong> e
+            aprende a agir com <strong>consciência</strong> sobre dons e feridas.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p2" id="h2">
+        <span class="ico" aria-hidden="true">📚</span>
+        <span>O que exatamente está incluído no Canva Espiritual?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p2" role="region" aria-labelledby="h2" hidden>
+        <div class="acc-inner">
+          <p>
+            Uma jornada completa com <strong>6 Chaves</strong> (etapas) que te guiam de <em>ver</em> →
+            <em>governar</em> → <em>transmutar</em>, com cerca de <strong>40 Selos audiovisuais</strong>
+            (de 3 a 8 minutos; máx. 10 min) e materiais premium que acompanham a prática.
+          </p>
+          <ul>
+            <li><strong>Chave 1</strong> — Autodiagnóstico (Espelho &amp; Escalas)</li>
+            <li><strong>Chave 2</strong> — Autogoverno (Leis &amp; Mapa Espiritual)</li>
+            <li><strong>Chave 3</strong> — Autoproteção (Combinações internas)</li>
+            <li><strong>Chave 4</strong> — Transmutação &amp; Blindagem (rotina de 3–8 min)</li>
+            <li><strong>Chave 5</strong> — Deserto Interior</li>
+            <li><strong>Chave 6</strong> — Cosmovisão &amp; Missão</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p3" id="h3">
+        <span class="ico" aria-hidden="true">🧾</span>
+        <span>O que eu recebo além das aulas em vídeo?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p3" role="region" aria-labelledby="h3" hidden>
+        <div class="acc-inner">
+          <p>
+            Você recebe <strong>3 e-books prioritários</strong>: o Guia de 70 páginas, o Mapa da Alma e
+            o Mapa Espiritual (12 pares). Além disso, para cada aula há roteiros de meditação,
+            tabelas prânicas, checklists, áudios de ambiente e planilhas extras.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p4" id="h4">
+        <span class="ico" aria-hidden="true">🔁</span>
+        <span>Por quanto tempo terei acesso?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p4" role="region" aria-labelledby="h4" hidden>
+        <div class="acc-inner">
+          <p>
+            Você terá <strong>12 meses</strong> de acesso total. É um <em>altar digital</em>:
+            volte sempre que precisar se realinhar.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p5" id="h5">
+        <span class="ico" aria-hidden="true">📱</span>
+        <span>Posso estudar pelo celular?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p5" role="region" aria-labelledby="h5" hidden>
+        <div class="acc-inner">
+          <p>
+            Sim. Tudo é <strong>mobile-first</strong>, leve e pensado para sessões de 3–8 minutos.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p6" id="h6">
+        <span class="ico" aria-hidden="true">🧭</span>
+        <span>Qual é o ritmo recomendado?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p6" role="region" aria-labelledby="h6" hidden>
+        <div class="acc-inner">
+          <p>
+            <strong>Degraus curtos:</strong> 3–8 minutos de manhã • 3–8 minutos no meio do dia •
+            3–8 minutos à noite; 1–2 Selos por dia; ciclos de <strong>7 / 21 / 40</strong> dias.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p7" id="h7">
+        <span class="ico" aria-hidden="true">🌈</span>
+        <span>Serve para qualquer fé?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p7" role="region" aria-labelledby="h7" hidden>
+        <div class="acc-inner">
+          <p>
+            Sim. Honramos tradições que buscam <strong>verdade, luz e o bem</strong>.
+            Não impomos doutrina — compartilhamos <strong>leis universais</strong>.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p8" id="h8">
+        <span class="ico" aria-hidden="true">❓</span>
+        <span>Preciso acreditar em algo específico?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p8" role="region" aria-labelledby="h8" hidden>
+        <div class="acc-inner">
+          <p>
+            Não. Você só precisa <strong>praticar</strong> e observar a própria experiência.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p9" id="h9">
+        <span class="ico" aria-hidden="true">🛡️</span>
+        <span>E se eu cair no meio do caminho?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p9" role="region" aria-labelledby="h9" hidden>
+        <div class="acc-inner">
+          <p>
+            Faz parte de ser humano. Você terá <strong>protocolos de retomada</strong> (7 / 21 / 40 dias) —
+            sem culpa, com direção.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 10 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p10" id="h10">
+        <span class="ico" aria-hidden="true">🧠</span>
+        <span>Isso é terapia? Substitui tratamento médico?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p10" role="region" aria-labelledby="h10" hidden>
+        <div class="acc-inner">
+          <p>
+            <strong>Não.</strong> Este é um método educacional e espiritual. Se você já está em tratamento,
+            <strong>siga a orientação do seu profissional</strong>. Em caso de crise, procure ajuda especializada.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p11" id="h11">
+        <span class="ico" aria-hidden="true">💳</span>
+        <span>Como posso pagar?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p11" role="region" aria-labelledby="h11" hidden>
+        <div class="acc-inner">
+          <p>
+            Pelo checkout, usando <strong>cartão de crédito</strong>, <strong>Pix</strong> ou outras
+            opções oferecidas pela plataforma. O acesso é <strong>imediato</strong> após a confirmação.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 12 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p12" id="h12">
+        <span class="ico" aria-hidden="true">💸</span>
+        <span>E se eu não gostar? Posso pedir reembolso?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p12" role="region" aria-labelledby="h12" hidden>
+        <div class="acc-inner">
+          <p>
+            Sim. Você tem uma <strong>garantia incondicional de 7 dias</strong>. O pedido é feito
+            diretamente pela plataforma — simples, sem necessidade de justificar.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 13 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p13" id="h13">
+        <span class="ico" aria-hidden="true">💠</span>
+        <span>O preço pode mudar no futuro?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p13" role="region" aria-labelledby="h13" hidden>
+        <div class="acc-inner">
+          <p>
+            Sim — esta é uma <strong>condição de lançamento</strong>. À medida que novos materiais forem
+            adicionados, o valor poderá ser ajustado nos próximos lotes. Você mantém para sempre as
+            condições da sua compra.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 14 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p14" id="h14">
+        <span class="ico" aria-hidden="true">🎯</span>
+        <span>Para quem é — e para quem não é?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p14" role="region" aria-labelledby="h14" hidden>
+        <div class="acc-inner">
+          <p>
+            <strong>É para quem</strong> está disposto a praticar de forma leve e consistente.
+            <strong>Não é para quem</strong> busca uma pílula mágica sem dedicação diária.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 15 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p15" id="h15">
+        <span class="ico" aria-hidden="true">📜</span>
+        <span>Vou receber certificado ao concluir?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p15" role="region" aria-labelledby="h15" hidden>
+        <div class="acc-inner">
+          <p>
+            Sim. Você recebe um <strong>certificado digital</strong> ao final da jornada, assim que
+            concluir os Selos essenciais (as instruções aparecem dentro da plataforma).
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 16 -->
+    <article class="acc">
+      <button class="acc-head" aria-expanded="false" aria-controls="p16" id="h16">
+        <span class="ico" aria-hidden="true">🎁</span>
+        <span>Posso presentear alguém com a Jornada?</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="acc-panel" id="p16" role="region" aria-labelledby="h16" hidden>
+        <div class="acc-inner">
+          <p>
+            Sim — e com vantagem. No meio do curso há uma <strong>aula-surpresa</strong> com um
+            <strong>link de desconto</strong> para você presentear alguém importante.
+          </p>
+          <p class="muted">
+            *Válido para compras individuais; detalhes sobre o cupom e a validade são explicados nessa aula.
+          </p>
+        </div>
+      </div>
+    </article>
+  </div>
+  </section>
+
+</div> <!-- fecha o #course-offer -->
+
+
+  
+
+  
   <script>
     const sessionId = new URLSearchParams(window.location.search).get("session_id");
 
@@ -403,9 +2193,10 @@ fbq('track', 'PageView');
           
           setTimeout(() => {
           botaoCurso.style.display = 'inline-block';
-          const blocoFAQ = document.getElementById('faq-curso');
-          if (blocoFAQ) blocoFAQ.style.display = 'block';
-           }, 30000);
+          const blocoOferta = document.getElementById('course-offer');
+          if (blocoOferta) blocoOferta.style.display = 'block';
+
+           }, 1000);
 
         }
       }, 1000);
@@ -414,5 +2205,106 @@ fbq('track', 'PageView');
     carregarInfo();
     verificarStatus();
   </script>
+   <script>
+  // Reveal simples só para o bloco #chaves (reaproveita .reveal .in)
+  (function(){
+    const sec = document.getElementById('chaves');
+    if(!sec) return;
+    const io = new IntersectionObserver((entries, obs)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          sec.querySelectorAll('.reveal').forEach(el=> el.classList.add('in'));
+          obs.disconnect();
+        }
+      });
+    }, { threshold: .18 });
+    io.observe(sec);
+  })();
+
+  // Modais Keys & Seals
+  (function(){
+    const body = document.body;
+    const openButtons  = document.querySelectorAll('[data-modal-open]');
+    const closeButtons = document.querySelectorAll('[data-modal-close]');
+    const modals       = document.querySelectorAll('.modal');
+
+    function openModal(el){
+      el.classList.add('open');
+      el.setAttribute('aria-hidden','false');
+      body.style.overflow='hidden';
+    }
+    function closeModal(el){
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden','true');
+      body.style.overflow='';
+    }
+
+    openButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-modal-open');
+        const modal = document.querySelector(id);
+        if(modal) openModal(modal);
+      });
+    });
+
+    closeButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const modal = btn.closest('.modal');
+        if(modal) closeModal(modal);
+      });
+    });
+
+    modals.forEach(m=>{
+      m.addEventListener('click', (e)=>{
+        if(e.target === m) closeModal(m);
+      });
+    });
+
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        document.querySelectorAll('.modal.open').forEach(m=> closeModal(m));
+      }
+    });
+  })();
+  
+</script>
+<script>
+  // FAQ accordion (sanfona)
+  (function(){
+    const faq = document.getElementById('faq');
+    if(!faq) return;
+
+    const buttons = faq.querySelectorAll('.acc-head');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const panelId = btn.getAttribute('aria-controls');
+        const panel = document.getElementById(panelId);
+        const acc = btn.closest('.acc');
+
+        if (!panel || !acc) return;
+
+        // fecha todos
+        buttons.forEach((otherBtn) => {
+          const otherPanelId = otherBtn.getAttribute('aria-controls');
+          const otherPanel = document.getElementById(otherPanelId);
+          const otherAcc = otherBtn.closest('.acc');
+
+          if (otherPanel) otherPanel.hidden = true;
+          if (otherAcc)  otherAcc.classList.remove('open');
+          otherBtn.setAttribute('aria-expanded','false');
+        });
+
+        // se estava fechado, abre o clicado
+        if (!isExpanded) {
+          btn.setAttribute('aria-expanded','true');
+          panel.hidden = false;
+          acc.classList.add('open');
+        }
+      });
+    });
+  })();
+</script>
 </body>
 </html>

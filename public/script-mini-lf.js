@@ -660,7 +660,7 @@ const formularioHTML = `
     <input type="email" id="email" placeholder="Seu e-mail" class="w-full p-3 border border-gray-300 rounded" />
 
     <!-- NOVO: WhatsApp -->
-    <label for="telefone" class="text-sm text-gray-700">WhatsApp (com DDD)  </label>
+    <label for="telefone" class="text-sm text-gray-700">WhatsApp (com DDD) OPCIONAL </label>
     <input type="tel" id="telefone" placeholder="(00) 00000-0000"
            class="w-full p-3 border border-gray-300 rounded" inputmode="numeric" autocomplete="tel" />
 
