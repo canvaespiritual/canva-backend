@@ -30,6 +30,55 @@
     }
     .btn[disabled]{opacity:.6;cursor:not-allowed}
   </style>
+    <script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '734281049586138');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Evento desta página: Lead (chegou ao checkout) -->
+<script>
+  fbq('track', 'Lead', {
+    content_name: 'Checkout - Quiz',
+    content_category: 'quiz_checkout'
+  });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Configura o GA4 com seu ID
+  gtag('config', 'G-9QDEN04CQM');
+  // Config Google Ads
+  gtag('config', 'AW-936695843');
+
+  // Conversão: Lead Quiz
+  gtag('event', 'conversion', {
+    'send_to': 'AW-936695843/rusXCK68ipcbEKOw074D'
+  });
+</script>
+
+
+  <script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "tg0bonz3au");
+</script>
 </head>
 <body>
   <main class="wrap">
@@ -70,7 +119,7 @@
 
       <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:8px">
         <label for="valorSolidario" style="color:#f5f5f5;font:600 14px system-ui">Amount:</label>
-        <input id="valorSolidario" type="number" min="10" max="500" step="1" value="10" inputmode="numeric"
+        <input id="valorSolidario" type="number" min="1" max="500" step="1" value="1" inputmode="numeric"
                style="width:120px;text-align:center;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;font:700 16px system-ui">
       </div>
 
@@ -117,8 +166,8 @@
     
 
     // Gate (seconds of watched/started)
-    const UNLOCK_CONTRIB_SECONDS = 20;
-    const UNLOCK_REPORT_SECONDS  = 10;
+    const UNLOCK_CONTRIB_SECONDS = 5;
+    const UNLOCK_REPORT_SECONDS  = 4;
     const STORAGE_KEY = 'vsl_unlocked_en_v1';
     const STORAGE_KEY_LOCAL = 'vsl_unlocked_en_v1_local';
 
@@ -187,7 +236,7 @@
     }
 
     // ===== contribution logic + tiers/impact =====
-    const MIN = 10, MAX = 500;
+    const MIN = 1, MAX = 500;
     const input = document.getElementById('valorSolidario');
     const btn   = document.getElementById('solidarioBtn');
     const chips = [...document.querySelectorAll('#solidario .chip')];
@@ -256,7 +305,7 @@
       const clamped = clamp(input.value ?? '');
       const amount  = clamped ?? MIN;
      async function goStripeCheckout() {
-  const amount = Math.max(10, Number(input.value || 10));
+  const amount = Math.max(MIN, Number(input.value || MIN));
   const body = {
     session_id,
     amount,

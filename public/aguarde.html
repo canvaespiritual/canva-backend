@@ -954,6 +954,13 @@
 }
 
 </style>
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "tg0bonz3au");
+</script>
   <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -973,14 +980,7 @@ fbq('track', 'PageView');
 </noscript>
 <!-- End Meta Pixel Code -->
 <!-- Meta: Purchase (sem valor) -->
-<script>
-  if (typeof fbq === 'function') {
-    fbq('track', 'Purchase', {
-      content_name: 'Mapa da Alma - Compra',
-      content_category: 'sale'
-    });
-  }
-</script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
 <script>
@@ -993,29 +993,10 @@ fbq('track', 'PageView');
    // Google Ads (ID base) – adicione se ainda não tiver nesta página
   gtag('config', 'AW-936695843');
 
-  // Google Ads: Compra Quiz (Purchase)
-  gtag('event', 'conversion', {
-    'send_to': 'AW-936695843/wYdYCJmK-pYbEKOw074D',
-    // opcional, se quiser rastrear um ID único:
-    'transaction_id': (localStorage.getItem('session_id') || '') + '-' + Date.now()
-    // opcional: se quiser enviar valor, inclua:
-    // 'value': 0, 'currency': 'BRL'
-  });
+  
 </script>
 
-<script>
-  gtag('event', 'purchase', {
-    transaction_id: (localStorage.getItem('session_id') || 'sessao') + '-' + Date.now(),
-    currency: 'BRL',
-    value: 0, // se não tiver valor real, pode deixar 0
-    items: [{
-      item_id: 'diagnostico',
-      item_name: 'Diagnóstico Mapa da Alma',
-      item_category: 'diagnostico',
-      quantity: 1
-    }]
-  });
-</script>
+
 <script type="text/javascript">
   var s=document.createElement("script");
   s.src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js";
@@ -2121,6 +2102,45 @@ fbq('track', 'PageView');
         `;
 
         document.getElementById('email').value = data.email || '';
+        // 🔥 Rastrear compra dinâmica no Meta e Google
+try {
+  const valor = Number(data.contribuicao || data.valor || data.price || 0);
+
+  if (valor > 0) {
+
+    // Pixel Meta – Purchase com valor dinâmico
+    fbq('track', 'Purchase', {
+      value: valor,
+      currency: 'BRL'
+    });
+
+    // GA4 – purchase com valor real
+    gtag('event', 'purchase', {
+      transaction_id: sessionId,
+      value: valor,
+      currency: 'BRL',
+      items: [{
+        item_id: 'diagnostico-mapa',
+        item_name: 'Diagnóstico Mapa da Alma',
+        quantity: 1
+      }]
+    });
+
+    // Google Ads – Conversion (opcional)
+    gtag('event', 'conversion', {
+      send_to: 'AW-936695843/wYdYCJmK-pYbEKOw074D',
+      value: valor,
+      currency: 'BRL',
+      transaction_id: sessionId
+    });
+
+  } else {
+    console.warn("⚠️ Valor da contribuição não encontrado no /info.");
+  }
+} catch (e) {
+  console.error("Erro ao enviar valor para Meta/Google:", e);
+}
+
       } catch (err) {
         console.error('Erro ao carregar dados do usuário:', err);
       }
@@ -2196,7 +2216,7 @@ fbq('track', 'PageView');
           const blocoOferta = document.getElementById('course-offer');
           if (blocoOferta) blocoOferta.style.display = 'block';
 
-           }, 1000);
+           }, 90000);
 
         }
       }, 1000);

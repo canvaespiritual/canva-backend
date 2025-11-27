@@ -30,7 +30,92 @@
       box-shadow:0 12px 28px rgba(22,163,74,.25);
     }
     .btn[disabled]{ opacity:.6; cursor:not-allowed }
+    /* Desktop: reduz um pouco a “altura” do quadro do vídeo
+   sem mexer em nada no mobile */
+@media (min-width: 1024px) {
+  .ratio {
+    padding-top: 120%; /* antes era ~177% -> abismo gigante */
+  }
+}
+/* ==== Ajuste REAL do player para DESKTOP ==== */
+@media (min-width: 1024px) {
+  /* limita a coluna do vídeo */
+  .player-box {
+    max-height: 650px; /* você pode ajustar: 580, 600, 680... */
+    margin-bottom: 0;
+  }
+
+  /* reduz o espaço vertical preto */
+  .ratio {
+    padding-top: 90% !important;  /* antes 177% → agora ENCOLHE */
+  }
+
+  /* garante que o bloco "solidário" suba */
+  #solidario {
+    margin-top: 20px !important;
+  }
+}
+
   </style>
+  <script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '734281049586138');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Evento desta página: Lead (chegou ao checkout) -->
+<script>
+  fbq('track', 'Lead', {
+    content_name: 'Checkout - Quiz',
+    content_category: 'quiz_checkout'
+  });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  // Configura o GA4 com seu ID
+  gtag('config', 'G-9QDEN04CQM');
+  // Config Google Ads
+  gtag('config', 'AW-936695843');
+
+  // Conversão: Lead Quiz
+  gtag('event', 'conversion', {
+    'send_to': 'AW-936695843/rusXCK68ipcbEKOw074D'
+  });
+</script>
+
+<script>
+  gtag('event', 'begin_checkout', {
+    currency: 'BRL',
+    value: 0,
+    items: [{
+      item_id: 'quiz_plan',
+      item_name: 'Escolha Diagnóstico',
+      item_category: 'checkout'
+    }]
+  });
+</script>
+  <script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "tg0bonz3au");
+</script>
 </head>
 <body>
   <main class="wrap">
@@ -79,9 +164,21 @@
       </p>
     </section>
         <!-- BLOCO: O QUE VAI NO RELATÓRIO -->
-    <section id="receiveBlock" class="card hidden" style="max-width:720px;margin:22px auto 0">
+         
+  
+ 
+    <section id="receiveBlock" class="card hidden" 
+    
+    style="max-width:720px;margin:22px auto 0">
+    <p id="fraseLiberacao" class="hidden"
+   style="max-width:720px;margin:16px auto 0;text-align:center;
+          font-size:15px;color:#eab308;font-weight:600;">
+  Assim que concluir essa explicação, o botão para baixar seu relatório vai aparecer aqui acima.
+</p>
+
       <h3 style="margin:0 0 10px;font:800 18px/1.2 system-ui">Você vai receber</h3>
       <ul style="margin:0 0 8px 18px;line-height:1.55">
+        
         <li>🧭 Diagnóstico Corpo–Mente–Espírito</li>
         <li>🌈 Para quem busca alinhar essência, saúde e propósito.</li>
         <li>✔️ Espelho da alma (12 espelhos principais)</li>
@@ -105,6 +202,19 @@
   </main>
 
   <script>
+    
+  // ==== SILENCIAR QUALQUER ÁUDIO AMBIENTE HERDADO (ex: do quiz) ====
+  (function stopAmbientAudio() {
+    try {
+      const musica = document.getElementById('musicaAmbiente');
+      if (musica) {
+        musica.pause();
+        musica.currentTime = 0;
+      }
+    } catch (e) {
+      console.warn('Não foi possível parar o áudio ambiente:', e);
+    }
+  })();
   /* =================== CONFIG =================== */
     /* =================== CONFIG =================== */
   const VTURB_ACCOUNT_ID = 'ab0d5dbd-353e-4147-a5c6-52ab96121828';
@@ -114,8 +224,8 @@
 
   // Gate de destrave por tempo (em segundos)
   // 9 minutos e 20 segundos → 9*60 + 20 = 621
-  const UNLOCK_CONTRIB_SECONDS = 621;   // quando aparece o bloco solidário
-  const UNLOCK_REPORT_SECONDS  = 600;   // quando aparece o bloco "Você vai receber"
+  const UNLOCK_CONTRIB_SECONDS = 620;   // quando aparece o bloco solidário
+  const UNLOCK_REPORT_SECONDS  = 604;   // quando aparece o bloco "Você vai receber"
 
   // Persistência entre visitas (remarketing)
   const STORAGE_KEY       = 'vsl_unlocked_pt_v1';
@@ -143,36 +253,67 @@
     document.head.appendChild(s);
   })();
     // =================== GATE POR TEMPO (VTURB) ===================
+    // =================== GATE POR TEMPO (VTURB) ===================
   (function gateByTime(){
     const contribBlock = document.getElementById('solidario');
     const receiveBlock = document.getElementById('receiveBlock');
     if (!contribBlock || !receiveBlock) return;
 
     // Se já liberou em alguma visita anterior, destrava tudo na hora
-    if (
-      sessionStorage.getItem(STORAGE_KEY) === '1' ||
-      localStorage.getItem(STORAGE_KEY_LOCAL) === '1'
-    ) {
-      contribBlock.classList.remove('hidden');
-      receiveBlock.classList.remove('hidden');
-      return;
+   // Se já liberou em alguma visita anterior, destrava tudo na hora
+if (
+  sessionStorage.getItem(STORAGE_KEY) === '1' ||
+  localStorage.getItem(STORAGE_KEY_LOCAL) === '1'
+) {
+  contribBlock.classList.remove('hidden');
+  receiveBlock.classList.remove('hidden');
+
+  const frase = document.getElementById('fraseLiberacao');
+  if (frase) frase.classList.remove('hidden');
+
+  return;
+}
+
+
+    let started       = false;
+    let seconds       = 0;
+    let timer         = null;
+    let contribShown  = false;
+    let reportShown   = false;
+
+    function salvarDestravado() {
+      sessionStorage.setItem(STORAGE_KEY, '1');
+      localStorage.setItem(STORAGE_KEY_LOCAL, '1');
     }
 
-    let started = false;
-    let seconds = 0;
-    let timer   = null;
+    function tentarPararTimer() {
+      if (contribShown && reportShown && timer) {
+        salvarDestravado();
+        clearInterval(timer);
+        timer = null;
+      }
+    }
 
     function tick(){
       seconds++;
-      if (seconds >= UNLOCK_CONTRIB_SECONDS) {
+
+      if (!contribShown && seconds >= UNLOCK_CONTRIB_SECONDS) {
         contribBlock.classList.remove('hidden');
+        contribShown = true;
+        tentarPararTimer();
       }
-      if (seconds >= UNLOCK_REPORT_SECONDS) {
-        receiveBlock.classList.remove('hidden');
-        sessionStorage.setItem(STORAGE_KEY, '1');
-        localStorage.setItem(STORAGE_KEY_LOCAL, '1');
-        clearInterval(timer);
-      }
+
+      if (!reportShown && seconds >= UNLOCK_REPORT_SECONDS) {
+  receiveBlock.classList.remove('hidden');
+  reportShown = true;
+
+  // ➜ mostrar frase quando liberar o bloco
+  const frase = document.getElementById('fraseLiberacao');
+  if (frase) frase.classList.remove('hidden');
+
+  tentarPararTimer();
+}
+
     }
 
     function startCount(){
@@ -184,6 +325,7 @@
     // Inicia o contador assim que a página carrega
     startCount();
   })();
+
 
   // =================== BLOCO SOLIDÁRIO JS ===================
   (function(){

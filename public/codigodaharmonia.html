@@ -61,8 +61,8 @@ fbq('track', 'ViewContent', {
 <!-- ===== Retenção por marcos (Meta + GA4; Ads opcional) ===== -->
 <script>
 (function(){
-  var VIDEO_ID = window.VIDEO_ID || '69050dfc21067174bb51c90b';
-  var REVEAL_AT_SECONDS = window.REVEAL_AT_SECONDS || 1817; // 30:17
+  var VIDEO_ID = window.VIDEO_ID || '6921af18929a71f0a170c388';
+  var REVEAL_AT_SECONDS = window.REVEAL_AT_SECONDS || 1670; // 30:17
   var WATCH_MARKS = window.WATCH_MARKS || [30, 90, 180, 360, 800, REVEAL_AT_SECONDS];
 
   var firedMarksKey = 'vturb_marks_fired_' + VIDEO_ID;
@@ -167,7 +167,113 @@ fbq('track', 'ViewContent', {
     .modal .error{color:#fca5a5;font-size:13px;margin-top:6px;display:none}
     .close-x{position:absolute;right:10px;top:10px;background:transparent;border:0;color:#a9a29d;font-size:20px;cursor:pointer}
     .show{display:flex}
+      /* ===== FAQ ===== */
+    .faq-area{
+      margin-top:28px;
+      text-align:left;
+    }
+    .faq-area h3{
+      margin:0 0 12px;
+      font-size:20px;
+      font-weight:700;
+    }
+    .faq-area details{
+      border:1px solid #27231f;
+      border-radius:999px;
+      padding:10px 16px;
+      margin-bottom:10px;
+      background:#14110f;
+    }
+    .faq-area summary{
+      list-style:none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:14px;
+      font-weight:500;
+    }
+    .faq-area summary::-webkit-details-marker{display:none}
+    .faq-area details[open]{
+      border-radius:16px;
+    }
+    .faq-area details[open] summary{
+      margin-bottom:8px;
+    }
+    .faq-area p{
+      margin:0 0 6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+.beneficios-section {
+  margin-top: 32px;
+  padding: 20px;
+  background: #0c0a09;
+  border-radius: 14px;
+  border: 1px solid #1f1c19;
+}
+
+.beneficios-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #eab308;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.beneficios-wrap {
+  width: 100%;
+  overflow-x: auto;      /* 👉 no mobile, tabela rola pro lado */
+}
+
+.beneficios-table {
+  width: 100%;
+  min-width: 720px;      /* garante 4 colunas legíveis */
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.beneficios-table th {
+  color: #e7e5e4;
+  padding: 12px 6px;
+  border-bottom: 1px solid #2f2b27;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.beneficios-table td {
+  padding: 12px 6px;
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+/* Linhas alternadas */
+.beneficios-table tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Cores das colunas */
+.col-eixo {
+  color: #eab308; /* dourado */
+  font-weight: 700;
+}
+
+.col-antes {
+  color: #f87171; /* vermelho claro */
+}
+
+.col-depois {
+  color: #60a5fa; /* azul leve */
+}
+
+.col-identidade {
+  color: #e7e5e4;
+  font-weight: 700;
+}
+
   </style>
+
 </head>
 <body>
   <header class="wrap center">
@@ -181,10 +287,10 @@ fbq('track', 'ViewContent', {
       <div class="ratio"></div>
       <div class="player-abs">
         <!-- Embed novo colado do painel -->
-        <vturb-smartplayer id="vid-69050dfc21067174bb51c90b" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+        <vturb-smartplayer id="vid-6921af18929a71f0a170c388" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
 <script type="text/javascript">
   var s=document.createElement("script");
-  s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/69050dfc21067174bb51c90b/v4/player.js",
+  s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/6921af18929a71f0a170c388/v4/player.js",
   s.async=!0,document.head.appendChild(s);
 </script>
 
@@ -196,6 +302,185 @@ fbq('track', 'ViewContent', {
       <button id="cta" class="btn">QUERO ATRAVESSAR O INVISÍVEL DA MINHA ALMA</button>
     </section>
     <p class="hint" id="timerHint"></p>
+<section id="faqArea" class="card faq-area hidden">
+      <h3>Perguntas que sua alma faria agora:</h3>
+
+      <details>
+        <summary>💡 O que realmente serei capaz de enxergar após este curso?</summary>
+        <p>Você vai aprender a ler seus estados internos com clareza, entender em qual zona emocional está (virtuosa, neutra ou degradante) e enxergar os ciclos invisíveis que drenam sua energia. Em vez de só sentir ansiedade, irritação ou desânimo, você passa a mapear, nomear e transmutar essas emoções de forma consciente.</p>
+      </details>
+
+      <details>
+        <summary>📚 O que exatamente compõe a Engenharia da Consciência?</summary>
+        <p>Você recebe um passo a passo completo de Reconstrução Emocional Simplificada, com módulos sobre Autodiagnóstico, Autogoverno, Autoblindagem e o Deserto. Além das aulas, há mapas, exercícios práticos e espelhos da alma para aplicar tudo na vida real.</p>
+      </details>
+
+      <details>
+        <summary>🎁 O que eu recebo além das aulas principais?</summary>
+        <p>Você acessa bônus como Cosmovisão Viva, o Cofre da Travessia, o Mapa da Alma Interativo e Protocolos Guiados de Transmutação — material contínuo para aprofundar e manter sua clareza emocional.</p>
+      </details>
+
+      <details>
+        <summary>🎯 Para quem é — e para quem não é?</summary>
+        <p>É para quem sente que já tentou de tudo e ainda vive em ciclos de ansiedade, culpa e recaída. Não é para quem procura fórmula mágica ou não está disposto a olhar honestamente para dentro.</p>
+      </details>
+
+      <details>
+        <summary>🙏 Serve para qualquer fé? Preciso acreditar em algo específico?</summary>
+        <p>Sim. O método é espiritual, mas não doutrinário. Ele organiza as emoções com base em leis simples e prática diária. Você vive isso dentro da sua própria caminhada espiritual, com ou sem religião.</p>
+      </details>
+
+      <details>
+        <summary>🧠 É terapia? Substitui tratamento médico ou psicológico?</summary>
+        <p>Não. É um método de autoconhecimento e reprogramação emocional que pode complementar terapias ou acompanhamentos médicos, mas não os substitui.</p>
+      </details>
+
+      <details>
+        <summary>😰 Isso ajuda em estresse, ansiedade, foco ou desequilíbrio emocional?</summary>
+        <p>Sim. O método trabalha na origem emocional desses estados, ensinando a identificar gatilhos, reorganizar pensamentos e transmutar emoções em tempo real.</p>
+      </details>
+
+      <details>
+        <summary>💼 Como isso me ajuda no trabalho ou no dinheiro?</summary>
+        <p>Toda prosperidade nasce de uma mente clara. Ao organizar suas emoções, você melhora foco, decisões, presença e poder de negociação — e isso se reflete diretamente em resultados profissionais e financeiros.</p>
+      </details>
+
+      <details>
+        <summary>🔁 E se eu cair no caminho ou voltar a antigos padrões?</summary>
+        <p>Recaídas fazem parte do processo. Aqui você aprende protocolos para voltar ao eixo: sabe em qual escala está, qual próximo passo dar e como se levantar mais rápido, com mais sabedoria.</p>
+      </details>
+
+      <details>
+        <summary>⏱ As aulas são longas? Qual é o ritmo recomendado? Consigo estudar no celular?</summary>
+        <p>As aulas são objetivas, pensadas para vidas corridas. Você pode assistir em blocos curtos, no celular, tablet ou computador — no seu ritmo, sem perder a profundidade.</p>
+      </details>
+
+      <details>
+        <summary>⌛ Por quanto tempo terei acesso?</summary>
+        <p>Você terá 12 meses de acesso completo ao conteúdo, às atualizações e aos bônus já liberados, podendo rever as aulas e refazer exercícios sempre que quiser.</p>
+      </details>
+
+      <details>
+        <summary>💳 Como posso pagar?</summary>
+        <p>O pagamento é feito pela Kiwify, uma plataforma segura. Você pode pagar com cartão de crédito, PIX ou boleto. Assim que o pagamento é confirmado, o acesso é liberado automaticamente.</p>
+      </details>
+
+      <details>
+        <summary>💸 E se eu não gostar? Posso pedir reembolso?</summary>
+        <p>Sim. Você tem 7 dias de garantia incondicional. Se não for o seu momento, basta solicitar o reembolso e o valor é devolvido integralmente.</p>
+      </details>
+
+      <details>
+        <summary>💠 O preço pode mudar?</summary>
+        <p>Sim. O valor atual é especial para quem entra nesta fase inicial. Com novos módulos e bônus, o preço tende a subir com o tempo.</p>
+      </details>
+
+      <details>
+        <summary>🎁 Posso presentear alguém com o acesso?</summary>
+        <p>Pode. Você pode comprar usando o e-mail da pessoa presenteada ou falar com o suporte após a compra para ajustar os dados de acesso.</p>
+      </details>
+
+      <details>
+        <summary>📜 Receberei certificado ao concluir?</summary>
+        <p>Sim, você poderá emitir um certificado digital de conclusão para registrar suas horas de estudo e desenvolvimento emocional.</p>
+      </details>
+
+      <details>
+        <summary>📬 Como falo com vocês se tiver dúvida ou problema de acesso?</summary>
+        <p>Você pode nos contatar pelo e-mail de suporte informado no checkout. O tempo médio de resposta é de 24 a 48 horas úteis.</p>
+      </details>
+    </section>
+  
+
+<section class="beneficios-section">
+  <h3 class="beneficios-title">Por que a alfabetização emocional muda tudo na sua vida</h3>
+
+  <div class="beneficios-wrap">
+    <table class="beneficios-table">
+      <thead>
+        <tr>
+          <th>Eixo</th>
+          <th>Antes</th>
+          <th>Depois</th>
+          <th>Quem você se torna</th>
+        </tr>
+      </thead>
+      
+    <tbody>
+  <tr>
+    <td class="col-eixo">🕊️ Ansiedade → Clareza</td>
+    <td class="col-antes">Mente acelerada, medo do futuro.</td>
+    <td class="col-depois">Decisões firmes e tranquilas.</td>
+    <td class="col-identidade">O porto seguro da própria vida.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">👁️ Emoções → Leitura da alma</td>
+    <td class="col-antes">Reage ao caos dos outros.</td>
+    <td class="col-depois">Entende a alma por trás do comportamento.</td>
+    <td class="col-identidade">Referência emocional da família.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🌿 Recaídas → Estabilidade</td>
+    <td class="col-antes">Ciclos de ansiedade, culpa e fuga.</td>
+    <td class="col-depois">Percebe a queda e corrige rápido.</td>
+    <td class="col-identidade">Constante, previsível, confiável.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🔥 Foco → Prosperidade</td>
+    <td class="col-antes">Dispersão, tarefas pela metade.</td>
+    <td class="col-depois">Foco natural no que importa.</td>
+    <td class="col-identidade">A pessoa mais valiosa da equipe.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🛡️ Limites → Respeito</td>
+    <td class="col-antes">Diz “sim” pra tudo, vive exausto.</td>
+    <td class="col-depois">Limites firmes, energia preservada.</td>
+    <td class="col-identidade">Admirado e respeitado.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">⚡ Tóxicos → Blindagem</td>
+    <td class="col-antes">Cai em manipulações e drenos.</td>
+    <td class="col-depois">Detecta vibração tóxica à distância.</td>
+    <td class="col-identidade">Inacessível para manipuladores.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🌙 Hábitos → Identidade</td>
+    <td class="col-antes">Tenta mudar na força de vontade.</td>
+    <td class="col-depois">Muda a vibração; o comportamento segue.</td>
+    <td class="col-identidade">Uma nova pessoa.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">💡 Aprendizado → Velocidade</td>
+    <td class="col-antes">Mente pesada, dificuldade de absorver.</td>
+    <td class="col-depois">Mente leve, absorção rápida.</td>
+    <td class="col-identidade">Aprende em dias o que outros levam meses.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">✨ Paz → Presença</td>
+    <td class="col-antes">Insegurança, comparação.</td>
+    <td class="col-depois">Presença firme, olhar seguro.</td>
+    <td class="col-identidade">Alguém que é sentido quando entra.</td>
+  </tr>
+
+  <tr>
+    <td class="col-eixo">🌞 Domínio → Prosperidade integral</td>
+    <td class="col-antes">Finanças e escolhas oscilando com humor.</td>
+    <td class="col-depois">Coerência e constância.</td>
+    <td class="col-identidade">Senhor do próprio destino.</td>
+  </tr>
+</tbody>
+
+    </table>
+  </div>
+</section>
 
     <!-- BIO -->
     <section id="bio" class="card bio center">
@@ -211,6 +496,8 @@ fbq('track', 'ViewContent', {
 
     <div class="footer">© Canva Espiritual — Engenharia da Consciência </div>
   </main>
+    <!-- FAQ (aparece junto com o botão, começa escondida) -->
+    
 
   <!-- ===== MODAL / POPUP ===== -->
   <div id="checkoutModal" class="modal-overlay" aria-hidden="true">
@@ -244,8 +531,8 @@ fbq('track', 'ViewContent', {
 
   <script>
     /* ====== CONFIG GERAL ====== */
-    const VIDEO_ID = '69050dfc21067174bb51c90b';
-    const REVEAL_AT_SECONDS = 1755; // 30:17 (timeline do vídeo)
+    const VIDEO_ID = '6921af18929a71f0a170c388';
+    const REVEAL_AT_SECONDS = 1674; // 30:17 (timeline do vídeo)
     const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
 
     /* ====== CONFIG KIWIFY ====== */
@@ -256,6 +543,8 @@ fbq('track', 'ViewContent', {
     const ctaBox   = document.getElementById('ctaBox');
     const ctaBtn   = document.getElementById('cta');
     const timerHint= document.getElementById('timerHint');
+    const faqArea  = document.getElementById('faqArea');
+
 
     const modal    = document.getElementById('checkoutModal');
     const openBtn  = ctaBtn; // CTA abre o modal
@@ -323,12 +612,16 @@ fbq('track', 'ViewContent', {
     });
 
     /* ====== DELAY DO CTA POR TEMPO DE VÍDEO ====== */
-    function showCTA(){
+       function showCTA(){
       if (ctaBox.classList.contains('hidden')){
         ctaBox.classList.remove('hidden');
         if (timerHint) timerHint.textContent = '';
       }
+      if (faqArea && faqArea.classList.contains('hidden')){
+        faqArea.classList.remove('hidden');
+      }
     }
+
     function saveProgress(sec){
       try { localStorage.setItem(STORAGE_KEY, String(Math.floor(sec))); } catch(e){}
     }
