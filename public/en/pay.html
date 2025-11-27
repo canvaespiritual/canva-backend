@@ -29,6 +29,23 @@
       box-shadow:0 12px 28px rgba(22,163,74,.25);
     }
     .btn[disabled]{opacity:.6;cursor:not-allowed}
+    @media (min-width: 1024px) {
+  /* limita a coluna do vídeo */
+  .player-box {
+    max-height: 650px; /* você pode ajustar: 580, 600, 680... */
+    margin-bottom: 0;
+  }
+
+  /* reduz o espaço vertical preto */
+  .ratio {
+    padding-top: 90% !important;  /* antes 177% → agora ENCOLHE */
+  }
+
+  /* garante que o bloco "solidário" suba */
+  #solidario {
+    margin-top: 20px !important;
+  }
+}
   </style>
     <script>
 !function(f,b,e,v,n,t,s)
