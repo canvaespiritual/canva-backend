@@ -326,7 +326,12 @@ function hideLoader() {
 }
 
   document.addEventListener("DOMContentLoaded", () => {
-      
+       // 🚀 Começa o quiz automaticamente na primeira pergunta
+  if (typeof quizStart === "function") {
+    quizStart();          // dispara seus eventos (Pixel, etc.)
+  }
+  mostrarPergunta(0);     // renderiza a PERGUNTA 1 direto
+
    setTimeout(() => {
   const audio = document.getElementById("musicaAmbiente");
   const botao = document.getElementById("botaoSom");

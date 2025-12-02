@@ -516,6 +516,11 @@ function renderForm(){
 document.addEventListener("DOMContentLoaded", async () => {
   // ⬇️ carregar descrições EN do backend
   await loadFruitDetails(LANG);
+   // 🚀 Começar o quiz automaticamente na primeira pergunta
+  if (typeof quizStart === "function") {
+    quizStart(); // mantém evento do Pixel + GA de "start_quiz"
+  }
+  showQuestion(0);
   // ambient sound (slight delay)
   setTimeout(() => {
     const audio = document.getElementById("musicaAmbiente");
