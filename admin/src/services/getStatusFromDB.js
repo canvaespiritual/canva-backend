@@ -39,7 +39,8 @@ module.exports = async function getStatusFromDB() {
       email_erro,
       email_entregue,
       email_aberto,
-      email_clicado
+      email_clicado,
+      telefone
     FROM diagnosticos
     ORDER BY criado_em DESC
   `;
@@ -70,7 +71,9 @@ module.exports = async function getStatusFromDB() {
       email_erro: row.email_erro || null,
       email_entregue: row.email_entregue || false,
       email_aberto: row.email_aberto || false,
-      email_clicado: row.email_clicado || false
+      email_clicado: row.email_clicado || false,
+      whatsapp: row.telefone || null
+
     };
   });
 };

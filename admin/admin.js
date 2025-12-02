@@ -61,13 +61,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const tipoSelecionado = filtroSelect.value;
     const statusSelecionado = filtroStatus.value;
 
-    return dadosBrutos.filter(item => {
+        return dadosBrutos.filter(item => {
       const nome = (item.nome || "").toLowerCase();
       const email = (item.email || "").toLowerCase();
+      const whatsapp = (item.whatsapp || "").toLowerCase();
       const tipo = item.tipo || "";
 
       const passaTipo = tipoSelecionado === "todos" || tipo === tipoSelecionado;
-      const passaBusca = nome.includes(termoBusca) || email.includes(termoBusca);
+      const passaBusca =
+        nome.includes(termoBusca) ||
+        email.includes(termoBusca) ||
+        whatsapp.includes(termoBusca);
+
 
       let passaStatus = true;
       if (statusSelecionado === "pronto") passaStatus = item.pronto;
@@ -78,6 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return passaTipo && passaBusca && passaStatus;
     });
+  }
+  function criarLinkWhatsapp(numero) {
+    if (!numero) return "—";
+
+    // remove tudo que não for dígito
+    const limpo = numero.toString().replace(/\D/g, "");
+    if (!limpo) return "—";
+
+    const url = `https://wa.me/${limpo}`; // abre WhatsApp Web ou app no celular
+    return `<a href="${url}" target="_blank">📱 ${numero}</a>`;
   }
 
   function renderizarTabela() {
@@ -114,28 +129,30 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (!botoes) botoes = "—";
 
-      linha.innerHTML = `
+            linha.innerHTML = `
         <td>${item.sessionId}</td>
         <td>${item.nome || "—"}</td>
         <td>${item.email || "—"}</td>
+        <td>${criarLinkWhatsapp(item.whatsapp)}</td>
         <td>${item.tipo || "—"}</td>
         <td ${alertaStyle}>${item.alerta}</td>
         <td>${item.minutosAguardando ? item.minutosAguardando + " min" : "—"}</td>
         <td>${formatarData(item.criado_em)}</td>
+        <td>${formatarData(item.data_confirmacao)}</td>
         <td>${
-  item.pdf_url
-    ? `<a href="${item.pdf_url}" target="_blank" style="color: green; font-weight: bold;">📄 Abrir</a>`
-    : "—"
-}</td>
-
+          item.pdf_url
+            ? `<a href="${item.pdf_url}" target="_blank" style="color: green; font-weight: bold;">📄 Abrir</a>`
+            : "—"
+        }</td>
         <td>${formatarData(item.dataGeracao)}</td>
         <td>${formatarData(item.email_enviado_em)}</td>
-         <td>${item.email_entregue ? '✅' : '—'}</td>
-        <td>${item.email_aberto ? '👁️' : '—'}</td>
-        <td>${item.email_clicado ? '🔗' : '—'}</td>
+        <td>${item.email_entregue ? "✅" : "—"}</td>
+        <td>${item.email_aberto ? "👁️" : "—"}</td>
+        <td>${item.email_clicado ? "🔗" : "—"}</td>
         <td>${item.email_erro ? `<span style="color: red;">${item.email_erro}</span>` : "—"}</td>
         <td>${botoes}</td>
       `;
+
 
       corpoTabela.appendChild(linha);
     });
