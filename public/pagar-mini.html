@@ -98,17 +98,7 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
   });
 </script>
 
-<script>
-  gtag('event', 'begin_checkout', {
-    currency: 'BRL',
-    value: 0,
-    items: [{
-      item_id: 'quiz_plan',
-      item_name: 'Escolha Diagnóstico',
-      item_category: 'checkout'
-    }]
-  });
-</script>
+
   <script type="text/javascript">
   (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -352,10 +342,43 @@ if (
     input.addEventListener('input', () => setValor(input.value));
 
     btn.addEventListener('click', () => {
-      const valor = Math.max(parseFloat(input.value||MIN), MIN);
-      const url = `${CHECKOUT_URL}&valor=${encodeURIComponent(valor)}&session_id=${encodeURIComponent(session_id)}${refPart}`;
-      window.location.href = url;
+    const valor = Math.max(parseFloat(input.value || MIN), MIN);
+
+    // ====== META PIXEL: InitiateCheckout no clique do botão ======
+    try {
+    if (typeof fbq === 'function') {
+      fbq('track', 'InitiateCheckout', {
+        value: valor,
+        currency: 'BRL',
+        content_name: 'Checkout - Quiz PT',
+        content_category: 'quiz_checkout',
+      });
+      }
+     } catch (e) {
+      console.warn('Erro ao disparar fbq InitiateCheckout:', e);
+     }
+
+     // ====== GA4 / GOOGLE ADS: begin_checkout no clique ======
+     try {
+     if (typeof gtag === 'function') {
+      gtag('event', 'begin_checkout', {
+        currency: 'BRL',
+        value: valor,
+        items: [{
+          item_id: 'quiz_plan_pt',
+          item_name: 'Escolha Diagnóstico PT',
+          item_category: 'checkout',
+        }]
+      });
+     }
+     } catch (e) {
+    console.warn('Erro ao disparar gtag begin_checkout:', e);
+     }
+
+     const url = `${CHECKOUT_URL}&valor=${encodeURIComponent(valor)}&session_id=${encodeURIComponent(session_id)}${refPart}`;
+     window.location.href = url;
     });
+
 
     setValor(input.value);
   })();

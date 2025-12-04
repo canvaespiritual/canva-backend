@@ -361,48 +361,77 @@ src="https://www.facebook.com/tr?id=208458446274723&ev=PageView&noscript=1"/></n
       renderAmount(finalVal);
     });
 
-    btn.addEventListener('click', () => {
+        // ===== Clique no botão de contribuição (checkout Stripe + pixels) =====
+    async function goStripeCheckout() {
       const clamped = clamp(input.value ?? '');
       const amount  = clamped ?? MIN;
-     async function goStripeCheckout() {
-  const amount = Math.max(MIN, Number(input.value || MIN));
-  const body = {
-    session_id,
-    amount,
-    tipo: "completo",
-    locale: "en",
-    ref: qs.get("ref") || qs.get("aff") || null
-  };
 
-  try {
-    btn.disabled = true;
-    btn.textContent = "Creating secure session…";
+      // META PIXEL – InitiateCheckout
+      try {
+        if (typeof fbq === 'function') {
+          fbq('track', 'InitiateCheckout', {
+            value: amount,
+            currency: 'USD', // se quiser manter BRL, é só trocar
+            content_name: 'Checkout - Quiz EN',
+            content_category: 'quiz_checkout_en'
+          });
+        }
+      } catch (e) {
+        console.warn('Erro ao disparar fbq InitiateCheckout EN:', e);
+      }
 
-    const res = await fetch("/api/stripe/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    });
+      // GA4 / Google Ads – begin_checkout
+      try {
+        if (typeof gtag === 'function') {
+          gtag('event', 'begin_checkout', {
+            currency: 'USD',
+            value: amount,
+            items: [{
+              item_id: 'quiz_plan_en',
+              item_name: 'Soul Map Diagnosis EN',
+              item_category: 'checkout_en'
+            }]
+          });
+        }
+      } catch (e) {
+        console.warn('Erro ao disparar gtag begin_checkout EN:', e);
+      }
 
-    const data = await res.json();
-    if (data && data.url) {
-      window.location.href = data.url; // ✅ vai direto pro checkout Stripe
-    } else {
-      alert("Something went wrong. Please try again.");
-      btn.disabled = false;
-      btn.textContent = `Contribute $${amount} →`;
+      const body = {
+        session_id,
+        amount,
+        tipo: "completo",
+        locale: "en",
+        ref: qs.get("ref") || qs.get("aff") || null
+      };
+
+      try {
+        btn.disabled = true;
+        btn.textContent = "Creating secure session…";
+
+        const res = await fetch("/api/stripe/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        if (data && data.url) {
+          window.location.href = data.url; // ✅ vai direto pro checkout Stripe
+        } else {
+          alert("Something went wrong. Please try again.");
+          btn.disabled = false;
+          btn.textContent = `Contribute $${amount} →`;
+        }
+      } catch (e) {
+        console.error(e);
+        alert("Error creating Stripe session.");
+        btn.disabled = false;
+        btn.textContent = `Contribute $${amount} →`;
+      }
     }
-  } catch (e) {
-    console.error(e);
-    alert("Error creating Stripe session.");
-    btn.disabled = false;
-    btn.textContent = `Contribute $${amount} →`;
-  }
-}
 
-btn.addEventListener("click", goStripeCheckout);
-
-    });
+    btn.addEventListener('click', goStripeCheckout);
 
     // initial state
     (function init(){
