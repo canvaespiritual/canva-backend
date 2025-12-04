@@ -271,6 +271,18 @@ fbq('track', 'ViewContent', {
   color: #e7e5e4;
   font-weight: 700;
 }
+/* Ajuste específico para DESKTOP: reduz a altura visual do player */
+@media (min-width: 1024px) {
+  .player-box {
+    max-height: 650px;      /* você pode testar 580 / 600 / 680 se quiser */
+    margin-bottom: 0;
+  }
+
+  /* diminui o "tubão" preto mantendo o vídeo em evidência */
+  .ratio {
+    padding-top: 110%;      /* antes 177% → agora bem mais enxuto no desktop */
+  }
+}
 
   </style>
 
@@ -392,7 +404,7 @@ fbq('track', 'ViewContent', {
     </section>
   
 
-<section class="beneficios-section">
+<section id="benefitsSection" class="beneficios-section hidden">
   <h3 class="beneficios-title">Por que a alfabetização emocional muda tudo na sua vida</h3>
 
   <div class="beneficios-wrap">
@@ -483,7 +495,7 @@ fbq('track', 'ViewContent', {
 </section>
 
     <!-- BIO -->
-    <section id="bio" class="card bio center">
+    <section id="bio" class="card bio center hidden">
       <div class="bio-top-spacer"></div>
       <img class="avatar" src="https://canvaspiritual.com/wp-content/uploads/2025/10/IMG_4316.jpg" alt="Gustavo Prado">
       <h3>Gustavo Prado</h3>
@@ -544,6 +556,9 @@ fbq('track', 'ViewContent', {
     const ctaBtn   = document.getElementById('cta');
     const timerHint= document.getElementById('timerHint');
     const faqArea  = document.getElementById('faqArea');
+    const benefitsSection = document.getElementById('benefitsSection');
+    const bioSection      = document.getElementById('bio'); // se a bio for controlada junto
+
 
 
     const modal    = document.getElementById('checkoutModal');
@@ -612,15 +627,27 @@ fbq('track', 'ViewContent', {
     });
 
     /* ====== DELAY DO CTA POR TEMPO DE VÍDEO ====== */
-       function showCTA(){
-      if (ctaBox.classList.contains('hidden')){
-        ctaBox.classList.remove('hidden');
-        if (timerHint) timerHint.textContent = '';
-      }
-      if (faqArea && faqArea.classList.contains('hidden')){
-        faqArea.classList.remove('hidden');
-      }
-    }
+      function showCTA(){
+  if (ctaBox && ctaBox.classList.contains('hidden')){
+    ctaBox.classList.remove('hidden');
+    if (timerHint) timerHint.textContent = '';
+  }
+
+  if (faqArea && faqArea.classList.contains('hidden')){
+    faqArea.classList.remove('hidden');
+  }
+
+  // 👉 Tabela de benefícios entra junto com CTA/FAQ
+  if (benefitsSection && benefitsSection.classList.contains('hidden')){
+    benefitsSection.classList.remove('hidden');
+  }
+
+  // 👉 OPCIONAL: liberar a bio só aqui
+  if (bioSection && bioSection.classList.contains('hidden')){
+    bioSection.classList.remove('hidden');
+  }
+}
+
 
     function saveProgress(sec){
       try { localStorage.setItem(STORAGE_KEY, String(Math.floor(sec))); } catch(e){}
@@ -670,3 +697,4 @@ if (sec != null){
   </script>
 </body>
 </html>
+

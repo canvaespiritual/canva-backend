@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- ===== PIXELS SECRET CLASS: CODE OF HARMONY (EN) ===== -->
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tg0bonz3au");
+  </script>
+
+  <!-- Meta Pixel (mesmo ID da versão PT; troque se quiser outro pixel pra EN) -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+    t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '208458446274723');
+    fbq('track', 'PageView');
+    fbq('track', 'ViewContent', {
+      content_name: 'Secret Class — Code of Harmony (EN)',
+      content_category: 'vsl_en'
+    });
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=208458446274723&ev=PageView&noscript=1"
+  /></noscript>
+
+  <!-- GA4 + Google Ads -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    /* GA4 */
+    gtag('config', 'G-9QDEN04CQM');
+
+    /* Google Ads */
+    gtag('config', 'AW-936695843');
+
+    /* View item for GA4 */
+    gtag('event', 'view_item', {
+      currency: 'USD',
+      value: 0,
+      items: [{
+        item_id: 'vsl-code-harmony-en',
+        item_name: 'Secret Class — Code of Harmony (EN)',
+        item_category: 'vsl_en'
+      }]
+    });
+  </script>
+
+  <!-- ===== Watch marks (Meta + GA4) ===== -->
+  <script>
+  (function(){
+    var VIDEO_ID = window.VIDEO_ID || '6921b17bf49d199be116f08b'; // será sobrescrito no script final
+    var REVEAL_AT_SECONDS = window.REVEAL_AT_SECONDS || 1743;
+    var WATCH_MARKS = window.WATCH_MARKS || [30, 90, 180, 360, 800, REVEAL_AT_SECONDS];
+
+    var firedMarksKey = 'vturb_marks_fired_' + VIDEO_ID;
+    function getFired(){ try { return JSON.parse(localStorage.getItem(firedMarksKey) || '[]'); } catch(e){ return []; } }
+    function setFired(arr){ try { localStorage.setItem(firedMarksKey, JSON.stringify(arr)); } catch(e){} }
+
+    function fireOnce(mark, secNow){
+      var fired = new Set(getFired());
+      if (fired.has(mark)) return;
+
+      // Meta Pixel
+      if (typeof fbq === 'function') {
+        fbq('trackCustom', 'VideoWatch_'+mark+'s', {
+          video_id: VIDEO_ID,
+          seconds: Math.floor(secNow)
+        });
+      }
+
+      // GA4
+      if (typeof gtag === 'function') {
+        gtag('event', 'video_watch_'+mark+'s', {
+          video_id: VIDEO_ID,
+          seconds: Math.floor(secNow),
+          engagement_time_msec: mark*1000
+        });
+      }
+
+      fired.add(mark);
+      setFired(Array.from(fired));
+    }
+
+    window.__watchMarks = WATCH_MARKS;
+    window.__fireMarksIfNeeded = function(sec){
+      if (sec == null || !isFinite(sec)) return;
+      for (var i=0;i<WATCH_MARKS.length;i++){
+        if (sec >= WATCH_MARKS[i]) fireOnce(WATCH_MARKS[i], sec);
+      }
+    };
+  })();
+  </script>
+  <!-- ===== END PIXELS ===== -->
+
+  <title>Code of Harmony — Secret Class</title>
+  <meta name="description" content="Secret class of the Code of Harmony. Watch and see the method in practice.">
+   <!-- 🔒 LANGUAGE LOCK: força inglês e evita auto-tradução -->
+  <meta http-equiv="Content-Language" content="en">
+  <meta name="google" content="notranslate">
+
+  <!-- 🔗 CANONICAL + OG para o Meta entender que esta URL é a versão EN -->
+  <link rel="canonical" href="https://api.canvaspiritual.com/harmonycode.html">
+  <meta property="og:url" content="https://api.canvaspiritual.com/harmonycode.html">
+  <meta property="og:locale" content="en_US">
+
+  <style>
+    :root{ --bg:#0c0a09; --fg:#e7e5e4; --muted:#a8a29e; --brand:#eab308; --card:#13110f; --maxw:980px; }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif }
+    .wrap{ max-width:var(--maxw); margin:0 auto; padding:20px }
+    .center{ text-align:center }
+    h1{ margin:16px 0 4px; font-size:30px; line-height:1.15; font-weight:800 }
+    .sub{ margin:0 0 12px; color:#e7e5e4; opacity:.95 }
+
+    .player-box{ position:relative; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.4) }
+    .ratio{ height:0; padding-top:177.7777%; }
+    .player-abs{ position:absolute; inset:0; }
+    .player-abs vturb-smartplayer{
+      position:absolute; inset:0; width:100%; height:100%; display:block;
+    }
+
+    .cta-area{ margin:18px 0 8px; display:flex; justify-content:center }
+    .btn{
+      appearance:none; border:0; border-radius:999px; padding:14px 22px; cursor:pointer;
+      background:var(--brand); color:#1c1917; font-weight:700; font-size:16px; letter-spacing:.2px;
+      box-shadow:0 6px 20px rgba(234,179,8,.25);
+    }
+    .hint{ color:var(--muted); font-size:.95rem; text-align:center }
+    .hidden{ display:none !important }
+
+    .card{ background:var(--card); border:1px solid #1c1917; border-radius:14px; padding:18px; margin-top:28px }
+    .bio h3{ margin:0 0 6px; font-size:20px }
+    .bio p{ margin:0; color:var(--muted) }
+    .avatar{
+      width:160px; height:160px; object-fit:cover; border-radius:100%;
+      margin:-70px auto 16px; border:2px solid #2d2a28; display:block; box-shadow:0 10px 25px rgba(0,0,0,.35)
+    }
+    .bio-top-spacer{ height:56px }
+    .footer{ color:#78716c; font-size:.85rem; margin:40px 0; text-align:center }
+
+    .faq-area{
+      margin-top:28px;
+      text-align:left;
+    }
+    .faq-area h3{
+      margin:0 0 12px;
+      font-size:20px;
+      font-weight:700;
+    }
+    .faq-area details{
+      border:1px solid #27231f;
+      border-radius:999px;
+      padding:10px 16px;
+      margin-bottom:10px;
+      background:#14110f;
+    }
+    .faq-area summary{
+      list-style:none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:14px;
+      font-weight:500;
+    }
+    .faq-area summary::-webkit-details-marker{display:none}
+    .faq-area details[open]{
+      border-radius:16px;
+    }
+    .faq-area details[open] summary{
+      margin-bottom:8px;
+    }
+    .faq-area p{
+      margin:0 0 6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .beneficios-section {
+      margin-top: 32px;
+      padding: 20px;
+      background: #0c0a09;
+      border-radius: 14px;
+      border: 1px solid #1f1c19;
+    }
+    .beneficios-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #eab308;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .beneficios-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .beneficios-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    .beneficios-table th {
+      color: #e7e5e4;
+      padding: 12px 6px;
+      border-bottom: 1px solid #2f2b27;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .beneficios-table td {
+      padding: 12px 6px;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    .beneficios-table tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+    .col-eixo {
+      color: #eab308;
+      font-weight: 700;
+    }
+    .col-antes {
+      color: #f87171;
+    }
+    .col-depois {
+      color: #60a5fa;
+    }
+    .col-identidade {
+      color: #e7e5e4;
+      font-weight: 700;
+    }
+    @media (min-width: 1024px) {
+  .player-box {
+    max-height: 790px;      /* você pode testar 580 / 600 / 680 se quiser */
+    margin-bottom: 0;
+  }
+
+  /* diminui o "tubão" preto mantendo o vídeo em evidência */
+  .ratio {
+    padding-top: 130%;      /* antes 177% → agora bem mais enxuto no desktop */
+  }
+}
+  </style>
+</head>
+<body>
+  <header class="wrap center">
+    <h1>Code of Harmony</h1>
+    <p class="sub">The method that explains the invisible diseases of the soul</p>
+  </header>
+
+  <main class="wrap">
+    <!-- PLAYER -->
+    <section class="player-box">
+      <div class="ratio"></div>
+      <div class="player-abs">
+        <!-- TODO: replace EN_VSL_PLAYER_ID_HERE with the real VTurb player ID for the English VSL -->
+        <vturb-smartplayer id="vid-6921b17bf49d199be116f08b" style="display:block;margin:0 auto;width:100%;max-width:400px;"></vturb-smartplayer>
+        <script type="text/javascript">
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/6921b17bf49d199be116f08b/v4/player.js";
+          s.async=!0;document.head.appendChild(s);
+        </script>
+      </div>
+    </section>
+
+    <!-- CTA (direct to checkout after reveal) -->
+    <section class="cta-area center hidden" id="ctaBox">
+      <button id="cta" class="btn">I WANT TO CROSS THE INVISIBLE LANDSCAPE OF MY SOUL</button>
+    </section>
+    <p class="hint" id="timerHint"></p>
+
+    <!-- FAQ -->
+    <section id="faqArea" class="card faq-area hidden">
+      <h3>Questions your soul would ask right now:</h3>
+
+      <details>
+        <summary>💡 What will I actually be able to see after this course?</summary>
+        <p>You will learn to read your inner states with clarity, understand which emotional zone you are in (virtuous, neutral or degrading) and see the invisible cycles that drain your energy. Instead of just feeling anxiety, irritation or discouragement, you will map, name and transmute these emotions consciously.</p>
+      </details>
+
+      <details>
+        <summary>📚 What exactly is the Engineering of Consciousness?</summary>
+        <p>You receive a complete step-by-step of Simplified Emotional Reconstruction, with modules on Self-Diagnosis, Self-Government, Spiritual Shielding and the Desert. Beyond the classes, there are maps, exercises and “soul mirrors” to apply everything in real life.</p>
+      </details>
+
+      <details>
+        <summary>🎁 What do I receive besides the main classes?</summary>
+        <p>You access bonuses such as Living Worldview, the Crossing Vault, the Interactive Soul Map and Guided Transmutation Protocols — ongoing material to deepen and sustain your emotional clarity.</p>
+      </details>
+
+      <details>
+        <summary>🎯 Who is this for — and who is it not for?</summary>
+        <p>It is for those who feel they have tried everything and still live in cycles of anxiety, guilt and relapse. It is not for those looking for a magic formula or unwilling to look honestly within.</p>
+      </details>
+
+      <details>
+        <summary>🙏 Does it work with any faith? Do I need a specific belief?</summary>
+        <p>Yes. The method is spiritual, not doctrinal. It organizes emotions based on simple laws and daily practice. You live it inside your own spiritual walk, with or without religion.</p>
+      </details>
+
+      <details>
+        <summary>🧠 Is this therapy? Does it replace medical or psychological treatment?</summary>
+        <p>No. It is a method of self-knowledge and emotional reprogramming that can complement therapy or medical follow-up, but does not replace them.</p>
+      </details>
+
+      <details>
+        <summary>😰 Will this help with stress, anxiety, focus or emotional imbalance?</summary>
+        <p>Yes. The method works at the emotional root of these states, teaching you to identify triggers, reorganize thoughts and transmute emotions in real time.</p>
+      </details>
+
+      <details>
+        <summary>💼 How does this help in my work or finances?</summary>
+        <p>All prosperity is born from a clear mind. When you organize your emotions, you improve focus, decisions, presence and negotiation power — and this directly reflects in professional and financial results.</p>
+      </details>
+
+      <details>
+        <summary>🔁 What if I fall back or return to old patterns?</summary>
+        <p>Relapses are part of the process. Here you learn protocols to return to your axis: you know which scale you’re in, which next step to take and how to rise faster, with more wisdom.</p>
+      </details>
+
+      <details>
+        <summary>⏱ Are the classes long? What’s the ideal pace? Can I study on my phone?</summary>
+        <p>The classes are objective, designed for busy lives. You can watch in short blocks, on your phone, tablet or computer — at your own pace, without losing depth.</p>
+      </details>
+
+      <details>
+        <summary>⌛ How long will I have access?</summary>
+        <p>You have 12 months of full access to the content, updates and bonuses already released, and can rewatch the classes and redo exercises whenever you want.</p>
+      </details>
+
+      <details>
+        <summary>💳 How can I pay?</summary>
+        <p>Payment is done through a secure platform. You can use a credit card or other local methods (depending on your country). As soon as the payment is confirmed, access is released automatically.</p>
+      </details>
+
+      <details>
+        <summary>💸 What if I don’t like it? Can I ask for a refund?</summary>
+        <p>Yes. You have a 7-day unconditional guarantee. If it’s not your moment, you can request a refund and the full amount is returned.</p>
+      </details>
+
+      <details>
+        <summary>💠 Can the price change?</summary>
+        <p>Yes. The current price is special for those entering this early phase. As new modules and bonuses are added, the price may increase over time.</p>
+      </details>
+
+      <details>
+        <summary>🎁 Can I gift this access to someone?</summary>
+        <p>Yes. You can purchase using the person’s email or talk to support after purchase to adjust the access data.</p>
+      </details>
+
+      <details>
+        <summary>📜 Will I receive a certificate upon completion?</summary>
+        <p>Yes, you’ll be able to generate a digital certificate of completion to register your study and emotional development hours.</p>
+      </details>
+
+      <details>
+        <summary>📬 How can I contact you if I have questions or access issues?</summary>
+        <p>You can reach us via the support email provided in the checkout. Average response time is 24–48 business hours.</p>
+      </details>
+    </section>
+
+    <!-- BENEFITS -->
+    <section id="benefitsSection" class="beneficios-section hidden">
+      <h3 class="beneficios-title">Why emotional literacy changes everything in your life</h3>
+
+      <div class="beneficios-wrap">
+        <table class="beneficios-table">
+          <thead>
+            <tr>
+              <th>Axis</th>
+              <th>Before</th>
+              <th>After</th>
+              <th>Who you become</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-eixo">🕊️ Anxiety → Clarity</td>
+              <td class="col-antes">Racing mind, fear of the future.</td>
+              <td class="col-depois">Firm, calm decisions.</td>
+              <td class="col-identidade">The safe harbor of your own life.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">👁️ Emotions → Soul Reading</td>
+              <td class="col-antes">Reacting to other people’s chaos.</td>
+              <td class="col-depois">Understanding the soul behind behavior.</td>
+              <td class="col-identidade">The emotional reference in the family.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">🌿 Relapses → Stability</td>
+              <td class="col-antes">Cycles of anxiety, guilt and escape.</td>
+              <td class="col-depois">You notice the fall and correct quickly.</td>
+              <td class="col-identidade">Consistent, predictable, reliable.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">🔥 Focus → Prosperity</td>
+              <td class="col-antes">Distraction, half-finished tasks.</td>
+              <td class="col-depois">Natural focus on what matters.</td>
+              <td class="col-identidade">The most valuable person on the team.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">🛡️ Boundaries → Respect</td>
+              <td class="col-antes">Saying “yes” to everything, always exhausted.</td>
+              <td class="col-depois">Firm boundaries, protected energy.</td>
+              <td class="col-identidade">Admired and respected.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">⚡ Toxic → Shielded</td>
+              <td class="col-antes">Falling into manipulation and energy drains.</td>
+              <td class="col-depois">Sensing toxic vibration from afar.</td>
+              <td class="col-identidade">Inaccessible to manipulators.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">🌙 Habits → Identity</td>
+              <td class="col-antes">Trying to change by willpower alone.</td>
+              <td class="col-depois">You change the vibration; behavior follows.</td>
+              <td class="col-identidade">A new person.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">💡 Learning → Speed</td>
+              <td class="col-antes">Heavy mind, hard to absorb.</td>
+              <td class="col-depois">Light mind, fast absorption.</td>
+              <td class="col-identidade">Learns in days what others need months for.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">✨ Peace → Presence</td>
+              <td class="col-antes">Insecurity, comparison.</td>
+              <td class="col-depois">Firm presence, steady gaze.</td>
+              <td class="col-identidade">Someone who is felt when they enter the room.</td>
+            </tr>
+            <tr>
+              <td class="col-eixo">🌞 Mastery → Integral Prosperity</td>
+              <td class="col-antes">Finances and choices swinging with mood.</td>
+              <td class="col-depois">Coherence and constancy.</td>
+              <td class="col-identidade">Lord of your own path.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- BIO -->
+    <section id="bio" class="card bio center hidden">
+      <div class="bio-top-spacer"></div>
+      <img class="avatar" src="https://canvaspiritual.com/wp-content/uploads/2025/10/IMG_4316.jpg" alt="Gustavo Prado">
+      <h3>Gustavo Prado</h3>
+      <p><em>Engineer and Researcher</em></p>
+      <div style="height:14px"></div>
+      <p>After years building houses and structuring teams in the physical world, I discovered that the real engineering was of the soul.
+      For more than 10 years I have studied human behavior, spirituality and emotional engineering until I decoded the structure revealed in this class —
+      a framework that transformed crises, medications and addictions into purpose, healing and identity.</p>
+    </section>
+
+    <div class="footer">© Canva Espiritual — Engineering of Consciousness</div>
+  </main>
+
+  <script>
+    // ===== CONFIG =====
+    const VIDEO_ID = '6921b17bf49d199be116f08b';   // TODO: colocar ID real do player EN
+    const REVEAL_AT_SECONDS = 1743;            // ajuste se o tempo do pitch no EN for outro
+    const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
+    const CHECKOUT_URL = 'https://pay.hotmart.com/Q102766143I'; // TODO: URL real do checkout EN
+
+    // expõe para o script de watch marks
+    window.VIDEO_ID = VIDEO_ID;
+    window.REVEAL_AT_SECONDS = REVEAL_AT_SECONDS;
+
+    const ctaBox   = document.getElementById('ctaBox');
+    const ctaBtn   = document.getElementById('cta');
+    const timerHint= document.getElementById('timerHint');
+    const faqArea  = document.getElementById('faqArea');
+    const benefitsSection = document.getElementById('benefitsSection');
+    const bioSection      = document.getElementById('bio');
+
+
+    function showCTA(){
+  if (ctaBox && ctaBox.classList.contains('hidden')){
+    ctaBox.classList.remove('hidden');
+    if (timerHint) timerHint.textContent = '';
+  }
+
+  if (faqArea && faqArea.classList.contains('hidden')){
+    faqArea.classList.remove('hidden');
+  }
+
+  // 👉 Benefits entram junto com CTA/FAQ
+  if (benefitsSection && benefitsSection.classList.contains('hidden')){
+    benefitsSection.classList.remove('hidden');
+  }
+
+  // 👉 Bio também só aparece no pitch
+  if (bioSection && bioSection.classList.contains('hidden')){
+    bioSection.classList.remove('hidden');
+  }
+}
+
+
+    function saveProgress(sec){
+      try { localStorage.setItem(STORAGE_KEY, String(Math.floor(sec))); } catch(e){}
+    }
+    function getProgress(){
+      try { return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10); } catch(e){ return 0; }
+    }
+
+    // desbloqueio imediato se já viu o pitch antes
+    if (getProgress() >= REVEAL_AT_SECONDS) showCTA();
+
+    // CTA → vai direto pro checkout
+    if (ctaBtn) {
+      ctaBtn.addEventListener('click', () => {
+        window.location.href = CHECKOUT_URL;
+      });
+    }
+
+    function extractSeconds(data){
+      if (!data || typeof data !== 'object') return null;
+      const keys = ['currentTime','time','seconds','position','current_time'];
+      for (const k of keys){ if (k in data && isFinite(Number(data[k]))) return Number(data[k]); }
+      if (data.payload && typeof data.payload === 'object'){
+        for (const k of keys){ if (k in data.payload && isFinite(Number(data.payload[k]))) return Number(data.payload[k]); }
+      }
+      return null;
+    }
+
+    window.addEventListener('message', (event)=>{
+      try{
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        const sec = extractSeconds(data);
+        if (sec != null){
+          saveProgress(sec);
+          if (typeof __fireMarksIfNeeded === 'function') { __fireMarksIfNeeded(sec); }
+          if (sec >= REVEAL_AT_SECONDS) showCTA();
+        }
+      }catch(e){}
+    });
+
+    // fallback se o player não mandar eventos
+    setTimeout(()=>{
+      if (!ctaBox.classList.contains('hidden')) return;
+      let elapsed = getProgress();
+      const t = setInterval(()=>{
+        if (!ctaBox.classList.contains('hidden')) { clearInterval(t); return; }
+        elapsed += 1; saveProgress(elapsed);
+        if (elapsed >= REVEAL_AT_SECONDS){ clearInterval(t); showCTA(); }
+      }, 1000);
+    }, 5000);
+  </script>
+</body>
+</html>
