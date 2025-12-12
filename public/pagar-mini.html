@@ -7,6 +7,12 @@
   <meta name="description" content="Assista à instrução breve e libere seu relatório personalizado do Mapa da Alma." />
 
   <style>
+    .chip.is-selected{
+  background:#111827 !important;
+  color:#ffffff !important;
+  border-color:#111827 !important;
+}
+
     :root{
       --bg:#0b0b0c; --fg:#f5f5f5; --muted:#9ca3af; --brand:#eab308; --card:#131316; --ok:#16a34a;
       --maxw:960px;
@@ -55,6 +61,115 @@
     margin-top: 20px !important;
   }
 }
+/* ===== Checkout Card ===== */
+.checkout-card{
+  max-width:520px;
+  margin:24px auto 0;
+  padding:18px 16px;
+  background:linear-gradient(180deg,#111318 0%, #0d0f14 100%);
+  border:1px solid #222733;
+  border-radius:18px;
+  box-shadow:0 18px 60px rgba(0,0,0,.55);
+  text-align:center;
+}
+.checkout-head{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  margin-bottom:8px;
+}
+.checkout-title{
+  margin:0;
+  font:900 18px/1.2 system-ui;
+}
+.checkout-sub{
+  margin:0 0 14px;
+  color:#a7afbf;
+  font:14px system-ui;
+}
+.badges{
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+  margin:10px 0 14px;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid #2a2f3a;
+  background:#0b0e14;
+  color:#c9d2e3;
+  font:700 12px system-ui;
+}
+.divider{
+  height:1px; background:#222733; margin:14px 0;
+}
+
+/* ===== Chips ===== */
+.chipsRow{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:10px 0 12px; }
+.chip{
+  padding:9px 12px;
+  border-radius:999px;
+  border:1px solid #2a2f3a;
+  background:#0b0e14;
+  color:#e9edf2;
+  font:800 13px system-ui;
+  cursor:pointer;
+  transition:transform .06s ease;
+}
+.chip:hover{ transform:translateY(-1px); }
+
+/* ===== Amount ===== */
+.amountRow{
+  display:flex; gap:10px; justify-content:center; align-items:center;
+  margin:10px 0 6px;
+}
+.amountLabel{
+  color:#d6dbe6;
+  font:800 13px system-ui;
+}
+.amountInput{
+  width:140px;
+  text-align:center;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid #2a2f3a;
+  background:#0b0e14;
+  color:#fff;
+  font:900 16px system-ui;
+  outline:none;
+}
+.amountHint{
+  margin:6px 0 0;
+  color:#9ca3af;
+  font:12px system-ui;
+}
+
+/* ===== CTA ===== */
+.ctaBtn{
+  width:100%;
+  max-width:380px;
+  appearance:none; border:0;
+  border-radius:999px;
+  padding:14px 18px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#16a34a 0%, #22c55e 100%);
+  color:#fff;
+  font:900 16px system-ui;
+  box-shadow:0 14px 36px rgba(34,197,94,.18);
+}
+.ctaFoot{
+  margin:10px 0 0;
+  color:#a7afbf;
+  font:12px system-ui;
+}
+
+/* ===== Payment logos row ===== */
+.payRow{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  flex-wrap:wrap;
+  margin:10px 0 2px;
+}
+.payRow svg{ display:block; height:18px; }
+.payText{ color:#a7afbf; font:700 12px system-ui; }
+
 
   </style>
   <script>
@@ -107,11 +222,17 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
   })(window, document, "clarity", "script", "tg0bonz3au");
 </script>
 </head>
+
+
 <body>
   <main class="wrap">
     <header class="center" style="margin:6px 0 16px">
-      <h1 style="margin:0 0 4px; font-size:22px; line-height:1.2">Seu relatório está quase pronto</h1>
-      <p class="hint" id="topHint">Assista à instrução breve e libere seu autodiagnóstico nesta página.</p>
+      <h1 id="titleH1" style="margin:0 0 4px; font-size:22px; line-height:1.2">Seu relatório está quase pronto</h1>
+<p class="hint" id="topHint">Assista à instrução breve e libere seu autodiagnóstico nesta página.</p>
+<p id="personalHint" class="hint" style="margin:6px 0 0; display:none">
+  ✅ Diagnóstico personalizado gerado com base nas suas respostas.
+</p>
+
     </header>
 
     <!-- PLAYER -->
@@ -121,38 +242,113 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
     </section>
 
     <!-- BLOCO SOLIDÁRIO -->
-    <section id="solidario" class="hidden" style="max-width:520px;margin:24px auto 0;padding:0 12px;text-align:center">
+    <section id="solidario" class="hidden" style="max-width:520px;margin:24px auto 0;padding:0 12px;">
+  <div style="
+    background:#ffffff;
+    color:#111827;
+    border-radius:18px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 24px 70px rgba(0,0,0,.35);
+    overflow:hidden;
+  ">
 
-      <h3 style="margin:0 0 8px;font:800 18px/1.2 system-ui">💛 Contribuição solidária</h3>
-      <p style="margin:0 0 12px;color:#9ca3af;font:14px system-ui">
-        A partir de <strong>R$10</strong> — quanto mais você puder contribuir, mais essa mensagem alcança outras pessoas. 🌍
-      </p>
-
-      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px">
-        <button class="chip" data-v="10" title="🌱 Semente" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$10</button>
-        <button class="chip" data-v="21" title="🔺 Esforçado (21)" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$21</button>
-        <button class="chip" data-v="40" title="🔥 Transformador" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$40</button>
-        <button class="chip" data-v="70" title="🌕 Completo (70)" style="padding:8px 12px;border-radius:999px;border:1px solid #d1d5db;background:#fff;cursor:pointer">R$70</button>
+    <!-- Header -->
+    <div style="padding:18px 18px 12px;border-bottom:1px solid #eef2f7;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+        <h3 style="margin:0;font:900 16px/1.2 system-ui;letter-spacing:.2px;">
+          Contribuição solidária
+        </h3>
+        <span style="display:inline-flex;align-items:center;gap:8px;color:#0f766e;font:800 12px system-ui;">
+          <span style="width:8px;height:8px;border-radius:999px;background:#10b981;display:inline-block"></span>
+          Pagamento seguro
+        </span>
       </div>
 
-      <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:8px">
-        <label for="valorSolidario" style="color:#f5f5f5;font:600 14px system-ui">Valor:</label>
-        <input id="valorSolidario" type="number" min="10" step="1" value="10"
-               style="width:120px;text-align:center;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;font:700 16px system-ui">
+      <p style="margin:8px 0 0;color:#6b7280;font:13px system-ui;">
+        Valor mínimo <strong>R$10</strong>. Liberação automática após o pagamento.
+      </p>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:14px 18px 16px;">
+
+      <!-- Mercado Pago = "mãe" (processador) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin:6px 0 12px;">
+        <img src="/assets/pay/mercado-pago.svg"
+             alt="Mercado Pago"
+             style="height:80px;display:block" />
+        <span style="color:#374151;font:800 13px system-ui;text-align:center;">
+          Pagamento processado com segurança pelo Mercado Pago
+        </span>
       </div>
-      <p id="solidarioHint" style="margin:4px 0 12px;color:#9ca3af;font:12px system-ui">
-        🌱 R$10 = Semente • 🔺 R$21 = Esforço • 🔥 R$40 = Transformação • 🌕 R$70 = Plenitude
+
+      <!-- Clareza: qualquer valor libera o mesmo relatório -->
+      <p style="margin:8px 0 14px;color:#111827;font:900 14px system-ui;text-align:center;">
+        Escolha quanto deseja contribuir.
+        <br>
+        <span style="color:#16a34a;">Qualquer valor libera o mesmo relatório completo.</span>
       </p>
 
-      <button id="solidarioBtn"
-              style="appearance:none;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;
-                     background:#16a34a;color:#fff;font:800 16px system-ui;box-shadow:0 10px 24px rgba(22,163,74,.25)">
-        Contribuir com R$10 →
-      </button>
-      <p style="margin:8px 0 0;color:#9ca3af;font:12px system-ui">
-        O relatório completo será liberado imediatamente após a contribuição.
+      <!-- Sugestões (opcional, mas simples) -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px">
+        <button class="chip" data-v="10" style="padding:9px 12px;border-radius:999px;border:1px solid #d1d5db;background:#ffffff;color:#111827;cursor:pointer;font:900 13px system-ui;box-shadow:0 2px 10px rgba(17,24,39,.06);">R$10</button>
+        <button class="chip" data-v="25" style="padding:9px 12px;border-radius:999px;border:1px solid #d1d5db;background:#ffffff;color:#111827;cursor:pointer;font:900 13px system-ui;box-shadow:0 2px 10px rgba(17,24,39,.06);">R$25</button>
+      </div>
+
+      <!-- Amount -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0 8px">
+        <span style="color:#111827;font:900 13px system-ui;">Valor</span>
+        <div style="display:flex;align-items:center;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:#fff;">
+          <span style="padding:10px 10px;color:#6b7280;font:900 14px system-ui;border-right:1px solid #eef2f7;">R$</span>
+          <input id="valorSolidario" type="number" min="10" step="1" value="10"
+                 style="width:150px;text-align:center;padding:10px 12px;border:0;outline:none;font:900 16px system-ui;color:#111827;">
+        </div>
+      </div>
+
+      <!-- Meios (secundários) -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 12px;">
+        <span style="display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font:900 11px system-ui;color:#111827;">PIX</span>
+        <span style="display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font:900 11px system-ui;color:#111827;">VISA</span>
+
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font:900 11px system-ui;color:#111827;">
+          <span style="display:inline-block;width:14px;height:14px;border-radius:999px;background:#EB001B"></span>
+          <span style="display:inline-block;margin-left:-6px;width:14px;height:14px;border-radius:999px;background:#F79E1B"></span>
+          Mastercard
+        </span>
+
+        <span style="color:#6b7280;font:800 12px system-ui;">• Liberação imediata</span>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:flex;justify-content:center;">
+        <button id="solidarioBtn" style="
+          width:100%;
+          max-width:420px;
+          appearance:none;border:0;border-radius:14px;
+          padding:14px 16px;
+          cursor:pointer;
+          background:#16a34a;
+          color:#fff;
+          font:900 16px system-ui;
+          box-shadow:0 16px 40px rgba(22,163,74,.25);
+        ">
+          Contribuir →
+        </button>
+      </div>
+
+      <p style="margin:10px 0 0;color:#6b7280;font:12px system-ui;text-align:center;">
+        PIX aprova na hora. Cartão pode levar alguns instantes.
       </p>
-    </section>
+
+      <p style="margin:6px 0 0;color:#6b7280;font:12px system-ui;text-align:center;">
+        Ao clicar, você será redirecionado ao <strong>Mercado Pago</strong> para concluir o pagamento.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+
         <!-- BLOCO: O QUE VAI NO RELATÓRIO -->
          
   
@@ -188,6 +384,111 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
         <li>🎁 Bônus — Aula “Engenharia da Desconexão Espiritual” (videodiagnóstico da era da distração, vício e fragmentação interior)</li>
       </ul>
     </section>
+   <section id="bonusAfiliadoLoop" class="hidden" style="max-width:720px;margin:16px auto 0;padding:0 12px;">
+  <div style="
+    background:#ffffff;
+    color:#111827;
+    border-radius:16px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 18px 50px rgba(0,0,0,.28);
+    overflow:hidden;
+  ">
+
+    <!-- Header com ícone -->
+    <div style="padding:16px 18px 12px;border-bottom:1px solid #eef2f7;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="
+          width:34px;height:34px;
+          border-radius:10px;
+          background:#f0fdf4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:18px;
+        ">
+          🎁
+        </span>
+
+        <div>
+          <h4 style="margin:0;font:900 16px/1.2 system-ui;letter-spacing:.2px;">
+            Bônus desbloqueável após o relatório
+          </h4>
+          <p style="margin:4px 0 0;color:#6b7280;font:13px system-ui;">
+            Disponível somente depois da experiência completa.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:14px 18px 16px;">
+
+      <p style="margin:0 0 10px;color:#111827;font:800 14px system-ui;">
+        Sim — além do relatório, você poderá receber um
+        <strong>link exclusivo de compartilhamento</strong>.
+      </p>
+
+      <p style="margin:0 0 12px;color:#374151;font:14px system-ui;line-height:1.55;">
+        Ao compartilhar esse link, sempre que alguém contribuir e receber o relatório
+        através da sua indicação, você poderá ganhar
+        <strong style="color:#16a34a;">até 60% de comissão</strong>,
+        apenas por compartilhar a experiência.
+      </p>
+
+      <!-- Destaques -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 12px;">
+        <span style="display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font:800 12px system-ui;color:#111827;">
+          Link exclusivo
+        </span>
+        <span style="display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font:800 12px system-ui;color:#111827;">
+          Até 60% de comissão
+        </span>
+        <span style="display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font:800 12px system-ui;color:#111827;">
+          Sem vendas diretas
+        </span>
+      </div>
+
+      <!-- Reforço de visão -->
+      <p style="margin:10px 0 0;color:#374151;font:14px system-ui;line-height:1.5;">
+        <strong>Essa experiência pode se tornar uma fonte de renda</strong> para
+        multiplicarmos o conhecimento emocional e alcançar mais pessoas.
+      </p>
+
+      <p style="margin:8px 0 0;color:#6b7280;font:12px system-ui;">
+        As orientações completas para ativar esse bônus serão enviadas
+        junto com o e-mail do seu relatório.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+
+<section id="faq" class="card hidden" style="max-width:720px;margin:14px auto 0">
+  <h3 style="margin:0 0 10px;font:800 18px/1.2 system-ui">FAQ rápido</h3>
+
+  <div style="display:grid;gap:10px">
+    <div style="border:1px solid #1f2126;border-radius:14px;padding:12px;background:#0f1114">
+      <div style="font-weight:800">Como vou receber o relatório?</div>
+      <div class="hint">Após a contribuição, a liberação acontece automaticamente no fluxo de entrega.</div>
+    </div>
+
+    <div style="border:1px solid #1f2126;border-radius:14px;padding:12px;background:#0f1114">
+      <div style="font-weight:800">Posso pagar no PIX?</div>
+      <div class="hint">Sim. Pagamento seguro via Mercado Pago com PIX e cartão.</div>
+    </div>
+
+    <div style="border:1px solid #1f2126;border-radius:14px;padding:12px;background:#0f1114">
+      <div style="font-weight:800">Isso é personalizado mesmo?</div>
+      <div class="hint">Sim — o relatório é gerado com base nas respostas que você marcou no quiz.</div>
+    </div>
+
+    <div style="border:1px solid #1f2126;border-radius:14px;padding:12px;background:#0f1114">
+      <div style="font-weight:800">E se eu fechar essa página?</div>
+      <div class="hint">Sem problema — quando você voltar, a página continua liberando conforme o progresso.</div>
+    </div>
+  </div>
+</section>
 
   </main>
 
@@ -214,8 +515,8 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
 
   // Gate de destrave por tempo (em segundos)
   // 9 minutos e 20 segundos → 9*60 + 20 = 621
-  const UNLOCK_CONTRIB_SECONDS = 620;   // quando aparece o bloco solidário
-  const UNLOCK_REPORT_SECONDS  = 604;   // quando aparece o bloco "Você vai receber"
+  const UNLOCK_CONTRIB_SECONDS = 6;   // quando aparece o bloco solidário
+  const UNLOCK_REPORT_SECONDS  = 6;   // quando aparece o bloco "Você vai receber"
 
   // Persistência entre visitas (remarketing)
   const STORAGE_KEY       = 'vsl_unlocked_pt_v1';
@@ -247,6 +548,9 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
   (function gateByTime(){
     const contribBlock = document.getElementById('solidario');
     const receiveBlock = document.getElementById('receiveBlock');
+    const bonusLoop   = document.getElementById('bonusAfiliadoLoop');
+    const faqBlock    = document.getElementById('faq');
+
     if (!contribBlock || !receiveBlock) return;
 
     // Se já liberou em alguma visita anterior, destrava tudo na hora
@@ -260,6 +564,8 @@ if (
 
   const frase = document.getElementById('fraseLiberacao');
   if (frase) frase.classList.remove('hidden');
+  if (bonusLoop) bonusLoop.classList.remove('hidden');
+  if (faqBlock)  faqBlock.classList.remove('hidden');
 
   return;
 }
@@ -289,6 +595,9 @@ if (
 
       if (!contribShown && seconds >= UNLOCK_CONTRIB_SECONDS) {
         contribBlock.classList.remove('hidden');
+        if (bonusLoop) bonusLoop.classList.remove('hidden');
+        if (faqBlock)  faqBlock.classList.remove('hidden');
+
         contribShown = true;
         tentarPararTimer();
       }
@@ -338,8 +647,35 @@ if (
       btn.textContent = `Contribuir com ${moeda(input.value)} →`;
     }
 
-    chips.forEach(c => c.addEventListener('click', () => setValor(c.getAttribute('data-v'))));
-    input.addEventListener('input', () => setValor(input.value));
+chips.forEach(c => c.addEventListener('click', () => {
+  chips.forEach(x => x.classList.remove('is-selected'));
+  c.classList.add('is-selected');
+  setValor(c.getAttribute('data-v'));
+}));
+    input.addEventListener('input', () => {
+  // deixa digitar livre (não força MIN no meio da digitação)
+  btn.textContent = `Contribuir →`;
+});
+
+function clampMin(){
+  let v = parseFloat(String(input.value).replace(',', '.'));
+  if (!isFinite(v)) v = MIN;
+  v = Math.max(v, MIN);
+  input.value = String(Math.round(v));
+  btn.textContent = `Contribuir com ${moeda(input.value)} →`;
+}
+
+// quando o usuário sai do campo
+input.addEventListener('blur', clampMin);
+
+// quando o usuário aperta Enter
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    clampMin();
+    btn.click();
+  }
+});
 
     btn.addEventListener('click', () => {
     const valor = Math.max(parseFloat(input.value || MIN), MIN);
@@ -383,5 +719,23 @@ if (
     setValor(input.value);
   })();
   </script>
+ <script>
+window.addEventListener('DOMContentLoaded', () => {
+  try{
+    const raw = localStorage.getItem("dadosQuiz");
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    const nome = (d.nome || "").trim();
+    if(!nome) return;
+
+    const safe = nome.replace(/[<>]/g,'');
+    const h1 = document.getElementById("titleH1");
+    const p2 = document.getElementById("personalHint");
+    if(h1) h1.textContent = `${safe}, seu relatório está quase pronto`;
+    if(p2) p2.style.display = "block";
+  }catch(e){}
+});
+</script>
+
 </body>
 </html>
