@@ -347,6 +347,34 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
     </div>
   </div>
 </section>
+<section id="credibilidadeMetodo" class="hidden" style="max-width:720px;margin:14px auto 0;padding:0 12px;">
+  <div style="
+    background:#0f1115;
+    border:1px solid #1f2430;
+    border-radius:14px;
+    padding:14px 16px;
+  ">
+    <p style="margin:0;color:#e5e7eb;font:14px system-ui;line-height:1.55;">
+      Esta experiência integra um <strong>método estruturado de autodiagnóstico emocional e espiritual</strong>,
+      desenvolvido a partir da integração entre
+      <strong>psicologia emocional</strong>,
+      <strong>fisiologia comportamental</strong> e
+      <strong>dinâmica vibracional</strong>.
+    </p>
+
+    <p style="margin:10px 0 0;color:#cbd5e1;font:14px system-ui;line-height:1.55;">
+      O sistema analisa combinações entre <strong>144 estados emocionais fundamentais</strong>,
+      organizados em escalas e zonas, permitindo uma leitura precisa de padrões internos
+      a partir de milhares de variações possíveis de resposta.
+    </p>
+
+    <p style="margin:10px 0 0;color:#94a3b8;font:13px system-ui;line-height:1.5;">
+      O objetivo não é rotular, diagnosticar clinicamente ou substituir acompanhamento profissional,
+      mas oferecer <strong>clareza estruturada</strong> para reflexão, consciência emocional
+      e desenvolvimento pessoal.
+    </p>
+  </div>
+</section>
 
 
         <!-- BLOCO: O QUE VAI NO RELATÓRIO -->
@@ -515,8 +543,8 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
 
   // Gate de destrave por tempo (em segundos)
   // 9 minutos e 20 segundos → 9*60 + 20 = 621
-  const UNLOCK_CONTRIB_SECONDS = 6;   // quando aparece o bloco solidário
-  const UNLOCK_REPORT_SECONDS  = 6;   // quando aparece o bloco "Você vai receber"
+  const UNLOCK_CONTRIB_SECONDS = 600;   // quando aparece o bloco solidário
+  const UNLOCK_REPORT_SECONDS  = 600;   // quando aparece o bloco "Você vai receber"
 
   // Persistência entre visitas (remarketing)
   const STORAGE_KEY       = 'vsl_unlocked_pt_v1';
@@ -547,6 +575,7 @@ src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/></n
     // =================== GATE POR TEMPO (VTURB) ===================
   (function gateByTime(){
     const contribBlock = document.getElementById('solidario');
+    const metodoBlock = document.getElementById('credibilidadeMetodo');
     const receiveBlock = document.getElementById('receiveBlock');
     const bonusLoop   = document.getElementById('bonusAfiliadoLoop');
     const faqBlock    = document.getElementById('faq');
@@ -566,7 +595,7 @@ if (
   if (frase) frase.classList.remove('hidden');
   if (bonusLoop) bonusLoop.classList.remove('hidden');
   if (faqBlock)  faqBlock.classList.remove('hidden');
-
+  if (metodoBlock) metodoBlock.classList.remove('hidden');
   return;
 }
 
@@ -597,7 +626,7 @@ if (
         contribBlock.classList.remove('hidden');
         if (bonusLoop) bonusLoop.classList.remove('hidden');
         if (faqBlock)  faqBlock.classList.remove('hidden');
-
+        if (metodoBlock) metodoBlock.classList.remove('hidden');
         contribShown = true;
         tentarPararTimer();
       }
