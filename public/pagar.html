@@ -644,7 +644,7 @@ function irParaPagamento(tipo) {
     (t === 'intermediario' || t === 'premium') ? 'premium' :
     (t === 'completo') ? 'completo' : 'basico';
 
-        const prices = { basico: 12, premium: 21, completo: 40 };
+        const prices = { basico: 12, premium: 21, completo: 19 };
   const price = prices[tipoCanonical] || 0;
 
   // 🔵 Meta: clique no plano + início do checkout

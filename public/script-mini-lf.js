@@ -32,7 +32,7 @@ const perguntas = [
     ];
 
 // Índices originais que vamos manter (0-based): 0,2,4,6,8,10,12
-const OPT_IDX = [0, 4, 6, 8, 11,];
+const OPT_IDX = [0, 2, 4, 6, 8, 9, 11,];
 
 // Aplica o filtro em TODAS as 12 perguntas, sem alterar códigos nem ordem
 for (let i = 0; i < perguntas.length; i++) {

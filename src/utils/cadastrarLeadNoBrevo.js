@@ -1,6 +1,15 @@
+// utils/cadastrarLeadNoBrevo.js
 const axios = require("axios");
 
-async function cadastrarLeadNoBrevo({ email, nome, atributos = {} }) {
+/**
+ * Cadastra ou atualiza um lead no Brevo com idioma e tags dinâmicas
+ * @param {Object} params
+ * @param {string} params.email - Email do contato
+ * @param {string} params.nome - Nome do contato
+ * @param {string} [params.idioma='pt'] - Idioma detectado (pt, en, es, etc.)
+ * @param {Object} [params.atributos={}] - Atributos adicionais opcionais
+ */
+async function cadastrarLeadNoBrevo({ email, nome, idioma = "pt", atributos = {} }) {
   try {
     const response = await axios.post(
       "https://api.brevo.com/v3/contacts",
@@ -8,9 +17,12 @@ async function cadastrarLeadNoBrevo({ email, nome, atributos = {} }) {
         email,
         attributes: {
           NOME: nome || "",
+          IDIOMA: idioma.toUpperCase(), // grava idioma no contato
           ...atributos
         },
-        listIds: [3] // ID da sua lista "Leads quiz canva"
+        listIds: [3], // ID da sua lista "Leads quiz canva"
+        updateEnabled: true, // atualiza se o contato já existir
+        tags: [`quiz-${idioma}`] // cria tag dinâmica ex: quiz-en, quiz-pt
       },
       {
         headers: {
@@ -20,7 +32,7 @@ async function cadastrarLeadNoBrevo({ email, nome, atributos = {} }) {
       }
     );
 
-    console.log(`✅ Lead enviado para o Brevo: ${email}`, atributos);
+    console.log(`✅ Lead enviado para o Brevo: ${email} [${idioma.toUpperCase()}]`, atributos);
     return true;
   } catch (error) {
     const msg = error.response?.data?.message || error.message;
