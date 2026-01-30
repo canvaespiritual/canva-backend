@@ -94,6 +94,12 @@ app.use(express.json());
 // ✅ Health check (pra testar no localhost e no deploy)
 app.get("/health", (req, res) => res.status(200).send("ok"));
 
+// ✅ Ping do webhook Kiwify (teste rápido no navegador)
+app.get("/webhooks/kiwify/ping", (req, res) => {
+  console.log("[kiwify] PING HIT", new Date().toISOString());
+  return res.status(200).send("pong");
+});
+
 
 // ✅ Lead pré-checkout (salva nome/email/whatsapp antes de ir pra Kiwify)
 app.post("/api/leads/precheckout", async (req, res) => {

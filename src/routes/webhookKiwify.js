@@ -9,31 +9,35 @@ const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN;
 const LIST_PRECHECKOUT = 8;
 const LIST_CLIENTES = 9;
 
-// ========= helpers =========
-function safeJsonParse(buf) {
+function normalizeEmail(v) {
+  return (v || "").toString().trim().toLowerCase();
+}
+
+// ✅ aceita Buffer OU objeto
+function parsePayload(body) {
+  if (!body) return null;
+
+  // se já veio como objeto (porque algum parser mexeu), retorna
+  if (typeof body === "object" && !Buffer.isBuffer(body)) return body;
+
+  // se veio raw buffer
+  if (Buffer.isBuffer(body)) {
+    const txt = body.toString("utf8");
+    try {
+      return JSON.parse(txt);
+    } catch {
+      return { _raw: txt }; // não perde o conteúdo
+    }
+  }
+
+  // fallback
   try {
-    // req.body vem como Buffer (express.raw)
-    if (Buffer.isBuffer(buf)) return JSON.parse(buf.toString("utf8"));
-    // fallback (caso alguém mude middleware)
-    if (typeof buf === "string") return JSON.parse(buf);
-    if (typeof buf === "object" && buf) return buf;
-    return null;
+    return JSON.parse(String(body));
   } catch {
     return null;
   }
 }
 
-function normalizeEmail(v) {
-  return (v || "").toString().trim().toLowerCase();
-}
-
-function maskToken(t) {
-  const s = (t || "").toString();
-  if (s.length <= 6) return "***";
-  return s.slice(0, 3) + "***" + s.slice(-3);
-}
-
-// Token pode vir em header OU query (varia por plataforma/config)
 function getIncomingToken(req) {
   return (
     req.headers["x-kiwify-token"] ||
@@ -41,9 +45,24 @@ function getIncomingToken(req) {
     req.headers["authorization"] ||
     req.query?.token ||
     ""
-  )
-    .toString()
-    .trim();
+  ).toString().trim();
+}
+
+function isPaidEvent({ eventName, status }) {
+  const e = String(eventName || "").toLowerCase();
+  const s = String(status || "").toLowerCase();
+
+  if (
+    e.includes("compra_aprovada") ||
+    e.includes("purchase_approved") ||
+    e.includes("paid") ||
+    e.includes("approved") ||
+    e.includes("completed")
+  ) return true;
+
+  if (["paid", "approved", "completed", "aprovado", "pago"].includes(s)) return true;
+
+  return false;
 }
 
 async function brevoUpsertPaidContact({ email, name, phone, paid }) {
@@ -70,98 +89,38 @@ async function brevoUpsertPaidContact({ email, name, phone, paid }) {
   });
 }
 
-function isPaidEvent({ eventName, status }) {
-  const e = String(eventName || "").toLowerCase();
-  const s = String(status || "").toLowerCase();
-
-  // nomes comuns de evento
-  if (
-    e.includes("compra_aprovada") ||
-    e.includes("purchase_approved") ||
-    e.includes("compra_aprov") ||
-    e.includes("paid") ||
-    e.includes("approved") ||
-    e.includes("completed")
-  ) {
-    return true;
-  }
-
-  // status comuns
-  if (["paid", "approved", "completed", "aprovado", "pago"].includes(s)) {
-    return true;
-  }
-
-  return false;
-}
-
-// tenta extrair info de produto (não quebra se não existir)
-function extractProduct(payload) {
-  const productId =
-    payload?.product?.id ||
-    payload?.product_id ||
-    payload?.offer?.product_id ||
-    payload?.order?.product_id ||
-    payload?.order?.product?.id ||
-    null;
-
-  const productName =
-    payload?.product?.name ||
-    payload?.product_name ||
-    payload?.offer?.name ||
-    payload?.order?.product?.name ||
-    null;
-
-  return { productId, productName };
-}
-
-// ========= route =========
 router.post("/", async (req, res) => {
-  // logs iniciais (debug)
-  console.log("[kiwify] webhook hit:", {
-    path: req.originalUrl,
+  // ✅ LOG IMPOSSÍVEL DE NÃO APARECER
+  console.log("[kiwify] HIT", {
+    at: new Date().toISOString(),
     method: req.method,
+    url: req.originalUrl,
     contentType: req.headers["content-type"],
+    hasBody: !!req.body,
+    bodyType: Buffer.isBuffer(req.body) ? "buffer" : typeof req.body,
   });
 
-  // body parse
-  const payload = safeJsonParse(req.body);
+  const payload = parsePayload(req.body);
 
   if (!payload) {
-    console.log("[kiwify] invalid_json bodyType:", typeof req.body, "isBuffer:", Buffer.isBuffer(req.body));
-    return res.status(400).json({ ok: false, error: "invalid_json" });
+    console.log("[kiwify] invalid payload (null)");
+    return res.status(400).json({ ok: false, error: "invalid_payload" });
   }
 
-  // log reduzido do que chegou (sem vazar payload gigante)
-  console.log("[kiwify] incoming meta:", {
-    query: req.query,
-    hasAuth: !!req.headers["authorization"],
-    hasXToken: !!req.headers["x-kiwify-token"] || !!req.headers["x-webhook-token"],
-    payloadKeys: Object.keys(payload || {}).slice(0, 30),
-  });
-
-  // 0) Validação do token (se existir no env)
+  // ✅ valida token
   if (KIWIFY_WEBHOOK_TOKEN) {
-    const incomingToken = getIncomingToken(req);
-    const tokenClean = incomingToken.replace(/^bearer\s+/i, "");
-
-    if (tokenClean !== KIWIFY_WEBHOOK_TOKEN) {
-      console.log("[kiwify] token inválido:", {
-        received: maskToken(tokenClean),
-        expected: maskToken(KIWIFY_WEBHOOK_TOKEN),
-        headerAuth: !!req.headers["authorization"],
-        headerX: !!req.headers["x-kiwify-token"] || !!req.headers["x-webhook-token"],
-        queryToken: !!req.query?.token,
-      });
+    const incoming = getIncomingToken(req).replace(/^bearer\s+/i, "");
+    if (incoming !== KIWIFY_WEBHOOK_TOKEN) {
+      console.log("[kiwify] token inválido", { incoming });
       return res.status(401).json({ ok: false, error: "invalid_webhook_token" });
     }
   }
 
-  // Campos genéricos
   const eventName = payload?.event || payload?.type || payload?.name || "unknown";
-  const eventId = payload?.id || payload?.event_id || payload?.eventId || null;
+  const eventId   = payload?.id || payload?.event_id || payload?.eventId || null;
 
   const email = normalizeEmail(payload?.customer?.email || payload?.email);
-  const name = payload?.customer?.name || payload?.name || null;
+  const name  = payload?.customer?.name || payload?.name || null;
   const phone = payload?.customer?.phone || payload?.phone || null;
 
   const orderId =
@@ -180,21 +139,11 @@ router.post("/", async (req, res) => {
     "unknown";
 
   const paid = isPaidEvent({ eventName, status });
-  const { productId, productName } = extractProduct(payload);
 
-  console.log("[kiwify] parsed:", {
-    eventName,
-    eventId: eventId ? String(eventId).slice(0, 18) : null,
-    orderId: orderId ? String(orderId).slice(0, 18) : null,
-    status,
-    paid,
-    email: email ? email.replace(/(.{2}).+(@.*)/, "$1***$2") : null,
-    productId,
-    productName,
-  });
+  console.log("[kiwify] parsed", { eventName, eventId, orderId, status, email, paid });
 
   try {
-    // 1) Log de evento (idempotência por event_id)
+    // 1) evento
     if (eventId) {
       await pool.query(
         `INSERT INTO kiwify_events (event_id, event_name, payload)
@@ -204,8 +153,7 @@ router.post("/", async (req, res) => {
       );
     }
 
-    // 2) Upsert compra (idempotência por provider+order_id)
-    // ⚠️ Isso exige que exista UNIQUE(provider, order_id) na tabela purchases
+    // 2) purchases
     if (orderId) {
       await pool.query(
         `INSERT INTO purchases (provider, order_id, email, status, payload)
@@ -220,41 +168,28 @@ router.post("/", async (req, res) => {
       );
     }
 
-    // 3) Atualiza sua base: leads_precheckout -> pago=true
+    // 3) marca lead como pago (se existir)
     if (paid && email) {
       const r = await pool.query(
         `UPDATE leads_precheckout
          SET pago = TRUE,
              pago_em = COALESCE(pago_em, NOW())
          WHERE LOWER(email) = LOWER($1)
-         RETURNING id, email, pago, pago_em`,
+         RETURNING email`,
         [email]
       );
-
-      console.log("[kiwify] leads_precheckout updated rows:", r.rowCount, r.rows?.[0] || null);
+      console.log("[kiwify] leads updated", { count: r.rowCount });
     }
 
-    // 4) Atualiza Brevo
+    // 4) brevo
     if (email) {
       await brevoUpsertPaidContact({ email, name, phone, paid });
-      console.log("[kiwify] brevo upsert ok:", { email: email.replace(/(.{2}).+(@.*)/, "$1***$2"), paid });
+      console.log("[kiwify] brevo ok");
     }
 
     return res.json({ ok: true });
   } catch (e) {
-    // logs melhores do Postgres + Axios
-    console.error("[webhook kiwify] error:", {
-      message: e.message,
-      code: e.code,
-      detail: e.detail,
-      constraint: e.constraint,
-      table: e.table,
-      schema: e.schema,
-      where: e.where,
-      hint: e.hint,
-      axios: e?.response?.data || null,
-    });
-
+    console.error("[kiwify] ERROR:", e?.response?.data || e.message);
     return res.status(500).json({ ok: false, error: "internal_error" });
   }
 });
