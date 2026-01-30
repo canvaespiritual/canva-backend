@@ -85,6 +85,74 @@ app.post(
 );
 app.use(express.json());
 
+// ✅ Health check (pra testar no localhost e no deploy)
+app.get("/health", (req, res) => res.status(200).send("ok"));
+
+// ✅ Lead pré-checkout (salva nome/email/whatsapp antes de ir pra Kiwify)
+app.post("/api/leads/precheckout", async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      phone,
+      page_url,
+      referrer,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+    } = req.body || {};
+
+    if (!name || !email || !phone) {
+      return res.status(400).json({ ok: false, error: "missing_fields" });
+    }
+
+    // normaliza
+    const emailNorm = String(email).trim().toLowerCase();
+    const phoneNorm = String(phone).replace(/\D/g, ""); // só dígitos
+
+    await pool.query(
+      `
+      INSERT INTO leads_precheckout
+        (name, email, phone, page_url, referrer, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
+      VALUES
+        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      ON CONFLICT (email)
+      DO UPDATE SET
+        name = EXCLUDED.name,
+        phone = EXCLUDED.phone,
+        page_url = EXCLUDED.page_url,
+        referrer = EXCLUDED.referrer,
+        utm_source = EXCLUDED.utm_source,
+        utm_medium = EXCLUDED.utm_medium,
+        utm_campaign = EXCLUDED.utm_campaign,
+        utm_content = EXCLUDED.utm_content,
+        utm_term = EXCLUDED.utm_term,
+        updated_at = NOW()
+      `,
+      [
+        name,
+        emailNorm,
+        phoneNorm,
+        page_url || null,
+        referrer || null,
+        utm_source || null,
+        utm_medium || null,
+        utm_campaign || null,
+        utm_content || null,
+        utm_term || null,
+      ]
+    );
+
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error("[precheckout] error:", e);
+    return res.status(500).json({ ok: false });
+  }
+});
+
+
 // 🧪 DEV | Asaas Sandbox (smoke test)
 app.use("/dev", asaasTestRoutes);
 // topo do arquivo:

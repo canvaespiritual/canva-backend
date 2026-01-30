@@ -61,7 +61,7 @@ fbq('track', 'ViewContent', {
 <!-- ===== Retenção por marcos (Meta + GA4; Ads opcional) ===== -->
 <script>
 (function(){
-  var VIDEO_ID = window.VIDEO_ID || '6921af18929a71f0a170c388';
+  var VIDEO_ID = window.VIDEO_ID || '697bd056a49b81aeddb47a3f';
   var REVEAL_AT_SECONDS = window.REVEAL_AT_SECONDS || 1670; // 30:17
   var WATCH_MARKS = window.WATCH_MARKS || [30, 90, 180, 360, 800, REVEAL_AT_SECONDS];
 
@@ -274,14 +274,62 @@ fbq('track', 'ViewContent', {
 /* Ajuste específico para DESKTOP: reduz a altura visual do player */
 @media (min-width: 1024px) {
   .player-box {
-    max-height: 650px;      /* você pode testar 580 / 600 / 680 se quiser */
+    max-height: 790px;      /* você pode testar 580 / 600 / 680 se quiser */
     margin-bottom: 0;
   }
 
   /* diminui o "tubão" preto mantendo o vídeo em evidência */
   .ratio {
-    padding-top: 110%;      /* antes 177% → agora bem mais enxuto no desktop */
+    padding-top: 130%;      /* antes 177% → agora bem mais enxuto no desktop */
   }
+}
+/* ===== DEPOIMENTOS (Prova Social) ===== */
+.depoimentos{
+  margin-top: 18px;
+  text-align: center;
+}
+
+.depoimentos h3{
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.depo-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.dep-card{
+  background: #14110f;
+  border: 1px solid #27231f;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.dep-card img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* Desktop: 2 colunas, mais visual */
+@media (min-width: 900px){
+  .depo-grid{
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .dep-card{
+    padding: 12px;
+  }
+}
+
+/* Destaque do depoimento principal (full) */
+.dep-feature{
+  grid-column: 1 / -1;
 }
 
   </style>
@@ -289,8 +337,8 @@ fbq('track', 'ViewContent', {
 </head>
 <body>
   <header class="wrap center">
-    <h1>Código da Harmonia</h1>
-    <p class="sub">O método que explica as doenças invisíveis da alma</p>
+    <h1></h1>
+    <p class="sub"></p>
   </header>
 
   <main class="wrap">
@@ -299,10 +347,10 @@ fbq('track', 'ViewContent', {
       <div class="ratio"></div>
       <div class="player-abs">
         <!-- Embed novo colado do painel -->
-        <vturb-smartplayer id="vid-6921af18929a71f0a170c388" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+        <vturb-smartplayer id="vid-697bd056a49b81aeddb47a3f" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
 <script type="text/javascript">
   var s=document.createElement("script");
-  s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/6921af18929a71f0a170c388/v4/player.js",
+  s.src="https://scripts.converteai.net/ab0d5dbd-353e-4147-a5c6-52ab96121828/players/697bd056a49b81aeddb47a3f/v4/player.js",
   s.async=!0,document.head.appendChild(s);
 </script>
 
@@ -314,6 +362,42 @@ fbq('track', 'ViewContent', {
       <button id="cta" class="btn">QUERO ATRAVESSAR O INVISÍVEL DA MINHA ALMA</button>
     </section>
     <p class="hint" id="timerHint"></p>
+    <!-- ===== DEPOIMENTOS (aparecem junto com CTA) ===== -->
+<section id="depoimentos" class="card depoimentos hidden">
+  <h3>O que alunos estão dizendo:</h3>
+
+  <div class="depo-grid">
+    <!-- Depoimento principal (full) -->
+    <div class="dep-card dep-feature">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/WhatsApp-Image-2026-01-27-at-09.21.14.jpeg" alt="Depoimento completo do curso Canva Espiritual" loading="lazy">
+    </div>
+
+    <div class="dep-card">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/dep002.jpg" alt="Depoimento 2" loading="lazy">
+    </div>
+
+    <div class="dep-card">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/dep0001.jpg" alt="Depoimento 3" loading="lazy">
+    </div>
+
+    <div class="dep-card">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/dep003.jpg" alt="Depoimento 4" loading="lazy">
+    </div>
+
+    <div class="dep-card">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/WhatsApp-Image-2026-01-27-at-09.33.43.jpeg" alt="Depoimento 5" loading="lazy">
+    </div>
+
+    <div class="dep-card">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/WhatsApp-Image-2026-01-27-at-09.30.06.jpeg" alt="Depoimento 6" loading="lazy">
+    </div>
+
+    <div class="dep-card">
+      <img src="https://canvaspiritual.com/wp-content/uploads/2026/01/WhatsApp-Image-2026-01-27-at-09.31.23.jpeg" alt="Depoimento 7" loading="lazy">
+    </div>
+  </div>
+</section>
+
 <section id="faqArea" class="card faq-area hidden">
       <h3>Perguntas que sua alma faria agora:</h3>
 
@@ -543,7 +627,7 @@ fbq('track', 'ViewContent', {
 
   <script>
     /* ====== CONFIG GERAL ====== */
-    const VIDEO_ID = '6921af18929a71f0a170c388';
+    const VIDEO_ID = '697bd056a49b81aeddb47a3f';
     const REVEAL_AT_SECONDS = 1674; // 30:17 (timeline do vídeo)
     const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
 
@@ -555,6 +639,7 @@ fbq('track', 'ViewContent', {
     const ctaBox   = document.getElementById('ctaBox');
     const ctaBtn   = document.getElementById('cta');
     const timerHint= document.getElementById('timerHint');
+    const depoSection = document.getElementById('depoimentos');
     const faqArea  = document.getElementById('faqArea');
     const benefitsSection = document.getElementById('benefitsSection');
     const bioSection      = document.getElementById('bio'); // se a bio for controlada junto
@@ -570,6 +655,28 @@ fbq('track', 'ViewContent', {
     const emailEl  = document.getElementById('email');
     const phoneEl  = document.getElementById('phone');
     const errEl    = document.getElementById('err');
+
+    async function saveLead({ name, email, phone }) {
+  try {
+    await fetch("/api/leads/precheckout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        page_url: window.location.href,
+        referrer: document.referrer || null,
+        utm_source: new URLSearchParams(location.search).get("utm_source"),
+        utm_medium: new URLSearchParams(location.search).get("utm_medium"),
+        utm_campaign: new URLSearchParams(location.search).get("utm_campaign"),
+        utm_content: new URLSearchParams(location.search).get("utm_content"),
+        utm_term: new URLSearchParams(location.search).get("utm_term"),
+      })
+    });
+  } catch (e) {}
+}
 
     /* ====== FUNÇÕES POPUP ====== */
     function openModal(){
@@ -608,7 +715,8 @@ fbq('track', 'ViewContent', {
     function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email); }
     function isValidPhoneDigits(d){ return d.length === 11; } // 2 DDD + 9 dígitos
 
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', async function(e){
+
       e.preventDefault();
       errEl.style.display='none';
 
@@ -623,6 +731,7 @@ fbq('track', 'ViewContent', {
       if (!phone.startsWith('55')) phone = '55' + phone;
 
       const url = `${KIWIFY_BASE}?coupon=${encodeURIComponent(COUPON)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+      await saveLead({ name, email, phone });
       window.location.href = url;
     });
 
@@ -631,6 +740,9 @@ fbq('track', 'ViewContent', {
   if (ctaBox && ctaBox.classList.contains('hidden')){
     ctaBox.classList.remove('hidden');
     if (timerHint) timerHint.textContent = '';
+  }
+    if (depoSection && depoSection.classList.contains('hidden')){
+    depoSection.classList.remove('hidden');
   }
 
   if (faqArea && faqArea.classList.contains('hidden')){
@@ -697,4 +809,3 @@ if (sec != null){
   </script>
 </body>
 </html>
-

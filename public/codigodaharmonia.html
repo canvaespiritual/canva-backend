@@ -656,6 +656,28 @@ fbq('track', 'ViewContent', {
     const phoneEl  = document.getElementById('phone');
     const errEl    = document.getElementById('err');
 
+    async function saveLead({ name, email, phone }) {
+  try {
+    await fetch("/api/leads/precheckout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        page_url: window.location.href,
+        referrer: document.referrer || null,
+        utm_source: new URLSearchParams(location.search).get("utm_source"),
+        utm_medium: new URLSearchParams(location.search).get("utm_medium"),
+        utm_campaign: new URLSearchParams(location.search).get("utm_campaign"),
+        utm_content: new URLSearchParams(location.search).get("utm_content"),
+        utm_term: new URLSearchParams(location.search).get("utm_term"),
+      })
+    });
+  } catch (e) {}
+}
+
     /* ====== FUNÇÕES POPUP ====== */
     function openModal(){
       modal.classList.add('show');
@@ -693,7 +715,8 @@ fbq('track', 'ViewContent', {
     function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email); }
     function isValidPhoneDigits(d){ return d.length === 11; } // 2 DDD + 9 dígitos
 
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', async function(e){
+
       e.preventDefault();
       errEl.style.display='none';
 
@@ -708,6 +731,7 @@ fbq('track', 'ViewContent', {
       if (!phone.startsWith('55')) phone = '55' + phone;
 
       const url = `${KIWIFY_BASE}?coupon=${encodeURIComponent(COUPON)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+      await saveLead({ name, email, phone });
       window.location.href = url;
     });
 
