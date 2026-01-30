@@ -84,7 +84,7 @@ app.use(session({
 app.post("/webhooks/stripe", express.raw({ type: "application/json" }), stripeWebhook);
 
 // Kiwify webhook (raw precisa vir ANTES do json)
-app.use("/webhooks/kiwify", express.raw({ type: "*/*" }), kiwifyWebhookRoutes);
+app.post("/webhooks/kiwify", express.raw({ type: "*/*" }), kiwifyWebhookRoutes);
 
 
 // JSON pro resto do app
