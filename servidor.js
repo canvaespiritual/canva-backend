@@ -24,6 +24,7 @@ const rotaGerar = require('./src/routes/gerar');
 const webhookRoutes = require("./src/routes/webhook");
 const webhookSesRoutes = require("./src/routes/webhookSes");
 const brevoRoutes = require("./src/routes/brevo"); // ✅ novo
+const kiwifyWebhookRoutes = require("./src/routes/kiwifyWebhook");
 const brevoLeadsRoutes = require("./src/routes/brevo-leads");
 const fruitDetailsRoutes = require("./src/routes/fruit-details"); // ✅ NEW (/api/fruit-details)
 const pingSincronizar = require("./src/routes/ping/sincronizar");
@@ -85,6 +86,20 @@ app.post(
   stripeWebhook
 );
 app.use(express.json());
+app.post(
+  "/webhooks/stripe",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
+
+app.use(
+  "/webhooks/kiwify",
+  express.raw({ type: "application/json" }),
+  kiwifyWebhookRoutes
+);
+
+app.use(express.json());
+
 
 // ✅ Health check (pra testar no localhost e no deploy)
 app.get("/health", (req, res) => res.status(200).send("ok"));
