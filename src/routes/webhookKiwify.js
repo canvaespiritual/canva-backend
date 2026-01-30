@@ -138,7 +138,13 @@ router.post("/", async (req, res) => {
     payload?.name ||
     "unknown";
 
-  const eventId = payload?.id || payload?.event_id || payload?.eventId || null;
+  const eventId =
+  payload?.id ||
+  payload?.event_id ||
+  payload?.eventId ||
+  (req.query?.signature ? String(req.query.signature) : null) ||
+  null;
+
 
   const email = normalizeEmail(
     payload?.Customer?.email ||
