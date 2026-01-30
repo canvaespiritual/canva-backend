@@ -9,9 +9,15 @@ const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN;
 const LIST_PRECHECKOUT = 8;
 const LIST_CLIENTES = 9;
 
+// ========= helpers =========
 function safeJsonParse(buf) {
   try {
-    return JSON.parse(buf.toString("utf8"));
+    // req.body vem como Buffer (express.raw)
+    if (Buffer.isBuffer(buf)) return JSON.parse(buf.toString("utf8"));
+    // fallback (caso alguém mude middleware)
+    if (typeof buf === "string") return JSON.parse(buf);
+    if (typeof buf === "object" && buf) return buf;
+    return null;
   } catch {
     return null;
   }
@@ -21,8 +27,13 @@ function normalizeEmail(v) {
   return (v || "").toString().trim().toLowerCase();
 }
 
+function maskToken(t) {
+  const s = (t || "").toString();
+  if (s.length <= 6) return "***";
+  return s.slice(0, 3) + "***" + s.slice(-3);
+}
+
 // Token pode vir em header OU query (varia por plataforma/config)
-// Mantive bem tolerante pra não travar.
 function getIncomingToken(req) {
   return (
     req.headers["x-kiwify-token"] ||
@@ -30,7 +41,9 @@ function getIncomingToken(req) {
     req.headers["authorization"] ||
     req.query?.token ||
     ""
-  ).toString().trim();
+  )
+    .toString()
+    .trim();
 }
 
 async function brevoUpsertPaidContact({ email, name, phone, paid }) {
@@ -43,9 +56,6 @@ async function brevoUpsertPaidContact({ email, name, phone, paid }) {
       TELEFONE: phone || "",
       PAGO: !!paid,
     },
-    // Obs: se você quiser "tirar" da lista 8 e colocar só na 9,
-    // Brevo geralmente mantém o contato nas listas anteriores.
-    // Se quiser remover, precisa chamada extra de remove-from-list.
     listIds: paid ? [LIST_CLIENTES] : [LIST_PRECHECKOUT],
     updateEnabled: true,
   };
@@ -64,42 +74,89 @@ function isPaidEvent({ eventName, status }) {
   const e = String(eventName || "").toLowerCase();
   const s = String(status || "").toLowerCase();
 
-  // Aceita vários nomes comuns (você pode ajustar depois que testar o payload real)
+  // nomes comuns de evento
   if (
     e.includes("compra_aprovada") ||
     e.includes("purchase_approved") ||
+    e.includes("compra_aprov") ||
     e.includes("paid") ||
     e.includes("approved") ||
     e.includes("completed")
-  ) return true;
+  ) {
+    return true;
+  }
 
-  if (["paid", "approved", "completed", "aprovado", "pago"].includes(s)) return true;
+  // status comuns
+  if (["paid", "approved", "completed", "aprovado", "pago"].includes(s)) {
+    return true;
+  }
 
   return false;
 }
 
+// tenta extrair info de produto (não quebra se não existir)
+function extractProduct(payload) {
+  const productId =
+    payload?.product?.id ||
+    payload?.product_id ||
+    payload?.offer?.product_id ||
+    payload?.order?.product_id ||
+    payload?.order?.product?.id ||
+    null;
+
+  const productName =
+    payload?.product?.name ||
+    payload?.product_name ||
+    payload?.offer?.name ||
+    payload?.order?.product?.name ||
+    null;
+
+  return { productId, productName };
+}
+
+// ========= route =========
 router.post("/", async (req, res) => {
-  // Como você usa express.raw, req.body é Buffer
+  // logs iniciais (debug)
+  console.log("[kiwify] webhook hit:", {
+    path: req.originalUrl,
+    method: req.method,
+    contentType: req.headers["content-type"],
+  });
+
+  // body parse
   const payload = safeJsonParse(req.body);
 
   if (!payload) {
+    console.log("[kiwify] invalid_json bodyType:", typeof req.body, "isBuffer:", Buffer.isBuffer(req.body));
     return res.status(400).json({ ok: false, error: "invalid_json" });
   }
 
-  // 0) Validação do token (se você quiser obrigar)
-  // Se não bater, recusa (isso evita webhook falso).
+  // log reduzido do que chegou (sem vazar payload gigante)
+  console.log("[kiwify] incoming meta:", {
+    query: req.query,
+    hasAuth: !!req.headers["authorization"],
+    hasXToken: !!req.headers["x-kiwify-token"] || !!req.headers["x-webhook-token"],
+    payloadKeys: Object.keys(payload || {}).slice(0, 30),
+  });
+
+  // 0) Validação do token (se existir no env)
   if (KIWIFY_WEBHOOK_TOKEN) {
     const incomingToken = getIncomingToken(req);
-
-    // Se o token vier como "Bearer xxxxx", normaliza
     const tokenClean = incomingToken.replace(/^bearer\s+/i, "");
 
     if (tokenClean !== KIWIFY_WEBHOOK_TOKEN) {
+      console.log("[kiwify] token inválido:", {
+        received: maskToken(tokenClean),
+        expected: maskToken(KIWIFY_WEBHOOK_TOKEN),
+        headerAuth: !!req.headers["authorization"],
+        headerX: !!req.headers["x-kiwify-token"] || !!req.headers["x-webhook-token"],
+        queryToken: !!req.query?.token,
+      });
       return res.status(401).json({ ok: false, error: "invalid_webhook_token" });
     }
   }
 
-  // Campos genéricos (ajuste fino depois com payload real)
+  // Campos genéricos
   const eventName = payload?.event || payload?.type || payload?.name || "unknown";
   const eventId = payload?.id || payload?.event_id || payload?.eventId || null;
 
@@ -123,6 +180,18 @@ router.post("/", async (req, res) => {
     "unknown";
 
   const paid = isPaidEvent({ eventName, status });
+  const { productId, productName } = extractProduct(payload);
+
+  console.log("[kiwify] parsed:", {
+    eventName,
+    eventId: eventId ? String(eventId).slice(0, 18) : null,
+    orderId: orderId ? String(orderId).slice(0, 18) : null,
+    status,
+    paid,
+    email: email ? email.replace(/(.{2}).+(@.*)/, "$1***$2") : null,
+    productId,
+    productName,
+  });
 
   try {
     // 1) Log de evento (idempotência por event_id)
@@ -136,6 +205,7 @@ router.post("/", async (req, res) => {
     }
 
     // 2) Upsert compra (idempotência por provider+order_id)
+    // ⚠️ Isso exige que exista UNIQUE(provider, order_id) na tabela purchases
     if (orderId) {
       await pool.query(
         `INSERT INTO purchases (provider, order_id, email, status, payload)
@@ -151,26 +221,41 @@ router.post("/", async (req, res) => {
     }
 
     // 3) Atualiza sua base: leads_precheckout -> pago=true
-    // Só faz isso quando tiver email + paid.
     if (paid && email) {
-      await pool.query(
+      const r = await pool.query(
         `UPDATE leads_precheckout
          SET pago = TRUE,
              pago_em = COALESCE(pago_em, NOW())
-         WHERE LOWER(email) = LOWER($1)`,
+         WHERE LOWER(email) = LOWER($1)
+         RETURNING id, email, pago, pago_em`,
         [email]
       );
+
+      console.log("[kiwify] leads_precheckout updated rows:", r.rowCount, r.rows?.[0] || null);
     }
 
     // 4) Atualiza Brevo
     if (email) {
       await brevoUpsertPaidContact({ email, name, phone, paid });
+      console.log("[kiwify] brevo upsert ok:", { email: email.replace(/(.{2}).+(@.*)/, "$1***$2"), paid });
     }
 
     return res.json({ ok: true });
   } catch (e) {
-    console.error("[webhook kiwify] error:", e?.response?.data || e.message);
-    return res.status(500).json({ ok: false });
+    // logs melhores do Postgres + Axios
+    console.error("[webhook kiwify] error:", {
+      message: e.message,
+      code: e.code,
+      detail: e.detail,
+      constraint: e.constraint,
+      table: e.table,
+      schema: e.schema,
+      where: e.where,
+      hint: e.hint,
+      axios: e?.response?.data || null,
+    });
+
+    return res.status(500).json({ ok: false, error: "internal_error" });
   }
 });
 

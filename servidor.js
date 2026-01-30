@@ -80,25 +80,15 @@ app.use(session({
     secure: emProducao // em produção, só envia por HTTPS
   }
 }));
-app.post(
-  "/webhooks/stripe",
-  express.raw({ type: "application/json" }),
-  stripeWebhook
-);
-app.use(express.json());
-app.post(
-  "/webhooks/stripe",
-  express.raw({ type: "application/json" }),
-  stripeWebhook
-);
+// Stripe webhook (raw precisa vir ANTES do json)
+app.post("/webhooks/stripe", express.raw({ type: "application/json" }), stripeWebhook);
 
-app.use(
-  "/webhooks/kiwify",
-  express.raw({ type: "application/json" }),
-  kiwifyWebhookRoutes
-);
+// Kiwify webhook (raw precisa vir ANTES do json)
+app.post("/webhooks/kiwify", express.raw({ type: "*/*" }), kiwifyWebhookRoutes);
 
+// JSON pro resto do app
 app.use(express.json());
+
 
 
 // ✅ Health check (pra testar no localhost e no deploy)
