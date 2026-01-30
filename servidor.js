@@ -24,6 +24,7 @@ const rotaGerar = require('./src/routes/gerar');
 const webhookRoutes = require("./src/routes/webhook");
 const webhookSesRoutes = require("./src/routes/webhookSes");
 const brevoRoutes = require("./src/routes/brevo"); // ✅ novo
+const brevoLeadsRoutes = require("./src/routes/brevoLeads");
 const fruitDetailsRoutes = require("./src/routes/fruit-details"); // ✅ NEW (/api/fruit-details)
 const pingSincronizar = require("./src/routes/ping/sincronizar");
 // 👇 Painel do Afiliado (frontend + API)
@@ -88,6 +89,7 @@ app.use(express.json());
 // ✅ Health check (pra testar no localhost e no deploy)
 app.get("/health", (req, res) => res.status(200).send("ok"));
 
+
 // ✅ Lead pré-checkout (salva nome/email/whatsapp antes de ir pra Kiwify)
 app.post("/api/leads/precheckout", async (req, res) => {
   try {
@@ -108,10 +110,14 @@ app.post("/api/leads/precheckout", async (req, res) => {
       return res.status(400).json({ ok: false, error: "missing_fields" });
     }
 
-    // normaliza
+    // ✅ normaliza email
     const emailNorm = String(email).trim().toLowerCase();
-    const phoneNorm = String(phone).replace(/\D/g, ""); // só dígitos
 
+    // ✅ normaliza telefone: só dígitos + garante DDI 55
+    let phoneNorm = String(phone).replace(/\D/g, "");
+    if (!phoneNorm.startsWith("55")) phoneNorm = "55" + phoneNorm;
+
+    // ✅ salva no banco (DB first) sem apagar tracking com null
     await pool.query(
       `
       INSERT INTO leads_precheckout
@@ -122,17 +128,20 @@ app.post("/api/leads/precheckout", async (req, res) => {
       DO UPDATE SET
         name = EXCLUDED.name,
         phone = EXCLUDED.phone,
-        page_url = EXCLUDED.page_url,
-        referrer = EXCLUDED.referrer,
-        utm_source = EXCLUDED.utm_source,
-        utm_medium = EXCLUDED.utm_medium,
-        utm_campaign = EXCLUDED.utm_campaign,
-        utm_content = EXCLUDED.utm_content,
-        utm_term = EXCLUDED.utm_term,
+
+        page_url = COALESCE(EXCLUDED.page_url, leads_precheckout.page_url),
+        referrer = COALESCE(EXCLUDED.referrer, leads_precheckout.referrer),
+
+        utm_source   = COALESCE(EXCLUDED.utm_source, leads_precheckout.utm_source),
+        utm_medium   = COALESCE(EXCLUDED.utm_medium, leads_precheckout.utm_medium),
+        utm_campaign = COALESCE(EXCLUDED.utm_campaign, leads_precheckout.utm_campaign),
+        utm_content  = COALESCE(EXCLUDED.utm_content, leads_precheckout.utm_content),
+        utm_term     = COALESCE(EXCLUDED.utm_term, leads_precheckout.utm_term),
+
         updated_at = NOW()
       `,
       [
-        name,
+        String(name).trim(),
         emailNorm,
         phoneNorm,
         page_url || null,
@@ -144,6 +153,32 @@ app.post("/api/leads/precheckout", async (req, res) => {
         utm_term || null,
       ]
     );
+
+    // ✅ envia pro Brevo (não pode quebrar o fluxo se falhar)
+    try {
+      await axios.post(
+        "https://api.canvaspiritual.com/api/brevo-leads/precheckout",
+        {
+          name: String(name).trim(),
+          email: emailNorm,
+          phone: phoneNorm,
+          page_url: page_url || null,
+          referrer: referrer || null,
+          utm_source: utm_source || null,
+          utm_medium: utm_medium || null,
+          utm_campaign: utm_campaign || null,
+          utm_content: utm_content || null,
+          utm_term: utm_term || null,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          timeout: 6000,
+        }
+      );
+    } catch (e) {
+      console.error("[brevo precheckout] falhou:", e.response?.data || e.message);
+      // segue normal: já salvou no banco
+    }
 
     return res.json({ ok: true });
   } catch (e) {
@@ -317,6 +352,8 @@ app.use('/status', statusRoute);
 app.use('/gerar', rotaGerar);
 app.use('/api/teste', testeSimulacaoRouter);
 app.use('/api/brevo', brevoRoutes);
+app.use("/api/brevo-leads", brevoLeadsRoutes);
+
 app.use('/ping/sincronizar', pingSincronizar);
 const segundaViaRelatoriosRouter = require("./src/routes/segundaViaRelatorios");
 app.use("/api/segunda-via-relatorios", segundaViaRelatoriosRouter);
