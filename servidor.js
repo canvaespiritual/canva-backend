@@ -24,7 +24,7 @@ const rotaGerar = require('./src/routes/gerar');
 const webhookRoutes = require("./src/routes/webhook");
 const webhookSesRoutes = require("./src/routes/webhookSes");
 const brevoRoutes = require("./src/routes/brevo"); // ✅ novo
-const brevoLeadsRoutes = require("./src/routes/brevoLeads");
+const brevoLeadsRoutes = require("./src/routes/brevo-leads");
 const fruitDetailsRoutes = require("./src/routes/fruit-details"); // ✅ NEW (/api/fruit-details)
 const pingSincronizar = require("./src/routes/ping/sincronizar");
 // 👇 Painel do Afiliado (frontend + API)
