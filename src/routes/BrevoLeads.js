@@ -5,7 +5,7 @@ const router = express.Router();
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
-// LISTAS
+// LISTAS //
 const LIST_PRECHECKOUT = 8;
 const LIST_CLIENTES = 9;
 
