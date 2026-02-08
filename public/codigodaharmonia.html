@@ -741,9 +741,10 @@ fbq('track', 'ViewContent', {
     ctaBox.classList.remove('hidden');
     if (timerHint) timerHint.textContent = '';
   }
-    if (depoSection && depoSection.classList.contains('hidden')){
-    depoSection.classList.remove('hidden');
-  }
+   // depoimentos OFF (reversível)
+  //  if (depoSection && depoSection.classList.contains('hidden')){
+   // depoSection.classList.remove('hidden');
+  //}
 
   if (faqArea && faqArea.classList.contains('hidden')){
     faqArea.classList.remove('hidden');

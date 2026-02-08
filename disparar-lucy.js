@@ -6,7 +6,7 @@ async function main() {
   const connection = new IORedis(process.env.REDIS_URL, { maxRetriesPerRequest: null });
   const queue = new Queue("relatorios", { connection });
 
-  const session_id = "sessao-1768479643507"; // Lucy
+  const session_id = "sessao-1770498008592"; // Lucy
   await queue.add("gerar_relatorio", { session_id }, { removeOnComplete: true, attempts: 3 });
 
   console.log("✅ Job enfileirado para:", session_id);
