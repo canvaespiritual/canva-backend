@@ -23,12 +23,22 @@
     "ioredis": "^5.6.1",
     "mercadopago": "^2.8.0",
     "nodemailer": "^7.0.3",
-    "pg": "^8.16.3",
-    "puppeteer": "^24.13.0",
+    "pg": "^8.18.0",
+    "puppeteer": "^24.37.5",
     "stripe": "^18.2.1",
     "twemoji": "^14.0.2",
     "uuid": "^11.1.0",
     "xlsx": "^0.18.5"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canvaespiritual/canva-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/canvaespiritual/canva-backend/issues"
+  },
+  "homepage": "https://github.com/canvaespiritual/canva-backend#readme"
 }
