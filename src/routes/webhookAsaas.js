@@ -59,6 +59,34 @@ async function fetchPaymentFromAsaas(paymentId) {
     return null;
   }
 }
+async function marcarPrepaidComoPago(pay) {
+  const externalReference = String(pay?.externalReference || "");
+
+  if (!externalReference.startsWith("prepaid:")) {
+    return false;
+  }
+
+  const creditId = externalReference.replace("prepaid:", "").trim();
+  const paymentId = pay?.id || null;
+
+  if (!creditId) {
+    console.warn("[ASAAS WH] prepaid sem creditId.");
+    return true;
+  }
+
+  await pool.query(`
+    UPDATE prepaid_quiz_credits
+    SET
+      status = 'paid',
+      gateway_payment_id = COALESCE($1, gateway_payment_id),
+      paid_at = NOW()
+    WHERE id::text = $2
+  `, [paymentId, creditId]);
+
+  console.log("[ASAAS WH] crédito pré-pago liberado:", creditId);
+
+  return true;
+}
 // === Política do link (A/V/S) e wallets ===
 // === Política do link (A/V/S) e wallets — com supervisor_id (se houver) ===
 async function getPolicyBySession(sessionId) {
@@ -461,6 +489,11 @@ router.post("/", async (req, res) => {
 
     // Pago
     if (PAID_EVENTS.has(tipo)) {
+      const prepaidResolvido = await marcarPrepaidComoPago(pay);
+
+      if (prepaidResolvido) {
+        return res.sendStatus(200);
+      }
       const sessionId = await resolverSessionId(pay);
       if (!sessionId) {
         console.warn("[ASAAS WH] Sessão não encontrada para payment:", paymentId);

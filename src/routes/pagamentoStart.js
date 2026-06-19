@@ -43,14 +43,24 @@ function mapPreco(tipo) {
 }
 
 function mapTipoRelatorio(tipo) {
-  // o que será gravado em diagnosticos.tipo_relatorio (worker/gerador usam isso)
   const t = normalizeTipo(tipo);
   if (t === "premium")  return "premium";
   if (t === "completo") return "completo";
   return "essencial";
 }
 
+const VALOR_MINIMO = 12;
+const VALOR_MAXIMO = 500;
+
+function clampValor(v, fallback) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(Math.max(n, VALOR_MINIMO), VALOR_MAXIMO);
+}
+
 const clampPct = (n) => Math.max(0, Math.min(100, Number.isFinite(+n) ? +n : 30));
+
+
 
 function normalizeHttpsBase(u) {
   let s = String(u || "").trim();
@@ -152,8 +162,14 @@ if (vend) {
 // POST /pagamento/start  { tipo, session_id, ref? }
 router.post("/start", async (req, res) => {
   try {
-    let { tipo, session_id, ref } = req.body || {};
-    tipo = normalizeTipo(tipo);
+    let { tipo, session_id, ref, valor, strictAsaas } = req.body || {};
+
+      tipo = normalizeTipo(tipo);
+
+      const valorFinal = clampValor(
+        valor,
+        mapPreco(tipo)
+      );
     console.log("[/pagamento/start] INICIO", { tipo, session_id, ref });
 
     if (!tipo || !session_id) {
@@ -254,7 +270,7 @@ if (linkSplits.length) {
     items: [{
       name: `Diagnostico ${tipo}`,
       description: `Diagnóstico ${tipo} - ${sessionId}`,
-      value: mapPreco(tipo),
+      value: valorFinal,
       quantity: 1
     }],
     externalReference: sessionId,
@@ -377,7 +393,7 @@ if (linkSplits.length) {
         items: [{
           name: `Diagnostico ${tipo}`,                          // sem acento
           description: `Diagnóstico ${tipo} - ${session_id}`,   // ok com acento
-          value: mapPreco(tipo),
+          value: valorFinal,
           quantity: 1
         }],
         externalReference: session_id,

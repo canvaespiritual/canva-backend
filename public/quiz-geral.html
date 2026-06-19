@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkup Emocional — Mapa da Alma</title>
+
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tg0bonz3au");
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '734281049586138');
+    fbq('track', 'PageView');
+    fbq('track', 'ViewContent', {
+      content_name: 'Checkup Emocional - Protocolo Geral',
+      content_category: 'quiz'
+    });
+  </script>
+
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"/>
+  </noscript>
+
+  <!-- Google -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9QDEN04CQM');
+    gtag('config', 'AW-936695843');
+
+    gtag('event', 'conversion', {
+      send_to: 'AW-936695843/V9hFCKeIipcbEKOw074D'
+    });
+
+    gtag('event', 'view_item', {
+      currency: 'BRL',
+      value: 0,
+      items: [{
+        item_id: 'quiz-geral',
+        item_name: 'Checkup Emocional - Protocolo Geral',
+        item_category: 'quiz'
+      }]
+    });
+
+    function quizStart(){
+      if (typeof fbq === 'function') {
+        fbq('trackCustom', 'QuizStart', {
+          step: 'start',
+          content_category: 'quiz',
+          protocolo: 'geral'
+        });
+      }
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'start_quiz', {
+          content_category: 'quiz',
+          protocolo: 'geral'
+        });
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-white text-gray-800 font-sans">
+
+  <!-- Intro fica oculta: o quiz começa direto -->
+  <section id="intro" class="hidden min-h-screen flex flex-col justify-center items-center px-4 text-center space-y-4">
+    <h1 class="text-2xl font-semibold text-[#143d59] leading-snug">
+      Qual foi a última vez que você enxergou sua alma por completo?
+    </h1>
+    <picture>
+      <source srcset="./assets/pagina-inicial.webp" type="image/webp" />
+      <img src="./assets/pagina-inicial.png" alt="Ilustração do estado da alma" class="w-64 max-w-[80%] mx-auto mb-2" loading="lazy" />
+    </picture>
+    <p class="text-gray-600 text-sm">Autoanálise gratuita • Protocolo Geral – Mapa da Alma</p>
+  </section>
+
+  <div id="quiz-container"></div>
+
+  <section id="formulario-final" class="hidden max-w-2xl mx-auto p-6 space-y-4"></section>
+
+  <script src="./frutos-detalhes.js"></script>
+  <script src="./fe-detalhes.js"></script>
+  <script src="./servidao-detalhes.js"></script>
+  <script src="./bencao-detalhes.js"></script>
+
+  <script type="module">
+    import detalhesFe from './fe-detalhes.js';
+    import detalhesServidao from './servidao-detalhes.js';
+    import detalhesBencao from './bencao-detalhes.js';
+
+    window.detalhesFe = detalhesFe;
+    window.detalhesServidao = detalhesServidao;
+    window.detalhesBencao = detalhesBencao;
+  </script>
+
+  <script src="./script-geral.js"></script>
+
+  <audio id="musicaAmbiente" loop>
+    <source src="./assets/audio/som-ambiente.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div id="controleSom" class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500">
+    <div class="relative flex items-center justify-center">
+      <input type="range" id="volumeSlider"
+        min="0" max="1" step="0.01" value="0.1"
+        class="hidden absolute bottom-[100px] w-24 h-2 rotate-[-90deg] origin-bottom bg-gray-300 rounded-full appearance-none cursor-pointer transition-all duration-300" />
+      <button id="botaoSom"
+        class="bg-white bg-opacity-30 backdrop-blur-md shadow-lg p-3 rounded-full text-gray-700 hover:bg-opacity-60 transition">
+        🔊
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -12,6 +12,7 @@ const enviarRouter = require("./routes/enviar");
 const relatorioRoutes = require('./src/routes/relatorio');
 const mercadopagoRoutes = require('./src/routes/mercadopago');
 const pagamentoPixRoutes = require("./src/routes/pagamentoPix");
+const pagamentoAsaasPixSplit = require("./src/routes/pagamentoAsaasPixSplit");
 const pagamentoEmbed = require('./src/routes/pagamentoEmbed');
 const pagamentoStatus = require("./src/routes/pagamentoStatus");
 const pagamentoStart = require("./src/routes/pagamentoStart");
@@ -41,6 +42,8 @@ const asaasSubaccountService = require("./src/services/asaasSubaccountService");
 const pagamentoStatusSessao = require("./src/routes/pagamentoStatusSessao");
 const vendorsRoutes = require("./src/routes/vendors");
 const debugRoutes = require("./src/routes/debug"); // ← ADD
+const prepaidQuiz = require("./src/routes/prepaidQuiz");
+const prepaidCheckout = require("./src/routes/prepaidCheckout");
 
 
 // ⬇️ adicione esta linha
@@ -369,8 +372,11 @@ app.use("/api/brevo-leads", brevoLeadsRoutes);
 app.use('/ping/sincronizar', pingSincronizar);
 const segundaViaRelatoriosRouter = require("./src/routes/segundaViaRelatorios");
 app.use("/api/segunda-via-relatorios", segundaViaRelatoriosRouter);
+
 // ★ HARD OVERRIDE: status da subconta (DB-first) — destrava o dashboard
 // ★ OVERRIDE ÚNICO de status: DB-first + auto-enable do link
+app.use("/api/prepaid", prepaidQuiz);
+app.use("/api/prepaid-checkout", prepaidCheckout);
 app.get("/affiliates/me/asaas/status", async (req, res) => {
   try {
     const aff = req.session?.aff;
@@ -494,6 +500,7 @@ app.use("/api/salvar-quiz", salvarQuizRouter);
 app.use("/pagamento", pagamentoStart);
 app.use('/pagamento', mercadopagoRoutes);
 app.use("/pagamento", pagamentoPixRoutes);
+app.use("/pagamento/asaas", pagamentoAsaasPixSplit);
 app.use('/pagamento', pagamentoEmbed);
 app.use("/pagamento", pagamentoStatus);
 app.use("/pagamento", statusRedirect);

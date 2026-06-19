@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Escolher Checkup Emocional</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+<div class="max-w-xl mx-auto px-5 py-10">
+
+  <div class="bg-white rounded-3xl shadow-lg p-7">
+
+    <h1 class="text-2xl font-bold text-center mb-3">
+      Acesse seu Checkup Emocional
+    </h1>
+
+    <p class="text-center text-slate-500 text-sm mb-6">
+      Digite o e-mail usado na compra para continuar.
+    </p>
+
+    <div id="emailBox">
+      <label class="text-sm font-semibold text-slate-700">E-mail</label>
+      <input
+        id="emailInput"
+        type="email"
+        placeholder="seuemail@exemplo.com"
+        class="w-full border rounded-xl p-4 mt-1 mb-4"
+      />
+
+      <button
+        id="verificarBtn"
+        class="w-full bg-[#143d59] text-white py-4 rounded-xl font-semibold">
+        Continuar
+      </button>
+    </div>
+
+    <div id="status" class="text-center text-sm mt-5 text-slate-500"></div>
+
+    <div id="quizBox" class="hidden mt-7">
+      <h2 id="boasVindas" class="text-xl font-bold text-center mb-2"></h2>
+
+      <p class="text-center text-slate-500 text-sm mb-6">
+        Você possui um Checkup disponível. Escolha por onde deseja começar:
+      </p>
+
+      <div class="grid gap-3">
+        <button data-quiz="quiz-geral.html" class="quizBtn bg-slate-100 hover:bg-blue-100 p-4 rounded-xl text-left">
+          🌿 Checkup Geral
+          <div class="text-xs text-slate-500 mt-1">Um espelho completo da sua vibração emocional.</div>
+        </button>
+
+        <button data-quiz="quiz-familiar.html" class="quizBtn bg-slate-100 hover:bg-blue-100 p-4 rounded-xl text-left">
+          🏠 Vida Familiar
+          <div class="text-xs text-slate-500 mt-1">Entenda seus padrões emocionais no ambiente familiar.</div>
+        </button>
+
+        <button data-quiz="quiz-social.html" class="quizBtn bg-slate-100 hover:bg-blue-100 p-4 rounded-xl text-left">
+          🤝 Vida Social
+          <div class="text-xs text-slate-500 mt-1">Veja como sua vibração aparece nas amizades e grupos.</div>
+        </button>
+
+        <button data-quiz="quiz-profissional.html" class="quizBtn bg-slate-100 hover:bg-blue-100 p-4 rounded-xl text-left">
+          💼 Vida Profissional
+          <div class="text-xs text-slate-500 mt-1">Perceba seus reflexos emocionais no trabalho e na missão.</div>
+        </button>
+      </div>
+    </div>
+
+    <div id="relatoriosBox" class="hidden mt-7">
+      <h2 class="text-xl font-bold text-center mb-2">
+        Você já utilizou seu acesso
+      </h2>
+
+      <p class="text-center text-slate-500 text-sm mb-5">
+        Encontramos relatórios associados a este e-mail.
+      </p>
+
+      <div id="listaRelatorios" class="space-y-3"></div>
+
+      <a
+        href="/quiz-geral.html"
+        class="block text-center mt-6 text-sm text-blue-700 underline">
+        Fazer um novo Checkup
+      </a>
+    </div>
+
+    <div id="semAcessoBox" class="hidden mt-7 text-center">
+      <h2 class="text-xl font-bold mb-2">
+        Nenhum acesso ativo encontrado
+      </h2>
+
+      <p class="text-slate-500 text-sm mb-5">
+        Verifique se digitou o e-mail correto ou faça um novo Checkup.
+      </p>
+
+      <a
+        href="/quiz-geral.html"
+        class="inline-block bg-[#143d59] text-white py-3 px-6 rounded-xl font-semibold">
+        Fazer meu Checkup
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+
+const emailInput = document.getElementById("emailInput");
+const verificarBtn = document.getElementById("verificarBtn");
+const statusEl = document.getElementById("status");
+
+const emailBox = document.getElementById("emailBox");
+const quizBox = document.getElementById("quizBox");
+const relatoriosBox = document.getElementById("relatoriosBox");
+const semAcessoBox = document.getElementById("semAcessoBox");
+const boasVindas = document.getElementById("boasVindas");
+const listaRelatorios = document.getElementById("listaRelatorios");
+
+let emailValidado = "";
+let nomeValidado = "";
+
+function setStatus(msg){
+  statusEl.textContent = msg || "";
+}
+
+function resetBoxes(){
+  quizBox.classList.add("hidden");
+  relatoriosBox.classList.add("hidden");
+  semAcessoBox.classList.add("hidden");
+  listaRelatorios.innerHTML = "";
+}
+
+function normalizeEmail(v){
+  return String(v || "").trim().toLowerCase();
+}
+
+verificarBtn.onclick = async () => {
+  const email = normalizeEmail(emailInput.value);
+
+  resetBoxes();
+
+  if(!email){
+    setStatus("Informe seu e-mail para continuar.");
+    emailInput.focus();
+    return;
+  }
+
+  verificarBtn.disabled = true;
+  verificarBtn.textContent = "Verificando...";
+  setStatus("Consultando seu acesso...");
+
+  try{
+    const resp = await fetch("/api/prepaid/verificar-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await resp.json();
+
+    if(!resp.ok || !data.ok){
+      throw new Error(data.erro || "Não foi possível verificar o acesso.");
+    }
+
+    emailValidado = data.email || email;
+    nomeValidado = data.nome || "";
+
+    if(data.tem_credito){
+      emailBox.classList.add("hidden");
+      setStatus("");
+
+      boasVindas.textContent =
+        nomeValidado ? `Olá, ${nomeValidado}` : "Acesso liberado";
+
+        localStorage.setItem("prepaid_nome", nomeValidado || "");
+
+      quizBox.classList.remove("hidden");
+      return;
+    }
+
+    if(data.motivo === "ja_usado"){
+      emailBox.classList.add("hidden");
+      setStatus("");
+      mostrarRelatorios(data.relatorios || []);
+      return;
+    }
+
+    setStatus("");
+    semAcessoBox.classList.remove("hidden");
+
+  }catch(e){
+    console.error(e);
+    setStatus("Não foi possível verificar agora. Tente novamente.");
+  }finally{
+    verificarBtn.disabled = false;
+    verificarBtn.textContent = "Continuar";
+  }
+};
+
+function mostrarRelatorios(relatorios){
+  relatoriosBox.classList.remove("hidden");
+
+  if(!relatorios.length){
+    listaRelatorios.innerHTML = `
+      <div class="bg-slate-100 rounded-xl p-4 text-sm text-slate-600 text-center">
+        Nenhum relatório encontrado ainda.
+      </div>
+    `;
+    return;
+  }
+
+  listaRelatorios.innerHTML = relatorios.map(r => {
+    const sessionId = r.session_id || "";
+    const tipo = r.tipo_relatorio || "completo";
+    const url = r.pdf_url || `/aguarde.html?session_id=${encodeURIComponent(sessionId)}`;
+
+    return `
+      <a href="${url}" class="block bg-slate-100 hover:bg-blue-100 rounded-xl p-4">
+        <div class="font-semibold">Relatório ${tipo}</div>
+        <div class="text-xs text-slate-500 mt-1">${sessionId}</div>
+      </a>
+    `;
+  }).join("");
+}
+
+document.querySelectorAll(".quizBtn").forEach(btn => {
+  btn.onclick = () => {
+    const quiz = btn.dataset.quiz;
+
+    if(!emailValidado){
+      setStatus("Confirme seu e-mail antes de continuar.");
+      return;
+    }
+
+    const url =
+      `/${quiz}?prepaid=1&email=${encodeURIComponent(emailValidado)}`;
+
+    window.location.href = url;
+  };
+});
+
+emailInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    e.preventDefault();
+    verificarBtn.click();
+  }
+});
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+        table_name
+---------------------------
+ affiliate_clicks
+ affiliate_links
+ affiliate_orders
+ affiliate_password_resets
+ affiliates
+ arquetipos
+ asaas_webhook_events
+ attribution
+ commissions
+ diagnostico_eventos
+ diagnosticos
+ diagnosticos_backup_dups
+ i18n_translations
+ kiwify_events
+ leads_precheckout
+ mapa_da_alma
+ mapa_espiritual
+ partner_ledger
+ predisposicoes
+ purchases
+ sales
+ withdrawals
+(22 linhas)
+

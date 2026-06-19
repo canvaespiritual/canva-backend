@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkup Emocional</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50">
+
+<div class="max-w-xl mx-auto px-5 py-8">
+  <div class="bg-white rounded-3xl shadow-lg p-8">
+
+    <div class="flex justify-center mb-5">
+      <img src="./assets/branding/logo-checkup-emocional.webp" alt="Checkup Emocional" class="w-72 max-w-full" />
+    </div>
+
+    <h1 id="titleH1" class="text-2xl font-bold text-center text-slate-800 mb-3 leading-tight">
+      Seu Checkup Emocional está pronto
+    </h1>
+
+    <p class="text-center text-slate-500 mb-4">
+      Mais de 8.000 pessoas já receberam seu autodiagnóstico.
+    </p>
+
+    <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden mb-2">
+      <div class="h-full bg-[#143d59] w-[78%]"></div>
+    </div>
+
+    <p class="text-center text-xs text-slate-400 mb-8">
+      78% da experiência já foi concluída. Falta apenas liberar o recebimento.
+    </p>
+
+    <div class="flex justify-center mb-4">
+      <img src="./assets/branding/logo-quero-apoiar.webp" alt="Quero Apoiar" class="w-48 max-w-full" />
+    </div>
+
+    <h2 class="text-xl font-semibold text-center mb-2">Apoie este projeto</h2>
+
+    <p class="text-center text-slate-500 mb-6">
+      Sua contribuição ajuda a manter este trabalho acessível para mais pessoas.
+    </p>
+
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <button class="chip bg-slate-100 rounded-xl p-4 font-semibold" data-v="12">R$12</button>
+      <button class="chip bg-slate-100 rounded-xl p-4 font-semibold" data-v="20">R$20</button>
+      <button class="chip bg-slate-100 rounded-xl p-4 font-semibold" data-v="35">R$35</button>
+      <button class="chip bg-slate-100 rounded-xl p-4 font-semibold" data-v="50">R$50</button>
+    </div>
+
+    <input id="valorSolidario" type="number" min="12" step="1" value="12"
+      class="w-full border rounded-xl p-4 text-center text-lg mb-4" />
+
+    <p class="text-center text-slate-500 text-sm mb-6">
+      Qualquer valor libera o mesmo Checkup Emocional completo.
+      <br>
+      Valor mínimo: <strong>R$12</strong>.
+    </p>
+
+    <div class="flex justify-center mb-4">
+      <img src="./assets/branding/selo-pagamento-seguro.webp" alt="Pagamento Seguro" class="w-44 max-w-full" />
+    </div>
+
+    <button id="solidarioBtn" class="w-full bg-[#143d59] text-white py-4 rounded-xl font-semibold text-lg">
+      Liberar meu Checkup Emocional →
+    </button>
+
+  </div>
+</div>
+
+<div id="asaasModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4">
+  <div class="bg-white rounded-3xl shadow-xl w-full max-w-md p-6 relative max-h-[90vh] overflow-y-auto">
+
+    <button id="fecharModal" class="absolute right-4 top-3 text-slate-400 text-2xl">&times;</button>
+
+    <h2 class="text-xl font-bold text-center text-slate-800 mb-2">
+      Liberar Checkup Emocional
+    </h2>
+
+    <p class="text-center text-sm text-slate-500 mb-5">
+      Pagamento seguro via PIX.
+    </p>
+
+    <label class="text-sm font-semibold text-slate-700">Nome</label>
+    <input id="asaasNome" class="w-full border rounded-xl p-3 mb-3 bg-slate-50" placeholder="Seu nome" />
+
+    <label class="text-sm font-semibold text-slate-700">Email</label>
+    <input id="asaasEmail" class="w-full border rounded-xl p-3 mb-3 bg-slate-50" placeholder="Seu email" />
+
+    <label class="text-sm font-semibold text-slate-700">CPF</label>
+    <input id="asaasCpf" class="w-full border rounded-xl p-3 mb-2" placeholder="Digite seu CPF" inputmode="numeric" />
+
+    <p id="cpfErro" class="hidden text-red-600 text-sm mb-3">
+      Para gerar o PIX, preencha seu CPF.
+    </p>
+
+    <button id="gerarPixBtn" class="w-full bg-[#143d59] text-white py-3 rounded-xl font-semibold mb-3">
+      Gerar PIX
+    </button>
+
+    <button id="cartaoAsaasBtn" class="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold mb-4">
+  Pagar com cartão
+</button>
+
+    <div id="pixArea" class="hidden text-center">
+      <img id="pixQrImg" class="mx-auto w-60 h-60 border rounded-xl mb-3" />
+      <p class="text-sm text-slate-600 mb-2">Escaneie o QR Code ou copie o código PIX:</p>
+      <textarea id="pixCopiaCola" readonly class="w-full border rounded-xl p-3 text-xs h-24 mb-3"></textarea>
+      <button id="copiarPixBtn" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold">
+        Copiar código PIX
+      </button>
+    </div>
+
+    <p id="asaasStatus" class="text-center text-sm text-slate-500 mt-4"></p>
+
+  </div>
+</div>
+
+<script>
+(function(){
+
+const MIN = 12;
+
+const input = document.getElementById('valorSolidario');
+const btn = document.getElementById('solidarioBtn');
+const chips = [...document.querySelectorAll('.chip')];
+
+const qs = new URLSearchParams(location.search);
+
+const ref = (qs.get('ref') || qs.get('aff') || '').trim();
+const hasAffiliate = !!ref;
+
+let session_id = qs.get('session_id') || localStorage.getItem('session_id');
+
+if(!session_id){
+  session_id = `sessao-${Date.now()}`;
+}
+
+localStorage.setItem('session_id', session_id);
+
+let dadosQuiz = {};
+
+try{
+  const raw = localStorage.getItem('dadosQuiz');
+  if(raw){
+    dadosQuiz = JSON.parse(raw);
+
+    if(dadosQuiz.nome){
+      const primeiroNome = dadosQuiz.nome.trim().split(' ')[0];
+      document.getElementById('titleH1').innerText =
+        `${primeiroNome}, seu Checkup Emocional está pronto`;
+    }
+  }
+}catch(e){}
+
+function aplicarMinimo(){
+  let valor = parseFloat(String(input.value || '').replace(',', '.'));
+
+  if(!valor || valor < MIN){
+    valor = MIN;
+  }
+
+  valor = Math.round(valor);
+  input.value = valor;
+  return valor;
+}
+
+chips.forEach(chip => {
+  chip.onclick = () => {
+    chips.forEach(c => {
+      c.classList.remove('bg-[#143d59]', 'text-white');
+      c.classList.add('bg-slate-100');
+    });
+
+    chip.classList.remove('bg-slate-100');
+    chip.classList.add('bg-[#143d59]', 'text-white');
+
+    input.value = chip.dataset.v;
+    aplicarMinimo();
+  };
+});
+
+input.addEventListener('blur', aplicarMinimo);
+
+input.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    aplicarMinimo();
+    btn.click();
+  }
+});
+
+const modal = document.getElementById('asaasModal');
+const fecharModal = document.getElementById('fecharModal');
+const gerarPixBtn = document.getElementById('gerarPixBtn');
+const cpfErro = document.getElementById('cpfErro');
+const asaasCpf = document.getElementById('asaasCpf');
+const asaasNome = document.getElementById('asaasNome');
+const asaasEmail = document.getElementById('asaasEmail');
+const asaasStatus = document.getElementById('asaasStatus');
+const pixArea = document.getElementById('pixArea');
+const pixQrImg = document.getElementById('pixQrImg');
+const pixCopiaCola = document.getElementById('pixCopiaCola');
+const copiarPixBtn = document.getElementById('copiarPixBtn');
+
+function abrirModalAsaas(){
+  asaasNome.value = dadosQuiz.nome || '';
+  asaasEmail.value = dadosQuiz.email || '';
+  asaasCpf.value = '';
+
+  cpfErro.classList.add('hidden');
+  pixArea.classList.add('hidden');
+  asaasStatus.textContent = '';
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function fecharModalAsaas(){
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+
+function onlyDigits(v){
+  return String(v || '').replace(/\D/g, '');
+}
+
+btn.onclick = () => {
+  const valor = aplicarMinimo();
+
+  if(hasAffiliate){
+    abrirModalAsaas();
+    return;
+  }
+
+  window.location.href =
+    `/pagamento-opcao.html?tipo=completo&valor=${encodeURIComponent(valor)}&session_id=${encodeURIComponent(session_id)}`;
+};
+
+fecharModal.onclick = fecharModalAsaas;
+
+gerarPixBtn.onclick = async () => {
+  const valor = aplicarMinimo();
+  const cpf = onlyDigits(asaasCpf.value);
+
+  if(!cpf){
+    cpfErro.classList.remove('hidden');
+    asaasCpf.focus();
+    return;
+  }
+
+  cpfErro.classList.add('hidden');
+  gerarPixBtn.disabled = true;
+  gerarPixBtn.textContent = 'Gerando PIX...';
+  asaasStatus.textContent = 'Preparando seu pagamento seguro...';
+
+  try{
+    const url =
+      `/pagamento/asaas/criar-pix-split/completo/${encodeURIComponent(session_id)}` +
+      `?valor=${encodeURIComponent(valor)}` +
+      `&ref=${encodeURIComponent(ref)}` +
+      `&cpf=${encodeURIComponent(cpf)}`;
+
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    if(!resp.ok){
+      throw new Error(data?.erro || data?.detalhe || 'Erro ao gerar PIX.');
+    }
+
+    if(data.alreadyPaid && data.redirect){
+      window.location.href = data.redirect;
+      return;
+    }
+
+    if(data.qr_code_base64){
+      pixQrImg.src = `data:image/png;base64,${data.qr_code_base64}`;
+    }
+
+    pixCopiaCola.value = data.qr_code || '';
+
+    pixArea.classList.remove('hidden');
+    asaasStatus.textContent = 'PIX gerado. Após o pagamento, seu relatório será liberado automaticamente.';
+
+    monitorarStatusSessao(session_id);
+
+  }catch(e){
+    console.error(e);
+    asaasStatus.textContent = 'Não foi possível gerar o PIX. Confira o CPF e tente novamente.';
+  }finally{
+    gerarPixBtn.disabled = false;
+    gerarPixBtn.textContent = 'Gerar PIX';
+  }
+};
+
+copiarPixBtn.onclick = async () => {
+  try{
+    await navigator.clipboard.writeText(pixCopiaCola.value);
+    copiarPixBtn.textContent = 'Código copiado!';
+    setTimeout(() => copiarPixBtn.textContent = 'Copiar código PIX', 1800);
+  }catch(e){
+    pixCopiaCola.select();
+    document.execCommand('copy');
+  }
+};
+cartaoAsaasBtn.onclick = async () => {
+  const valor = aplicarMinimo();
+
+  cartaoAsaasBtn.disabled = true;
+  cartaoAsaasBtn.textContent = 'Abrindo checkout...';
+  asaasStatus.textContent = 'Abrindo pagamento seguro do Asaas...';
+
+  try {
+
+    const resp = await fetch('/pagamento/start', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        tipo: 'completo',
+        session_id,
+        ref,
+        valor,
+        strictAsaas: true
+      })
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok || data.gateway !== 'asaas' || !data.checkout_url) {
+      throw new Error(
+        data.error ||
+        'Não foi possível abrir o checkout.'
+      );
+    }
+
+    window.location.href = data.checkout_url;
+
+  } catch (e) {
+
+    console.error(e);
+
+    asaasStatus.textContent =
+      'Não foi possível abrir o cartão agora.';
+
+    cartaoAsaasBtn.disabled = false;
+    cartaoAsaasBtn.textContent = 'Pagar com cartão';
+  }
+};
+
+function monitorarStatusSessao(sessionId){
+  const it = setInterval(async () => {
+    try{
+      const r = await fetch(`/pagamento/status-por-sessao/${encodeURIComponent(sessionId)}`);
+      const j = await r.json();
+
+      if(j?.aprovado){
+        clearInterval(it);
+        localStorage.setItem('pagamento_confirmado', 'true');
+        asaasStatus.textContent = 'Pagamento aprovado! Gerando seu relatório...';
+
+        setTimeout(() => {
+          window.location.href = `/aguarde.html?session_id=${encodeURIComponent(sessionId)}`;
+        }, 1200);
+      }
+    }catch(e){}
+  }, 4000);
+}
+
+aplicarMinimo();
+
+})();
+</script>
+
+</body>
+</html>

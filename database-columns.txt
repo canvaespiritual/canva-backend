@@ -1,0 +1,316 @@
+        table_name         |        column_name        |          data_type          | is_nullable
+---------------------------+---------------------------+-----------------------------+-------------
+ affiliate_clicks          | id                        | text                        | NO
+ affiliate_clicks          | affiliate_id              | text                        | NO
+ affiliate_clicks          | ip                        | text                        | YES
+ affiliate_clicks          | user_agent                | text                        | YES
+ affiliate_clicks          | created_at                | timestamp without time zone | YES
+ affiliate_links           | id                        | uuid                        | NO
+ affiliate_links           | code                      | text                        | NO
+ affiliate_links           | url                       | text                        | NO
+ affiliate_links           | vendor_id                 | text                        | NO
+ affiliate_links           | affiliate_id              | text                        | YES
+ affiliate_links           | pct_aff                   | numeric                     | NO
+ affiliate_links           | pct_vendor                | numeric                     | NO
+ affiliate_links           | pct_supervisor            | numeric                     | NO
+ affiliate_links           | active                    | boolean                     | NO
+ affiliate_links           | clicks                    | integer                     | NO
+ affiliate_links           | sales                     | integer                     | NO
+ affiliate_links           | created_at                | timestamp with time zone    | NO
+ affiliate_links           | token                     | text                        | YES
+ affiliate_links           | invite_email              | text                        | YES
+ affiliate_links           | status                    | text                        | YES
+ affiliate_links           | accepted_at               | timestamp with time zone    | YES
+ affiliate_orders          | id                        | text                        | NO
+ affiliate_orders          | affiliate_id              | text                        | NO
+ affiliate_orders          | order_id                  | text                        | YES
+ affiliate_orders          | asaas_payment_id          | text                        | YES
+ affiliate_orders          | amount                    | real                        | NO
+ affiliate_orders          | commission_type           | text                        | NO
+ affiliate_orders          | commission_value          | real                        | NO
+ affiliate_orders          | platform_share            | real                        | NO
+ affiliate_orders          | affiliate_share           | real                        | NO
+ affiliate_orders          | status                    | text                        | NO
+ affiliate_orders          | paid_at                   | timestamp without time zone | YES
+ affiliate_orders          | refunded_at               | timestamp without time zone | YES
+ affiliate_orders          | created_at                | timestamp without time zone | YES
+ affiliate_orders          | updated_at                | timestamp without time zone | YES
+ affiliate_password_resets | id                        | text                        | NO
+ affiliate_password_resets | affiliate_id              | text                        | NO
+ affiliate_password_resets | token                     | text                        | NO
+ affiliate_password_resets | expires_at                | timestamp without time zone | NO
+ affiliate_password_resets | used                      | boolean                     | NO
+ affiliate_password_resets | created_at                | timestamp without time zone | YES
+ affiliates                | id                        | text                        | NO
+ affiliates                | name                      | text                        | NO
+ affiliates                | email                     | text                        | NO
+ affiliates                | cpf_cnpj                  | text                        | NO
+ affiliates                | phone                     | text                        | NO
+ affiliates                | address                   | text                        | NO
+ affiliates                | address_number            | text                        | NO
+ affiliates                | district                  | text                        | NO
+ affiliates                | city                      | text                        | NO
+ affiliates                | state                     | text                        | NO
+ affiliates                | postal_code               | text                        | NO
+ affiliates                | complement                | text                        | YES
+ affiliates                | commission_type           | text                        | NO
+ affiliates                | commission_value          | real                        | NO
+ affiliates                | days_to_release           | integer                     | NO
+ affiliates                | wallet_id                 | text                        | YES
+ affiliates                | affiliate_code            | text                        | YES
+ affiliates                | status                    | text                        | NO
+ affiliates                | password_hash             | text                        | YES
+ affiliates                | created_at                | timestamp without time zone | YES
+ affiliates                | updated_at                | timestamp without time zone | YES
+ affiliates                | commission_percent        | numeric                     | NO
+ affiliates                | link                      | character varying           | NO
+ affiliates                | terms                     | boolean                     | NO
+ affiliates                | reset_token               | text                        | YES
+ affiliates                | reset_expires_at          | timestamp with time zone    | YES
+ affiliates                | terms_version             | text                        | YES
+ affiliates                | terms_accepted_at         | timestamp with time zone    | YES
+ affiliates                | terms_ip                  | text                        | YES
+ affiliates                | terms_ua                  | text                        | YES
+ affiliates                | privacy_version           | text                        | YES
+ affiliates                | privacy_accepted_at       | timestamp with time zone    | YES
+ affiliates                | asaas_account_id          | text                        | YES
+ affiliates                | asaas_wallet_id           | text                        | YES
+ affiliates                | asaas_api_key             | text                        | YES
+ affiliates                | asaas_status_general      | text                        | YES
+ affiliates                | asaas_status_bank         | text                        | YES
+ affiliates                | link_enabled              | boolean                     | NO
+ affiliates                | payout_method             | text                        | YES
+ affiliates                | pix_key_type              | text                        | YES
+ affiliates                | pix_key_value             | text                        | YES
+ affiliates                | bank_holder_name          | text                        | YES
+ affiliates                | bank_cpf_cnpj             | text                        | YES
+ affiliates                | bank_number               | text                        | YES
+ affiliates                | bank_agency               | text                        | YES
+ affiliates                | bank_account              | text                        | YES
+ affiliates                | bank_account_digit        | text                        | YES
+ affiliates                | bank_account_type         | text                        | YES
+ affiliates                | payout_status             | text                        | YES
+ affiliates                | person_type               | text                        | YES
+ affiliates                | birth_date                | date                        | YES
+ affiliates                | company_name              | text                        | YES
+ affiliates                | responsible_name          | text                        | YES
+ affiliates                | responsible_cpf_cnpj      | text                        | YES
+ affiliates                | responsible_birth_date    | date                        | YES
+ affiliates                | asaas_agency              | text                        | YES
+ affiliates                | asaas_account             | text                        | YES
+ affiliates                | asaas_account_digit       | text                        | YES
+ affiliates                | role                      | text                        | NO
+ affiliates                | supervisor_id             | text                        | YES
+ arquetipos                | chave_correspondencia     | text                        | NO
+ arquetipos                | codigo                    | text                        | YES
+ arquetipos                | tecnico                   | text                        | YES
+ arquetipos                | simbolico                 | text                        | YES
+ arquetipos                | diagnostico               | text                        | YES
+ arquetipos                | simbolico_texto           | text                        | YES
+ arquetipos                | mensagem                  | text                        | YES
+ arquetipos                | gatilho_tatil             | text                        | YES
+ arquetipos                | gatilho_olfato            | text                        | YES
+ arquetipos                | gatilho_audicao           | text                        | YES
+ arquetipos                | gatilho_visao             | text                        | YES
+ arquetipos                | gatilho_paladar           | text                        | YES
+ asaas_webhook_events      | id                        | text                        | NO
+ asaas_webhook_events      | received_at               | timestamp with time zone    | YES
+ attribution               | id                        | uuid                        | NO
+ attribution               | session_id                | text                        | NO
+ attribution               | affiliate_link_id         | uuid                        | NO
+ attribution               | created_at                | timestamp with time zone    | NO
+ commissions               | id                        | uuid                        | NO
+ commissions               | sale_id                   | uuid                        | NO
+ commissions               | affiliate_id              | text                        | NO
+ commissions               | percent                   | numeric                     | NO
+ commissions               | amount                    | numeric                     | NO
+ commissions               | status                    | text                        | NO
+ commissions               | available_at              | timestamp with time zone    | YES
+ commissions               | created_at                | timestamp with time zone    | NO
+ commissions               | updated_at                | timestamp with time zone    | NO
+ diagnostico_eventos       | id                        | integer                     | NO
+ diagnostico_eventos       | diagnostico_id            | integer                     | NO
+ diagnostico_eventos       | tipo_evento               | text                        | NO
+ diagnostico_eventos       | observacao                | text                        | YES
+ diagnostico_eventos       | criado_em                 | timestamp without time zone | YES
+ diagnosticos              | id                        | integer                     | NO
+ diagnosticos              | session_id                | text                        | NO
+ diagnosticos              | nome                      | text                        | NO
+ diagnosticos              | email                     | text                        | NO
+ diagnosticos              | telefone                  | text                        | YES
+ diagnosticos              | pais_origem               | text                        | YES
+ diagnosticos              | idioma                    | text                        | YES
+ diagnosticos              | produto                   | text                        | YES
+ diagnosticos              | tipo_relatorio            | text                        | YES
+ diagnosticos              | modelo_pdf                | text                        | YES
+ diagnosticos              | contexto                  | text                        | YES
+ diagnosticos              | respostas_numericas       | jsonb                       | YES
+ diagnosticos              | respostas_codificadas     | jsonb                       | YES
+ diagnosticos              | media_vibracional         | numeric                     | YES
+ diagnosticos              | zona_predominante         | text                        | YES
+ diagnosticos              | codigo_arquetipo          | text                        | YES
+ diagnosticos              | pdf_url                   | text                        | YES
+ diagnosticos              | payment_id                | text                        | YES
+ diagnosticos              | status_pagamento          | text                        | YES
+ diagnosticos              | tipo_pagamento            | text                        | YES
+ diagnosticos              | valor_pago                | numeric                     | YES
+ diagnosticos              | moeda                     | text                        | YES
+ diagnosticos              | data_quiz                 | timestamp without time zone | YES
+ diagnosticos              | data_pagamento            | timestamp without time zone | YES
+ diagnosticos              | data_envio_relatorio      | timestamp without time zone | YES
+ diagnosticos              | status_processo           | text                        | YES
+ diagnosticos              | criado_em                 | timestamp without time zone | YES
+ diagnosticos              | email_corrigido           | text                        | YES
+ diagnosticos              | data_criacao              | timestamp without time zone | YES
+ diagnosticos              | email_corrigido_enviado   | boolean                     | YES
+ diagnosticos              | email_enviado_em          | timestamp with time zone    | YES
+ diagnosticos              | email_erro                | text                        | YES
+ diagnosticos              | email_entregue            | boolean                     | YES
+ diagnosticos              | email_aberto              | boolean                     | YES
+ diagnosticos              | email_clicado             | boolean                     | YES
+ diagnosticos              | brevo_sincronizado        | boolean                     | YES
+ diagnosticos              | affiliate_ref             | text                        | YES
+ diagnosticos              | gateway                   | text                        | YES
+ diagnosticos              | asaas_payment_id          | text                        | YES
+ diagnosticos              | updated_at                | timestamp with time zone    | YES
+ diagnosticos              | asaas_checkout_id         | text                        | YES
+ diagnosticos_backup_dups  | id                        | integer                     | YES
+ diagnosticos_backup_dups  | session_id                | text                        | YES
+ diagnosticos_backup_dups  | nome                      | text                        | YES
+ diagnosticos_backup_dups  | email                     | text                        | YES
+ diagnosticos_backup_dups  | telefone                  | text                        | YES
+ diagnosticos_backup_dups  | pais_origem               | text                        | YES
+ diagnosticos_backup_dups  | idioma                    | text                        | YES
+ diagnosticos_backup_dups  | produto                   | text                        | YES
+ diagnosticos_backup_dups  | tipo_relatorio            | text                        | YES
+ diagnosticos_backup_dups  | modelo_pdf                | text                        | YES
+ diagnosticos_backup_dups  | contexto                  | text                        | YES
+ diagnosticos_backup_dups  | respostas_numericas       | jsonb                       | YES
+ diagnosticos_backup_dups  | respostas_codificadas     | jsonb                       | YES
+ diagnosticos_backup_dups  | media_vibracional         | numeric                     | YES
+ diagnosticos_backup_dups  | zona_predominante         | text                        | YES
+ diagnosticos_backup_dups  | codigo_arquetipo          | text                        | YES
+ diagnosticos_backup_dups  | pdf_url                   | text                        | YES
+ diagnosticos_backup_dups  | payment_id                | text                        | YES
+ diagnosticos_backup_dups  | status_pagamento          | text                        | YES
+ diagnosticos_backup_dups  | tipo_pagamento            | text                        | YES
+ diagnosticos_backup_dups  | valor_pago                | numeric                     | YES
+ diagnosticos_backup_dups  | moeda                     | text                        | YES
+ diagnosticos_backup_dups  | data_quiz                 | timestamp without time zone | YES
+ diagnosticos_backup_dups  | data_pagamento            | timestamp without time zone | YES
+ diagnosticos_backup_dups  | data_envio_relatorio      | timestamp without time zone | YES
+ diagnosticos_backup_dups  | status_processo           | text                        | YES
+ diagnosticos_backup_dups  | criado_em                 | timestamp without time zone | YES
+ diagnosticos_backup_dups  | email_corrigido           | text                        | YES
+ diagnosticos_backup_dups  | data_criacao              | timestamp without time zone | YES
+ diagnosticos_backup_dups  | email_corrigido_enviado   | boolean                     | YES
+ diagnosticos_backup_dups  | email_enviado_em          | timestamp with time zone    | YES
+ diagnosticos_backup_dups  | email_erro                | text                        | YES
+ diagnosticos_backup_dups  | email_entregue            | boolean                     | YES
+ diagnosticos_backup_dups  | email_aberto              | boolean                     | YES
+ diagnosticos_backup_dups  | email_clicado             | boolean                     | YES
+ diagnosticos_backup_dups  | brevo_sincronizado        | boolean                     | YES
+ diagnosticos_backup_dups  | affiliate_ref             | text                        | YES
+ diagnosticos_backup_dups  | gateway                   | text                        | YES
+ diagnosticos_backup_dups  | asaas_payment_id          | text                        | YES
+ diagnosticos_backup_dups  | updated_at                | timestamp with time zone    | YES
+ i18n_translations         | id                        | bigint                      | NO
+ i18n_translations         | entity                    | text                        | NO
+ i18n_translations         | entity_id                 | text                        | NO
+ i18n_translations         | field                     | text                        | NO
+ i18n_translations         | lang                      | text                        | NO
+ i18n_translations         | text                      | text                        | NO
+ kiwify_events             | id                        | bigint                      | NO
+ kiwify_events             | event_id                  | text                        | YES
+ kiwify_events             | event_name                | text                        | YES
+ kiwify_events             | payload                   | jsonb                       | NO
+ kiwify_events             | received_at               | timestamp without time zone | YES
+ leads_precheckout         | id                        | uuid                        | NO
+ leads_precheckout         | name                      | text                        | NO
+ leads_precheckout         | email                     | text                        | NO
+ leads_precheckout         | phone                     | text                        | NO
+ leads_precheckout         | utm_source                | text                        | YES
+ leads_precheckout         | utm_medium                | text                        | YES
+ leads_precheckout         | utm_campaign              | text                        | YES
+ leads_precheckout         | utm_content               | text                        | YES
+ leads_precheckout         | utm_term                  | text                        | YES
+ leads_precheckout         | page_url                  | text                        | YES
+ leads_precheckout         | referrer                  | text                        | YES
+ leads_precheckout         | status                    | text                        | NO
+ leads_precheckout         | kiwify_order_id           | text                        | YES
+ leads_precheckout         | kiwify_status             | text                        | YES
+ leads_precheckout         | paid_at                   | timestamp with time zone    | YES
+ leads_precheckout         | created_at                | timestamp with time zone    | NO
+ leads_precheckout         | updated_at                | timestamp with time zone    | NO
+ leads_precheckout         | pago                      | boolean                     | YES
+ leads_precheckout         | pago_em                   | timestamp without time zone | YES
+ mapa_da_alma              | codigo                    | text                        | NO
+ mapa_da_alma              | fruto                     | text                        | YES
+ mapa_da_alma              | nivel_emocional           | text                        | YES
+ mapa_da_alma              | descricao_estado_da_alma  | text                        | YES
+ mapa_da_alma              | diagnostico_emocional     | text                        | YES
+ mapa_da_alma              | exemplo_vida_familiar     | text                        | YES
+ mapa_da_alma              | exemplo_vida_social       | text                        | YES
+ mapa_da_alma              | exemplo_vida_profissional | text                        | YES
+ mapa_da_alma              | exercicio_de_elevacao     | text                        | YES
+ mapa_da_alma              | par_forca                 | character varying           | YES
+ mapa_espiritual           | codigo                    | text                        | NO
+ mapa_espiritual           | polaridade                | text                        | YES
+ mapa_espiritual           | nivel_estado              | text                        | YES
+ mapa_espiritual           | sinal_comportamental      | text                        | YES
+ mapa_espiritual           | esfera_familiar           | text                        | YES
+ mapa_espiritual           | esfera_social             | text                        | YES
+ mapa_espiritual           | esfera_profissional       | text                        | YES
+ mapa_espiritual           | esfera_individual         | text                        | YES
+ partner_ledger            | id                        | uuid                        | NO
+ partner_ledger            | sale_id                   | text                        | NO
+ partner_ledger            | partner_id                | text                        | YES
+ partner_ledger            | role                      | text                        | NO
+ partner_ledger            | amount_cents              | bigint                      | NO
+ partner_ledger            | created_at                | timestamp with time zone    | NO
+ partner_ledger            | available_at              | timestamp with time zone    | YES
+ partner_ledger            | pl_status                 | text                        | YES
+ partner_ledger            | withdrawal_id             | text                        | YES
+ partner_ledger            | updated_at                | timestamp with time zone    | YES
+ predisposicoes            | id                        | integer                     | NO
+ predisposicoes            | fruto                     | text                        | YES
+ predisposicoes            | nivel                     | integer                     | YES
+ predisposicoes            | estado                    | text                        | YES
+ predisposicoes            | sinais_fisicos            | text                        | YES
+ predisposicoes            | pred_fisiologicas         | text                        | YES
+ predisposicoes            | pred_psicologicas         | text                        | YES
+ purchases                 | id                        | bigint                      | NO
+ purchases                 | provider                  | text                        | NO
+ purchases                 | order_id                  | text                        | YES
+ purchases                 | email                     | text                        | YES
+ purchases                 | status                    | text                        | YES
+ purchases                 | amount_cents              | integer                     | YES
+ purchases                 | payload                   | jsonb                       | YES
+ purchases                 | created_at                | timestamp without time zone | YES
+ purchases                 | updated_at                | timestamp without time zone | YES
+ sales                     | id                        | uuid                        | NO
+ sales                     | session_id                | text                        | NO
+ sales                     | affiliate_id              | text                        | YES
+ sales                     | gateway                   | text                        | NO
+ sales                     | gateway_payment_id        | text                        | YES
+ sales                     | amount                    | numeric                     | NO
+ sales                     | commission_percent        | numeric                     | NO
+ sales                     | status                    | text                        | NO
+ sales                     | created_at                | timestamp with time zone    | NO
+ sales                     | updated_at                | timestamp with time zone    | NO
+ sales                     | buyer_name                | text                        | YES
+ sales                     | buyer_email               | text                        | YES
+ sales                     | vendor_id                 | text                        | YES
+ sales                     | affiliate_link_id         | uuid                        | YES
+ sales                     | origin                    | text                        | YES
+ sales                     | net_amount_cents          | bigint                      | YES
+ withdrawals               | id                        | text                        | NO
+ withdrawals               | partner_id                | text                        | NO
+ withdrawals               | role                      | text                        | NO
+ withdrawals               | amount_cents              | integer                     | NO
+ withdrawals               | method                    | jsonb                       | YES
+ withdrawals               | status                    | text                        | NO
+ withdrawals               | created_at                | timestamp with time zone    | NO
+ withdrawals               | updated_at                | timestamp with time zone    | NO
+(312 linhas)
+

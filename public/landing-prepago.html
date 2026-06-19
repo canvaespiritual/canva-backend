@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkup Emocional Pré-pago</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+<div class="max-w-xl mx-auto px-5 py-10">
+  <div class="bg-white rounded-3xl shadow-lg p-7">
+
+    <h1 class="text-2xl font-bold text-center mb-3">
+      Libere seu Checkup Emocional
+    </h1>
+
+    <p class="text-center text-slate-500 text-sm mb-6">
+      Após o pagamento, você poderá escolher entre Checkup Geral, Familiar, Social ou Profissional.
+    </p>
+
+    <div class="bg-slate-100 rounded-2xl p-4 mb-6 text-sm text-slate-600">
+      ✅ Acesso imediato após pagamento<br>
+      ✅ Escolha o tipo de Checkup depois<br>
+      ✅ Relatório completo enviado por e-mail
+    </div>
+
+    <label class="text-sm font-semibold">Nome</label>
+    <input id="nome" class="w-full border rounded-xl p-4 mt-1 mb-4" placeholder="Seu nome" />
+
+    <label class="text-sm font-semibold">E-mail</label>
+    <input id="email" type="email" class="w-full border rounded-xl p-4 mt-1 mb-4" placeholder="seuemail@exemplo.com" />
+
+    <label class="text-sm font-semibold">Valor solidário</label>
+    <input id="valor" type="number" min="12" value="12" class="w-full border rounded-xl p-4 mt-1 mb-5 text-center" />
+
+    <button id="comprarBtn" class="w-full bg-[#143d59] text-white py-4 rounded-xl font-semibold text-lg">
+      Liberar meu acesso →
+    </button>
+
+    <div id="status" class="text-center text-sm text-slate-500 mt-5"></div>
+
+    <a href="/escolher-quiz.html" class="block text-center text-sm text-blue-700 underline mt-6">
+      Já paguei, quero acessar meu Checkup
+    </a>
+
+  </div>
+</div>
+
+<script>
+(function(){
+
+const qs = new URLSearchParams(location.search);
+const ref = qs.get("ref") || qs.get("aff") || "";
+
+const nomeEl = document.getElementById("nome");
+const emailEl = document.getElementById("email");
+const valorEl = document.getElementById("valor");
+const btn = document.getElementById("comprarBtn");
+const statusEl = document.getElementById("status");
+
+function setStatus(msg){
+  statusEl.textContent = msg || "";
+}
+
+function aplicarMinimo(){
+  let valor = Number(valorEl.value || 12);
+  if (!Number.isFinite(valor) || valor < 12) valor = 12;
+  valor = Math.round(valor);
+  valorEl.value = valor;
+  return valor;
+}
+
+valorEl.addEventListener("blur", aplicarMinimo);
+
+btn.onclick = async () => {
+  const nome = String(nomeEl.value || "").trim();
+  const email = String(emailEl.value || "").trim().toLowerCase();
+  const valor = aplicarMinimo();
+
+  if (!nome) {
+    setStatus("Informe seu nome.");
+    nomeEl.focus();
+    return;
+  }
+
+  if (!email) {
+    setStatus("Informe seu e-mail.");
+    emailEl.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Preparando pagamento...";
+  setStatus("Abrindo checkout seguro...");
+
+  try {
+    const resp = await fetch("/api/prepaid-checkout/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome,
+        email,
+        valor,
+        ref
+      })
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok || !data.ok || !data.checkout_url) {
+      throw new Error(data.erro || "Não foi possível iniciar o pagamento.");
+    }
+
+    localStorage.setItem("prepaid_nome", nome);
+    localStorage.setItem("prepaid_email", email);
+
+    window.location.href = data.checkout_url;
+
+  } catch (e) {
+    console.error(e);
+    setStatus("Erro ao iniciar pagamento. Tente novamente.");
+    btn.disabled = false;
+    btn.textContent = "Liberar meu acesso →";
+  }
+};
+
+})();
+</script>
+
+</body>
+</html>
