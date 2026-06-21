@@ -382,7 +382,9 @@ document.addEventListener("click", async (e) => {
   try {
     const nome = document.getElementById("nome")?.value?.trim() || "Desconhecido";
     const email = document.getElementById("email")?.value?.trim();
-
+    const qs = new URLSearchParams(window.location.search);
+const ref = qs.get("ref") || qs.get("aff");
+const vend = qs.get("vend");
     if (!email || respostas.length !== perguntas.length) {
       btn.disabled = false;
       btn.style.opacity = "";
@@ -423,9 +425,7 @@ document.addEventListener("click", async (e) => {
 
     showLoader("Redirecionando ao checkout...");
 
-const qs = new URLSearchParams(window.location.search);
-const ref = qs.get("ref") || qs.get("aff");
-const vend = qs.get("vend");
+
 
 let refPart = "";
 if (ref) {

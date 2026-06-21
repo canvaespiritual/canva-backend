@@ -390,7 +390,9 @@ document.addEventListener("click", async (e) => {
   try {
     const nome = document.getElementById("nome")?.value?.trim() || "Desconhecido";
     const email = document.getElementById("email")?.value?.trim();
-
+    const qs = new URLSearchParams(window.location.search);
+const ref = qs.get("ref") || qs.get("aff");
+const vend = qs.get("vend");
     if (!email || respostas.length !== perguntas.length) {
       btn.disabled = false;
       btn.style.opacity = "";
@@ -414,7 +416,14 @@ document.addEventListener("click", async (e) => {
     const resp = await fetch("/api/salvar-quiz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id, nome, email, respostas: notas })
+      body: JSON.stringify({
+  session_id,
+  nome,
+  email,
+  respostas: notas,
+  affiliate_ref: ref || null,
+  vendor_ref: vend || null
+})
     });
 
     if (!resp.ok) {
@@ -424,9 +433,14 @@ document.addEventListener("click", async (e) => {
 
     showLoader("Redirecionando ao checkout...");
 
-    const qs = new URLSearchParams(window.location.search);
-    const ref = qs.get("ref") || qs.get("aff");
-    const refPart = ref ? `&ref=${encodeURIComponent(ref)}` : "";
+    
+
+let refPart = "";
+if (ref) {
+  refPart = `&ref=${encodeURIComponent(ref)}`;
+} else if (vend) {
+  refPart = `&vend=${encodeURIComponent(vend)}`;
+}
 
     window.location.href = `/checkout-solidario.html?tipo=completo&session_id=${session_id}${refPart}`;
   } catch (err) {
