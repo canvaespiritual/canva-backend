@@ -47,12 +47,19 @@ if (telefone) {
 
     // 🔽 ADD: captura a referência do afiliado da sessão/cookie
   // 🔽 Captura a referência do afiliado (várias fontes)
+const vendorRef =
+  req.body?.vendor_ref ||
+  req.query?.vend ||
+  req.session?.vendor_ref ||
+  null;
+
 const affiliateRef =
   req.session?.aff_ref ||
   req.cookies?.aff_ref ||
-  req.body?.affiliate_ref ||  // se vier no body
-  req.query?.aff ||           // se alguém chamar /api/salvar-quiz?aff=...
-  req.query?.ref ||           // idem
+  req.body?.affiliate_ref ||
+  req.query?.aff ||
+  req.query?.ref ||
+  vendorRef ||
   null;
 
 

@@ -26,6 +26,27 @@ router.post('/', async (req, res) => {
     const status = pagamento.status;
     const sessionId = pagamento.metadata?.session_id;
     const tipo = pagamento.metadata?.tipo;
+    const externalReference = String(pagamento.external_reference || "");
+    const prepaidCreditId =
+      pagamento.metadata?.prepaid_credit_id ||
+      (externalReference.startsWith("prepaid:")
+        ? externalReference.replace("prepaid:", "")
+        : null);
+
+    if (status === "approved" && prepaidCreditId) {
+      await pool.query(`
+        UPDATE prepaid_quiz_credits
+        SET status = 'paid',
+            gateway = 'mp',
+            gateway_payment_id = $1,
+            paid_at = NOW()
+        WHERE id = $2
+          AND status <> 'paid'
+      `, [paymentId, prepaidCreditId]);
+
+      console.log(`✅ Crédito pré-pago MP liberado: ${prepaidCreditId}`);
+      return res.sendStatus(200);
+    }
 
     if (!sessionId) {
       console.warn("⚠️ Sessão não encontrada na metadata.");

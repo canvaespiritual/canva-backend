@@ -469,12 +469,12 @@ app.get("/vendors/me", (req, res) => {
  });
 
 // 3) Link pessoal do vendedor (se preferir responder “stub” agora)
-app.get("/vendors/me/personal-link", (req, res) => {
-  if (!req.session?.aff?.id) return res.status(401).json({ error: "Não autenticado" });
+//app.get("/vendors/me/personal-link", (req, res) => {
+  //if (!req.session?.aff?.id) return res.status(401).json({ error: "Não autenticado" });
   // Se você ainda não tem link pessoal separado p/ vendedor, retorne null por enquanto.
   // (O vendor-dashboard.js trata ausência sem quebrar)
-  res.json({ url: null });
-});
+  //res.json({ url: null });
+//});
 
 app.use("/vendors", vendorsRoutes);
 

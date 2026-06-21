@@ -244,7 +244,16 @@ document.querySelectorAll(".quizBtn").forEach(btn => {
     window.location.href = url;
   };
 });
+const qs = new URLSearchParams(location.search);
+const emailUrl = normalizeEmail(qs.get("email"));
 
+if (emailUrl) {
+  emailInput.value = emailUrl;
+
+  setTimeout(() => {
+    verificarBtn.click();
+  }, 300);
+}
 emailInput.addEventListener("keydown", (e) => {
   if(e.key === "Enter"){
     e.preventDefault();

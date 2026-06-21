@@ -406,7 +406,14 @@ document.addEventListener("click", async (e) => {
     const resp = await fetch("/api/salvar-quiz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id, nome, email, respostas: notas })
+      body: JSON.stringify({
+  session_id,
+  nome,
+  email,
+  respostas: notas,
+  affiliate_ref: ref || null,
+  vendor_ref: vend || null
+})
     });
 
     if (!resp.ok) {
@@ -418,7 +425,14 @@ document.addEventListener("click", async (e) => {
 
 const qs = new URLSearchParams(window.location.search);
 const ref = qs.get("ref") || qs.get("aff");
-const refPart = ref ? `&ref=${encodeURIComponent(ref)}` : "";
+const vend = qs.get("vend");
+
+let refPart = "";
+if (ref) {
+  refPart = `&ref=${encodeURIComponent(ref)}`;
+} else if (vend) {
+  refPart = `&vend=${encodeURIComponent(vend)}`;
+}
 
 const prepaid = qs.get("prepaid") === "1";
 const prepaidEmail = (qs.get("email") || "").trim().toLowerCase();

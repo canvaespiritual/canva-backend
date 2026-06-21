@@ -49,7 +49,8 @@ const valorSolidario = valorParam ? parseFloat(valorParam) : null;
 
   // 🔎 NOVO: detectar afiliado
   const ref = (qs.get('ref') || qs.get('aff') || '').trim();
-  const hasAffiliate = !!ref;
+const vend = (qs.get('vend') || '').trim();
+const hasPartner = !!ref || !!vend;
 
   // elementos
   const statusPagamento   = document.getElementById("statusPagamento");
@@ -89,7 +90,7 @@ const valorSolidario = valorParam ? parseFloat(valorParam) : null;
       const resp = await fetch('/pagamento/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo, session_id: sessionId, ref })
+        body: JSON.stringify({ tipo, session_id: sessionId, ref, vend })
       });
       if (!resp.ok) throw new Error(await resp.text() || `HTTP ${resp.status}`);
       const start = await resp.json();
@@ -106,7 +107,7 @@ const valorSolidario = valorParam ? parseFloat(valorParam) : null;
       const urlAsaas = start.checkout_url || start.invoice_url;
 
       // ✅ Só usa ASAAS se for afiliado E o backend retornou Asaas
-      if (hasAffiliate && start.gateway === 'asaas' && urlAsaas) {
+      if (hasPartner && start.gateway === 'asaas' && urlAsaas) {
         setStatus('🔒 Abrindo checkout seguro do Asaas…');
 
         // Reaproveita a aba pré-aberta no pagar.html (se existir)

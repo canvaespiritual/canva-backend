@@ -124,13 +124,23 @@ if (S > 0 && r.vendor_id) {
 // (hoje sua tabela não tem vendor_ref; tratamos com try/catch para não quebrar)
 let vend = null;
 try {
-  const vq = await pool.query(
-    `SELECT vendor_ref FROM diagnosticos WHERE session_id = $1 LIMIT 1`,
+    const vq = await pool.query(
+    `SELECT affiliate_ref FROM diagnosticos WHERE session_id = $1 LIMIT 1`,
     [sessionId]
   );
-  vend = vq.rows[0]?.vendor_ref || null;
+
+  const maybeVend = vq.rows[0]?.affiliate_ref || null;
+
+  if (maybeVend) {
+    const checkVendor = await pool.query(
+      `SELECT id FROM affiliates WHERE id = $1 AND role IN ('vendor','supervisor') LIMIT 1`,
+      [maybeVend]
+    );
+
+    vend = checkVendor.rowCount ? maybeVend : null;
+  }
 } catch (_) {
-  vend = null; // coluna não existe -> ignora (segue sem split direto)
+  vend = null;
 }
 
 if (vend) {
@@ -162,7 +172,7 @@ if (vend) {
 // POST /pagamento/start  { tipo, session_id, ref? }
 router.post("/start", async (req, res) => {
   try {
-    let { tipo, session_id, ref, valor, strictAsaas } = req.body || {};
+    let { tipo, session_id, ref, vend, valor, strictAsaas } = req.body || {};
 
       tipo = normalizeTipo(tipo);
 
@@ -198,15 +208,23 @@ router.post("/start", async (req, res) => {
     }
 
     // 2) Descobrir affiliate_ref
-    let affiliateRef =
-      diag.affiliate_ref ||
-      req.cookies?.aff_ref ||
-      req.session?.aff_ref ||
-      req.body?.affiliate_ref ||
-      req.query?.aff ||
-      req.query?.ref ||
-      ref ||
-      null;
+    const vendorRef =
+  vend ||
+  req.body?.vendor_ref ||
+  req.query?.vend ||
+  req.session?.vendor_ref ||
+  null;
+
+let affiliateRef =
+  diag.affiliate_ref ||
+  req.cookies?.aff_ref ||
+  req.session?.aff_ref ||
+  req.body?.affiliate_ref ||
+  req.query?.aff ||
+  req.query?.ref ||
+  ref ||
+  vendorRef ||
+  null;
 
     if (affiliateRef && affiliateRef !== diag.affiliate_ref) {
       try {

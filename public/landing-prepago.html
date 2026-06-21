@@ -38,6 +38,26 @@
     <button id="comprarBtn" class="w-full bg-[#143d59] text-white py-4 rounded-xl font-semibold text-lg">
       Liberar meu acesso →
     </button>
+    <div id="asaasArea" class="hidden mt-5 border rounded-2xl p-4 bg-slate-50">
+  <label class="text-sm font-semibold">CPF</label>
+  <input id="cpf" class="w-full border rounded-xl p-4 mt-1 mb-3" placeholder="Digite seu CPF" inputmode="numeric" />
+
+  <button id="pixBtn" class="w-full bg-[#143d59] text-white py-3 rounded-xl font-semibold mb-3">
+    Gerar PIX
+  </button>
+
+  <button id="cartaoBtn" class="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold">
+    Pagar com cartão
+  </button>
+
+  <div id="pixArea" class="hidden text-center mt-5">
+    <img id="pixQrImg" class="mx-auto w-60 h-60 border rounded-xl mb-3" />
+    <textarea id="pixCopiaCola" readonly class="w-full border rounded-xl p-3 text-xs h-24 mb-3"></textarea>
+    <button id="copiarPixBtn" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold">
+      Copiar código PIX
+    </button>
+  </div>
+</div>
 
     <div id="status" class="text-center text-sm text-slate-500 mt-5"></div>
 
@@ -52,14 +72,45 @@
 (function(){
 
 const qs = new URLSearchParams(location.search);
-const ref = qs.get("ref") || qs.get("aff") || "";
+const ref = (qs.get("ref") || qs.get("aff") || "").trim();
+const hasAffiliate = !!ref;
 
 const nomeEl = document.getElementById("nome");
 const emailEl = document.getElementById("email");
 const valorEl = document.getElementById("valor");
 const btn = document.getElementById("comprarBtn");
 const statusEl = document.getElementById("status");
+const asaasArea = document.getElementById("asaasArea");
+const cpfEl = document.getElementById("cpf");
+const pixBtn = document.getElementById("pixBtn");
+const cartaoBtn = document.getElementById("cartaoBtn");
+const pixArea = document.getElementById("pixArea");
+const pixQrImg = document.getElementById("pixQrImg");
+const pixCopiaCola = document.getElementById("pixCopiaCola");
+const copiarPixBtn = document.getElementById("copiarPixBtn");
 
+function onlyDigits(v){
+  return String(v || "").replace(/\D/g, "");
+}
+
+function monitorarCredito(creditId, email) {
+  const it = setInterval(async () => {
+    try {
+      const r = await fetch(`/api/prepaid-checkout/status/${encodeURIComponent(creditId)}`);
+      const j = await r.json();
+
+      if (j?.paid) {
+        clearInterval(it);
+        setStatus("Pagamento aprovado! Redirecionando...");
+
+        setTimeout(() => {
+          window.location.href =
+            `/escolher-quiz.html?email=${encodeURIComponent(email)}`;
+        }, 1200);
+      }
+    } catch (e) {}
+  }, 4000);
+}
 function setStatus(msg){
   statusEl.textContent = msg || "";
 }
@@ -75,6 +126,11 @@ function aplicarMinimo(){
 valorEl.addEventListener("blur", aplicarMinimo);
 
 btn.onclick = async () => {
+      if (hasAffiliate) {
+    asaasArea.classList.remove("hidden");
+    setStatus("Escolha PIX ou cartão para liberar seu acesso.");
+    return;
+  }
   const nome = String(nomeEl.value || "").trim();
   const email = String(emailEl.value || "").trim().toLowerCase();
   const valor = aplicarMinimo();
@@ -125,7 +181,163 @@ btn.onclick = async () => {
     btn.textContent = "Liberar meu acesso →";
   }
 };
+pixBtn.onclick = async () => {
+  const nome = String(nomeEl.value || "").trim();
+  const email = String(emailEl.value || "").trim().toLowerCase();
+  const valor = aplicarMinimo();
+  const cpf = onlyDigits(cpfEl.value);
 
+  if (!nome) {
+    setStatus("Informe seu nome.");
+    nomeEl.focus();
+    return;
+  }
+
+  if (!email) {
+    setStatus("Informe seu e-mail.");
+    emailEl.focus();
+    return;
+  }
+
+  if (!cpf) {
+    setStatus("Informe seu CPF.");
+    cpfEl.focus();
+    return;
+  }
+
+  pixBtn.disabled = true;
+  setStatus("Gerando PIX...");
+
+  try {
+
+    const resp = await fetch("/api/prepaid-checkout/criar-pix", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        nome,
+        email,
+        valor,
+        cpf,
+        ref
+      })
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok || !data.ok) {
+      throw new Error(data.erro || "Erro ao gerar PIX.");
+    }
+
+    pixQrImg.src =
+      `data:image/png;base64,${data.qr_code_base64}`;
+
+    pixCopiaCola.value =
+      data.qr_code || "";
+
+    pixArea.classList.remove("hidden");
+
+    setStatus(
+      "PIX gerado. Após o pagamento o crédito será liberado automaticamente."
+    );
+monitorarCredito(data.credit_id, email);
+  } catch (e) {
+    console.error(e);
+
+    setStatus(
+      e.message || "Erro ao gerar PIX."
+    );
+  } finally {
+    pixBtn.disabled = false;
+  }
+};
+
+cartaoBtn.onclick = async () => {
+
+  const nome = String(nomeEl.value || "").trim();
+  const email = String(emailEl.value || "").trim().toLowerCase();
+  const valor = aplicarMinimo();
+
+  if (!nome) {
+    setStatus("Informe seu nome.");
+    nomeEl.focus();
+    return;
+  }
+
+  if (!email) {
+    setStatus("Informe seu e-mail.");
+    emailEl.focus();
+    return;
+  }
+
+  cartaoBtn.disabled = true;
+  setStatus("Abrindo checkout...");
+
+  try {
+
+    const resp = await fetch(
+      "/api/prepaid-checkout/start",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nome,
+          email,
+          valor,
+          ref
+        })
+      }
+    );
+
+    const data = await resp.json();
+
+    if (
+      !resp.ok ||
+      !data.ok ||
+      !data.checkout_url
+    ) {
+      throw new Error(
+        data.erro ||
+        "Erro ao abrir checkout."
+      );
+    }
+
+    window.location.href =
+      data.checkout_url;
+
+  } catch (e) {
+
+    console.error(e);
+
+    setStatus(
+      e.message ||
+      "Erro ao abrir checkout."
+    );
+
+    cartaoBtn.disabled = false;
+  }
+};
+
+copiarPixBtn.onclick = async () => {
+  try {
+
+    await navigator.clipboard.writeText(
+      pixCopiaCola.value
+    );
+
+    copiarPixBtn.textContent =
+      "Código copiado!";
+
+    setTimeout(() => {
+      copiarPixBtn.textContent =
+        "Copiar código PIX";
+    }, 1500);
+
+  } catch (e) {}
+};
 })();
 </script>
 
