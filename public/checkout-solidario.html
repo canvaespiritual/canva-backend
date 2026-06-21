@@ -129,7 +129,9 @@ const chips = [...document.querySelectorAll('.chip')];
 const qs = new URLSearchParams(location.search);
 
 const ref = (qs.get('ref') || qs.get('aff') || '').trim();
-const hasAffiliate = !!ref;
+const vend = (qs.get('vend') || '').trim();
+const hasAffiliate = !!ref || !!vend;
+const partnerRef = ref || vend;
 
 let session_id = qs.get('session_id') || localStorage.getItem('session_id');
 
@@ -259,7 +261,7 @@ gerarPixBtn.onclick = async () => {
     const url =
       `/pagamento/asaas/criar-pix-split/completo/${encodeURIComponent(session_id)}` +
       `?valor=${encodeURIComponent(valor)}` +
-      `&ref=${encodeURIComponent(ref)}` +
+      `&ref=${encodeURIComponent(partnerRef)}` +
       `&cpf=${encodeURIComponent(cpf)}`;
 
     const resp = await fetch(url);
@@ -319,12 +321,13 @@ cartaoAsaasBtn.onclick = async () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        tipo: 'completo',
-        session_id,
-        ref,
-        valor,
-        strictAsaas: true
-      })
+  tipo: 'completo',
+  session_id,
+  ref: partnerRef,
+  vend,
+  valor,
+  strictAsaas: true
+})
     });
 
     const data = await resp.json();
