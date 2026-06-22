@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ativação da Conta | Canva Espiritual</title>
+  <link rel="stylesheet" href="/afiliado.css" />
+  <style>
+    body{background:#0f1115;color:#f4f1ea;font-family:Inter,Arial,sans-serif;margin:0}
+    .wrap{max-width:860px;margin:0 auto;padding:32px 18px}
+    .card{background:#171a21;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+    .muted{color:#a9a59b}.ok{color:#66d17a}.warn{color:#ffd166}.err{color:#ff6b6b}
+    .steps{display:grid;gap:10px;margin-top:18px}
+    .step{display:flex;gap:10px;align-items:flex-start;background:#11141a;border-radius:12px;padding:12px}
+    .badge{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#2a2f3a;font-weight:700}
+    button,.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:700;cursor:pointer;background:#d8b46a;color:#111;text-decoration:none;display:inline-block}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    pre{white-space:pre-wrap;background:#0c0e13;border-radius:12px;padding:12px;color:#ddd;overflow:auto}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="card">
+      <h1>Ativação da sua conta</h1>
+      <p class="muted">
+        Para liberar seu painel, precisamos validar seus dados, confirmar a adesão e criar sua subconta de recebimento.
+      </p>
+
+      <div class="steps">
+        <div class="step"><div class="badge" id="bDados">1</div><div><strong>Dados cadastrais</strong><br><span id="stDados" class="muted">Carregando…</span></div></div>
+        <div class="step"><div class="badge" id="bPrecheck">2</div><div><strong>Validação Asaas</strong><br><span id="stPrecheck" class="muted">Aguardando validação…</span></div></div>
+        <div class="step"><div class="badge" id="bAdesao">3</div><div><strong>Adesão R$16,99</strong><br><span id="stAdesao" class="muted">Aguardando…</span></div></div>
+        <div class="step"><div class="badge" id="bSubconta">4</div><div><strong>Subconta e liberação</strong><br><span id="stSubconta" class="muted">Aguardando pagamento…</span></div></div>
+      </div>
+
+      <div class="row">
+        <button id="btnPrecheck">Validar CPF/CNPJ</button>
+        <button id="btnPagar" disabled>Pagar adesão</button>
+        <a id="btnPainel" class="btn" href="#" style="display:none">Entrar no painel</a>
+      </div>
+
+      <p id="msg" class="muted"></p>
+    </div>
+
+    <div class="card">
+      <h2>Dados usados na validação</h2>
+      <pre id="dados">Carregando…</pre>
+      <p class="muted">Se algum dado estiver incorreto, depois vamos liberar edição nesta etapa.</p>
+    </div>
+  </main>
+
+  <script src="/scripts/ativacao-afiliado.js"></script>
+</body>
+</html>

@@ -40,6 +40,7 @@ const affiliatesAsaasRoutes = require("./src/routes/affiliatesAsaas");   // cria
 const affiliatesPayoutRoutes = require("./src/routes/affiliatesPayout"); // configura PIX/banco e teste
 const asaasSubaccountService = require("./src/services/asaasSubaccountService");
 const pagamentoStatusSessao = require("./src/routes/pagamentoStatusSessao");
+const activationFeeRoutes = require("./src/routes/activationFee");
 const vendorsRoutes = require("./src/routes/vendors");
 const debugRoutes = require("./src/routes/debug"); // ← ADD
 const prepaidQuiz = require("./src/routes/prepaidQuiz");
@@ -443,6 +444,7 @@ app.use('/affiliates/asaas', asaasSubaccountService);
 app.use('/affiliates/me/asaas', asaasSubaccountService);
 // 👇 Endpoints do Afiliado (cadastro, login, me)
 app.use('/affiliates', affiliatesRoutes);
+app.use('/affiliates', activationFeeRoutes);
 
 // 👇 Asaas: subconta/status + método de saque (D+7 controlado no dashboard)
 app.use('/affiliates', affiliatesAsaasRoutes);

@@ -105,21 +105,42 @@ if (formLogin) {
       });
 
       const role = (me.role || "").toLowerCase();
-      switch (role) {
-        case "vendor":
-          window.location.href = "/vendedor/dashboard.html";
-          break;
-        case "supervisor":
-          window.location.href = "/supervisor/dashboard.html";
-          break;
-        case "admin":
-          window.location.href = "/admin/dashboard.html";
-          break;
-        case "affiliate":
-        default:
-          window.location.href = "/afiliado/dashboard.html";
-          break;
-      }
+
+let activation = null;
+try {
+  activation = await getJSON("/affiliates/me/activation-status");
+} catch (_) {}
+
+const isActive =
+  activation &&
+  (
+    activation.active === true ||
+    (
+      activation.subaccount_ready === true &&
+      activation.link_enabled === true
+    )
+  );
+
+if ((role === "vendor" || role === "affiliate") && !isActive) {
+  window.location.href = "/afiliado/ativacao.html";
+  return;
+}
+
+switch (role) {
+  case "vendor":
+    window.location.href = "/vendedor/dashboard.html";
+    break;
+  case "supervisor":
+    window.location.href = "/supervisor/dashboard.html";
+    break;
+  case "admin":
+    window.location.href = "/admin/dashboard.html";
+    break;
+  case "affiliate":
+  default:
+    window.location.href = "/afiliado/dashboard.html";
+    break;
+}
     } catch (err) {
       alert("Erro no login: " + (err.error || JSON.stringify(err)));
     }

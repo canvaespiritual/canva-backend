@@ -66,6 +66,8 @@ async function marcarPrepaidComoPago(pay) {
     return false;
   }
 
+
+
   const creditId = externalReference.replace("prepaid:", "").trim();
   const paymentId = pay?.id || null;
 
@@ -84,6 +86,160 @@ async function marcarPrepaidComoPago(pay) {
   `, [paymentId, creditId]);
 
   console.log("[ASAAS WH] crédito pré-pago liberado:", creditId);
+
+  return true;
+}
+
+  async function criarSubcontaRealEAktivacao(affiliateId) {
+  const { rows } = await pool.query(`
+    SELECT id, name, email, cpf_cnpj, phone,
+           address, address_number, complement, district, city, state, postal_code,
+           person_type, birth_date,
+           asaas_account_id, asaas_wallet_id, asaas_api_key
+      FROM affiliates
+     WHERE id = $1
+     LIMIT 1
+  `, [affiliateId]);
+
+  if (!rows.length) throw new Error("Afiliado não encontrado para ativação.");
+  const a = rows[0];
+
+  if (a.asaas_account_id && a.asaas_wallet_id) {
+    await pool.query(`
+      UPDATE affiliates
+         SET activation_fee_status = 'paid',
+             activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
+             link_enabled = TRUE,
+             updated_at = NOW()
+       WHERE id = $1
+    `, [affiliateId]);
+
+    await pool.query(`
+      UPDATE affiliate_links
+         SET active = TRUE,
+             status = 'active'
+       WHERE affiliate_id = $1
+    `, [affiliateId]);
+
+    return { already: true };
+  }
+
+  const onlyDigits = (s) => String(s || "").replace(/\D/g, "");
+  const normDate = (s) => {
+    const t = String(s || "").trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+    if (/^\d{4}-\d{2}-\d{2}T/.test(t)) return t.slice(0, 10);
+    return "";
+  };
+
+  const personType = String(a.person_type || "FISICA").toUpperCase() === "JURIDICA" ? "JURIDICA" : "FISICA";
+
+  const body = {
+    name: a.name,
+    email: a.email,
+    loginEmail: a.email,
+    personType,
+    cpfCnpj: onlyDigits(a.cpf_cnpj),
+    mobilePhone: onlyDigits(a.phone),
+    address: a.address,
+    addressNumber: String(a.address_number || ""),
+    complement: a.complement || "",
+    province: a.district || "",
+    city: a.city,
+    state: a.state,
+    postalCode: onlyDigits(a.postal_code),
+    incomeValue: Number(process.env.AFF_DEFAULT_INCOME || 1500),
+  };
+
+  if (personType === "FISICA") {
+    body.birthDate = normDate(a.birth_date);
+    if (!body.birthDate) throw new Error("Data de nascimento ausente para criar subconta.");
+  }
+
+  const resp = await asaas.post("/accounts", body);
+  const data = resp.data || {};
+
+  const accountId = data.id || null;
+  const walletId = data.walletId || null;
+  const apiKey = data.apiKey || data.accessToken?.apiKey || null;
+
+  const accNum = data.accountNumber || {};
+  const agency = accNum.agency || null;
+  const account = accNum.account || null;
+  const accountDigit = accNum.accountDigit || null;
+
+  if (!accountId || !walletId || !apiKey) {
+    throw new Error("Retorno inesperado do Asaas ao criar subconta.");
+  }
+
+  await pool.query(`
+    UPDATE affiliates
+       SET asaas_account_id = $1,
+           asaas_wallet_id = $2,
+           wallet_id = $2,
+           asaas_api_key = $3,
+           asaas_agency = $4,
+           asaas_account = $5,
+           asaas_account_digit = $6,
+           activation_fee_status = 'paid',
+           activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
+           link_enabled = TRUE,
+           updated_at = NOW()
+     WHERE id = $7
+  `, [accountId, walletId, apiKey, agency, account, accountDigit, affiliateId]);
+
+  await pool.query(`
+    UPDATE affiliate_links
+       SET active = TRUE,
+           status = 'active'
+     WHERE affiliate_id = $1
+  `, [affiliateId]);
+
+  return { already: false, accountId, walletId };
+}
+
+async function marcarActivationFeeComoPago(pay) {
+  const externalReference = String(pay?.externalReference || "");
+  if (!externalReference.startsWith("activation_fee:")) return false;
+
+  const affiliateId = externalReference.replace("activation_fee:", "").trim();
+  const paymentId = pay?.id || null;
+
+  if (!affiliateId) {
+    console.warn("[ASAAS WH] activation_fee sem affiliateId.");
+    return true;
+  }
+
+  try {
+    await pool.query(`
+      UPDATE affiliates
+         SET activation_fee_status = 'paid',
+             activation_fee_payment_id = COALESCE($1, activation_fee_payment_id),
+             activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
+             updated_at = NOW()
+       WHERE id = $2
+    `, [paymentId, affiliateId]);
+
+    const out = await criarSubcontaRealEAktivacao(affiliateId);
+
+    console.log("[ASAAS WH] adesão paga e subconta ativada:", {
+      affiliateId,
+      paymentId,
+      ...out
+    });
+  } catch (e) {
+    console.error("[ASAAS WH] falha ao ativar após adesão:", e.response?.data || e.message);
+
+    await pool.query(`
+      UPDATE affiliates
+         SET activation_fee_status = 'paid_subaccount_failed',
+             activation_fee_payment_id = COALESCE($1, activation_fee_payment_id),
+             activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
+             link_enabled = FALSE,
+             updated_at = NOW()
+       WHERE id = $2
+    `, [paymentId, affiliateId]);
+  }
 
   return true;
 }
@@ -129,8 +285,9 @@ async function getPolicyBySession(sessionId) {
 
 // === Espelha split nativo do Asaas em sales + partner_ledger ===
 async function persistSaleAndLedgerFromAsaasSplit(pay, sessionId) {
-  const grossCents = Math.round(Number(pay.value || 0) * 100);
-  const netCents   = Math.round(Number(pay.netValue || pay.value || 0) * 100);
+  const operationalFeeCents = 299;
+const grossCents = Math.round(Number(pay.value || 0) * 100);
+const netCents = Math.max(0, grossCents - operationalFeeCents);
   const paymentId  = String(pay.id || uuid());
   const saleId     = uuid();
 const meta = await pool.query(`
@@ -489,6 +646,12 @@ router.post("/", async (req, res) => {
 
     // Pago
     if (PAID_EVENTS.has(tipo)) {
+      const activationFeeResolvida = await marcarActivationFeeComoPago(pay);
+
+      if (activationFeeResolvida) {
+        return res.sendStatus(200);
+      }
+
       const prepaidResolvido = await marcarPrepaidComoPago(pay);
 
       if (prepaidResolvido) {
@@ -525,8 +688,9 @@ try {
 if (!splitDone) {
   try {
     const grossCents = Math.round(Number(pay.value || 0) * 100);
-    const netCents   = Math.round(Number(pay.netValue || pay.value || 0) * 100);
-    const bonusVendorPct = Number(process.env.POLICY_BONUS_VENDOR_PCT || 0);
+const operationalFeeCents = 299;
+const netCents = Math.max(0, grossCents - operationalFeeCents);
+const bonusVendorPct = Number(process.env.POLICY_BONUS_VENDOR_PCT || 0);
 
     // venda DIRETA do vendedor (se você gravou vendor_ref no diagnóstico)
     let vendorId = null;
