@@ -240,23 +240,41 @@
     if (polling) return;
 
     polling = setInterval(async () => {
-      try {
-        const data = await getJSON("/affiliates/me/activation-status");
+  try {
+    const data = await getJSON("/affiliates/me/activation-status");
 
-        if (data.active) {
-          clearInterval(polling);
-          polling = null;
+    if (data.active) {
+      clearInterval(polling);
+      polling = null;
 
-          stAdesao.textContent = "✓ Pago";
-          stSubconta.textContent = "✓ Conta ativa";
+      stAdesao.textContent = "✓ Pago";
+      stSubconta.textContent = "✓ Conta ativa";
 
-          btnPainel.style.display = "inline-block";
-          btnPainel.href = painelPorRole((data.me?.role || "").toLowerCase());
+      btnPainel.style.display = "inline-block";
+      btnPainel.href = painelPorRole((data.me?.role || "").toLowerCase());
 
-          setMsg("Pagamento confirmado. Sua conta foi ativada.", "ok");
-        }
-      } catch (_) {}
-    }, 4000);
+      setMsg("Pagamento confirmado. Sua conta foi ativada.", "ok");
+      return;
+    }
+
+    if (data.activation_fee_status === "paid_subaccount_failed") {
+      clearInterval(polling);
+      polling = null;
+
+      stAdesao.textContent = "✓ Pago";
+      stSubconta.textContent = "Erro na integração financeira";
+
+      setMsg("Pagamento confirmado, mas houve erro na criação da subconta. Fale com o suporte.", "err");
+      return;
+    }
+
+    if (data.activation_fee_status === "paid") {
+      stAdesao.textContent = "✓ Pago";
+      stSubconta.textContent = "⏳ Criando integração financeira...";
+      setMsg("Pagamento confirmado. Finalizando ativação da conta...", "warn");
+    }
+  } catch (_) {}
+}, 4000);
   }
 
   await carregarStatus();

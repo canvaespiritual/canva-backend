@@ -107,6 +107,7 @@ router.get("/me/activation-status", requireAuth, async (req, res) => {
       can_pay_activation_fee: commissionTermsAccepted && !feePaid && !subaccountReady,
       me: {
         id: a.id,
+        role: a.role || "affiliate",
         name: a.name,
         email: a.email,
         cpf_cnpj: a.cpf_cnpj,
