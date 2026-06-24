@@ -107,3 +107,37 @@ https://api.asaas.com/v3
 
 minha-chave-webhook
 
+código de gerar cpfs sandbox: 
+function New-TestCpf {
+    $n = 1..9 | ForEach-Object { Get-Random -Minimum 0 -Maximum 10 }
+
+    $soma = 0
+    for ($i=0; $i -lt 9; $i++) {
+        $soma += $n[$i] * (10 - $i)
+    }
+
+    $d1 = 11 - ($soma % 11)
+    if ($d1 -ge 10) { $d1 = 0 }
+
+    $soma = 0
+    for ($i=0; $i -lt 9; $i++) {
+        $soma += $n[$i] * (11 - $i)
+    }
+
+    $soma += $d1 * 2
+
+    $d2 = 11 - ($soma % 11)
+    if ($d2 -ge 10) { $d2 = 0 }
+
+    $cpf = (($n -join '') + $d1 + $d2)
+
+    return "{0}.{1}.{2}-{3}" -f `
+        $cpf.Substring(0,3),
+        $cpf.Substring(3,3),
+        $cpf.Substring(6,3),
+        $cpf.Substring(9,2)
+}
+
+1..20 | ForEach-Object { New-TestCpf }
+
+----

@@ -40,6 +40,43 @@ function drawQR(container, data, size = 180) {
 }
 
 const BRL = (v) => (isFinite(v) ? v : 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const PRODUCTS = [
+  {
+    key: "geral",
+    name: "Checkup Emocional Geral",
+    path: "/quiz-geral.html",
+    desc: "Diagnóstico emocional completo.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "profissional",
+    name: "Checkup Profissional",
+    path: "/quiz-profissional.html",
+    desc: "Trabalho, carreira e rotina.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "social",
+    name: "Checkup Social",
+    path: "/quiz-social.html",
+    desc: "Relações, convivência e vínculos.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "familiar",
+    name: "Checkup Familiar",
+    path: "/quiz-familiar.html",
+    desc: "Ciclos emocionais no ambiente familiar.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "prepago",
+    name: "Checkup Pré-pago",
+    path: "/landing-prepago.html",
+    desc: "Pagamento antes do diagnóstico.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+];
 const fmtDate = (s) => { try { return new Date(s).toLocaleString("pt-BR"); } catch { return s || "—"; } };
 function setText(el, text){ if (el) el.textContent = text; }
 function setDisplay(el, show){ if (el) el.style.display = show ? "" : "none"; }
@@ -53,11 +90,19 @@ const APP = {
   personalLink: null,
   linkEnabled: false,
   walletId: "—",
-  supervisorPct: 5,        // supervisor fixo 5%
-  forceCapPct: 60,         // teto força de venda (afiliado + vendedor)
+  supervisorPct: 0,        // supervisor fixo 5%
+  forceCapPct: 70,         // teto força de venda (afiliado + vendedor)
   bonusCapPct: 5,          // bônus estratégico (não usado agora)
   sales: { page: 1, pageSize: 10, total: 0, items: [], type: "direct" },
   links: [],
+  affiliateSalesCount: {},
+affiliateFilters: {
+  search: "",
+  status: "all",
+  sort: "sales_desc",
+  page: 1,
+  pageSize: 8,
+},
 };
 
 /* =========================================================
@@ -96,13 +141,16 @@ function showView(sel){
   const nav = $('.nav a.nav-link[data-target="'+sel+'"]'); if (nav) nav.classList.add("active");
 
 if (sel === "#view-sales") {
-  loadSales(1, "override").catch(()=>{});
-  loadVendorTotals("override").catch(()=>{});  // ← soma os cards
+  loadSales(1, "all").catch(()=>{});
+  
 }
 
 
   if (sel === "#view-materials") initMaterials();
-  if (sel === "#view-links") refreshLinks().catch(()=>{});
+  if (sel === "#view-links") {
+  renderProductLinks();
+  refreshLinks().catch(()=>{});
+}
     if (sel === "#view-profile")  loadProfile().catch(()=>{});
 
 }
@@ -112,7 +160,7 @@ function routeFromHash(){
   if (h.indexOf("#verificacao") === 0) return showView("#view-verify");
   if (h.indexOf("#links") === 0)       return showView("#view-links");
     if (h.indexOf("#cadastro") === 0)    return showView("#view-profile");
-  if (h.indexOf("#equipe") === 0)      return showView("#view-team");
+  if (h.indexOf("#afiliados") === 0) return showView("#view-team");
   if (h.indexOf("#materiais") === 0)   return showView("#view-materials");
   if (h.indexOf("#vendas") === 0)      return showView("#view-sales");
   if (h.indexOf("#treinamento") === 0) return showView("#view-training");
@@ -292,8 +340,77 @@ function paintPersonalLinkArea(){
   }
   drawQR($("#qrMyPersonal"), (APP.linkEnabled && APP.personalLink) ? APP.personalLink : "", 180);
   drawQR($("#qrMaterialsPersonal"), (APP.linkEnabled && APP.personalLink) ? APP.personalLink : "", 180);
+renderProductLinks();
+}
+function buildProductUrl(path) {
+  if (!APP.personalLink) return "";
+
+  try {
+    const base = new URL(APP.personalLink, location.origin);
+    const url = new URL(path, location.origin);
+
+    base.searchParams.forEach((value, key) => {
+      url.searchParams.set(key, value);
+    });
+
+    return url.toString();
+  } catch {
+    return location.origin + path;
+  }
 }
 
+function renderProductLinks() {
+  const grid = $("#productLinksGrid");
+  if (!grid) return;
+
+  if (!APP.linkEnabled || !APP.personalLink) {
+    grid.innerHTML = `<p class="muted">Seus links serão exibidos quando sua conta estiver ativa.</p>`;
+    return;
+  }
+
+  grid.innerHTML = "";
+
+  PRODUCTS.forEach((p) => {
+    const url = buildProductUrl(p.path);
+
+    const card = document.createElement("div");
+    card.className = "product-link-card";
+    card.innerHTML = `
+      <img src="${p.logo}" alt="${p.name}" class="product-logo" />
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="link-box product-link-text">${url}</div>
+        <div class="row mt-12">
+          <button class="btn" data-copy="${url}">Copiar</button>
+          <a class="btn secondary" href="${url}" target="_blank" rel="noopener">Abrir</a>
+          <button class="btn secondary" data-qr="${url}">QR</button>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      await copyToClipboard(btn.getAttribute("data-copy"));
+      btn.textContent = "Copiado!";
+      setTimeout(() => btn.textContent = "Copiar", 1400);
+    });
+  });
+
+  grid.querySelectorAll("[data-qr]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const url = btn.getAttribute("data-qr");
+      const w = window.open("", "_blank", "width=380,height=440");
+      if (w) {
+        w.document.write(`<title>QR Code</title><body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif"></body>`);
+        drawQR(w.document.body, url, 320);
+      }
+    });
+  });
+}
 async function fetchPersonalLink(){
   try {
     const r = await jfetch("/vendors/me/personal-link"); // ex.: { url: "https://.../quiz?vend=XYZ" }
@@ -308,7 +425,7 @@ async function fetchPersonalLink(){
 /* =========================================================
  * links de afiliados (criar/listar)
  * =======================================================*/
-function calcVendorPct(affPct, cap = 60){
+function calcVendorPct(affPct, cap = 70){
   affPct = Number(affPct) || 0;
   // vendedor recebe o restante até o CAP da força de venda (A+V ≤ 60), sem supervisor
   const vend = Math.max(0, cap - affPct);
@@ -325,14 +442,25 @@ function wireCreateLinkModal(){
   const pctTot  = $("#pctTotal");
 
   function refreshAuto(){
-    const aff = Math.min(50, Math.max(35, Number(pctAff.value || 40)));
-    pctAff.value = aff;
-    const vend = calcVendorPct(aff, APP.forceCapPct);
-    pctVend.value = vend;
-    // Total (força de venda) mostra só A+V (supervisor é política à parte)
-    pctTot.value  = Math.min(APP.forceCapPct, aff + vend);
+  const aff = Math.min(60, Math.max(35, Number(pctAff.value || 50)));
+  pctAff.value = aff;
 
-  }
+  const vend = calcVendorPct(aff, APP.forceCapPct);
+
+  if (pctVend) pctVend.textContent = vend + "%";
+  if (pctVend) pctVend.value = vend;
+
+  const modalAff = $("#modalAffPct");
+  if (modalAff) modalAff.textContent = aff + "%";
+
+  const previewAff = $("#previewAffPct");
+  const previewVend = $("#previewVendPct");
+  if (previewAff) previewAff.textContent = aff + "%";
+  if (previewVend) previewVend.textContent = vend + "%";
+
+  if (pctTot) pctTot.value = APP.forceCapPct;
+  if (pctSup) pctSup.value = 0;
+}
 
   if (pctAff) pctAff.addEventListener("input", refreshAuto);
 
@@ -353,15 +481,21 @@ function wireCreateLinkModal(){
     const pctS  = Number($("#pctSupervisor")?.value || APP.supervisorPct);
 
     if (!email) { alert("Informe o e-mail do afiliado."); return; }
-    if (pctA < 35 || pctA > 50) { alert("A % do afiliado deve estar entre 35 e 50."); return; }
+    if (pctA < 35 || pctA > 60) {
+  alert("A % do afiliado deve estar entre 35 e 60.");
+  return;
+}
     // CAP da força de venda: A + V ≤ 60 (supervisor é aplicado na venda)
-    if (pctA + pctV > APP.forceCapPct) { alert("Teto de 60% (força de venda) excedido. Ajuste os percentuais."); return; }
+    if (pctA + pctV > APP.forceCapPct) {
+  alert("Teto de 70% excedido. Ajuste os percentuais.");
+  return;
+}
 
 
     try{
       const r = await jfetch("/vendors/links", {
         method: "POST",
-        body: JSON.stringify({ email, pct_affiliate: pctA, pct_vendor: pctV, pct_supervisor: pctS })
+        body: JSON.stringify({ email, pct_affiliate: pctA, pct_vendor: pctV, pct_supervisor: 0 })
       });
       modal?.classList.add("hide"); modal?.setAttribute("aria-hidden","true");
       await refreshLinks();
@@ -369,103 +503,409 @@ function wireCreateLinkModal(){
     }catch(e){ alert(e.message || "Erro ao criar link."); }
   });
 }
+function buildAffiliateProductLinks(it){
+  const code = it.code || it.token || "";
+  const origin = window.location.origin;
 
-function renderLinks(list){
-  const tbody = $("#linksRows");
-  if (!tbody) return;
-  tbody.innerHTML = "";
+  if (!code) return [];
 
-  if (!list || !list.length) {
-    tbody.innerHTML = '<tr><td colspan="9" class="muted">Nenhum link criado ainda.</td></tr>';
-    return;
+  return PRODUCTS.map(p => ({
+    name: p.name,
+    url: `${origin}${p.path}?aff=${encodeURIComponent(code)}`
+  }));
+}
+function getAffiliateSalesCount(it){
+  const keys = [
+    it.id,
+    it.affiliate_link_id,
+    it.affiliate_id,
+    it.affiliate?.id,
+    it.affiliate_email,
+    it.affiliate?.email,
+    it.affiliate_name,
+    it.affiliate?.name
+  ].filter(Boolean).map(String);
+
+  for (const k of keys) {
+    if (APP.affiliateSalesCount[k]) return APP.affiliateSalesCount[k];
   }
 
-list.forEach(it => {
-  const tr = document.createElement("tr");
-  const disabled = it.affiliate_ready ? "" : 'disabled title="Aguardando aprovação da subconta do afiliado"';
+  return 0;
+}
+function getAffiliatePaidAmount(it){
+  const keys = getAffiliateSalesKeys(it);
 
-  tr.innerHTML =
-    `<td>${it.code || "—"}</td>` +
-    `<td>${(it.affiliate?.name || it.affiliate_email || "—")}</td>` +
-    `<td>${isFinite(it.pct_aff) ? it.pct_aff+"%" : "—"}</td>` +
-    `<td>${isFinite(it.pct_vendor) ? it.pct_vendor+"%" : "—"}</td>` +
-    `<td>${isFinite(it.pct_supervisor) ? it.pct_supervisor+"%" : "—"}</td>` +
-    `<td>${it.clicks ?? "—"}</td>` +
-    `<td>${it.sales ?? "—"}</td>` +
-    `<td>${it.active ? "Ativo" : "Pausado"}</td>` +
-    `<td>
-       <button class="btn ghost" data-act="copy"   data-url="${it.url || ""}" ${disabled}>Copiar</button>
-       <button class="btn ghost" data-act="qr"     data-url="${it.url || ""}" ${disabled}>QR</button>
-       <button class="btn ghost" data-act="toggle" data-id="${it.id}">${it.active ? "Pausar" : "Ativar"}</button>
-       <button class="btn ghost" data-act="resend" data-id="${it.id}">Reenviar</button>
-     </td>`;
+  for (const k of keys) {
+    if (APP.affiliateSalesAmount[k]) return APP.affiliateSalesAmount[k];
+  }
 
-  tbody.appendChild(tr);
-});
-
-// ações da tabela
-tbody.querySelectorAll("button[data-act]").forEach(btn => {
-  btn.addEventListener("click", async () => {
-    // se o botão estiver disabled, não faz nada
-    if (btn.disabled) return;
-
-    const act = btn.getAttribute("data-act");
-
-    if (act === "copy") {
-      const url = btn.getAttribute("data-url");
-      if (!url) return alert("Link indisponível.");
-      await copyToClipboard(url);
-      alert("Link copiado!");
-    }
-
-    else if (act === "qr") {
-      const url = btn.getAttribute("data-url");
-      if (!url) return alert("Link indisponível.");
-      const w = window.open("", "_blank", "width=360,height=420");
-      if (w) {
-        w.document.write(`<title>QR</title><body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif"></body>`);
-        const c = w.document.body;
-        drawQR(c, url, 320);
-      }
-    }
-
-    else if (act === "toggle") {
-      const id = btn.getAttribute("data-id");
-      try {
-        await jfetch(`/vendors/links/${id}/toggle`, {
-          method: "POST",
-          body: JSON.stringify({})
-        });
-        await refreshLinks();
-      } catch(e){
-        alert(e.message || "Erro ao alternar status.");
-      }
-    }
-
-    else if (act === "resend") {
-      const id = btn.getAttribute("data-id");
-      try {
-        await jfetch(`/vendors/links/${id}/resend`, {
-          method: "POST",
-          body: JSON.stringify({})
-        });
-        alert("E-mail de convite reenviado para o afiliado.");
-      } catch(e){
-        alert(e.message || "Erro ao reenviar e-mail.");
-      }
-    }
-  });
-});
+  return 0;
 }
 
+function getAffiliateVendorAmount(it){
+  const keys = getAffiliateSalesKeys(it);
 
+  for (const k of keys) {
+    if (APP.affiliateVendorAmount[k]) return APP.affiliateVendorAmount[k];
+  }
+
+  return 0;
+}
+
+function getAffiliateSalesKeys(it){
+  return [
+    it.id,
+    it.affiliate_link_id,
+    it.affiliate_id,
+    it.affiliate?.id,
+    it.affiliate_email,
+    it.affiliate?.email,
+    it.affiliate_name,
+    it.affiliate?.name
+  ].filter(Boolean).map(String);
+}
+function renderLinks(list){
+  const activeGrid = $("#activeAffiliatesGrid");
+  const pendingGrid = $("#pendingAffiliatesGrid");
+
+  if (!activeGrid || !pendingGrid) return;
+
+  activeGrid.innerHTML = "";
+  pendingGrid.innerHTML = "";
+
+  const items = Array.isArray(list) ? list : [];
+
+  const isAffiliateReady = (it) => {
+  const status = String(it.status || "").toLowerCase();
+  const hasAffiliateIdentity = Boolean(it.affiliate_id || it.affiliate?.id);
+  const hasActivationDate = Boolean(it.accepted_at || it.affiliate?.accepted_at);
+  const hasActivatedStatus = (
+    status === "accepted" ||
+    status === "active" ||
+    status === "activated" ||
+    status === "approved"
+  );
+
+  return Boolean(
+    it.affiliate_ready ||
+    hasAffiliateIdentity ||
+    hasActivationDate ||
+    hasActivatedStatus
+  );
+};
+
+const activeItems = items.filter(isAffiliateReady);
+const pendingItems = items.filter(it => !isAffiliateReady(it));
+
+  if (!activeItems.length) {
+    activeGrid.innerHTML = '<p class="muted">Nenhum afiliado ativo ainda.</p>';
+  }
+
+  if (!pendingItems.length) {
+    pendingGrid.innerHTML = '<p class="muted">Nenhum convite aguardando ativação.</p>';
+  }
+
+  activeItems.forEach(it => {
+    const card = document.createElement("article");
+    card.className = "affiliate-card affiliate-card--active";
+
+    const name = it.affiliate?.name || it.affiliate_name || "Afiliado";
+    const email = it.affiliate?.email || it.affiliate_email || it.invite_email || "—";
+    const affPct = isFinite(Number(it.pct_aff)) ? Number(it.pct_aff) : 0;
+    const vendPct = isFinite(Number(it.pct_vendor)) ? Number(it.pct_vendor) : 0;
+    const productLinks = buildAffiliateProductLinks(it);
+    card.innerHTML = `
+      <div class="affiliate-card__top">
+        <div>
+          <h3>${name}</h3>
+          <p>${email}</p>
+        </div>
+        <span class="affiliate-status ${
+  it.active
+    ? "affiliate-status--active"
+    : "affiliate-status--pending"
+}">
+  ${it.active ? "Ativo" : "Pausado"}
+</span>
+      </div>
+
+      <div class="affiliate-metrics">
+  <div>
+    <span>% Afiliado</span>
+    <strong>${affPct}%</strong>
+  </div>
+  <div>
+    <span>% Você</span>
+    <strong>${vendPct}%</strong>
+  </div>
+  <div>
+    <span>Vendas</span>
+    <strong>${getAffiliateSalesCount(it)}</strong>
+  </div>
+  <div>
+    <span>Cliques</span>
+    <strong>${it.clicks ?? 0}</strong>
+  </div>
+  <div>
+  <span>Pago ao afiliado</span>
+  <strong>${BRL(getAffiliatePaidAmount(it))}</strong>
+</div>
+<div>
+  <span>Seu lucro</span>
+  <strong>${BRL(getAffiliateVendorAmount(it))}</strong>
+</div>
+</div>
+
+<div class="affiliate-products-list">
+  ${productLinks.map(link => `
+    <div class="affiliate-product-link">
+      <div>
+        <strong>${link.name}</strong>
+        <span>${link.url}</span>
+      </div>
+      <div class="row">
+        <button class="btn ghost" data-act="copy" data-url="${link.url}">Copiar</button>
+        <button class="btn ghost" data-act="qr" data-url="${link.url}">QR</button>
+      </div>
+    </div>
+  `).join("")}
+</div>
+
+<div class="row mt-12">
+  <button class="btn ghost" data-act="toggle" data-id="${it.id}">
+  ${it.active ? "Pausar afiliado" : "Reativar afiliado"}
+</button>
+</div>
+    `;
+
+    activeGrid.appendChild(card);
+  });
+
+  pendingItems.forEach(it => {
+    const card = document.createElement("article");
+    card.className = "affiliate-card affiliate-card--pending";
+
+    const name = it.affiliate?.name || it.affiliate_name || "Convite enviado";
+    const email = it.affiliate?.email || it.affiliate_email || it.invite_email || "—";
+    const affPct = isFinite(Number(it.pct_aff)) ? Number(it.pct_aff) : 0;
+    const vendPct = isFinite(Number(it.pct_vendor)) ? Number(it.pct_vendor) : 0;
+
+    card.innerHTML = `
+      <div class="affiliate-card__top">
+        <div>
+          <h3>${name}</h3>
+          <p>${email}</p>
+        </div>
+        <span class="affiliate-status affiliate-status--pending">Aguardando ativação</span>
+      </div>
+
+      <div class="affiliate-metrics">
+        <div>
+          <span>% Afiliado</span>
+          <strong>${affPct}%</strong>
+        </div>
+        <div>
+          <span>% Você</span>
+          <strong>${vendPct}%</strong>
+        </div>
+      </div>
+
+      <p class="muted mt-12">
+        O link e o QR Code serão liberados depois que o afiliado concluir a ativação.
+      </p>
+
+      <div class="row mt-12">
+        <button class="btn ghost" data-act="resend" data-id="${it.id}">
+          Reenviar convite
+        </button>
+      </div>
+    `;
+
+    pendingGrid.appendChild(card);
+  });
+
+  [activeGrid, pendingGrid].forEach(root => {
+    root.querySelectorAll("button[data-act]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const act = btn.getAttribute("data-act");
+
+        if (act === "copy") {
+          const url = btn.getAttribute("data-url");
+          if (!url) return alert("Link indisponível.");
+          await copyToClipboard(url);
+          alert("Link copiado!");
+        }
+
+        else if (act === "qr") {
+          const url = btn.getAttribute("data-url");
+          if (!url) return alert("Link indisponível.");
+          const w = window.open("", "_blank", "width=360,height=420");
+          if (w) {
+            w.document.write(`<title>QR</title><body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif"></body>`);
+            drawQR(w.document.body, url, 320);
+          }
+        }
+
+        else if (act === "toggle") {
+          const id = btn.getAttribute("data-id");
+          try {
+            await jfetch(`/vendors/links/${id}/toggle`, {
+              method: "POST",
+              body: JSON.stringify({})
+            });
+            await refreshLinks();
+          } catch(e){
+            alert(e.message || "Erro ao alternar status.");
+          }
+        }
+
+        else if (act === "resend") {
+          const id = btn.getAttribute("data-id");
+          try {
+            await jfetch(`/vendors/links/${id}/resend`, {
+              method: "POST",
+              body: JSON.stringify({})
+            });
+            alert("E-mail de convite reenviado para o afiliado.");
+          } catch(e){
+            alert(e.message || "Erro ao reenviar e-mail.");
+          }
+        }
+      });
+    });
+  });
+}
+async function loadAffiliateSalesCounts(){
+  APP.affiliateSalesCount = {};
+APP.affiliateSalesAmount = {};
+APP.affiliateVendorAmount = {};
+
+  try {
+    const r = await jfetch("/vendors/sales?type=override&limit=500&offset=0");
+    const items = Array.isArray(r.items) ? r.items : [];
+
+    items.forEach(sale => {
+      if (!sale.is_affiliate_sale) return;
+
+      const keys = [
+        sale.affiliate_link_id,
+        sale.affiliate_id,
+        sale.affiliate_email,
+        sale.affiliate_name
+      ].filter(Boolean).map(String);
+
+      keys.forEach(k => {
+        APP.affiliateSalesCount[k] = (APP.affiliateSalesCount[k] || 0) + 1;
+      const netAmount = Number(
+  sale.net_amount ||
+  (sale.net_amount_cents ? sale.net_amount_cents / 100 : 0) ||
+  sale.amount ||
+  0
+);
+
+const affiliateAmount = Number(sale.affiliate_amount || 0);
+
+const vendorAmount = typeof sale.vendor_amount === "number"
+  ? sale.vendor_amount
+  : Math.max(0, netAmount - affiliateAmount);
+
+APP.affiliateSalesAmount[k] = (APP.affiliateSalesAmount[k] || 0) + affiliateAmount;
+APP.affiliateVendorAmount[k] = (APP.affiliateVendorAmount[k] || 0) + vendorAmount;
+});
+    });
+  } catch(e) {
+    APP.affiliateSalesCount = {};
+  }
+}
+function renderFilteredAffiliates(){
+  let items = Array.isArray(APP.links) ? [...APP.links] : [];
+
+  const search = ($("#affiliateSearch")?.value || "").trim().toLowerCase();
+  const status = $("#affiliateStatusFilter")?.value || "all";
+  const sort = $("#affiliateSortFilter")?.value || "sales_desc";
+
+  const isReady = (it) => {
+    const st = String(it.status || "").toLowerCase();
+    return Boolean(
+      it.affiliate_ready ||
+      it.affiliate_id ||
+      it.affiliate?.id ||
+      it.accepted_at ||
+      it.affiliate?.accepted_at ||
+      st === "accepted" ||
+      st === "active" ||
+      st === "activated" ||
+      st === "approved"
+    );
+  };
+
+  if (search) {
+    items = items.filter(it => {
+      const hay = [
+        it.affiliate?.name,
+        it.affiliate_name,
+        it.affiliate?.email,
+        it.affiliate_email,
+        it.invite_email
+      ].filter(Boolean).join(" ").toLowerCase();
+
+      return hay.includes(search);
+    });
+  }
+
+  if (status !== "all") {
+    items = items.filter(it => {
+      const ready = isReady(it);
+
+      if (status === "pending") return !ready;
+      if (status === "active") return ready && !!it.active;
+      if (status === "paused") return ready && !it.active;
+
+      return true;
+    });
+  }
+
+  items.sort((a, b) => {
+    if (sort === "sales_desc") return getAffiliateSalesCount(b) - getAffiliateSalesCount(a);
+    if (sort === "sales_asc") return getAffiliateSalesCount(a) - getAffiliateSalesCount(b);
+
+    if (sort === "name_asc") {
+      const an = (a.affiliate?.name || a.affiliate_name || a.invite_email || "").toLowerCase();
+      const bn = (b.affiliate?.name || b.affiliate_name || b.invite_email || "").toLowerCase();
+      return an.localeCompare(bn);
+    }
+
+    if (sort === "created_desc") {
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    }
+
+    return 0;
+  });
+
+  const pageSize = APP.affiliateFilters.pageSize || 8;
+  const maxPage = Math.max(1, Math.ceil(items.length / pageSize));
+
+  APP.affiliateFilters.page = Math.min(APP.affiliateFilters.page || 1, maxPage);
+
+  const page = APP.affiliateFilters.page;
+  const offset = (page - 1) * pageSize;
+  const pagedItems = items.slice(offset, offset + pageSize);
+
+  renderLinks(pagedItems);
+
+  setText($("#affiliatePage"), String(page));
+  setText($("#affiliateMsg"), items.length ? `Total: ${items.length}` : "");
+}
 async function refreshLinks(){
   try {
-    const r = await jfetch("/vendors/links"); // retorna array
+    await loadAffiliateSalesCounts();
+
+    const r = await jfetch("/vendors/links");
     APP.links = Array.isArray(r) ? r : (r.items || []);
-    renderLinks(APP.links);
+    renderFilteredAffiliates();
   } catch(e){
-    renderLinks([]);
+    APP.links = [];
+renderFilteredAffiliates();
   }
 }
 
@@ -490,47 +930,82 @@ function initMaterials(){
  * vendas (diretas / override)
  * =======================================================*/
 function renderSales(items){
-  const tbody = $("#salesRows");
-  const msg   = $("#salesMsg");
-  if (!tbody) return;
+  const container = $("#salesCards");
+  const msg = $("#salesMsg");
 
-  tbody.innerHTML = "";
+  if (!container) return;
+
+  container.innerHTML = "";
+
   if (!items || !items.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="muted">Nenhuma venda encontrada.</td></tr>';
+    container.innerHTML = `
+      <div class="sale-card">
+        <div class="muted">Nenhuma venda encontrada.</div>
+      </div>
+    `;
     if (msg) msg.textContent = "";
     return;
   }
+
   items.forEach(it => {
-   const isOverride = (APP.sales.type === "override");
+    const isAffiliate = !!it.is_affiliate_sale;
 
-// % do vendedor:
-const pct = isOverride
-  ? (isFinite(Number(it.pct_vendor)) ? Number(it.pct_vendor) : 0)         // vindo do SQL do override
-  : 30;                                                                    // Diretas = 30%
+    const pct = isFinite(Number(it.pct_vendor))
+      ? Number(it.pct_vendor)
+      : 0;
 
-// R$ comissão do vendedor:
-const vendValue = isOverride
-  ? (typeof it.vendor_amount === "number" ? it.vendor_amount : (isFinite(it.amount) ? (it.amount * pct / 100) : 0))
-  : (isFinite(it.amount) ? (it.amount * 0.30) : 0);                        // Diretas = 30%
+    const commission =
+      typeof it.vendor_amount === "number"
+        ? it.vendor_amount
+        : (isFinite(it.amount) ? (it.amount * pct / 100) : 0);
 
-// rótulo de origem:
-const origem = isOverride
-  ? `Equipe${it.affiliate_name ? " · " + it.affiliate_name : (it.affiliate_email ? " · " + it.affiliate_email : "")}`
-  : "Direta (link pessoal)";
+    const affiliateName = isAffiliate
+      ? (it.affiliate_name || it.affiliate_email || null)
+      : null;
 
-const tr = document.createElement("tr");
-tr.innerHTML =
-  `<td>${fmtDate(it.created_at)}</td>` +
-  `<td>${it.gateway_payment_id || "—"}</td>` +
-  `<td>${BRL(it.amount)}</td>` +
-  `<td>${it.status || "—"}</td>` +
-  `<td>${pct}% · ${BRL(vendValue)}</td>` +
-  `<td>${origem}</td>` +
-  `<td>${(it.gateway || "").toUpperCase()}</td>`;
-tbody.appendChild(tr);
+    const card = document.createElement("div");
+    card.className = "sale-card";
 
+    card.innerHTML = `
+      <div class="sale-header">
+        <div>
+          <div class="sale-product">Checkup Emocional</div>
 
+          <div class="sale-type ${isAffiliate ? "affiliate" : "direct"}">
+            ${isAffiliate ? "VENDA DE AFILIADO" : "VENDA PRÓPRIA"}
+          </div>
+        </div>
+
+        <div>
+          <div class="sale-amount">${BRL(commission)}</div>
+          <div style="font-size:12px;color:#94a3b8;text-align:right;">
+            Seu ganho
+          </div>
+        </div>
+      </div>
+
+      ${
+        affiliateName
+          ? `<div class="sale-affiliate">Afiliado: <strong>${affiliateName}</strong></div>`
+          : ""
+      }
+
+      ${
+        isAffiliate && typeof it.affiliate_amount === "number" && it.affiliate_amount > 0
+          ? `<div class="sale-affiliate">Afiliado recebeu: <strong>${BRL(it.affiliate_amount)}</strong></div>`
+          : ""
+      }
+
+      <div class="sale-footer">
+        <div>Venda líquida: ${BRL(it.amount || 0)}</div>
+        <div>Comissão: ${pct}%</div>
+        <div>${fmtDate(it.created_at)}</div>
+      </div>
+    `;
+
+    container.appendChild(card);
   });
+
   if (msg) msg.textContent = "";
 }
 // ===== SALDO DO VENDEDOR =====
@@ -561,20 +1036,93 @@ async function requestVendorWithdraw(){
     alert(e.message || "Falha ao solicitar saque.");
   }
 }
+function updateSalesTotalsFromItems(items){
+  const safeItems = Array.isArray(items) ? items : [];
 
-async function loadSales(page = 1, type = "direct"){
+  const totalMine = safeItems.reduce((sum, it) => {
+    const pct = isFinite(Number(it.pct_vendor)) ? Number(it.pct_vendor) : 0;
+
+    const commission =
+      typeof it.vendor_amount === "number"
+        ? it.vendor_amount
+        : (isFinite(Number(it.amount)) ? (Number(it.amount) * pct / 100) : 0);
+
+    return sum + Number(commission || 0);
+  }, 0);
+
+  setText($("#balAvailVend"), BRL(totalMine));
+  setText($("#balPendVend"), BRL(0));
+}
+async function loadSales(page = 1, type = "all"){
   APP.sales.type = type;
+
   const limit  = APP.sales.pageSize;
-  const offset = (page - 1) * limit;
   const pageEl = $("#salesPage");
   const msg    = $("#salesMsg");
+
+  const search = ($("#salesSearch")?.value || "").trim().toLowerCase();
+  const start  = $("#salesStart")?.value || "";
+  const end    = $("#salesEnd")?.value || "";
+
   if (msg) msg.textContent = "Carregando…";
+
   try {
-    const r = await jfetch(`/vendors/sales?type=${encodeURIComponent(type)}&limit=${limit}&offset=${offset}`);
-    APP.sales.items = r.items || [];
-    APP.sales.total = r.total || 0;
-    APP.sales.page  = page;
-    renderSales(APP.sales.items);
+    let allItems = [];
+
+    const r = await jfetch(`/vendors/sales?type=override&limit=500&offset=0`);
+
+const sourceItems = r.items || [];
+
+const directItems = sourceItems.filter(it => !it.is_affiliate_sale);
+const affiliateItems = sourceItems.filter(it => !!it.is_affiliate_sale);
+
+if (type === "direct") {
+  allItems = directItems;
+} else if (type === "override") {
+  allItems = affiliateItems;
+} else {
+  allItems = sourceItems;
+}
+
+    if (search) {
+      allItems = allItems.filter(it => {
+        const hay = [
+          it.affiliate_name,
+          it.affiliate_email,
+          it.customer_name,
+          it.customer_email,
+          it.buyer_name,
+          it.buyer_email,
+          it.order_id,
+          it.payment_id
+        ].filter(Boolean).join(" ").toLowerCase();
+
+        return hay.includes(search);
+      });
+    }
+
+    if (start) {
+      const startDate = new Date(start + "T00:00:00");
+      allItems = allItems.filter(it => new Date(it.created_at) >= startDate);
+    }
+
+    if (end) {
+      const endDate = new Date(end + "T23:59:59");
+      allItems = allItems.filter(it => new Date(it.created_at) <= endDate);
+    }
+
+    allItems.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    APP.sales.total = allItems.length;
+    APP.sales.page = page;
+
+    const offset = (page - 1) * limit;
+    updateSalesTotalsFromItems(allItems);
+
+APP.sales.items = allItems.slice(offset, offset + limit);
+
+renderSales(APP.sales.items);
+
     if (pageEl) pageEl.textContent = String(page);
     if (msg) msg.textContent = APP.sales.total ? ("Total: " + APP.sales.total) : "";
   } catch (e) {
@@ -591,11 +1139,41 @@ function wireSalesControls(){
       b.classList.add("active");
       const t = b.getAttribute("data-type") || "direct";
       loadSales(1, t).catch(()=>{});
-      loadVendorTotals(t).catch(()=>{});
+      
 
     });
   });
+const applyFilters = $("#btnApplySalesFilters");
+if (applyFilters) {
+  applyFilters.addEventListener("click", () => {
+    loadSales(1, APP.sales.type || "all").catch(()=>{});
+    
+  });
+}
 
+const clearFilters = $("#btnClearSalesFilters");
+if (clearFilters) {
+  clearFilters.addEventListener("click", () => {
+    if ($("#salesSearch")) $("#salesSearch").value = "";
+    if ($("#salesStart")) $("#salesStart").value = "";
+    if ($("#salesEnd")) $("#salesEnd").value = "";
+
+    loadSales(1, APP.sales.type || "all").catch(()=>{});
+    loadVendorTotals(APP.sales.type || "all").catch(()=>{});
+  });
+}
+
+["salesSearch", "salesStart", "salesEnd"].forEach(id => {
+  const el = $("#" + id);
+  if (!el) return;
+
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      loadSales(1, APP.sales.type || "all").catch(()=>{});
+      loadVendorTotals(APP.sales.type || "all").catch(()=>{});
+    }
+  });
+});
   const prev = $("#prevSales");
   const next = $("#nextSales");
   if (prev) prev.addEventListener("click", () => {
@@ -642,7 +1220,55 @@ async function loadVendorTotals(type){
     setText($("#balPendVend"), "—");
   }
 }
+function wireAffiliateFilters(){
+  const apply = $("#btnApplyAffiliateFilters");
+  const clear = $("#btnClearAffiliateFilters");
+  const prev = $("#prevAffiliates");
+  const next = $("#nextAffiliates");
 
+  if (apply) {
+    apply.addEventListener("click", () => {
+      APP.affiliateFilters.page = 1;
+      renderFilteredAffiliates();
+    });
+  }
+
+  if (clear) {
+    clear.addEventListener("click", () => {
+      if ($("#affiliateSearch")) $("#affiliateSearch").value = "";
+      if ($("#affiliateStatusFilter")) $("#affiliateStatusFilter").value = "all";
+      if ($("#affiliateSortFilter")) $("#affiliateSortFilter").value = "sales_desc";
+
+      APP.affiliateFilters.page = 1;
+      renderFilteredAffiliates();
+    });
+  }
+
+  ["affiliateSearch", "affiliateStatusFilter", "affiliateSortFilter"].forEach(id => {
+    const el = $("#" + id);
+    if (!el) return;
+
+    const ev = el.tagName === "INPUT" ? "input" : "change";
+    el.addEventListener(ev, () => {
+      APP.affiliateFilters.page = 1;
+      renderFilteredAffiliates();
+    });
+  });
+
+  if (prev) {
+    prev.addEventListener("click", () => {
+      APP.affiliateFilters.page = Math.max(1, APP.affiliateFilters.page - 1);
+      renderFilteredAffiliates();
+    });
+  }
+
+  if (next) {
+    next.addEventListener("click", () => {
+      APP.affiliateFilters.page += 1;
+      renderFilteredAffiliates();
+    });
+  }
+}
 
 /* =========================================================
  * boot
@@ -693,6 +1319,7 @@ $("#btnWithdrawVend")?.addEventListener("click", requestVendorWithdraw);
 
   // vendas
   wireSalesControls();
+  wireAffiliateFilters();
 
   // carrega dados iniciais
   await fetchPersonalLink().catch(()=>{});

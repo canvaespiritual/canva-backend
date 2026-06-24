@@ -1,28 +1,191 @@
-          tabela           | registros
----------------------------+-----------
- affiliate_clicks          |         0
- affiliate_links           |         0
- affiliate_orders          |         0
- affiliate_password_resets |         0
- affiliates                |         0
- arquetipos                |         0
- asaas_webhook_events      |         0
- attribution               |         0
- commissions               |         0
- diagnostico_eventos       |         1
- diagnosticos              |       524
- diagnosticos_backup_dups  |         0
- i18n_translations         |         0
- kiwify_events             |         1
- leads_precheckout         |         4
- mapa_da_alma              |         0
- mapa_espiritual           |         0
- partner_ledger            |         0
- predisposicoes            |         0
- purchases                 |         1
- sales                     |         0
- withdrawals               |         0
-(22 linhas)
+SELECT
+    tc.table_name,
+    kcu.column_name,
+    tc.constraint_type,
+    ccu.table_name AS foreign_table,
+    ccu.column_name AS foreign_column
+FROM information_schema.table_constraints tc
+LEFT JOIN information_schema.key_column_usage kcu
+    ON tc.constraint_name = kcu.constraint_name
+LEFT JOIN information_schema.constraint_column_usage ccu
+    ON ccu.constraint_name = tc.constraint_name
+WHERE tc.table_schema = 'public'
+ORDER BY tc.table_name, tc.constraint_type;
 
 
-railway=#
+        table_name         |      column_name      | constraint_type |       foreign_table       |    foreign_column
+---------------------------+-----------------------+-----------------+---------------------------+-----------------------
+ affiliate_clicks          |                       | CHECK           |                           |
+ affiliate_clicks          |                       | CHECK           |                           |
+ affiliate_clicks          | affiliate_id          | FOREIGN KEY     | affiliates                | id
+ affiliate_clicks          | id                    | PRIMARY KEY     | affiliate_clicks          | id
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           |                       | CHECK           |                           |
+ affiliate_links           | vendor_id             | FOREIGN KEY     | affiliates                | id
+ affiliate_links           | affiliate_id          | FOREIGN KEY     | affiliates                | id
+ affiliate_links           | id                    | PRIMARY KEY     | affiliate_links           | id
+ affiliate_links           | code                  | UNIQUE          | affiliate_links           | code
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          |                       | CHECK           |                           |
+ affiliate_orders          | affiliate_id          | FOREIGN KEY     | affiliates                | id
+ affiliate_orders          | id                    | PRIMARY KEY     | affiliate_orders          | id
+ affiliate_password_resets |                       | CHECK           |                           |
+ affiliate_password_resets |                       | CHECK           |                           |
+ affiliate_password_resets |                       | CHECK           |                           |
+ affiliate_password_resets |                       | CHECK           |                           |
+ affiliate_password_resets |                       | CHECK           |                           |
+ affiliate_password_resets | affiliate_id          | FOREIGN KEY     | affiliates                | id
+ affiliate_password_resets | id                    | PRIMARY KEY     | affiliate_password_resets | id
+ affiliate_password_resets | token                 | UNIQUE          | affiliate_password_resets | token
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           | affiliates                | commission_percent
+ affiliates                |                       | CHECK           | affiliates                | role
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                |                       | CHECK           |                           |
+ affiliates                | supervisor_id         | FOREIGN KEY     | affiliates                | id
+ affiliates                | id                    | PRIMARY KEY     | affiliates                | id
+ affiliates                | affiliate_code        | UNIQUE          | affiliates                | affiliate_code
+ affiliates                | email                 | UNIQUE          | affiliates                | email
+ arquetipos                |                       | CHECK           |                           |
+ arquetipos                | chave_correspondencia | PRIMARY KEY     | arquetipos                | chave_correspondencia
+ asaas_webhook_events      |                       | CHECK           |                           |
+ asaas_webhook_events      | id                    | PRIMARY KEY     | asaas_webhook_events      | id
+ attribution               |                       | CHECK           |                           |
+ attribution               |                       | CHECK           |                           |
+ attribution               |                       | CHECK           |                           |
+ attribution               |                       | CHECK           |                           |
+ attribution               | affiliate_link_id     | FOREIGN KEY     | affiliate_links           | id
+ attribution               | id                    | PRIMARY KEY     | attribution               | id
+ attribution               | session_id            | UNIQUE          | attribution               | session_id
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               |                       | CHECK           |                           |
+ commissions               | sale_id               | FOREIGN KEY     | sales                     | id
+ commissions               | id                    | PRIMARY KEY     | commissions               | id
+ diagnostico_eventos       |                       | CHECK           |                           |
+ diagnostico_eventos       |                       | CHECK           |                           |
+ diagnostico_eventos       |                       | CHECK           |                           |
+ diagnostico_eventos       | diagnostico_id        | FOREIGN KEY     | diagnosticos              | id
+ diagnostico_eventos       | id                    | PRIMARY KEY     | diagnostico_eventos       | id
+ diagnosticos              |                       | CHECK           |                           |
+ diagnosticos              |                       | CHECK           |                           |
+ diagnosticos              |                       | CHECK           |                           |
+ diagnosticos              |                       | CHECK           |                           |
+ diagnosticos              | id                    | PRIMARY KEY     | diagnosticos              | id
+ diagnosticos              | session_id            | UNIQUE          | diagnosticos              | session_id
+ i18n_translations         |                       | CHECK           |                           |
+ i18n_translations         |                       | CHECK           |                           |
+ i18n_translations         |                       | CHECK           |                           |
+ i18n_translations         |                       | CHECK           |                           |
+ i18n_translations         |                       | CHECK           |                           |
+ i18n_translations         |                       | CHECK           |                           |
+ i18n_translations         | id                    | PRIMARY KEY     | i18n_translations         | id
+ i18n_translations         | lang                  | UNIQUE          | i18n_translations         | lang
+ i18n_translations         | lang                  | UNIQUE          | i18n_translations         | field
+ i18n_translations         | lang                  | UNIQUE          | i18n_translations         | entity_id
+ i18n_translations         | lang                  | UNIQUE          | i18n_translations         | entity
+ i18n_translations         | field                 | UNIQUE          | i18n_translations         | lang
+ i18n_translations         | field                 | UNIQUE          | i18n_translations         | field
+ i18n_translations         | field                 | UNIQUE          | i18n_translations         | entity_id
+ i18n_translations         | field                 | UNIQUE          | i18n_translations         | entity
+ i18n_translations         | entity                | UNIQUE          | i18n_translations         | entity
+ i18n_translations         | entity                | UNIQUE          | i18n_translations         | entity_id
+ i18n_translations         | entity                | UNIQUE          | i18n_translations         | field
+ i18n_translations         | entity                | UNIQUE          | i18n_translations         | lang
+ i18n_translations         | entity_id             | UNIQUE          | i18n_translations         | entity
+ i18n_translations         | entity_id             | UNIQUE          | i18n_translations         | entity_id
+ i18n_translations         | entity_id             | UNIQUE          | i18n_translations         | lang
+ i18n_translations         | entity_id             | UNIQUE          | i18n_translations         | field
+ kiwify_events             |                       | CHECK           |                           |
+ kiwify_events             |                       | CHECK           |                           |
+ kiwify_events             | id                    | PRIMARY KEY     | kiwify_events             | id
+ kiwify_events             | event_id              | UNIQUE          | kiwify_events             | event_id
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         |                       | CHECK           |                           |
+ leads_precheckout         | id                    | PRIMARY KEY     | leads_precheckout         | id
+ leads_precheckout         | email                 | UNIQUE          | leads_precheckout         | email
+ mapa_da_alma              |                       | CHECK           |                           |
+ mapa_da_alma              | codigo                | PRIMARY KEY     | mapa_da_alma              | codigo
+ mapa_espiritual           |                       | CHECK           |                           |
+ mapa_espiritual           | codigo                | PRIMARY KEY     | mapa_espiritual           | codigo
+ partner_ledger            |                       | CHECK           | partner_ledger            | role
+ partner_ledger            |                       | CHECK           |                           |
+ partner_ledger            |                       | CHECK           |                           |
+ partner_ledger            |                       | CHECK           | partner_ledger            | pl_status
+ partner_ledger            |                       | CHECK           |                           |
+ partner_ledger            |                       | CHECK           |                           |
+ partner_ledger            |                       | CHECK           |                           |
+ partner_ledger            | partner_id            | FOREIGN KEY     | affiliates                | id
+ partner_ledger            | withdrawal_id         | FOREIGN KEY     | withdrawals               | id
+ partner_ledger            | id                    | PRIMARY KEY     | partner_ledger            | id
+ predisposicoes            |                       | CHECK           |                           |
+ predisposicoes            | id                    | PRIMARY KEY     | predisposicoes            | id
+ purchases                 |                       | CHECK           |                           |
+ purchases                 |                       | CHECK           |                           |
+ purchases                 | id                    | PRIMARY KEY     | purchases                 | id
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           | sales                     | origin
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           |                           |
+ sales                     |                       | CHECK           |                           |
+ sales                     | vendor_id             | FOREIGN KEY     | affiliates                | id
+ sales                     | affiliate_link_id     | FOREIGN KEY     | affiliate_links           | id
+ sales                     | id                    | PRIMARY KEY     | sales                     | id
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               |                       | CHECK           | withdrawals               | role
+ withdrawals               |                       | CHECK           | withdrawals               | status
+ withdrawals               |                       | CHECK           | withdrawals               | amount_cents
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               |                       | CHECK           |                           |
+ withdrawals               | id                    | PRIMARY KEY     | withdrawals               | id
+(173 linhas)

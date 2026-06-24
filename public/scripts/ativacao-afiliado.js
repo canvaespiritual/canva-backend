@@ -5,6 +5,7 @@
   const stPrecheck = $("stPrecheck");
   const stAdesao = $("stAdesao");
   const stSubconta = $("stSubconta");
+  const stCommission = $("stCommission");
 
   const btnPrecheck = $("btnPrecheck");
   const btnPagar = $("btnPagar");
@@ -14,6 +15,14 @@
   const msg = $("msg");
 
   let statusAtual = null;
+ function showStep(step) {
+  ["Commission", "Validation", "Payment", "Success"].forEach((name) => {
+    const el = $(`step${name}`);
+    const dot = $(`dot${name}`);
+    if (el) el.classList.toggle("active", name === step);
+    if (dot) dot.classList.toggle("active", name === step);
+  });
+}
 
   function setMsg(text, cls = "muted") {
     if (!msg) return;
@@ -51,11 +60,26 @@
     try {
       const data = await getJSON("/affiliates/me/activation-status");
       statusAtual = data;
+      const me = data.me || {};
 
-      dadosBox.textContent = JSON.stringify(data.me, null, 2);
+if ($("viewName")) $("viewName").textContent = me.name || "—";
+if ($("viewDoc")) $("viewDoc").textContent = me.cpf_cnpj || "—";
+if ($("viewEmail")) $("viewEmail").textContent = me.email || "—";
+      
+
+dadosBox.textContent = [
+  `Nome: ${me.name || "—"}`,
+  `Email: ${me.email || "—"}`,
+  `CPF/CNPJ: ${me.cpf_cnpj || "—"}`,
+  `Telefone: ${me.phone || "—"}`,
+  `Cidade: ${me.city || "—"}`,
+  `Estado: ${me.state || "—"}`,
+].join("\n");
       stDados.textContent = "✓ Dados carregados";
 
       if (!data.commission_terms_accepted) {
+        showStep("Commission");
+        if (stCommission) stCommission.textContent = "⏳ Aguardando confirmação";
         stPrecheck.textContent = "Aguardando ciência do comissionamento";
         stAdesao.textContent = "Aguardando";
         stSubconta.textContent = "Aguardando";
@@ -67,8 +91,10 @@
       }
 
       await carregarTermoComissao(true);
-
+      showStep("Validation");
+      if (stCommission) stCommission.textContent = "✓ Ciência confirmada";
       if (data.active) {
+        showStep("Success");
         stPrecheck.textContent = "✓ Validado";
         stAdesao.textContent = "✓ Pago";
         stSubconta.textContent = "✓ Conta ativa";
@@ -77,11 +103,12 @@
         btnPagar.style.display = "none";
         btnPainel.style.display = "inline-block";
         btnPainel.href = painelPorRole((data.me?.role || "").toLowerCase());
-        setMsg("Conta ativada com sucesso.", "ok");
+        setMsg("Sua conta foi ativada com sucesso. Seu painel já está liberado.", "ok");
         return;
       }
 
       if (data.activation_fee_status === "pending") {
+        showStep("Payment");
         stPrecheck.textContent = "✓ Validado";
         stAdesao.textContent = "⏳ Pagamento pendente";
         stSubconta.textContent = "Aguardando confirmação";
@@ -109,7 +136,7 @@
 
       btnPrecheck.disabled = false;
       btnPagar.disabled = true;
-      setMsg("Confirme seus dados e valide o CPF/CNPJ para prosseguir.", "muted");
+      setMsg("Confira seus dados e inicie sua ativação financeira.", "muted");
 
     } catch (err) {
       console.error(err);
@@ -117,59 +144,64 @@
     }
   }
 
-  async function carregarTermoComissao(acceptedOnly = false) {
-    let box = $("commissionBox");
-    if (!box) {
-      box = document.createElement("div");
-      box.id = "commissionBox";
-      box.className = "card";
-      box.innerHTML = `
-        <h2>Ciência de comissionamento</h2>
-        <pre id="commissionText">Carregando...</pre>
-        <label style="display:flex;gap:10px;align-items:flex-start;margin-top:12px">
-          <input id="commissionCheck" type="checkbox" />
-          <span>Li e estou ciente das regras de comissão.</span>
-        </label>
-        <button id="btnAcceptCommission" style="margin-top:14px">Confirmar ciência</button>
-      `;
-      document.querySelector("main").insertBefore(box, document.querySelector("main").children[1]);
+ async function carregarTermoComissao(acceptedOnly = false) {
+  const t = await getJSON("/affiliates/me/commission-terms");
+
+  const commissionText = $("commissionText");
+  const commissionCheck = $("commissionCheck");
+  const btnAcceptCommission = $("btnAcceptCommission");
+
+  if (commissionText) {
+    commissionText.textContent = t.text || "Regras de comissão carregadas.";
+  }
+
+  if (t.accepted || acceptedOnly) {
+    if (commissionCheck) {
+      commissionCheck.checked = true;
+      commissionCheck.disabled = true;
     }
 
-    const t = await getJSON("/affiliates/me/commission-terms");
-    $("commissionText").textContent = t.text;
-
-    if (t.accepted || acceptedOnly) {
-      $("commissionCheck").checked = true;
-      $("commissionCheck").disabled = true;
-      $("btnAcceptCommission").disabled = true;
-      $("btnAcceptCommission").textContent = "Ciência confirmada";
-      return;
+    if (btnAcceptCommission) {
+      btnAcceptCommission.disabled = true;
+      btnAcceptCommission.textContent = "Ciência confirmada";
     }
 
-    $("btnAcceptCommission").onclick = async () => {
-      if (!$("commissionCheck").checked) {
+    if (stCommission) stCommission.textContent = "✓ Ciência confirmada";
+    return;
+  }
+
+  if (btnAcceptCommission) {
+    btnAcceptCommission.onclick = async () => {
+      if (commissionCheck && !commissionCheck.checked) {
         setMsg("Marque a caixa de ciência para continuar.", "err");
         return;
       }
 
-      $("btnAcceptCommission").disabled = true;
+      btnAcceptCommission.disabled = true;
+      btnAcceptCommission.textContent = "Confirmando...";
+
       await postJSON("/affiliates/me/commission-terms/accept");
-      setMsg("Ciência de comissionamento confirmada.", "ok");
+
+      if (stCommission) stCommission.textContent = "✓ Ciência confirmada";
+      setMsg("Ciência confirmada. Vamos continuar.", "ok");
+
       await carregarStatus();
     };
   }
+}
 
   btnPrecheck.addEventListener("click", async () => {
     try {
       btnPrecheck.disabled = true;
-      setMsg("Validando dados para integração financeira...");
+      setMsg("Validando seus dados para ativar a integração financeira...");
 
       await postJSON("/affiliates/me/asaas/precheck-document");
 
       stPrecheck.textContent = "✓ Dados aprovados para integração";
       btnPagar.disabled = false;
 
-      setMsg("Dados aprovados. Agora gere o PIX da adesão.", "ok");
+      setMsg("Validação concluída. Agora gere o PIX para finalizar sua ativação.", "ok");
+      showStep("Payment");
     } catch (err) {
       btnPrecheck.disabled = false;
       setMsg(err.message || "Falha na validação", "err");
@@ -180,14 +212,14 @@
     try {
       btnPagar.disabled = true;
       btnPagar.textContent = "Gerando PIX...";
-      setMsg("Gerando PIX da adesão...");
+      setMsg("Gerando PIX da ativação financeira...");
 
       const data = await postJSON("/affiliates/me/activation-fee/pix");
 
       renderPix(data);
 
       stAdesao.textContent = "⏳ Aguardando pagamento";
-      setMsg("PIX gerado. Após o pagamento, a conta será ativada automaticamente.", "warn");
+      setMsg("PIX gerado com sucesso. Após a confirmação do pagamento, sua conta será liberada automaticamente.", "warn");
 
       iniciarPolling();
 
@@ -198,41 +230,37 @@
     }
   });
 
-  function renderPix(data) {
-    let pixBox = $("pixBox");
+function renderPix(data) {
+  showStep("Payment");
 
-    if (!pixBox) {
-      pixBox = document.createElement("div");
-      pixBox.id = "pixBox";
-      pixBox.className = "card";
-      pixBox.innerHTML = `
-        <h2>Pagamento da adesão</h2>
-        <p class="muted">Escaneie o QR Code ou copie o código PIX.</p>
-        <div style="text-align:center;margin-top:16px">
-          <img id="pixQrImg" style="max-width:240px;width:100%;border-radius:12px;background:#fff;padding:8px" />
-        </div>
-        <textarea id="pixCopiaCola" readonly style="width:100%;height:110px;margin-top:14px;border-radius:12px;padding:12px"></textarea>
-        <button id="copiarPixBtn" style="margin-top:12px">Copiar código PIX</button>
-      `;
+  const pixBox = $("pixBox");
+  const pixQrImg = $("pixQrImg");
+  const pixCopiaCola = $("pixCopiaCola");
+  const copiarPixBtn = $("copiarPixBtn");
 
-      document.querySelector("main").appendChild(pixBox);
-    }
+  if (pixBox) pixBox.classList.add("active");
 
-    if (data.qr_code_base64) {
-      $("pixQrImg").src = `data:image/png;base64,${data.qr_code_base64}`;
-    }
-
-    $("pixCopiaCola").value = data.qr_code || "";
-
-    $("copiarPixBtn").onclick = async () => {
-      await navigator.clipboard.writeText($("pixCopiaCola").value);
-      $("copiarPixBtn").textContent = "Código copiado!";
-      setTimeout(() => $("copiarPixBtn").textContent = "Copiar código PIX", 1800);
-    };
-
-    btnPagar.disabled = false;
-    btnPagar.textContent = "Gerar PIX novamente";
+  if (data.qr_code_base64 && pixQrImg) {
+    pixQrImg.src = `data:image/png;base64,${data.qr_code_base64}`;
   }
+
+  if (pixCopiaCola) {
+    pixCopiaCola.value = data.qr_code || "";
+  }
+
+  if (copiarPixBtn) {
+    copiarPixBtn.onclick = async () => {
+      await navigator.clipboard.writeText(pixCopiaCola.value);
+      copiarPixBtn.textContent = "PIX copiado!";
+      setTimeout(() => {
+        copiarPixBtn.textContent = "Copiar PIX";
+      }, 1800);
+    };
+  }
+
+  btnPagar.disabled = false;
+  btnPagar.textContent = "Gerar PIX novamente";
+}
 
   let polling = null;
 
@@ -246,14 +274,14 @@
     if (data.active) {
       clearInterval(polling);
       polling = null;
-
+      showStep("Success");
       stAdesao.textContent = "✓ Pago";
       stSubconta.textContent = "✓ Conta ativa";
 
       btnPainel.style.display = "inline-block";
       btnPainel.href = painelPorRole((data.me?.role || "").toLowerCase());
 
-      setMsg("Pagamento confirmado. Sua conta foi ativada.", "ok");
+     setMsg("Tudo pronto. Seu painel já está liberado.", "ok");
       return;
     }
 

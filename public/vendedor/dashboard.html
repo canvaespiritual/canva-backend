@@ -17,12 +17,12 @@
 
       <nav class="nav">
         <a href="#inicio"      class="nav-link active" data-target="#view-home">Início</a>
-        <a href="#verificacao" class="nav-link" data-target="#view-verify">Verificação & Recebimento</a>
-        <a href="#links"       class="nav-link" data-target="#view-links">Meus Links</a>
-        <a href="#cadastro"   class="nav-link" data-target="#view-profile">Cadastro</a>
-        <a href="#materiais"   class="nav-link" data-target="#view-materials">Materiais</a>
-        <a href="#vendas"      class="nav-link" data-target="#view-sales">Vendas & Comissões</a>
-        <a href="#treinamento" class="nav-link" data-target="#view-training">Treinamento</a>
+       <a href="#links" class="nav-link" data-target="#view-links">Meus Links</a>
+<a href="#afiliados" class="nav-link" data-target="#view-team">Afiliados</a>
+<a href="#vendas" class="nav-link" data-target="#view-sales">Vendas</a>
+<a href="#materiais" class="nav-link" data-target="#view-materials">Materiais</a>
+<a href="#treinamento" class="nav-link" data-target="#view-training">Treinamento</a>
+<a href="#cadastro" class="nav-link" data-target="#view-profile">Cadastro</a>
         <div class="sep"></div>
         <a href="#suporte"     class="nav-link" data-target="#view-support">Suporte</a>
         <a href="#sair" id="navLogout" class="nav-link">Sair</a>
@@ -193,124 +193,145 @@
           </section>
 
           <!-- Link Pessoal -->
-          <section class="card mt-12">
-            <h2>Link pessoal (30% fixos)</h2>
-            <div class="grid-2">
-              <div>
-                <div class="link-box"><span id="myPersonalLink">—</span></div>
-                <div class="row mt-12">
-                  <button class="btn" id="btnCopyMyPersonal">Copiar link</button>
-                  <a class="btn secondary" id="btnOpenMyPersonal" target="_blank" rel="noopener">Abrir</a>
-                </div>
-                <p class="muted mt-8">Use este link para suas vendas diretas. Comissão fixa do vendedor: <strong>30%</strong>.</p>
-              </div>
-              <div><div class="qr" id="qrMyPersonal">QR</div></div>
-            </div>
-          </section>
+          <!-- Links dos Produtos -->
+<section class="card mt-12">
+  <h2>Links dos produtos</h2>
+  <p class="sub">Use seus links próprios para vendas diretas. Cada produto tem link, botão de copiar e QR Code.</p>
 
-          <!-- Links de Afiliados -->
-          <section class="card mt-24">
-            <div class="row between">
-              <div>
-                <h2>Links de afiliados</h2>
-                <p class="sub">Crie convites com % do afiliado entre <strong>35% e 50%</strong>. Sua % é calculada automaticamente. Após criar, a % do afiliado fica <strong>fixa</strong> (alterações apenas com Supervisor).</p>
-              </div>
-              <button class="btn" id="btnOpenCreateLink">Criar link para afiliado</button>
-            </div>
+  <div id="productLinksGrid" class="product-links-grid">
+    <p class="muted">Carregando links…</p>
+  </div>
+</section>
+</section>
 
-            <div class="table-wrap mt-12">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Afiliado</th>
-                    <th>% Afiliado</th>
-                    <th>% Vendedor</th>
-                    <th>% Supervisor</th>
-                    <th>Cliques</th>
-                    <th>Vendas</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody id="linksRows">
-                  <tr><td colspan="9" class="muted">Nenhum link criado ainda.</td></tr>
-                </tbody>
-              </table>
-            </div>
+        <!-- VIEW: AFILIADOS -->
+<!-- VIEW: AFILIADOS -->
+<section id="view-team" class="view">
+  <section class="card">
+    <div class="row between">
+      <div>
+        <h1>Afiliados</h1>
+        <p class="sub">
+          Crie convites para afiliados e defina a comissão deles. O restante até 70% fica com você.
+        </p>
+      </div>
+      <button class="btn" id="btnOpenCreateLink">Criar afiliado</button>
+      
+    </div>
+<!-- Modal: Criar afiliado -->
+  <div id="modalCreateLink" class="inline-create-card hide" aria-hidden="true">
+    <div class="modal__card">
+      <h3>Criar afiliado</h3>
+      <p class="sub">
+        Informe o e-mail do afiliado e defina a comissão dele entre 35% e 60%.
+      </p>
 
-            <p class="muted mt-8">Teto de comissões da força de venda: <strong>55%</strong>. Bônus estratégico de até <strong>+5%</strong> pode ser aplicado pela política mensal. Comissões são calculadas sobre o valor <strong>líquido</strong> (após taxas de operação).</p>
-          </section>
+      <div class="grid-2 mt-12">
+        <div class="field">
+          <label>E-mail do afiliado</label>
+          <input id="affEmail" class="input" placeholder="nome@exemplo.com"/>
+        </div>
 
-          <!-- Modal: Criar link afiliado -->
-          <div id="modalCreateLink" class="modal hide" aria-hidden="true">
-            <div class="modal__card">
-              <h3>Criar link para afiliado</h3>
-              <p class="sub">Defina a % do afiliado (35–50%). Sua % será calculada automaticamente respeitando o teto de 55%.</p>
-              <div class="grid-2 mt-12">
-                <div class="field">
-                  <label>E-mail do afiliado</label>
-                  <input id="affEmail" class="input" placeholder="nome@exemplo.com"/>
-                </div>
-                <div class="field">
-                  <label>% do afiliado (35–50)</label>
-                  <input id="pctAffiliate" class="input" type="number" min="35" max="50" value="40"/>
-                </div>
-              </div>
-              <div class="grid-3 mt-12">
-                <div class="field">
-                  <label>% do vendedor (auto)</label>
-                  <input id="pctVendorAuto" class="input" value="15" readonly/>
-                </div>
-                <div class="field">
-                  <label>% do supervisor</label>
-                  <input id="pctSupervisor" class="input" value="5" readonly/>
-                </div>
-                <div class="field">
-                  <label>Total (força de venda)</label>
-                  <input id="pctTotal" class="input" value="55" readonly/>
-                </div>
-              </div>
-              <div class="row mt-12">
-                <button class="btn" id="btnCreateLink">Gerar link</button>
-                <button class="btn secondary" id="btnCloseCreate">Cancelar</button>
-              </div>
-              <p class="muted mt-8">Após criar, a % do afiliado fica fixa neste link. Você pode pausar/reativar o link quando quiser.</p>
-            </div>
-          </div>
-        </section>
+        <div class="field">
+          <label>% do afiliado</label>
+          <input id="pctAffiliate" class="input" type="number" min="35" max="60" value="50"/>
+        </div>
+      </div>
 
-        <!-- VIEW: MINHA EQUIPE -->
-        <section id="view-team" class="view">
-          <section class="card">
-            <div class="row between">
-              <div>
-                <h1>Minha Equipe</h1>
-                <p class="sub">Convide e acompanhe seus afiliados. O override do vendedor é aplicado automaticamente nas vendas da equipe.</p>
-              </div>
-              <button class="btn" id="btnInviteAffiliate">Convidar afiliado</button>
-            </div>
+      <div class="commission-preview mt-12">
+        <div>
+          <span>Afiliado</span>
+          <strong id="modalAffPct">50%</strong>
+        </div>
+        <div>
+          <span>Você</span>
+          <strong id="pctVendorAuto">20</strong>
+        </div>
+        <div>
+          <span>Plataforma</span>
+          <strong>30%</strong>
+        </div>
+      </div>
 
-            <div class="table-wrap mt-12">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Nome/Email</th>
-                    <th>Status</th>
-                    <th>% Afiliado</th>
-                    <th>Vendas (mês)</th>
-                    <th>Seu Override (R$)</th>
-                    <th>Últimos 7d</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody id="teamRows">
-                  <tr><td colspan="7" class="muted">Sem afiliados ainda. Envie um convite para começar.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </section>
+      <input id="pctSupervisor" type="hidden" value="0"/>
+      <input id="pctTotal" type="hidden" value="70"/>
+
+      <div class="row mt-12">
+        <button class="btn" id="btnCreateLink">Gerar convite</button>
+        <button class="btn secondary" id="btnCloseCreate">Cancelar</button>
+      </div>
+
+      <p class="muted mt-8">
+        Depois que o afiliado concluir a ativação, os links dele serão liberados automaticamente.
+      </p>
+    </div>
+  </div>
+    <div class="sep"></div>
+
+    <div class="commission-preview">
+      <div>
+        <span>Afiliado</span>
+        <strong id="previewAffPct">50%</strong>
+      </div>
+      <div>
+        <span>Você</span>
+        <strong id="previewVendPct">20%</strong>
+      </div>
+      <div>
+        <span>Plataforma</span>
+        <strong>30%</strong>
+      </div>
+    </div>
+
+    <p class="muted mt-12">
+      Exemplo: se o afiliado receber 50%, você recebe 20%. O total da força de vendas é sempre até 70%.
+    </p>
+<div class="affiliate-filters mt-16">
+  <input id="affiliateSearch" class="input" placeholder="Buscar afiliado por nome ou e-mail"/>
+
+  <select id="affiliateStatusFilter" class="input">
+    <option value="all">Todos</option>
+    <option value="active">Ativos</option>
+    <option value="paused">Pausados</option>
+    <option value="pending">Aguardando ativação</option>
+  </select>
+
+  <select id="affiliateSortFilter" class="input">
+    <option value="sales_desc">Ranking: mais vendas</option>
+    <option value="sales_asc">Menos vendas</option>
+    <option value="name_asc">Nome A-Z</option>
+    <option value="created_desc">Mais recentes</option>
+  </select>
+
+  <button class="btn secondary" id="btnApplyAffiliateFilters">Filtrar</button>
+  <button class="btn ghost" id="btnClearAffiliateFilters">Limpar</button>
+</div>
+
+<div class="row mt-12">
+  <button class="btn ghost" id="prevAffiliates">Anterior</button>
+  <span class="muted">Página <span id="affiliatePage">1</span></span>
+  <button class="btn ghost" id="nextAffiliates">Próxima</button>
+  <span id="affiliateMsg" class="muted"></span>
+</div>
+    <div class="affiliate-sections mt-16">
+  <section>
+    <h3>Afiliados ativos</h3>
+    <div id="activeAffiliatesGrid" class="affiliate-cards-grid">
+      <p class="muted">Nenhum afiliado ativo ainda.</p>
+    </div>
+  </section>
+
+  <section class="mt-24">
+    <h3>Aguardando ativação</h3>
+    <div id="pendingAffiliatesGrid" class="affiliate-cards-grid">
+      <p class="muted">Nenhum convite aguardando ativação.</p>
+    </div>
+  </section>
+</div>
+  </section>
+
+  
+</section>
 <!-- VIEW: CADASTRO (somente leitura) -->
 <section id="view-profile" class="view">
   <section class="card">
@@ -379,9 +400,19 @@
 
             <div class="row mt-12">
               <div class="segmented" id="salesType">
-                <button class="btn ghost active" data-type="direct">Diretas</button>
-                <button class="btn ghost" data-type="override">Equipe (override)</button>
-              </div>
+  <button class="btn ghost active" data-type="all">Todas</button>
+  <button class="btn ghost" data-type="direct">Próprias</button>
+  <button class="btn ghost" data-type="override">Afiliados</button>
+</div>
+<div class="sales-filters mt-12">
+  <input id="salesSearch" class="input" placeholder="Buscar por afiliado, e-mail ou comprador"/>
+
+  <input id="salesStart" class="input date-input" type="date" onclick="this.showPicker && this.showPicker()"/>
+<input id="salesEnd" class="input date-input" type="date" onclick="this.showPicker && this.showPicker()"/>
+
+  <button class="btn secondary" id="btnApplySalesFilters">Filtrar</button>
+  <button class="btn ghost" id="btnClearSalesFilters">Limpar</button>
+</div>
             </div>
             <!-- SALDO (Disponível / Pendente) + Saque -->
             <div class="kpis mt-12">
@@ -406,24 +437,18 @@
            </div>
             <div class="sep"></div>
 
-            <div class="table-wrap mt-12">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Data</th>
-                    <th>Pedido</th>
-                    <th>Valor</th>
-                    <th>Status</th>
-                    <th>Comissão</th>
-                    <th>Origem</th>
-                    <th>Gateway</th>
-                  </tr>
-                </thead>
-                <tbody id="salesRows">
-                  <tr><td colspan="7" class="muted">Carregando…</td></tr>
-                </tbody>
-              </table>
-            </div>
+<div class="sales-summary">
+  <div class="sales-summary-card">
+    <div class="sales-summary-label">Comissões recebidas</div>
+    <div class="sales-summary-value" id="balAvailVend">R$ 0,00</div>
+  </div>
+</div>
+
+<div class="sales-cards-wrap mt-12">
+  <div id="salesCards" class="sales-cards">
+    <div class="muted">Carregando...</div>
+  </div>
+</div>
 
             <div class="row mt-12 pager">
               <button class="btn ghost" id="prevSales">Anterior</button>

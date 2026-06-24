@@ -3,51 +3,462 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ativação da Conta | Canva Espiritual</title>
+  <title>Ativação | Canva da Consciência</title>
   <link rel="stylesheet" href="/afiliado.css" />
+
   <style>
-    body{background:#0f1115;color:#f4f1ea;font-family:Inter,Arial,sans-serif;margin:0}
-    .wrap{max-width:860px;margin:0 auto;padding:32px 18px}
-    .card{background:#171a21;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 12px 30px rgba(0,0,0,.25)}
-    .muted{color:#a9a59b}.ok{color:#66d17a}.warn{color:#ffd166}.err{color:#ff6b6b}
-    .steps{display:grid;gap:10px;margin-top:18px}
-    .step{display:flex;gap:10px;align-items:flex-start;background:#11141a;border-radius:12px;padding:12px}
-    .badge{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#2a2f3a;font-weight:700}
-    button,.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:700;cursor:pointer;background:#d8b46a;color:#111;text-decoration:none;display:inline-block}
-    button:disabled{opacity:.55;cursor:not-allowed}
-    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    pre{white-space:pre-wrap;background:#0c0e13;border-radius:12px;padding:12px;color:#ddd;overflow:auto}
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100svh;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(900px 500px at 15% -10%, rgba(216,180,106,.22), transparent 55%),
+        radial-gradient(700px 420px at 90% 0%, rgba(124,58,237,.10), transparent 50%),
+        linear-gradient(180deg,#fbf7ee,#f3efe6);
+      color:#2a2a2a;
+      display:grid;
+      place-items:center;
+      padding:22px;
+    }
+
+    .activation-wrap{
+      width:100%;
+      max-width:520px;
+    }
+
+    .brand{
+  display:flex;
+  justify-content:center;
+  margin-bottom:22px;
+}
+
+    .brand-logo{
+  width:260px;
+  max-width:80%;
+  height:auto;
+  display:block;
+}
+
+    .card{
+      background:#fff;
+      border:1px solid rgba(67,57,43,.10);
+      border-radius:26px;
+      box-shadow:0 22px 70px rgba(67,57,43,.15);
+      padding:28px;
+      overflow:hidden;
+    }
+
+    .step-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 11px;
+      border-radius:999px;
+      background:#fff7e5;
+      color:#8a641e;
+      font-size:12px;
+      font-weight:800;
+      margin-bottom:16px;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size:28px;
+      line-height:1.12;
+      letter-spacing:-.5px;
+      color:#24211d;
+    }
+
+    p{
+      margin:0;
+      line-height:1.55;
+    }
+
+    .sub{
+      color:#6f6a62;
+      font-size:15px;
+      margin-bottom:18px;
+    }
+
+    .muted{color:#817b72}
+    .ok{color:#198754}
+    .warn{color:#9a6a00}
+    .err{color:#c0392b}
+
+    .activation-step{
+      display:none;
+    }
+
+    .activation-step.active{
+      display:block;
+    }
+
+    .terms-box{
+      max-height:210px;
+      overflow:auto;
+      border:1px solid #ebe3d5;
+      background:#fbfaf7;
+      color:#4b4741;
+      border-radius:16px;
+      padding:15px;
+      font-size:14px;
+      line-height:1.55;
+      white-space:pre-wrap;
+      margin:14px 0;
+    }
+
+    .check-row{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      color:#514c45;
+      font-size:14px;
+      margin:14px 0 18px;
+    }
+
+    .check-row input{
+      margin-top:3px;
+      accent-color:#d8b46a;
+    }
+
+    .asaas-line{
+    display:flex;
+    align-items:center;
+    gap:14px;
+      background:#f7fafc;
+      border:1px solid #e4edf5;
+      color:#28506b;
+      border-radius:15px;
+      padding:12px 14px;
+      margin:14px 0;
+      font-weight:800;
+    }
+
+    .asaas-img{
+  width:74px;
+  height:auto;
+  display:block;
+  flex-shrink:0;
+}
+
+.asaas-line strong{
+  display:block;
+  color:#28506b;
+  font-size:14px;
+  line-height:1.15;
+}
+
+.asaas-line span{
+  display:block;
+  color:#647789;
+  font-size:12px;
+  margin-top:3px;
+}
+
+    .price-box{
+      background:#fff8ea;
+      border:1px solid #f1dfb8;
+      border-radius:18px;
+      padding:15px;
+      margin:14px 0 18px;
+    }
+
+    .price-box small{
+      display:block;
+      color:#7d715f;
+      margin-bottom:4px;
+    }
+
+    .price-box strong{
+      display:block;
+      font-size:30px;
+      color:#2d261a;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    button,.btn{
+      width:100%;
+      border:0;
+      border-radius:15px;
+      min-height:48px;
+      padding:13px 16px;
+      cursor:pointer;
+      font-weight:900;
+      background:#d8b46a;
+      color:#1d1608;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    button.secondary,.btn.secondary{
+      background:#f3f0ea;
+      color:#50483d;
+    }
+
+    button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .message-bar{
+      margin-top:16px;
+      padding:12px 13px;
+      border-radius:14px;
+      background:#faf8f2;
+      border:1px solid #eee5d7;
+      min-height:43px;
+      font-size:14px;
+    }
+
+    .pix-area{
+      margin-top:18px;
+      display:none;
+    }
+
+    .pix-area.active{
+      display:block;
+    }
+
+    .qr-wrap{
+      text-align:center;
+      margin:14px 0;
+    }
+
+    #pixQrImg{
+      max-width:220px;
+      width:100%;
+      border-radius:18px;
+      background:#fff;
+      padding:10px;
+      border:1px solid #eee;
+    }
+
+    textarea{
+      width:100%;
+      min-height:96px;
+      border-radius:14px;
+      padding:12px;
+      border:1px solid #ded7cb;
+      background:#fbfaf7;
+      color:#403b35;
+      resize:vertical;
+      font-size:13px;
+    }
+
+    .success-icon{
+      width:58px;
+      height:58px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:#e8f7ee;
+      color:#198754;
+      font-size:30px;
+      font-weight:900;
+      margin-bottom:16px;
+    }
+
+    .tiny-status{
+      display:flex;
+      justify-content:center;
+      gap:7px;
+      margin-top:16px;
+    }
+
+    .dot{
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:#ded5c4;
+    }
+
+    .dot.active{
+      background:#d8b46a;
+    }
+    .mini-data{
+  display:grid;
+  gap:8px;
+  margin:14px 0 16px;
+}
+
+.mini-data div{
+  background:#fbfaf7;
+  border:1px solid #eee5d7;
+  border-radius:13px;
+  padding:10px 12px;
+}
+
+.mini-data small{
+  display:block;
+  color:#8a8277;
+  font-size:11px;
+  margin-bottom:3px;
+}
+
+.mini-data strong{
+  display:block;
+  color:#38322b;
+  font-size:14px;
+  word-break:break-word;
+}
+    @media(max-width:520px){
+      body{
+        place-items:start center;
+        padding:18px 14px;
+      }
+
+      .card{
+        padding:22px;
+        border-radius:22px;
+      }
+
+      h1{
+        font-size:24px;
+      }
+
+      .actions{
+        flex-direction:column;
+      }
+
+      .terms-box{
+        max-height:180px;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <main class="wrap">
-    <div class="card">
-      <h1>Ativação da sua conta</h1>
-      <p class="muted">
-        Para liberar seu painel, precisamos validar seus dados, confirmar a adesão e criar sua subconta de recebimento.
-      </p>
+  <main class="activation-wrap">
+    <div class="brand">
+  <img
+    src="/assets/branding/logo-checkup-emocional.webp"
+    alt="Canva da Consciência"
+    class="brand-logo"
+  />
+</div>
 
-      <div class="steps">
-        <div class="step"><div class="badge" id="bDados">1</div><div><strong>Dados cadastrais</strong><br><span id="stDados" class="muted">Carregando…</span></div></div>
-        <div class="step"><div class="badge" id="bPrecheck">2</div><div><strong>Validação Asaas</strong><br><span id="stPrecheck" class="muted">Aguardando validação…</span></div></div>
-        <div class="step"><div class="badge" id="bAdesao">3</div><div><strong>Adesão R$16,99</strong><br><span id="stAdesao" class="muted">Aguardando…</span></div></div>
-        <div class="step"><div class="badge" id="bSubconta">4</div><div><strong>Subconta e liberação</strong><br><span id="stSubconta" class="muted">Aguardando pagamento…</span></div></div>
+    <section class="card">
+
+      <div id="stepCommission" class="activation-step active">
+        <div class="step-kicker">Etapa 1</div>
+        <h1>Ciência de comissionamento</h1>
+        <p class="sub">
+          Leia as regras principais para liberar sua conta de parceiro.
+        </p>
+
+        <div id="commissionText" class="terms-box">Carregando...</div>
+
+        <label class="check-row">
+          <input id="commissionCheck" type="checkbox" />
+          <span>Li e estou ciente das regras de comissão.</span>
+        </label>
+
+        <button id="btnAcceptCommission">Aceitar e continuar</button>
       </div>
 
-      <div class="row">
-        <button id="btnPrecheck">Validar CPF/CNPJ</button>
-        <button id="btnPagar" disabled>Pagar adesão</button>
-        <a id="btnPainel" class="btn" href="#" style="display:none">Entrar no painel</a>
+      <div id="stepValidation" class="activation-step">
+        <div class="step-kicker">Etapa 2</div>
+        <h1>Ativação financeira</h1>
+        <p class="sub">
+          Vamos validar seus dados para liberar sua integração financeira.
+        </p>
+        <div class="mini-data">
+  <div>
+    <small>Nome</small>
+    <strong id="viewName">—</strong>
+  </div>
+  <div>
+    <small>CPF/CNPJ</small>
+    <strong id="viewDoc">—</strong>
+  </div>
+  <div>
+    <small>Email</small>
+    <strong id="viewEmail">—</strong>
+  </div>
+</div>
+        <button id="btnPrecheck">Validar dados</button>
       </div>
 
-      <p id="msg" class="muted"></p>
-    </div>
+      <div id="stepPayment" class="activation-step">
+        <div class="step-kicker">Etapa 3</div>
+        <h1>Adesão única</h1>
+        <p class="sub">
+          Pagamento único referente à integração financeira da sua conta.
+        </p>
 
-    <div class="card">
-      <h2>Dados usados na validação</h2>
-      <pre id="dados">Carregando…</pre>
-      <p class="muted">Se algum dado estiver incorreto, depois vamos liberar edição nesta etapa.</p>
-    </div>
+        <div class="asaas-line">
+  <img class="asaas-img" src="/assets/branding/asaas-logo.png" alt="Asaas" />
+  <div>
+    <strong>Integração financeira</strong>
+    <span>Processado com segurança via Asaas</span>
+  </div>
+</div>
+
+        <div class="price-box">
+          <small>Taxa única de ativação</small>
+          <strong>R$ 16,99</strong>
+        </div>
+
+        <button id="btnPagar" disabled>Gerar PIX</button>
+
+        <div id="pixBox" class="pix-area">
+          <div class="qr-wrap">
+            <img id="pixQrImg" alt="QR Code PIX" />
+          </div>
+
+          <textarea id="pixCopiaCola" readonly></textarea>
+
+          <div class="actions">
+            <button id="copiarPixBtn" type="button">Copiar PIX</button>
+          </div>
+
+          <p class="message-bar warn">
+            Aguardando confirmação do pagamento...
+          </p>
+        </div>
+      </div>
+
+      <div id="stepSuccess" class="activation-step">
+        <div class="success-icon">✓</div>
+        <h1>Conta ativada</h1>
+        <p class="sub">
+          Sua integração financeira foi criada com sucesso. Seu painel já está liberado.
+        </p>
+
+        <a id="btnPainel" class="btn" href="#" style="display:none">Ir para meu painel</a>
+      </div>
+
+      <p id="msg" class="message-bar muted"></p>
+
+      <div class="tiny-status">
+        <div class="dot active" id="dotCommission"></div>
+        <div class="dot" id="dotValidation"></div>
+        <div class="dot" id="dotPayment"></div>
+        <div class="dot" id="dotSuccess"></div>
+      </div>
+
+      <!-- IDs antigos preservados para não quebrar o JS durante a transição -->
+      <span id="stDados" style="display:none"></span>
+      <span id="stCommission" style="display:none"></span>
+      <span id="stPrecheck" style="display:none"></span>
+      <span id="stAdesao" style="display:none"></span>
+      <span id="stSubconta" style="display:none"></span>
+      <span id="bDados" style="display:none"></span>
+      <span id="bPrecheck" style="display:none"></span>
+      <span id="bAdesao" style="display:none"></span>
+      <span id="bSubconta" style="display:none"></span>
+      <pre id="dados" style="display:none"></pre>
+
+    </section>
   </main>
 
   <script src="/scripts/ativacao-afiliado.js"></script>

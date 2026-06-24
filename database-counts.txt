@@ -1,0 +1,32 @@
+SELECT
+    relname AS tabela,
+    n_live_tup AS registros
+FROM pg_stat_user_tables
+ORDER BY relname;
+
+
+          tabela           | registros
+---------------------------+-----------
+ affiliate_clicks          |         0
+ affiliate_links           |         0
+ affiliate_orders          |         0
+ affiliate_password_resets |         0
+ affiliates                |         0
+ arquetipos                |         0
+ asaas_webhook_events      |         0
+ attribution               |         0
+ commissions               |         0
+ diagnostico_eventos       |         1
+ diagnosticos              |       524
+ diagnosticos_backup_dups  |         0
+ i18n_translations         |         0
+ kiwify_events             |         1
+ leads_precheckout         |         4
+ mapa_da_alma              |         0
+ mapa_espiritual           |         0
+ partner_ledger            |         0
+ predisposicoes            |         0
+ purchases                 |         1
+ sales                     |         0
+ withdrawals               |         0
+(22 linhas)

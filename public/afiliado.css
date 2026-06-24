@@ -201,3 +201,404 @@ label { display:block; font-size:13px; color:#aab3c5; margin-bottom:6px; }
   border-radius: 8px;
   line-height: 1.4;
 }
+.product-links-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.product-link-card{
+  background:#0f1117;
+  border:1px solid #232633;
+  border-radius:16px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-width:0;
+}
+
+.product-logo{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  border-radius:14px;
+  background:#0b0e14;
+  border:1px solid #232633;
+  padding:6px;
+}
+
+.product-info h3{
+  margin:0;
+  font-size:16px;
+}
+
+.product-info p{
+  margin:6px 0 10px;
+  color:#99a1b3;
+  font-size:13px;
+  line-height:1.35;
+}
+
+.product-link-text{
+  font-size:12px;
+  padding:9px 10px;
+  max-height:42px;
+  overflow:auto;
+}
+
+.product-link-card .row{
+  gap:8px;
+}
+
+.product-link-card .btn{
+  padding:9px 12px;
+  border-radius:10px;
+  font-size:12px;
+  box-shadow:none;
+}
+
+@media(max-width:1024px){
+  .product-links-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:640px){
+  .product-links-grid{
+    grid-template-columns:1fr;
+  }
+
+  .product-link-card{
+    padding:14px;
+  }
+}
+.commission-preview{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.commission-preview > div{
+  background:#0b0e14;
+  border:1px solid #232633;
+  border-radius:14px;
+  padding:14px;
+}
+
+.commission-preview span{
+  display:block;
+  color:#99a1b3;
+  font-size:12px;
+  margin-bottom:6px;
+}
+
+.commission-preview strong{
+  display:block;
+  font-size:22px;
+}
+
+@media(max-width:640px){
+  .commission-preview{
+    grid-template-columns:1fr;
+  }
+}
+/* ===========================
+   VENDAS - NOVA UX
+=========================== */
+
+.sales-cards{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.sale-card{
+  background:#121722;
+  border:1px solid #232633;
+  border-radius:14px;
+  padding:18px;
+  transition:.2s;
+}
+
+.sale-card:hover{
+  border-color:#334155;
+}
+
+.sale-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.sale-product{
+  font-size:18px;
+  font-weight:700;
+  color:#fff;
+}
+
+.sale-amount{
+  font-size:34px;
+  font-weight:800;
+  color:#22c55e;
+}
+
+.sale-type{
+  display:inline-flex;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.sale-type.direct{
+  background:#172554;
+  color:#93c5fd;
+}
+
+.sale-type.affiliate{
+  background:#3b0764;
+  color:#d8b4fe;
+}
+
+.sale-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:12px;
+  font-size:13px;
+  color:#94a3b8;
+}
+
+.sale-affiliate{
+  margin-top:8px;
+  font-size:14px;
+  color:#cbd5e1;
+}
+
+@media (max-width:768px){
+
+  .sale-header{
+    flex-direction:column;
+  }
+
+  .sale-amount{
+    font-size:24px;
+  }
+
+  .sale-footer{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+  }
+
+}
+/* ===========================
+   AFILIADOS - CARDS VENDEDOR
+=========================== */
+
+.affiliate-sections{
+  display:grid;
+  gap:20px;
+}
+
+.affiliate-cards-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-top:12px;
+}
+
+.affiliate-card{
+  background:#121722;
+  border:1px solid #232633;
+  border-radius:16px;
+  padding:18px;
+  min-width:0;
+}
+
+.affiliate-card--active{
+  border-color:rgba(34,197,94,.35);
+}
+
+.affiliate-card--pending{
+  border-color:rgba(245,158,11,.35);
+}
+
+.affiliate-card__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.affiliate-card__top h3{
+  margin:0;
+  font-size:17px;
+}
+
+.affiliate-card__top p{
+  margin:6px 0 0;
+  color:#99a1b3;
+  font-size:13px;
+  word-break:break-word;
+}
+
+.affiliate-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.affiliate-status--active{
+  background:rgba(34,197,94,.12);
+  color:#86efac;
+  border:1px solid rgba(34,197,94,.25);
+}
+
+.affiliate-status--pending{
+  background:rgba(245,158,11,.12);
+  color:#fbbf24;
+  border:1px solid rgba(245,158,11,.25);
+}
+
+.affiliate-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:16px;
+}
+
+.affiliate-metrics > div{
+  background:#0b0e14;
+  border:1px solid #232633;
+  border-radius:12px;
+  padding:10px;
+}
+
+.affiliate-metrics span{
+  display:block;
+  color:#99a1b3;
+  font-size:11px;
+  margin-bottom:6px;
+}
+
+.affiliate-metrics strong{
+  display:block;
+  font-size:18px;
+}
+
+.affiliate-card--pending .affiliate-metrics{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.affiliate-card__link{
+  margin-top:14px;
+  background:#0b0e14;
+  border:1px solid #232633;
+  border-radius:12px;
+  padding:10px 12px;
+  color:#99a1b3;
+  font-size:12px;
+  overflow:auto;
+}
+
+.affiliate-card .btn{
+  padding:9px 12px;
+  border-radius:10px;
+  font-size:12px;
+  box-shadow:none;
+}
+
+@media(max-width:900px){
+  .affiliate-cards-grid{
+    grid-template-columns:1fr;
+  }
+
+  .affiliate-metrics{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+.affiliate-products-list{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.affiliate-product-link{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:#0b0e14;
+  border:1px solid #232633;
+  border-radius:12px;
+  padding:10px 12px;
+}
+
+.affiliate-product-link strong{
+  display:block;
+  font-size:13px;
+}
+
+.affiliate-product-link span{
+  display:block;
+  color:#99a1b3;
+  font-size:11px;
+  word-break:break-all;
+  margin-top:4px;
+}
+
+@media(max-width:700px){
+  .affiliate-product-link{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+.inline-create-card{
+  margin-top:16px;
+}
+
+.inline-create-card .modal__card{
+  background:#0f1117;
+  border:1px solid #232633;
+  border-radius:16px;
+  padding:22px;
+  box-shadow:none;
+  max-width:none;
+  width:100%;
+}
+.sales-filters,
+.affiliate-filters{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr auto auto;
+  gap:10px;
+  align-items:end;
+}
+
+.affiliate-filters{
+  grid-template-columns:2fr 1fr 1fr auto auto;
+}
+
+@media(max-width:900px){
+  .sales-filters,
+  .affiliate-filters{
+    grid-template-columns:1fr;
+  }
+}
+.date-input{
+  color-scheme: dark;
+  cursor:pointer;
+}
+
+.date-input::-webkit-calendar-picker-indicator{
+  opacity:1;
+  cursor:pointer;
+}

@@ -364,10 +364,21 @@ router.get("/sales", requireAuth, async (req, res) => {
          pl.amount_cents AS vendor_amount_cents,
          ROUND( (pl.amount_cents::numeric / NULLIF(s.net_amount_cents,0)) * 100, 2) AS pct_vendor,
          a.name  AS affiliate_name,
-         a.email AS affiliate_email
+         a.email AS affiliate_email,
+          COALESCE(pal.affiliate_amount_cents, 0) AS affiliate_amount_cents,
+          CASE
+            WHEN s.affiliate_link_id IS NOT NULL THEN true
+            ELSE false
+          END AS is_affiliate_sale
        FROM partner_ledger pl
        JOIN sales s           ON s.id::text = pl.sale_id
        LEFT JOIN affiliates a ON a.id = s.affiliate_id
+       LEFT JOIN LATERAL (
+          SELECT SUM(amount_cents)::bigint AS affiliate_amount_cents
+          FROM partner_ledger
+          WHERE sale_id = s.id::text
+            AND role = 'affiliate'
+        ) pal ON true
       WHERE pl.partner_id = $1
         AND pl.role = 'vendor'
       ORDER BY s.created_at DESC
@@ -391,8 +402,10 @@ router.get("/sales", requireAuth, async (req, res) => {
     // entregamos os dois valores prontos:
     pct_vendor: Number(r.pct_vendor || 0),              // % do vendedor
     vendor_amount: Number(r.vendor_amount_cents || 0) / 100,  // R$ do vendedor
-    affiliate_name: r.affiliate_name || null,
-    affiliate_email: r.affiliate_email || null,
+    affiliate_name: r.is_affiliate_sale ? (r.affiliate_name || null) : null,
+    affiliate_email: r.is_affiliate_sale ? (r.affiliate_email || null) : null,
+    is_affiliate_sale: !!r.is_affiliate_sale,
+    affiliate_amount: Number(r.affiliate_amount_cents || 0) / 100,
     origin: "override"
   }));
 
