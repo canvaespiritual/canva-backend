@@ -5,8 +5,12 @@ const { MercadoPagoConfig, Preference } = require("mercadopago");
 
 const router = express.Router();
 
-const IS_PROD =
-  String(process.env.ASAAS_ENV || "sandbox").toLowerCase() === "production";
+const ASAAS_ENV =
+  String(process.env.ASAAS_ENV || "sandbox")
+    .trim()
+    .toLowerCase();
+
+const IS_PROD = ASAAS_ENV === "production";
 
 const ASAAS_BASE = IS_PROD
   ? "https://api.asaas.com/v3"
@@ -23,6 +27,13 @@ const asaas = axios.create({
     "Content-Type": "application/json",
     access_token: process.env.ASAAS_API_KEY || "",
   },
+});
+console.log("[PREPAID CHECKOUT ASAAS LOADED]", {
+  ASAAS_ENV,
+  ASAAS_BASE,
+  ASAAS_CHECKOUT_VIEW,
+  rootKeyPrefix: String(process.env.ASAAS_API_KEY || "").slice(0, 20),
+  hasKey: !!process.env.ASAAS_API_KEY,
 });
 const mpClient = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
@@ -51,6 +62,61 @@ function clampPct(n) {
   return Math.max(0, Math.min(100, v));
 }
 
+function money2(v) {
+  return Math.round(Number(v || 0) * 100) / 100;
+}
+
+function baseComissionavel(valorFinal) {
+  return money2(Math.max(0, Number(valorFinal || 0) - 2.99));
+}
+
+function splitFixo(walletId, pct, base) {
+  const value = money2((Number(base || 0) * Number(pct || 0)) / 100);
+  if (!walletId || value <= 0) return null;
+  return { walletId, fixedValue: value };
+}
+function normalizeAsaasEnv(v) {
+  const env = String(v || "").trim().toLowerCase();
+  if (env === "prod") return "production";
+  if (env === "hmlg" || env === "homolog" || env === "homologacao") return "sandbox";
+  return env;
+}
+
+function inferAsaasEnvFromApiKeyPrefix(prefix) {
+  const p = String(prefix || "");
+  if (p.startsWith("$aact_prod_")) return "production";
+  if (p.startsWith("$aact_hmlg_")) return "sandbox";
+  return "";
+}
+
+function resolveWalletEnv(row, envField, keyField) {
+  return normalizeAsaasEnv(row?.[envField]) ||
+    inferAsaasEnvFromApiKeyPrefix(row?.[keyField]);
+}
+
+function assertWalletEnv({ label, walletId, walletEnv, ownerId }) {
+  if (!walletId) return;
+
+  const env = normalizeAsaasEnv(walletEnv);
+
+  if (!env) {
+    const err = new Error(`Ambiente Asaas não definido para ${label}.`);
+    err.statusCode = 409;
+    err.code = "ASAAS_ENV_MISSING";
+    err.details = { label, ownerId, walletId, currentEnv: ASAAS_ENV };
+    throw err;
+  }
+
+  if (env !== ASAAS_ENV) {
+    const err = new Error(
+      `Conta de comissão ${label} pertence a ${env}, mas o checkout atual está em ${ASAAS_ENV}.`
+    );
+    err.statusCode = 409;
+    err.code = "ASAAS_ENV_MISMATCH";
+    err.details = { label, ownerId, walletId, walletEnv: env, currentEnv: ASAAS_ENV };
+    throw err;
+  }
+}
 function onlyDigits(v) {
   return String(v || "").replace(/\D/g, "");
 }
@@ -76,18 +142,27 @@ async function getOrCreateCustomer({ nome, email, cpfCnpj }) {
 
   return customerId;
 }
-async function buildSplitsByRef(ref) {
+async function buildSplitsByRef(ref, baseSplit) {
   const code = String(ref || "").trim();
   if (!code) return [];
 
   const linkQ = await pool.query(`
     SELECT
-      al.pct_aff,
-      al.pct_vendor,
-      al.pct_supervisor,
-      a.asaas_wallet_id AS aff_wallet,
-      v.asaas_wallet_id AS vend_wallet,
-      s.asaas_wallet_id AS sup_wallet
+  al.pct_aff,
+  al.pct_vendor,
+  al.pct_supervisor,
+  al.affiliate_id,
+  al.vendor_id,
+  v.supervisor_id,
+  a.asaas_wallet_id AS aff_wallet,
+  a.asaas_env AS aff_env,
+  LEFT(a.asaas_api_key, 20) AS aff_key_prefix,
+  v.asaas_wallet_id AS vend_wallet,
+  v.asaas_env AS vend_env,
+  LEFT(v.asaas_api_key, 20) AS vend_key_prefix,
+  s.asaas_wallet_id AS sup_wallet,
+  s.asaas_env AS sup_env,
+  LEFT(s.asaas_api_key, 20) AS sup_key_prefix
     FROM affiliate_links al
     LEFT JOIN affiliates a ON a.id = al.affiliate_id
     LEFT JOIN affiliates v ON v.id = al.vendor_id
@@ -98,48 +173,111 @@ async function buildSplitsByRef(ref) {
   `, [code]);
 
   if (linkQ.rowCount) {
-    const r = linkQ.rows[0];
+  const r = linkQ.rows[0];
 
-    const splits = [];
+  const A = clampPct(r.pct_aff || 0);
+  const V = clampPct(r.pct_vendor || 0);
+  const S = clampPct(r.pct_supervisor || 0);
 
-    const A = clampPct(r.pct_aff || 0);
-    const V = clampPct(r.pct_vendor || 0);
-    const S = clampPct(r.pct_supervisor || 0);
+  const affEnv = resolveWalletEnv(r, "aff_env", "aff_key_prefix");
+  const vendEnv = resolveWalletEnv(r, "vend_env", "vend_key_prefix");
+  const supEnv = resolveWalletEnv(r, "sup_env", "sup_key_prefix");
 
-    if (A > 0 && r.aff_wallet) {
-      splits.push({ walletId: r.aff_wallet, percentageValue: A });
-    }
-
-    if (V > 0 && r.vend_wallet) {
-      splits.push({ walletId: r.vend_wallet, percentageValue: V });
-    }
-
-    if (S > 0 && r.sup_wallet) {
-      splits.push({ walletId: r.sup_wallet, percentageValue: S });
-    }
-
-    return splits;
+  if (A > 0 && r.aff_wallet) {
+    assertWalletEnv({
+      label: "afiliado",
+      walletId: r.aff_wallet,
+      walletEnv: affEnv,
+      ownerId: r.affiliate_id,
+    });
   }
+
+  if (V > 0 && r.vend_wallet) {
+    assertWalletEnv({
+      label: "vendedor",
+      walletId: r.vend_wallet,
+      walletEnv: vendEnv,
+      ownerId: r.vendor_id,
+    });
+  }
+
+  if (S > 0 && r.sup_wallet) {
+    assertWalletEnv({
+      label: "supervisor",
+      walletId: r.sup_wallet,
+      walletEnv: supEnv,
+      ownerId: r.supervisor_id,
+    });
+  }
+
+  console.log("[PREPAID CHECKOUT ENV CHECK link]", {
+    ASAAS_ENV,
+    affiliate_id: r.affiliate_id,
+    aff_wallet: r.aff_wallet,
+    aff_env: affEnv,
+    vendor_id: r.vendor_id,
+    vend_wallet: r.vend_wallet,
+    vend_env: vendEnv,
+    supervisor_id: r.supervisor_id,
+    sup_wallet: r.sup_wallet,
+    sup_env: supEnv,
+  });
+
+  const splits = [];
+
+  if (A > 0 && r.aff_wallet) {
+    const sp = splitFixo(r.aff_wallet, A, baseSplit);
+    if (sp) splits.push(sp);
+  }
+
+  if (V > 0 && r.vend_wallet) {
+    const sp = splitFixo(r.vend_wallet, V, baseSplit);
+    if (sp) splits.push(sp);
+  }
+
+  if (S > 0 && r.sup_wallet) {
+    const sp = splitFixo(r.sup_wallet, S, baseSplit);
+    if (sp) splits.push(sp);
+  }
+
+  return splits;
+}
 
   const affQ = await pool.query(`
     SELECT
-      asaas_wallet_id,
-      commission_percent
-    FROM affiliates
-    WHERE id::text = $1
-    LIMIT 1
+  asaas_wallet_id,
+  asaas_env,
+  LEFT(asaas_api_key, 20) AS api_key_prefix,
+  commission_percent
+FROM affiliates
+WHERE id::text = $1
+LIMIT 1
   `, [code]);
 
   if (affQ.rowCount && affQ.rows[0].asaas_wallet_id) {
-    const pct = clampPct(affQ.rows[0].commission_percent || 30);
+  const r = affQ.rows[0];
+  const pct = clampPct(r.commission_percent || 30);
+  const walletEnv = resolveWalletEnv(r, "asaas_env", "api_key_prefix");
 
-    if (pct > 0) {
-      return [{
-        walletId: affQ.rows[0].asaas_wallet_id,
-        percentageValue: pct,
-      }];
-    }
+  assertWalletEnv({
+    label: "afiliado",
+    walletId: r.asaas_wallet_id,
+    walletEnv,
+    ownerId: code,
+  });
+
+  console.log("[PREPAID CHECKOUT ENV CHECK afiliado direto]", {
+    ASAAS_ENV,
+    affiliate_id: code,
+    wallet: r.asaas_wallet_id,
+    walletEnv,
+  });
+
+  if (pct > 0) {
+    const sp = splitFixo(r.asaas_wallet_id, pct, baseSplit);
+    return sp ? [sp] : [];
   }
+}
 
   return [];
 }
@@ -150,7 +288,8 @@ router.post("/start", async (req, res) => {
     const nome = String(req.body?.nome || "Cliente").trim();
     const email = normalizeEmail(req.body?.email);
     const valor = clampValor(req.body?.valor);
-    const ref = String(req.body?.ref || req.body?.aff || "").trim();
+const baseSplit = baseComissionavel(valor);
+const ref = String(req.body?.ref || req.body?.aff || "").trim();
 
     if (!email) {
       return res.status(400).json({
@@ -252,7 +391,7 @@ router.post("/start", async (req, res) => {
     const cancelUrl = `${callbackBase}/landing-prepago.html?cancel=1`;
     const expiredUrl = `${callbackBase}/landing-prepago.html?exp=1`;
 
-    const splits = await buildSplitsByRef(ref);
+    const splits = await buildSplitsByRef(ref, baseSplit);
 
     if (ref && !splits.length) {
       return res.status(400).json({
@@ -307,11 +446,15 @@ router.post("/start", async (req, res) => {
   } catch (err) {
     console.error("[prepaid-checkout/start] erro:", err.response?.data || err.message);
 
-    return res.status(500).json({
-      ok: false,
-      erro: "Erro ao iniciar checkout pré-pago.",
-      detalhe: err.response?.data || err.message,
-    });
+    return res.status(err.statusCode || 500).json({
+  ok: false,
+  erro:
+    err.code === "ASAAS_ENV_MISMATCH" || err.code === "ASAAS_ENV_MISSING"
+      ? err.message
+      : "Erro ao iniciar checkout pré-pago.",
+  code: err.code || "PREPAID_CHECKOUT_ERROR",
+  detalhe: err.details || err.response?.data || err.message,
+});
   }
 });
 
@@ -321,8 +464,9 @@ router.post("/criar-pix", async (req, res) => {
     const nome = String(req.body?.nome || "Cliente").trim();
     const email = normalizeEmail(req.body?.email);
     const valor = clampValor(req.body?.valor);
-    const ref = String(req.body?.ref || req.body?.aff || "").trim();
-    const cpfCnpj = onlyDigits(req.body?.cpf || req.body?.cpfCnpj);
+const baseSplit = baseComissionavel(valor);
+const ref = String(req.body?.ref || req.body?.aff || "").trim();
+const cpfCnpj = onlyDigits(req.body?.cpf || req.body?.cpfCnpj);
 
     if (!email) {
       return res.status(400).json({ ok: false, erro: "Email é obrigatório." });
@@ -336,7 +480,7 @@ router.post("/criar-pix", async (req, res) => {
       return res.status(400).json({ ok: false, erro: "CPF é obrigatório para gerar PIX Asaas." });
     }
 
-    const splits = await buildSplitsByRef(ref);
+    const splits = await buildSplitsByRef(ref, baseSplit);
 
     if (!splits.length) {
       return res.status(400).json({
@@ -375,10 +519,7 @@ router.post("/criar-pix", async (req, res) => {
       dueDate: dueDateTomorrow(),
       description: `Checkup Emocional Pré-pago - ${email}`,
       externalReference: `prepaid:${creditoId}`,
-      split: splits.map(s => ({
-        walletId: s.walletId,
-        percentualValue: s.percentageValue,
-      })),
+      split: splits,
     };
 
     const paymentResp = await asaas.post("/payments", paymentPayload);
@@ -412,11 +553,15 @@ router.post("/criar-pix", async (req, res) => {
   } catch (err) {
     console.error("[prepaid-checkout/criar-pix] erro:", err.response?.data || err.message);
 
-    return res.status(500).json({
-      ok: false,
-      erro: "Erro ao gerar PIX Asaas pré-pago.",
-      detalhe: err.response?.data || err.message,
-    });
+    return res.status(err.statusCode || 500).json({
+  ok: false,
+  erro:
+    err.code === "ASAAS_ENV_MISMATCH" || err.code === "ASAAS_ENV_MISSING"
+      ? err.message
+      : "Erro ao gerar PIX Asaas pré-pago.",
+  code: err.code || "PREPAID_PIX_ERROR",
+  detalhe: err.details || err.response?.data || err.message,
+});
   }
 });
 // GET /api/prepaid-checkout/status/:creditId

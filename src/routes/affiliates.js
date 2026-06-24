@@ -46,6 +46,40 @@ function toYMD(v) {
   if (m) return `${m[3]}-${m[2]}-${m[1]}`;    // DD/MM/YYYY -> YYYY-MM-DD
   return null; // rejeita outros formatos para evitar cair em UTC
 }
+function calcAgeFromYMD(ymd) {
+  if (!ymd) return null;
+  const m = String(ymd).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return null;
+
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+
+  const today = new Date();
+  let age = today.getFullYear() - y;
+  const currentMonth = today.getMonth() + 1;
+  const currentDay = today.getDate();
+
+  if (currentMonth < mo || (currentMonth === mo && currentDay < d)) {
+    age--;
+  }
+
+  return age;
+}
+
+function validateAdultBirthDate(birthRaw) {
+  const birth_date = toYMD(birthRaw);
+  if (!birth_date) {
+    return { ok: false, error: "Informe a data de nascimento." };
+  }
+
+  const age = calcAgeFromYMD(birth_date);
+  if (age == null || age < 18) {
+    return { ok: false, error: "É necessário ser maior de 18 anos." };
+  }
+
+  return { ok: true, birth_date };
+}
 
 // -------------- criação de afiliado --------------
 router.post("/", async (req, res) => {
@@ -89,6 +123,16 @@ router.post("/", async (req, res) => {
     const city = str(b.city);
     const state = str(b.state);
     const postal_code = str(b.postal_code);
+    const person_type = String(b.person_type || "FISICA").toUpperCase() === "JURIDICA" ? "JURIDICA" : "FISICA";
+
+let birth_date = null;
+if (person_type === "FISICA") {
+  const birthValidation = validateAdultBirthDate(b.birth_date || b.birthDate);
+  if (!birthValidation.ok) {
+    return res.status(400).json({ error: birthValidation.error });
+  }
+  birth_date = birthValidation.birth_date;
+}
 
     // unicidade
     const { rows: exists } = await pool.query(
@@ -119,7 +163,8 @@ router.post("/", async (req, res) => {
         terms_version, terms_accepted_at, terms_ip, terms_ua,
         privacy_version, privacy_accepted_at,
         reset_token, reset_expires_at,
-        role,                 -- [ADD role] coluna adicionada
+        role,
+        person_type, birth_date,
         created_at, updated_at
       ) VALUES (
         $1,$2,$3,$4,$5,$6,$7,$8,
@@ -127,7 +172,8 @@ router.post("/", async (req, res) => {
         $16, NOW(), $17, $18,
         $19, NOW(),
         $20, $21,
-        $22,                 -- [ADD role] valor
+        $22,
+        $23, $24,
         NOW(), NOW()
       )`,
       [
@@ -153,6 +199,8 @@ router.post("/", async (req, res) => {
         reset_token,
         reset_expires_at,
         role, // [ADD role]
+        person_type,
+        birth_date,
       ]
     );
 
@@ -419,7 +467,12 @@ router.post("/me/holder", async (req, res) => {
     if (person_type === "FISICA" && !birth_date) {
       return res.status(400).json({ error: "Informe a data de nascimento (YYYY-MM-DD ou DD/MM/YYYY)." });
     }
-
+    if (person_type === "FISICA") {
+      const age = calcAgeFromYMD(birth_date);
+      if (age == null || age < 18) {
+        return res.status(400).json({ error: "É necessário ser maior de 18 anos." });
+      }
+    }
     await pool.query(
       `UPDATE affiliates
          SET person_type = $1,
@@ -554,7 +607,12 @@ router.post("/accept-invite", async (req, res) => {
     if (person_type === "FISICA" && !birth_date) {
       return res.status(400).json({ error: "Informe a data de nascimento (YYYY-MM-DD ou DD/MM/YYYY)." });
     }
-
+    if (person_type === "FISICA") {
+      const age = calcAgeFromYMD(birth_date);
+      if (age == null || age < 18) {
+        return res.status(400).json({ error: "É necessário ser maior de 18 anos." });
+      }
+    }
     // existe afiliado com este e-mail?
     const ex = await pool.query(`SELECT id FROM affiliates WHERE email = $1 LIMIT 1`, [email]);
 

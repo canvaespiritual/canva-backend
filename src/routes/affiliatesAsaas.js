@@ -5,7 +5,25 @@ const pool = require("../db");
 const axios = require("axios");
 
 // Cliente Asaas (conta-mestra)
-const baseURL = process.env.ASAAS_BASE_URL || "https://api-sandbox.asaas.com/v3";
+// Cliente Asaas (conta-mestra)
+const ASAAS_ENV =
+  String(process.env.ASAAS_ENV || "sandbox")
+    .trim()
+    .toLowerCase();
+
+const IS_PROD = ASAAS_ENV === "production";
+
+const baseURL = IS_PROD
+  ? "https://api.asaas.com/v3"
+  : "https://api-sandbox.asaas.com/v3";
+
+console.log("[AFFILIATES ASAAS LOADED]", {
+  ASAAS_ENV,
+  baseURL,
+  rootKeyPrefix: String(process.env.ASAAS_API_KEY || "").slice(0, 20),
+  hasKey: !!process.env.ASAAS_API_KEY,
+});
+
 const asaasRoot = axios.create({
   baseURL,
   headers: {
@@ -47,8 +65,9 @@ router.post("/me/asaas/create-subaccount", requireAuth, async (req, res) => {
     // pega dados do afiliado para preencher subconta
     const { rows } = await pool.query(
       `SELECT id, name, email, cpf_cnpj, phone,
-              address, address_number, district, city, state, postal_code,
-              asaas_account_id, asaas_wallet_id, asaas_api_key
+       address, address_number, district, city, state, postal_code,
+       person_type, birth_date,
+       asaas_account_id, asaas_wallet_id, asaas_api_key, asaas_env
          FROM affiliates
         WHERE id = $1
         LIMIT 1`,
@@ -59,30 +78,69 @@ router.post("/me/asaas/create-subaccount", requireAuth, async (req, res) => {
 
     // se já tem subconta criada, só retorna os dados
     if (a.asaas_account_id && a.asaas_wallet_id && a.asaas_api_key) {
-      return res.json({
-        ok: true,
-        already: true,
-        asaas_account_id: a.asaas_account_id,
-        asaas_wallet_id: a.asaas_wallet_id
-      });
-    }
+  await pool.query(`
+    UPDATE affiliates
+       SET asaas_env = COALESCE(NULLIF(asaas_env, ''), $2),
+           updated_at = NOW()
+     WHERE id = $1
+  `, [affId, ASAAS_ENV]);
+
+  return res.json({
+    ok: true,
+    already: true,
+    asaas_env: a.asaas_env || ASAAS_ENV,
+    asaas_account_id: a.asaas_account_id,
+    asaas_wallet_id: a.asaas_wallet_id
+  });
+}
 
     // monta payload básico para criação de subconta
     // (ajuste campos conforme necessidade/KYC)
-    const payload = {
-      name: a.name,
-      email: a.email,
-      cpfCnpj: a.cpf_cnpj,
-      phone: a.phone,
-      postalCode: a.postal_code,
-      address: a.address,
-      addressNumber: String(a.address_number || ""),
-      complement: "",
-      province: a.district,
-      city: a.city,
-      state: a.state
-    };
+    const onlyDigits = (s) => String(s || "").replace(/\D/g, "");
+const normDate = (s) => {
+  const t = String(s || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+  if (/^\d{4}-\d{2}-\d{2}T/.test(t)) return t.slice(0, 10);
+  return "";
+};
 
+const personType =
+  String(a.person_type || "FISICA").toUpperCase() === "JURIDICA"
+    ? "JURIDICA"
+    : "FISICA";
+
+const payload = {
+  name: a.name,
+  email: a.email,
+  loginEmail: a.email,
+  personType,
+  cpfCnpj: onlyDigits(a.cpf_cnpj),
+  mobilePhone: onlyDigits(a.phone),
+  postalCode: onlyDigits(a.postal_code),
+  address: a.address,
+  addressNumber: String(a.address_number || ""),
+  complement: "",
+  province: a.district,
+  city: a.city,
+  state: a.state,
+  incomeValue: Number(process.env.AFF_DEFAULT_INCOME || 1500),
+};
+
+if (personType === "FISICA") {
+  payload.birthDate = normDate(a.birth_date);
+  if (!payload.birthDate) {
+    return res.status(400).json({
+      error: "Data de nascimento ausente para criar subconta."
+    });
+  }
+}
+console.log("[AFFILIATES ASAAS CREATE SUBACCOUNT]", {
+  ASAAS_ENV,
+  baseURL,
+  rootKeyPrefix: String(process.env.ASAAS_API_KEY || "").slice(0, 20),
+  affiliateId: affId,
+  email: a.email,
+});
     // cria subconta
     const resp = await asaasRoot.post("/accounts", payload);
     const data = resp.data || {};
@@ -97,20 +155,23 @@ router.post("/me/asaas/create-subaccount", requireAuth, async (req, res) => {
 
     await pool.query(
       `UPDATE affiliates
-          SET asaas_account_id = $1,
-              asaas_wallet_id  = $2,
-              asaas_api_key    = $3,
-              link_enabled     = false,
-              updated_at       = NOW()
-        WHERE id = $4`,
-      [accountId, walletId, apiKey, affId]
+   SET asaas_account_id = $1,
+       asaas_wallet_id  = $2,
+       wallet_id        = $2,
+       asaas_api_key    = $3,
+       asaas_env        = $4,
+       link_enabled     = false,
+       updated_at       = NOW()
+ WHERE id = $5`,
+      [accountId, walletId, apiKey, ASAAS_ENV, affId]
     );
 
     return res.json({
-      ok: true,
-      asaas_account_id: accountId,
-      asaas_wallet_id: walletId
-    });
+  ok: true,
+  asaas_env: ASAAS_ENV,
+  asaas_account_id: accountId,
+  asaas_wallet_id: walletId
+});
   } catch (err) {
     // tenta expor erro do Asaas se vier
     const apiErr = err.response?.data || err.message;

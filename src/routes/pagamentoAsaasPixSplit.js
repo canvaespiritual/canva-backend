@@ -4,8 +4,12 @@ const pool = require("../db");
 
 const router = express.Router();
 
-const IS_PROD =
-  String(process.env.ASAAS_ENV || "sandbox").trim().toLowerCase() === "production";
+const ASAAS_ENV =
+  String(process.env.ASAAS_ENV || "sandbox")
+    .trim()
+    .toLowerCase();
+
+const IS_PROD = ASAAS_ENV === "production";
 
 const ASAAS_BASE = IS_PROD
   ? "https://api.asaas.com/v3"
@@ -21,8 +25,9 @@ const asaas = axios.create({
 });
 
 console.log("[ASAAS PIX SPLIT LOADED]", {
-  ASAAS_ENV: process.env.ASAAS_ENV,
+  ASAAS_ENV,
   ASAAS_BASE,
+  rootKeyPrefix: String(process.env.ASAAS_API_KEY || "").slice(0, 20),
   hasKey: !!process.env.ASAAS_API_KEY,
 });
 
@@ -57,6 +62,73 @@ function clampPct(n) {
   return Math.max(0, Math.min(100, v));
 }
 
+function money2(v) {
+  return Math.round(Number(v || 0) * 100) / 100;
+}
+
+function baseComissionavel(valorFinal) {
+  return money2(Math.max(0, Number(valorFinal || 0) - 2.99));
+}
+
+function splitFixo(walletId, pct, base) {
+  const value = money2((Number(base || 0) * Number(pct || 0)) / 100);
+  if (!walletId || value <= 0) return null;
+  return { walletId, fixedValue: value };
+}
+
+function normalizeAsaasEnv(v) {
+  const env = String(v || "").trim().toLowerCase();
+  if (env === "prod") return "production";
+  if (env === "hmlg" || env === "homolog" || env === "homologacao") return "sandbox";
+  return env;
+}
+
+function inferAsaasEnvFromApiKeyPrefix(prefix) {
+  const p = String(prefix || "");
+  if (p.startsWith("$aact_prod_")) return "production";
+  if (p.startsWith("$aact_hmlg_")) return "sandbox";
+  return "";
+}
+
+function resolveWalletEnv(row, envField, keyField) {
+  return normalizeAsaasEnv(row?.[envField]) ||
+    inferAsaasEnvFromApiKeyPrefix(row?.[keyField]);
+}
+
+function assertWalletEnv({ label, walletId, walletEnv, ownerId }) {
+  if (!walletId) return;
+
+  const env = normalizeAsaasEnv(walletEnv);
+
+  if (!env) {
+    const err = new Error(`Ambiente Asaas não definido para ${label}.`);
+    err.statusCode = 409;
+    err.code = "ASAAS_ENV_MISSING";
+    err.details = {
+      label,
+      ownerId,
+      walletId,
+      currentEnv: ASAAS_ENV,
+    };
+    throw err;
+  }
+
+  if (env !== ASAAS_ENV) {
+    const err = new Error(
+      `Conta de comissão ${label} pertence a ${env}, mas o checkout atual está em ${ASAAS_ENV}.`
+    );
+    err.statusCode = 409;
+    err.code = "ASAAS_ENV_MISMATCH";
+    err.details = {
+      label,
+      ownerId,
+      walletId,
+      walletEnv: env,
+      currentEnv: ASAAS_ENV,
+    };
+    throw err;
+  }
+}
 function onlyDigits(v) {
   return String(v || "").replace(/\D/g, "");
 }
@@ -94,19 +166,26 @@ async function vincularAttributionPorRef(sessionId, ref) {
   }
 }
 
-async function buildSplitsForSession(sessionId, ref) {
+async function buildSplitsForSession(sessionId, ref, baseSplit, vend) {
   await vincularAttributionPorRef(sessionId, ref);
 
   const q = await pool.query(`
     SELECT
-      al.pct_aff,
-      al.pct_vendor,
-      al.pct_supervisor,
-      al.affiliate_id,
-      al.vendor_id,
-      a.asaas_wallet_id AS aff_wallet,
-      v.asaas_wallet_id AS vend_wallet,
-      s.asaas_wallet_id AS sup_wallet
+  al.pct_aff,
+  al.pct_vendor,
+  al.pct_supervisor,
+  al.affiliate_id,
+  al.vendor_id,
+  v.supervisor_id,
+  a.asaas_wallet_id AS aff_wallet,
+  a.asaas_env AS aff_env,
+  LEFT(a.asaas_api_key, 20) AS aff_key_prefix,
+  v.asaas_wallet_id AS vend_wallet,
+  v.asaas_env AS vend_env,
+  LEFT(v.asaas_api_key, 20) AS vend_key_prefix,
+  s.asaas_wallet_id AS sup_wallet,
+  s.asaas_env AS sup_env,
+  LEFT(s.asaas_api_key, 20) AS sup_key_prefix
     FROM attribution at
     JOIN affiliate_links al ON al.id = at.affiliate_link_id
     LEFT JOIN affiliates a ON a.id = al.affiliate_id
@@ -119,46 +198,139 @@ async function buildSplitsForSession(sessionId, ref) {
 
   if (q.rowCount) {
     const r = q.rows[0];
+    console.log("[ASAAS PIX SPLIT DEBUG] affiliate_link encontrado:", {
+  sessionId,
+  ref,
+  vendor_id: r.vendor_id,
+  affiliate_id: r.affiliate_id,
+  aff_wallet: r.aff_wallet,
+  vend_wallet: r.vend_wallet,
+  pct_aff: r.pct_aff,
+  pct_vendor: r.pct_vendor,
+  ASAAS_ENV,
+  ASAAS_BASE,
+});
 
     const A = clampPct(r.pct_aff || 0);
-    const V = clampPct(r.pct_vendor || 0);
-    const S = clampPct(r.pct_supervisor || 0);
+const V = clampPct(r.pct_vendor || 0);
+const S = clampPct(r.pct_supervisor || 0);
 
-    const split = [];
+const affEnv = resolveWalletEnv(r, "aff_env", "aff_key_prefix");
+const vendEnv = resolveWalletEnv(r, "vend_env", "vend_key_prefix");
+const supEnv = resolveWalletEnv(r, "sup_env", "sup_key_prefix");
+
+if (A > 0 && r.aff_wallet) {
+  assertWalletEnv({
+    label: "afiliado",
+    walletId: r.aff_wallet,
+    walletEnv: affEnv,
+    ownerId: r.affiliate_id,
+  });
+}
+
+if (V > 0 && r.vend_wallet) {
+  assertWalletEnv({
+    label: "vendedor",
+    walletId: r.vend_wallet,
+    walletEnv: vendEnv,
+    ownerId: r.vendor_id,
+  });
+}
+
+if (S > 0 && r.sup_wallet) {
+  assertWalletEnv({
+    label: "supervisor",
+    walletId: r.sup_wallet,
+    walletEnv: supEnv,
+    ownerId: r.supervisor_id,
+  });
+}
+
+console.log("[ASAAS PIX SPLIT ENV CHECK]", {
+  ASAAS_ENV,
+  affiliate_id: r.affiliate_id,
+  aff_wallet: r.aff_wallet,
+  aff_env: affEnv,
+  vendor_id: r.vendor_id,
+  vend_wallet: r.vend_wallet,
+  vend_env: vendEnv,
+  supervisor_id: r.supervisor_id,
+  sup_wallet: r.sup_wallet,
+  sup_env: supEnv,
+});
+
+const split = [];
 
     if (A > 0 && r.aff_wallet) {
-      split.push({ walletId: r.aff_wallet, percentualValue: A });
-    }
+  const sp = splitFixo(r.aff_wallet, A, baseSplit);
+  if (sp) split.push(sp);
+}
 
-    if (V > 0 && r.vend_wallet) {
-      split.push({ walletId: r.vend_wallet, percentualValue: V });
-    }
-
-    if (S > 0 && r.sup_wallet) {
-      split.push({ walletId: r.sup_wallet, percentualValue: S });
-    }
-
+if (V > 0 && r.vend_wallet) {
+  const sp = splitFixo(r.vend_wallet, V, baseSplit);
+  if (sp) split.push(sp);
+}
+console.log("[ASAAS PIX SPLIT DEBUG] split final affiliate_link:", split);
     return split;
   }
+const vendorId = String(vend || "").trim();
 
+if (vendorId) {
+  const vendQ = await pool.query(`
+    SELECT
+  asaas_wallet_id,
+  asaas_env,
+  LEFT(asaas_api_key, 20) AS api_key_prefix
+FROM affiliates
+WHERE id = $1
+  AND role = 'vendor'
+LIMIT 1
+  `, [vendorId]);
+
+  if (vendQ.rowCount && vendQ.rows[0].asaas_wallet_id) {
+  const r = vendQ.rows[0];
+  const walletEnv = resolveWalletEnv(r, "asaas_env", "api_key_prefix");
+
+  assertWalletEnv({
+    label: "vendedor",
+    walletId: r.asaas_wallet_id,
+    walletEnv,
+    ownerId: vendorId,
+  });
+
+  const sp = splitFixo(r.asaas_wallet_id, 70, baseSplit);
+  return sp ? [sp] : [];
+}
+}
   const affiliateId = String(ref || "").trim();
 
   if (affiliateId) {
     const aff = await pool.query(`
-      SELECT asaas_wallet_id, commission_percent
-      FROM affiliates
-      WHERE id = $1
-      LIMIT 1
+      SELECT
+  asaas_wallet_id,
+  asaas_env,
+  LEFT(asaas_api_key, 20) AS api_key_prefix,
+  commission_percent
+FROM affiliates
+WHERE id = $1
+LIMIT 1
     `, [affiliateId]);
 
-    if (aff.rowCount && aff.rows[0].asaas_wallet_id) {
-      const pct = clampPct(aff.rows[0].commission_percent || 30);
+   if (aff.rowCount && aff.rows[0].asaas_wallet_id) {
+  const r = aff.rows[0];
+  const pct = clampPct(r.commission_percent || 30);
+  const walletEnv = resolveWalletEnv(r, "asaas_env", "api_key_prefix");
 
-      return [{
-        walletId: aff.rows[0].asaas_wallet_id,
-        percentualValue: pct,
-      }];
-    }
+  assertWalletEnv({
+    label: "afiliado",
+    walletId: r.asaas_wallet_id,
+    walletEnv,
+    ownerId: affiliateId,
+  });
+
+  const sp = splitFixo(r.asaas_wallet_id, pct, baseSplit);
+  return sp ? [sp] : [];
+}
   }
 
   return [];
@@ -186,6 +358,7 @@ async function getOrCreateCustomer({ sessionId, nome, email, telefone, cpfCnpj }
 router.get("/criar-pix-split/:tipo/:session_id", async (req, res) => {
   const { tipo, session_id } = req.params;
   const ref = (req.query.ref || req.query.aff || "").trim();
+  const vend = (req.query.vend || "").trim();
 
   const tipoNorm = normalizeTipo(tipo);
   const valorFinal = clampValor(req.query.valor, mapPreco(tipoNorm));
@@ -217,8 +390,8 @@ router.get("/criar-pix-split/:tipo/:session_id", async (req, res) => {
         redirect: `/aguarde.html?session_id=${encodeURIComponent(session_id)}`,
       });
     }
-
-    const split = await buildSplitsForSession(session_id, ref);
+    const baseSplit = baseComissionavel(valorFinal);
+    const split = await buildSplitsForSession(session_id, ref, baseSplit, vend);
 
     if (!split.length) {
       return res.status(400).json({
@@ -253,7 +426,15 @@ const customerId = await getOrCreateCustomer({
     };
 
     console.log("[ASAAS PIX SPLIT] payload:", JSON.stringify(paymentPayload));
-
+console.log("[ASAAS PIX SPLIT DEBUG] antes de criar payment:", {
+  ASAAS_ENV,
+  ASAAS_BASE,
+  session_id,
+  ref,
+  vend,
+  split,
+  paymentPayload,
+});
     const paymentResp = await asaas.post("/payments", paymentPayload);
     const payment = paymentResp.data || {};
     const paymentId = payment.id;
@@ -302,10 +483,14 @@ WHERE session_id = $6
   } catch (err) {
     const apiErr = err.response?.data || err.message;
     console.error("[ASAAS PIX SPLIT] erro:", apiErr);
-    return res.status(500).json({
-      erro: "Erro ao gerar PIX Asaas com split.",
-      detalhe: apiErr,
-    });
+    return res.status(err.statusCode || 500).json({
+  erro:
+    err.code === "ASAAS_ENV_MISMATCH" || err.code === "ASAAS_ENV_MISSING"
+      ? err.message
+      : "Erro ao gerar PIX Asaas com split.",
+  code: err.code || "ASAAS_PIX_SPLIT_ERROR",
+  detalhe: err.details || apiErr,
+});
   }
 });
 

@@ -6,7 +6,12 @@ const pool = require("../db");
 const router = express.Router();
 
 // 🔧 ENV: ASAAS_ENV=sandbox|production, ASAAS_API_KEY, APP_URL (pode vir sem https)
-const IS_PROD = (process.env.ASAAS_ENV || "sandbox").toLowerCase() === "production";
+const ASAAS_ENV =
+  String(process.env.ASAAS_ENV || "sandbox")
+    .trim()
+    .toLowerCase();
+
+const IS_PROD = ASAAS_ENV === "production";
 
 const ASAAS_BASE = IS_PROD
   ? "https://api.asaas.com/v3"
@@ -23,7 +28,13 @@ const asaas = axios.create({
     "access_token": process.env.ASAAS_API_KEY || "",
   },
 });
-
+console.log("[PAGAMENTO START ASAAS LOADED]", {
+  ASAAS_ENV,
+  ASAAS_BASE,
+  ASAAS_CHECKOUT_VIEW,
+  rootKeyPrefix: String(process.env.ASAAS_API_KEY || "").slice(0, 20),
+  hasKey: !!process.env.ASAAS_API_KEY,
+});
 // ===== Helpers =====
 function normalizeTipo(tipo) {
   const t = String(tipo || "").toLowerCase();
@@ -60,7 +71,62 @@ function clampValor(v, fallback) {
 
 const clampPct = (n) => Math.max(0, Math.min(100, Number.isFinite(+n) ? +n : 30));
 
+function money2(v) {
+  return Math.round(Number(v || 0) * 100) / 100;
+}
 
+function baseComissionavel(valorFinal) {
+  // cliente paga 14,99; comissões calculam sobre 12,00
+  return money2(Math.max(0, Number(valorFinal || 0) - 2.99));
+}
+
+function splitFixo(walletId, pct, base) {
+  const value = money2((Number(base || 0) * Number(pct || 0)) / 100);
+  if (!walletId || value <= 0) return null;
+  return { walletId, fixedValue: value };
+}
+function normalizeAsaasEnv(v) {
+  const env = String(v || "").trim().toLowerCase();
+  if (env === "prod") return "production";
+  if (env === "hmlg" || env === "homolog" || env === "homologacao") return "sandbox";
+  return env;
+}
+
+function inferAsaasEnvFromApiKeyPrefix(prefix) {
+  const p = String(prefix || "");
+  if (p.startsWith("$aact_prod_")) return "production";
+  if (p.startsWith("$aact_hmlg_")) return "sandbox";
+  return "";
+}
+
+function resolveWalletEnv(row, envField, keyField) {
+  return normalizeAsaasEnv(row?.[envField]) ||
+    inferAsaasEnvFromApiKeyPrefix(row?.[keyField]);
+}
+
+function assertWalletEnv({ label, walletId, walletEnv, ownerId }) {
+  if (!walletId) return;
+
+  const env = normalizeAsaasEnv(walletEnv);
+
+  if (!env) {
+    const err = new Error(`Ambiente Asaas não definido para ${label}.`);
+    err.statusCode = 409;
+    err.code = "ASAAS_ENV_MISSING";
+    err.details = { label, ownerId, walletId, currentEnv: ASAAS_ENV };
+    throw err;
+  }
+
+  if (env !== ASAAS_ENV) {
+    const err = new Error(
+      `Conta de comissão ${label} pertence a ${env}, mas o checkout atual está em ${ASAAS_ENV}.`
+    );
+    err.statusCode = 409;
+    err.code = "ASAAS_ENV_MISMATCH";
+    err.details = { label, ownerId, walletId, walletEnv: env, currentEnv: ASAAS_ENV };
+    throw err;
+  }
+}
 
 function normalizeHttpsBase(u) {
   let s = String(u || "").trim();
@@ -69,15 +135,27 @@ function normalizeHttpsBase(u) {
   s = s.replace(/^http:\/\//i, "https://");
   return s.replace(/\/+$/,"");
 }
-async function buildSplitsForSession(sessionId) {
+async function buildSplitsForSession(sessionId, baseSplit) {
   if (!sessionId) return [];
 
   // 1) Link de vendedor (attribution -> affiliate_links)
     const q = await pool.query(`
-    SELECT al.pct_aff, al.pct_vendor, al.pct_supervisor,
-       a.asaas_wallet_id AS aff_wallet,
-       v.asaas_wallet_id AS vend_wallet,
-       s.asaas_wallet_id AS sup_wallet
+    SELECT
+  al.pct_aff,
+  al.pct_vendor,
+  al.pct_supervisor,
+  al.affiliate_id,
+  al.vendor_id,
+  v.supervisor_id,
+  a.asaas_wallet_id AS aff_wallet,
+  a.asaas_env AS aff_env,
+  LEFT(a.asaas_api_key, 20) AS aff_key_prefix,
+  v.asaas_wallet_id AS vend_wallet,
+  v.asaas_env AS vend_env,
+  LEFT(v.asaas_api_key, 20) AS vend_key_prefix,
+  s.asaas_wallet_id AS sup_wallet,
+  s.asaas_env AS sup_env,
+  LEFT(s.asaas_api_key, 20) AS sup_key_prefix
   FROM attribution at
   JOIN affiliate_links al ON al.id = at.affiliate_link_id
   LEFT JOIN affiliates a ON a.id = al.affiliate_id
@@ -89,36 +167,70 @@ async function buildSplitsForSession(sessionId) {
   `, [sessionId]);
 
   if (q.rowCount) {
-    const r = q.rows[0];
-    const A = clampPct(r.pct_aff || 0);
-    const V = clampPct(r.pct_vendor || 0);
-    const S = clampPct(r.pct_supervisor || 0);
+  const r = q.rows[0];
 
-    const splits = [];
-    // tenta pegar a carteira do supervisor, se existir coluna/relacionamento
-let supWallet = null;
-if (S > 0 && r.vendor_id) {
-  try {
-    const supQ = await pool.query(`
-      SELECT s.asaas_wallet_id AS sup_wallet
-        FROM affiliates v
-        JOIN affiliates s ON s.id = v.supervisor_id
-       WHERE v.id = $1
-       LIMIT 1
-    `, [r.vendor_id]);
-    supWallet = supQ.rowCount ? supQ.rows[0].sup_wallet : null;
-  } catch (_) {
-    // coluna supervisor_id não existe → simplesmente não cria split de supervisor
-    supWallet = null;
+  const A = clampPct(r.pct_aff || 0);
+  const V = clampPct(r.pct_vendor || 0);
+  const S = clampPct(r.pct_supervisor || 0);
+
+  const affEnv = resolveWalletEnv(r, "aff_env", "aff_key_prefix");
+  const vendEnv = resolveWalletEnv(r, "vend_env", "vend_key_prefix");
+  const supEnv = resolveWalletEnv(r, "sup_env", "sup_key_prefix");
+
+  if (A > 0 && r.aff_wallet) {
+    assertWalletEnv({
+      label: "afiliado",
+      walletId: r.aff_wallet,
+      walletEnv: affEnv,
+      ownerId: r.affiliate_id,
+    });
   }
+
+  if (V > 0 && r.vend_wallet) {
+    assertWalletEnv({
+      label: "vendedor",
+      walletId: r.vend_wallet,
+      walletEnv: vendEnv,
+      ownerId: r.vendor_id,
+    });
+  }
+
+  if (S > 0 && r.sup_wallet) {
+    assertWalletEnv({
+      label: "supervisor",
+      walletId: r.sup_wallet,
+      walletEnv: supEnv,
+      ownerId: r.supervisor_id,
+    });
+  }
+
+  console.log("[/pagamento/start] ASAAS ENV CHECK link", {
+    ASAAS_ENV,
+    affiliate_id: r.affiliate_id,
+    aff_wallet: r.aff_wallet,
+    aff_env: affEnv,
+    vendor_id: r.vendor_id,
+    vend_wallet: r.vend_wallet,
+    vend_env: vendEnv,
+    supervisor_id: r.supervisor_id,
+    sup_wallet: r.sup_wallet,
+    sup_env: supEnv,
+  });
+
+  const splits = [];
+
+  if (A > 0 && r.aff_wallet) {
+    const sp = splitFixo(r.aff_wallet, A, baseSplit);
+    if (sp) splits.push(sp);
+  }
+
+  if (V > 0 && r.vend_wallet) {
+    const sp = splitFixo(r.vend_wallet, V, baseSplit);
+    if (sp) splits.push(sp);
+  }
+
+  return splits;
 }
-
-    // ⚠️ Na API /checkouts o nome do campo é **percentageValue** (inglês)
-     if (A > 0 && r.aff_wallet)  splits.push({ walletId: r.aff_wallet,  percentageValue: A });
-    if (V > 0 && r.vend_wallet) splits.push({ walletId: r.vend_wallet, percentageValue: V });
-     if (S > 0 && supWallet)     splits.push({ walletId: supWallet,     percentageValue: S });
-    return splits;
-  }
 
   // 2) Direta do vendedor (se você um dia gravar vendor_ref em diagnosticos)
 // (hoje sua tabela não tem vendor_ref; tratamos com try/catch para não quebrar)
@@ -145,9 +257,14 @@ try {
 
 if (vend) {
   const vw = await pool.query(`
-    SELECT v.asaas_wallet_id AS vend_wallet,
-           s.asaas_wallet_id AS sup_wallet,
-           v.supervisor_id
+    SELECT
+  v.asaas_wallet_id AS vend_wallet,
+  v.asaas_env AS vend_env,
+  LEFT(v.asaas_api_key, 20) AS vend_key_prefix,
+  s.asaas_wallet_id AS sup_wallet,
+  s.asaas_env AS sup_env,
+  LEFT(s.asaas_api_key, 20) AS sup_key_prefix,
+  v.supervisor_id
       FROM affiliates v
       LEFT JOIN affiliates s ON s.id = v.supervisor_id
      WHERE v.id = $1
@@ -155,12 +272,25 @@ if (vend) {
   `, [vend]);
 
   if (vw.rowCount) {
-    const rr = vw.rows[0];
-    const splits = [];
-    if (rr.vend_wallet) splits.push({ walletId: rr.vend_wallet, percentageValue: 30 });
-    if (rr.supervisor_id && rr.sup_wallet) splits.push({ walletId: rr.sup_wallet, percentageValue: 5 });
-    return splits;
+  const rr = vw.rows[0];
+
+  const vendEnv = resolveWalletEnv(rr, "vend_env", "vend_key_prefix");
+
+  if (rr.vend_wallet) {
+    assertWalletEnv({
+      label: "vendedor",
+      walletId: rr.vend_wallet,
+      walletEnv: vendEnv,
+      ownerId: vend,
+    });
   }
+
+  const splits = [];
+  const sp = splitFixo(rr.vend_wallet, 70, baseSplit);
+  if (sp) splits.push(sp);
+
+  return splits;
+}
 }
 
 
@@ -180,6 +310,7 @@ router.post("/start", async (req, res) => {
         valor,
         mapPreco(tipo)
       );
+      const baseSplit = baseComissionavel(valorFinal);
     console.log("[/pagamento/start] INICIO", { tipo, session_id, ref });
 
     if (!tipo || !session_id) {
@@ -262,7 +393,7 @@ try {
 
     // 2.1 — SE houver attribution para esta sessão (link de vendedor), monta splits pelo link
 const sessionId = session_id; // usamos a mesma session gravada
-const linkSplits = await buildSplitsForSession(sessionId);
+const linkSplits = await buildSplitsForSession(sessionId, baseSplit);
 if (linkSplits.length) {
   if (!process.env.ASAAS_API_KEY) {
     console.warn("[/pagamento/start] ASAAS_API_KEY ausente → fallback MP");
@@ -327,9 +458,18 @@ if (linkSplits.length) {
       checkout_url: `${ASAAS_CHECKOUT_VIEW}${encodeURIComponent(checkoutId)}`
     });
   } catch (e) {
-    console.error("[/pagamento/start] /checkouts (link split) falhou:", e?.response?.data || e.message);
-    return useMP({ res, tipo, session_id });
+  console.error("[/pagamento/start] /checkouts (link split) falhou:", e?.response?.data || e.message);
+
+  if (e.code === "ASAAS_ENV_MISMATCH" || e.code === "ASAAS_ENV_MISSING") {
+    return res.status(e.statusCode || 409).json({
+      error: e.message,
+      code: e.code,
+      detalhe: e.details || null,
+    });
   }
+
+  return useMP({ res, tipo, session_id });
+}
 }
 
     // ===== Decisão =====
@@ -355,6 +495,25 @@ if (linkSplits.length) {
 
       // Campos necessários pro split
       const walletId = aff.asaas_wallet_id || aff.wallet_id || null;
+      const walletEnv =
+  normalizeAsaasEnv(aff.asaas_env) ||
+  inferAsaasEnvFromApiKeyPrefix(String(aff.asaas_api_key || "").slice(0, 20));
+
+if (walletId) {
+  assertWalletEnv({
+    label: "afiliado",
+    walletId,
+    walletEnv,
+    ownerId: affiliateRef,
+  });
+}
+
+console.log("[/pagamento/start] ASAAS ENV CHECK afiliado direto", {
+  ASAAS_ENV,
+  affiliateRef,
+  walletId,
+  walletEnv,
+});
       const cTypeRaw = String(aff.commission_type || "PERCENT").toUpperCase();
       const pctRaw   = Number(aff.commission_percent ?? 30);
       const fixRaw   = Number(aff.commission_value   ?? 0);
@@ -373,7 +532,8 @@ if (linkSplits.length) {
         const pct = clampPct(pctRaw);
         if (pct > 0) {
           // 💡 /checkouts espera percentageValue (inglês), não 'percentualValue'
-          splits.push({ walletId, percentageValue: pct });
+          const sp = splitFixo(walletId, pct, baseSplit);
+if (sp) splits.push(sp);
         } else if (fixRaw > 0) {
           splits.push({ walletId, fixedValue: fixRaw });
           reasons.push("usando_fixed_por_percent_zero");
@@ -452,9 +612,18 @@ try {
           checkout_url: `${ASAAS_CHECKOUT_VIEW}${encodeURIComponent(checkoutId)}`
         });
       } catch (e) {
-        console.error("[/pagamento/start] /checkouts falhou:", e?.response?.data || e.message);
-        return useMP({ res, tipo, session_id }); // fallback
-      }
+  console.error("[/pagamento/start] /checkouts falhou:", e?.response?.data || e.message);
+
+  if (e.code === "ASAAS_ENV_MISMATCH" || e.code === "ASAAS_ENV_MISSING") {
+    return res.status(e.statusCode || 409).json({
+      error: e.message,
+      code: e.code,
+      detalhe: e.details || null,
+    });
+  }
+
+  return useMP({ res, tipo, session_id });
+}
     }
 
     // SEM afiliado => Mercado Pago
@@ -462,7 +631,15 @@ try {
 
   } catch (err) {
     console.error("[/pagamento/start] erro:", err?.response?.data || err.message);
-    return res.status(500).json({ error: "Falha ao iniciar pagamento." });
+    if (err.code === "ASAAS_ENV_MISMATCH" || err.code === "ASAAS_ENV_MISSING") {
+  return res.status(err.statusCode || 409).json({
+    error: err.message,
+    code: err.code,
+    detalhe: err.details || null,
+  });
+}
+
+return res.status(500).json({ error: "Falha ao iniciar pagamento." });
   }
 });
 

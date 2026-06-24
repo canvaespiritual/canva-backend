@@ -6,8 +6,25 @@ const pool = require("../db");
 
 const router = express.Router();
 
-const ASAAS_BASE_URL = process.env.ASAAS_BASE_URL || "https://api-sandbox.asaas.com/v3";
+const ASAAS_ENV =
+  String(process.env.ASAAS_ENV || "sandbox")
+    .trim()
+    .toLowerCase();
+
+const IS_PROD = ASAAS_ENV === "production";
+
+const ASAAS_BASE_URL = IS_PROD
+  ? "https://api.asaas.com/v3"
+  : "https://api-sandbox.asaas.com/v3";
+
 const ASAAS_API_KEY = process.env.ASAAS_API_KEY;
+
+console.log("[ACTIVATION FEE ASAAS LOADED]", {
+  ASAAS_ENV,
+  ASAAS_BASE_URL,
+  rootKeyPrefix: String(ASAAS_API_KEY || "").slice(0, 20),
+  hasKey: !!ASAAS_API_KEY,
+});
 const PUBLIC_BASE = process.env.PUBLIC_BASE_URL || "http://localhost:3000";
 const COMMISSION_TERMS_VERSION =
   process.env.COMMISSION_TERMS_VERSION || "2026-06-v1";
@@ -56,7 +73,7 @@ async function getAffiliate(affId) {
             person_type, birth_date,
             activation_fee_status, activation_fee_payment_id, activation_fee_checkout_url,
             commission_terms_version, commission_terms_accepted_at,
-            asaas_account_id, asaas_wallet_id, link_enabled,
+            asaas_account_id, asaas_wallet_id, asaas_env, link_enabled,
             payout_method, pix_key_value,
             bank_number, bank_agency, bank_account, bank_account_digit
        FROM affiliates
@@ -97,6 +114,8 @@ router.get("/me/activation-status", requireAuth, async (req, res) => {
       activation_fee_status: a.activation_fee_status || "not_started",
       activation_fee_payment_id: a.activation_fee_payment_id || null,
       activation_fee_checkout_url: a.activation_fee_checkout_url || null,
+      asaas_env: a.asaas_env || null,
+      current_asaas_env: ASAAS_ENV,
       commission_terms_version: a.commission_terms_version || null,
       commission_terms_required_version: COMMISSION_TERMS_VERSION,
       commission_terms_accepted: commissionTermsAccepted,
@@ -243,7 +262,13 @@ router.post("/me/asaas/precheck-document", requireAuth, async (req, res) => {
       postalCode: onlyDigits(a.postal_code || "76300000"),
       incomeValue: Number(process.env.AFF_DEFAULT_INCOME || 1500),
     };
-
+    console.log("[ASAAS PRECHECK]", {
+  ASAAS_ENV,
+  ASAAS_BASE_URL,
+  rootKeyPrefix: String(ASAAS_API_KEY || "").slice(0, 20),
+  affiliateId: a.id,
+  email: a.email,
+});
     const resp = await asaas.post("/accounts", payload, { validateStatus: () => true });
     const data = resp.data || {};
     const parsed = parseAsaasErrors(data);
@@ -320,7 +345,13 @@ router.post("/me/activation-fee/pix", requireAuth, async (req, res) => {
     if (a.activation_fee_status === "paid" && a.asaas_account_id && a.asaas_wallet_id) {
       return res.json({ ok: true, already_paid: true });
     }
-
+    console.log("[ACTIVATION FEE PIX START]", {
+  ASAAS_ENV,
+  ASAAS_BASE_URL,
+  rootKeyPrefix: String(ASAAS_API_KEY || "").slice(0, 20),
+  affiliateId: a.id,
+  email: a.email,
+});
     const externalReference = `activation_fee:${a.id}`;
 
     const customerResp = await asaas.post("/customers", {
@@ -348,12 +379,13 @@ router.post("/me/activation-fee/pix", requireAuth, async (req, res) => {
 
     await pool.query(
       `UPDATE affiliates
-          SET activation_fee_status = 'pending',
-              activation_fee_payment_id = $1,
-              activation_fee_checkout_url = NULL,
-              updated_at = NOW()
-        WHERE id = $2`,
-      [pay.id || null, a.id]
+   SET activation_fee_status = 'pending',
+       activation_fee_payment_id = $1,
+       activation_fee_checkout_url = NULL,
+       asaas_env = COALESCE(NULLIF(asaas_env, ''), $2),
+       updated_at = NOW()
+ WHERE id = $3`,
+      [pay.id || null, ASAAS_ENV, a.id]
     );
 
     return res.json({
@@ -408,12 +440,13 @@ router.post("/me/activation-fee/start", requireAuth, async (req, res) => {
 
     await pool.query(
       `UPDATE affiliates
-          SET activation_fee_status = 'pending',
-              activation_fee_payment_id = $1,
-              activation_fee_checkout_url = $2,
-              updated_at = NOW()
-        WHERE id = $3`,
-      [pay.id || null, pay.invoiceUrl || pay.bankSlipUrl || null, a.id]
+   SET activation_fee_status = 'pending',
+       activation_fee_payment_id = $1,
+       activation_fee_checkout_url = $2,
+       asaas_env = COALESCE(NULLIF(asaas_env, ''), $3),
+       updated_at = NOW()
+ WHERE id = $4`,
+      [pay.id || null, pay.invoiceUrl || pay.bankSlipUrl || null, ASAAS_ENV, a.id]
     );
 
     return res.json({

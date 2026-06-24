@@ -105,14 +105,20 @@ async function marcarPrepaidComoPago(pay) {
   const a = rows[0];
 
   if (a.asaas_account_id && a.asaas_wallet_id) {
-    await pool.query(`
-      UPDATE affiliates
-         SET activation_fee_status = 'paid',
-             activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
-             link_enabled = TRUE,
-             updated_at = NOW()
-       WHERE id = $1
-    `, [affiliateId]);
+  const ASAAS_ENV_CURRENT =
+    String(process.env.ASAAS_ENV || "sandbox")
+      .trim()
+      .toLowerCase();
+
+  await pool.query(`
+    UPDATE affiliates
+       SET activation_fee_status = 'paid',
+           activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
+           asaas_env = COALESCE(NULLIF(asaas_env, ''), $2),
+           link_enabled = TRUE,
+           updated_at = NOW()
+     WHERE id = $1
+  `, [affiliateId, ASAAS_ENV_CURRENT]);
 
     await pool.query(`
       UPDATE affiliate_links
@@ -171,22 +177,45 @@ async function marcarPrepaidComoPago(pay) {
   if (!accountId || !walletId || !apiKey) {
     throw new Error("Retorno inesperado do Asaas ao criar subconta.");
   }
+  console.log("[ASAAS SUBACCOUNT CREATED]", {
+  env: String(process.env.ASAAS_ENV || "sandbox").trim().toLowerCase(),
+  base: ASAAS_BASE,
+  rootKeyPrefix: String(process.env.ASAAS_API_KEY || "").slice(0, 20),
+  subKeyPrefix: String(apiKey || "").slice(0, 20),
+  accountId,
+  walletId,
+});
+const ASAAS_ENV_CURRENT =
+  String(process.env.ASAAS_ENV || "sandbox")
+    .trim()
+    .toLowerCase();
 
-  await pool.query(`
-    UPDATE affiliates
-       SET asaas_account_id = $1,
-           asaas_wallet_id = $2,
-           wallet_id = $2,
-           asaas_api_key = $3,
-           asaas_agency = $4,
-           asaas_account = $5,
-           asaas_account_digit = $6,
-           activation_fee_status = 'paid',
-           activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
-           link_enabled = TRUE,
-           updated_at = NOW()
-     WHERE id = $7
-  `, [accountId, walletId, apiKey, agency, account, accountDigit, affiliateId]);
+await pool.query(`
+UPDATE affiliates
+SET
+  asaas_account_id = $1,
+  asaas_wallet_id = $2,
+  wallet_id = $2,
+  asaas_api_key = $3,
+  asaas_env = $4,
+  asaas_agency = $5,
+  asaas_account = $6,
+  asaas_account_digit = $7,
+  activation_fee_status = 'paid',
+  activation_fee_paid_at = COALESCE(activation_fee_paid_at, NOW()),
+  link_enabled = TRUE,
+  updated_at = NOW()
+WHERE id = $8
+`, [
+  accountId,
+  walletId,
+  apiKey,
+  ASAAS_ENV_CURRENT,
+  agency,
+  account,
+  accountDigit,
+  affiliateId
+]);
 
   await pool.query(`
     UPDATE affiliate_links

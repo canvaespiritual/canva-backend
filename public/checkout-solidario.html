@@ -94,7 +94,7 @@
     <p id="cpfErro" class="hidden text-red-600 text-sm mb-3">
       Para gerar o PIX, preencha seu CPF.
     </p>
-
+    <div id="resumoPagamento" class="bg-slate-50 border rounded-xl p-3 text-sm text-slate-600 mb-3"></div>
     <button id="gerarPixBtn" class="w-full bg-[#143d59] text-white py-3 rounded-xl font-semibold mb-3">
       Gerar PIX
     </button>
@@ -121,7 +121,34 @@
 (function(){
 
 const MIN = 12;
+const TAXA_OPERACIONAL = 2.99;
 
+function valorCobrado(valorProduto){
+  const v = Number(valorProduto || 0);
+  return v <= MIN ? Math.round((v + TAXA_OPERACIONAL) * 100) / 100 : v;
+}
+function atualizarResumoPagamento(){
+  const valorProduto = aplicarMinimo();
+  const total = valorCobrado(valorProduto);
+  const el = document.getElementById('resumoPagamento');
+  if (!el) return;
+
+  if (valorProduto <= MIN) {
+    el.innerHTML = `
+      <div class="flex justify-between"><span>Checkup Emocional</span><strong>R$12,00</strong></div>
+      <div class="flex justify-between"><span>Processamento seguro</span><strong>R$2,99</strong></div>
+      <hr class="my-2">
+      <div class="flex justify-between text-slate-800"><span>Total</span><strong>R$${total.toFixed(2).replace('.', ',')}</strong></div>
+    `;
+  } else {
+    el.innerHTML = `
+      <div class="flex justify-between"><span>Checkup Emocional</span><strong>R$${valorProduto.toFixed(2).replace('.', ',')}</strong></div>
+      <div class="flex justify-between"><span>Processamento seguro</span><strong>Incluso</strong></div>
+      <hr class="my-2">
+      <div class="flex justify-between text-slate-800"><span>Total</span><strong>R$${total.toFixed(2).replace('.', ',')}</strong></div>
+    `;
+  }
+}
 const input = document.getElementById('valorSolidario');
 const btn = document.getElementById('solidarioBtn');
 const chips = [...document.querySelectorAll('.chip')];
@@ -131,7 +158,7 @@ const qs = new URLSearchParams(location.search);
 const ref = (qs.get('ref') || qs.get('aff') || '').trim();
 const vend = (qs.get('vend') || '').trim();
 const hasAffiliate = !!ref || !!vend;
-const partnerRef = ref || vend;
+const partnerRef = ref;
 
 let session_id = qs.get('session_id') || localStorage.getItem('session_id');
 
@@ -180,10 +207,14 @@ chips.forEach(chip => {
 
     input.value = chip.dataset.v;
     aplicarMinimo();
+    atualizarResumoPagamento();
   };
 });
 
-input.addEventListener('blur', aplicarMinimo);
+input.addEventListener('blur', () => {
+  aplicarMinimo();
+  atualizarResumoPagamento();
+});
 
 input.addEventListener('keydown', (e) => {
   if(e.key === 'Enter'){
@@ -207,6 +238,7 @@ const pixCopiaCola = document.getElementById('pixCopiaCola');
 const copiarPixBtn = document.getElementById('copiarPixBtn');
 
 function abrirModalAsaas(){
+  atualizarResumoPagamento();
   asaasNome.value = dadosQuiz.nome || '';
   asaasEmail.value = dadosQuiz.email || '';
   asaasCpf.value = '';
@@ -243,7 +275,8 @@ btn.onclick = () => {
 fecharModal.onclick = fecharModalAsaas;
 
 gerarPixBtn.onclick = async () => {
-  const valor = aplicarMinimo();
+  const valorProduto = aplicarMinimo();
+  const valor = valorCobrado(valorProduto);
   const cpf = onlyDigits(asaasCpf.value);
 
   if(!cpf){
@@ -261,7 +294,8 @@ gerarPixBtn.onclick = async () => {
     const url =
       `/pagamento/asaas/criar-pix-split/completo/${encodeURIComponent(session_id)}` +
       `?valor=${encodeURIComponent(valor)}` +
-      `&ref=${encodeURIComponent(partnerRef)}` +
+      (ref ? `&ref=${encodeURIComponent(ref)}` : '') +
+      (vend ? `&vend=${encodeURIComponent(vend)}` : '') +
       `&cpf=${encodeURIComponent(cpf)}`;
 
     const resp = await fetch(url);
@@ -307,7 +341,8 @@ copiarPixBtn.onclick = async () => {
   }
 };
 cartaoAsaasBtn.onclick = async () => {
-  const valor = aplicarMinimo();
+  const valorProduto = aplicarMinimo();
+  const valor = valorCobrado(valorProduto);
 
   cartaoAsaasBtn.disabled = true;
   cartaoAsaasBtn.textContent = 'Abrindo checkout...';

@@ -78,3 +78,32 @@ Para migrar para produção:
 ## 🙌 Autor
 
 Desenvolvido por Gustavo Prado – Projeto Canva Espiritual ✨
+
+
+Servidor (Host):
+interchange.proxy.rlwy.net
+
+Porta:
+41314
+
+Banco de Dados:
+railway
+
+Usuário:
+postgres
+
+Senha:
+TgCPmdDpDYSwQqySyompipFCNScQToAE
+
+
+subconta Gerson cpf 09592954100
+email corretorintegrado1@gmail.com
+senha asaas: Crailgra272@
+
+
+https://api.asaas.com/v3
+
+
+
+minha-chave-webhook
+

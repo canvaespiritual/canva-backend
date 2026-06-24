@@ -22,14 +22,14 @@
       <h1>Cadastro de Vendedor</h1>
       <p class="sub">
         Preencha seus dados para acessar o <strong>Painel do Vendedor</strong>.
-        Você poderá criar seu <strong>link pessoal (30%)</strong> e links para seus
-        <strong>afiliados (35–50%)</strong>.
+        Você poderá criar seu <strong>link pessoal (70%)</strong> e links para seus
+        <strong>afiliados (35–60%)</strong>.
       </p>
       <div class="sep"></div>
 
       <!-- IMPORTANTE: name="role" fixo como vendor -->
       <form id="frmRegister" class="grid-2" autocomplete="on" novalidate>
-        <input type="hidden" name="role" value="vendor" />
+        <input type="hidden" name="role" value="vendor" required />
 
         <div class="field col-12">
           <label>Nome completo</label>
@@ -43,42 +43,46 @@
 
         <div class="field">
           <label>Telefone (WhatsApp)</label>
-          <input class="input" name="phone" placeholder="(00) 90000-0000" />
+          <input class="input" name="phone" placeholder="(00) 90000-0000" required />
         </div>
 
         <div class="field">
           <label>CPF ou CNPJ</label>
           <input class="input" name="cpf_cnpj" placeholder="Somente números" required />
         </div>
-
+        <div class="field">
+  <label>Data de nascimento</label>
+  <input class="input" type="date" name="birth_date" required />
+  <div class="help">É necessário ser maior de 18 anos.</div>
+</div>
         <div class="field">
           <label>CEP</label>
-          <input class="input" name="postal_code" placeholder="00000-000" />
+          <input class="input" name="postal_code" placeholder="00000-000" required/>
         </div>
 
         <div class="field">
           <label>Endereço</label>
-          <input class="input" name="address" placeholder="Rua/Av." />
+          <input class="input" name="address" placeholder="Rua/Av." required/>
         </div>
 
         <div class="field">
           <label>Número</label>
-          <input class="input" name="address_number" placeholder="Nº" />
+          <input class="input" name="address_number" placeholder="Nº" required/>
         </div>
 
         <div class="field">
           <label>Bairro</label>
-          <input class="input" name="district" placeholder="Bairro" />
+          <input class="input" name="district" placeholder="Bairro" required/>
         </div>
 
         <div class="field">
           <label>Cidade</label>
-          <input class="input" name="city" placeholder="Cidade" />
+          <input class="input" name="city" placeholder="Cidade" required/>
         </div>
 
         <div class="field">
           <label>Estado</label>
-          <input class="input" name="state" placeholder="UF" />
+          <input class="input" name="state" placeholder="UF" required/>
         </div>
 
         <div class="col-12" style="margin-top: 12px;">

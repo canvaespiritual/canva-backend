@@ -77,15 +77,15 @@ async function applySplit({
     }
 
     // 3) Regras de percentuais
-    const S = supervisor_id ? 5 : 0;
+    const S = 0;
     const B = Number(bonus_vendor_pct || 0);
-    const CAP_FS = 60;
+    const CAP_FS = 70;
     const CAP_TOTAL = CAP_FS + S + B;
 
     let pct_aff = 0, pct_vendor = 0, pct_super = 0, pct_platform = 0;
 
     if (origin === "affiliate") {
-      const A = Math.max(0, Math.min(60, Number(pct_aff_link)));
+      const A = Math.max(0, Math.min(70, Number(pct_aff_link)));
       let V = Math.max(0, CAP_FS - A) + B;
       const sum = A + V + S;
       if (sum > CAP_TOTAL) V = Math.max(0, V - (sum - CAP_TOTAL));
@@ -93,8 +93,8 @@ async function applySplit({
       pct_platform = rest(100, pct_aff, pct_vendor, pct_super);
 
     } else if (origin === "direct" && vendor_id) {
-      pct_vendor = 30 + B;
-      pct_super  = S;
+      pct_vendor = 70 + B;
+      pct_super  = 0;
       pct_platform = rest(100, pct_vendor, pct_super);
 
     } else {

@@ -37,7 +37,7 @@ function requireAuth(req, res, next) {
 // ------------------------------------------------------
 function calcVendorPctBase(pctAff) {
   const A = Math.max(0, Math.min(100, Number(pctAff) || 0));
-  return Math.max(0, 60 - A); // CAP 60 (afiliado + vendedor)
+  return Math.max(0, 70 - A); // CAP 60 (afiliado + vendedor)
 }
 
 // ------------------------------------------------------
@@ -133,14 +133,14 @@ router.post("/links", requireAuth, async (req, res) => {
     const pctA  = Number(req.body.pct_affiliate);
 
     if (!email) return res.status(400).json({ error: "Informe o e-mail do afiliado." });
-    if (!Number.isFinite(pctA) || pctA < 35 || pctA > 50)
-      return res.status(400).json({ error: "A % do afiliado deve estar entre 35 e 50." });
+    if (!Number.isFinite(pctA) || pctA < 35 || pctA > 60)
+      return res.status(400).json({ error: "A % do afiliado deve estar entre 35 e 60." });
 
     const pctV = calcVendorPctBase(pctA); // CAP 60
-    if (pctA + pctV > 60)
-      return res.status(400).json({ error: "CAP de 60% (afiliado+vendedor) excedido." });
+    if (pctA + pctV > 70)
+      return res.status(400).json({ error: "CAP de 70% (afiliado+vendedor) excedido." });
 
-    const pctS = 5; // supervisor (informativo; aplicado no split final)
+    const pctS = 0; // supervisor (informativo; aplicado no split final)
 
     // procura afiliado (NÃO cria)
     const affiliate = await findAffiliateByEmail(email);
@@ -320,7 +320,7 @@ router.get("/sales", requireAuth, async (req, res) => {
         s.gateway_payment_id,
         s.status,
         s.net_amount_cents,
-        30.00::numeric AS pct_vendor      -- link pessoal = 30%
+        70.00::numeric AS pct_vendor      -- link pessoal = 70%
       FROM sales s
      WHERE s.vendor_id = $1
        AND s.origin = 'direct'
@@ -346,7 +346,7 @@ router.get("/sales", requireAuth, async (req, res) => {
   gateway_payment_id: r.gateway_payment_id,
   amount: Number(r.net_amount_cents || 0) / 100,     // líquido da venda
   status: r.status,
-  pct_vendor: Number(r.pct_vendor || 30),            // % do vendedor (30)
+  pct_vendor: Number(r.pct_vendor || 70),            // % do vendedor (70)
   origin: "direct"
 }));
 
@@ -433,7 +433,7 @@ router.get("/summary", requireAuth, async (req, res) => {
       // Diretas do link pessoal: 30% do líquido
       const q = await pool.query(
         `SELECT
-           COALESCE(SUM(ROUND((s.net_amount_cents::numeric * 30)/100)),0)::bigint AS mine_cents,
+           COALESCE(SUM(ROUND((s.net_amount_cents::numeric * 70)/100)),0)::bigint AS mine_cents,
            COUNT(*)::int AS qtd
          FROM sales s
         WHERE s.vendor_id = $1
