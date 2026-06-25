@@ -16,12 +16,16 @@
       </div>
 
       <nav class="nav">
-        <a href="#inicio"      class="nav-link active" data-target="#view-home">Início</a>
-        <a href="#subconta"    class="nav-link" data-target="#view-sub">Subconta & Saques</a>
-        <a href="#meu-link"    class="nav-link" data-target="#view-link">Meu Link</a>
-        <a href="#perfil"      class="nav-link" data-target="#view-profile">Meus Dados</a> <!-- NOVO -->
-        <a href="#materiais"   class="nav-link" data-target="#view-materials">Materiais</a>
-        <a href="#vendas"      class="nav-link" data-target="#view-sales">Vendas & Comissões</a>
+        <a href="#inicio" class="nav-link active" data-target="#view-home">Início</a>
+
+<a href="#subconta" class="nav-link" data-target="#view-sub" style="display:none;">
+  Subconta e Saques
+</a>
+
+<a href="#meu-link" class="nav-link" data-target="#view-link">Meus Links</a>
+<a href="#perfil" class="nav-link" data-target="#view-profile">Meus Dados</a>
+<a href="#materiais" class="nav-link" data-target="#view-materials">Marketing</a>
+<a href="#vendas" class="nav-link" data-target="#view-sales">Vendas e Comissões</a>
         <div class="sep"></div>
         <a href="#suporte"     class="nav-link" data-target="#view-support">Suporte</a>
         <a href="#sair" id="navLogout" class="nav-link">Sair</a>
@@ -40,47 +44,28 @@
       <div class="content">
         <!-- VIEW: INÍCIO -->
         <section id="view-home" class="view active">
-          <section class="card">
-            <h1>Bem-vindo(a)!</h1>
-            <p class="sub">Acompanhe sua aprovação e configure o método de saque. Quando tudo estiver aprovado, seu link de afiliado será liberado.</p>
-            <div class="sep"></div>
-            <h3>Situação da sua conta</h3>
-            <div class="kv mt-8">
-              <div>KYC Geral:</div><div id="stGeneralHome" class="muted">—</div>
-              <div>Dados Bancários:</div><div id="stBankHome" class="muted">—</div>
-              <div>Link liberado:</div><div id="stLinkHome" class="muted">—</div>
-            </div>
-            <div class="row mt-12">
-              <a class="btn" href="#subconta" data-target="#view-sub">Gerenciar subconta</a>
-              <button class="btn secondary" id="btnRefreshFromHome">Atualizar status</button>
-            </div>
-            <p id="asaasLoginWarnHome" class="alert alert-warn" style="display:none;margin-top:12px;"></p>
+          <section class="vendor-home-hero" id="heroMarketing">
+            <img src="/assets/onboarding/hero-vendedor.png" alt="Canva Espiritual" />
+          </section>
 
+          <section class="vendor-home-alert">
+            <img src="/assets/onboarding/alerta-asaas.png" alt="Ative sua conta Asaas para receber suas comissões" />
           </section>
 
           <section class="card mt-24">
-            <h2>Como funciona?</h2>
-            <p class="sub">Assista ao vídeo com o passo a passo de cadastro, aprovação e comissões.</p>
-            <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
-              <iframe id="videoIntro" src="" title="Apresentação do programa"
-                      style="width:100%;height:100%;border:0;"></iframe>
+            <h2>Status da sua conta</h2>
+            <p class="sub">Acompanhe sua ativação e liberação do link.</p>
+            <div class="kv mt-8">
+              <div>KYC Geral:</div><div id="stGeneralHome" class="muted">—</div>
+              <div>Link liberado:</div><div id="stLinkHome" class="muted">—</div>
             </div>
+            <div class="row mt-12">
+              <button class="btn secondary" id="btnRefreshFromHome">Atualizar status</button>
+            </div>
+            <p id="asaasLoginWarnHome" class="alert alert-warn" style="display:none;margin-top:12px;"></p>
           </section>
 
-          <section class="card mt-24" id="homeLinkTeaser" style="display:none;">
-            <h2>Seu link está ativo ✅</h2>
-            <p class="sub">Divulgue este link para começar a ganhar comissões.</p>
-            <div class="grid-2">
-              <div>
-                <div class="link-box"><span id="myLinkTeaser">—</span></div>
-                <div class="row mt-12">
-                  <button class="btn" id="btnCopyTeaser">Copiar</button>
-                  <a class="btn secondary" id="btnOpenTeaser" target="_blank" rel="noopener">Abrir</a>
-                </div>
-              </div>
-              <div><div id="qrTeaser" class="qr">QR</div></div>
-            </div>
-          </section>
+          
         </section>
 
         <!-- VIEW: SUBCONTA & SAQUES -->
@@ -159,114 +144,85 @@
         </section>
 
         <!-- VIEW: MEU LINK -->
-        <section id="view-link" class="view">
-          <section class="card">
-            <h1>Meu Link</h1>
-            <p class="sub">Divulgue este link em suas redes. As comissões são calculadas automaticamente.</p>
-
-            <div id="linkLockedNotice" class="muted" style="margin:8px 0 16px; display:none;">
-              Seu link ainda não está liberado. Finalize a aprovação da subconta.
-              <a href="#subconta" data-target="#view-sub">Ir para Subconta & Saques</a>.
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <div class="link-box"><span id="myLink">—</span></div>
-                <div class="row mt-12">
-                  <button class="btn" id="btnCopyLink">Copiar link</button>
-                  <a class="btn secondary" id="btnOpenLink" target="_blank" rel="noopener">Abrir</a>
-                </div>
-              </div>
-              <div><div class="qr" id="qrLink">QR</div></div>
-            </div>
-          </section>
-
-          <section class="card mt-24">
-            <h2>Configuração da comissão</h2>
-            <div class="kpis">
-              <div class="kpi"><div class="kpi__num" id="commission">30%</div><div class="kpi__label">Comissão inicial</div></div>
-              <div class="kpi"><div class="kpi__num" id="wallet">—</div><div class="kpi__label">Wallet ID</div></div>
-              <div class="kpi"><div class="kpi__num">D+7</div><div class="kpi__label">Liberação padrão</div></div>
-            </div>
-          </section>
-        </section>
-
-        <!-- VIEW: MATERIAIS -->
-        <section id="view-materials" class="view">
-          <section class="card">
-            <h1>Materiais</h1>
-            <p class="sub">Baixe os materiais para divulgação e gere o QR do seu link.</p>
-            <div class="row mt-12">
-              <a class="btn" id="btnDownloadKit" href="/afiliado/kit.zip">Baixar kit (ZIP)</a>
-              <button class="btn secondary" id="btnRefreshMat">Atualizar</button>
-            </div>
-            <div class="sep"></div>
-            <h3>QR Code do meu link</h3>
-            <div class="row mt-12">
-              <div id="qrMaterials" class="qr">QR</div>
-              <div>
-                <p class="muted">Use este QR em banners/indoor. Ele aponta diretamente para o seu link.</p>
-                <button class="btn" id="btnCopyLinkMat">Copiar link</button>
-              </div>
-            </div>
-            <div class="sep"></div>
-            <h3>Banners sugeridos</h3>
-            <div class="grid-materials" id="materialsGrid">
-              <!-- Coloque arquivos reais em /public/materials -->
-              <div class="material">
-                <img src="/materials/banner1.jpg" alt="Banner 1"/>
-                <div class="p"><span>Banner 1</span><a class="btn secondary" href="/materials/banner1.jpg" download>Baixar</a></div>
-              </div>
-              <div class="material">
-                <img src="/materials/banner2.jpg" alt="Banner 2"/>
-                <div class="p"><span>Banner 2</span><a class="btn secondary" href="/materials/banner2.jpg" download>Baixar</a></div>
-              </div>
-              <div class="material">
-                <img src="/materials/banner3.jpg" alt="Banner 3"/>
-                <div class="p"><span>Banner 3</span><a class="btn secondary" href="/materials/banner3.jpg" download>Baixar</a></div>
-              </div>
-            </div>
-          </section>
-        </section>
-
-        <div id="view-profile" class="view">
+       <section id="view-link" class="view">
   <section class="card">
-    <h1>Meus Dados</h1>
-    <p class="sub">Atualize informações básicas do seu cadastro. (Dados fiscais e de recebimento ficam em “Subconta & Saques”.)</p>
+    <h1>Meus Links</h1>
+    <p class="sub">
+      Use seus links de afiliado para divulgar os produtos. Cada produto tem link, botão de copiar e QR Code.
+    </p>
 
-    <div class="form-grid mt-16">
-      <div class="col-6">
-        <label>Nome</label>
-        <input class="input" id="pf_name" readonly />
-      </div>
+    <div id="linkLockedNotice" class="muted" style="margin:8px 0 16px; display:none;">
+      Seus links ainda não estão liberados. Finalize a ativação da sua conta.
+    </div>
 
-      <div class="col-6">
-        <label>E-mail</label>
-        <input class="input" id="pf_email" readonly />
-      </div>
-
-      <div class="col-4">
-        <label>Tipo de pessoa</label>
-        <select class="input" id="pf_ptype">
-          <option value="FISICA">Física</option>
-          <option value="JURIDICA">Jurídica</option>
-        </select>
-      </div>
-
-      <div class="col-4">
-        <label>Data de nascimento</label>
-        <input class="input" type="date" id="pf_birth" />
-      </div>
-
-      <div class="col-12 row mt-16" style="gap:8px;">
-        <button class="btn" id="btnLoadProfile" type="button">Carregar</button>
-        <button class="btn" id="btnSaveProfile" type="button">Salvar</button>
-      </div>
-
-      <p class="help mt-8">Obs.: CPF/CNPJ e dados de recebimento (Pix/Conta) são configurados em “Subconta & Saques”.</p>
+    <div id="affiliateProductLinksGrid" class="product-links-grid">
+      <p class="muted">Carregando links…</p>
     </div>
   </section>
-</div>
+
+  <section class="card mt-24">
+    <h2>Configuração da comissão</h2>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi__num" id="commission">—</div>
+        <div class="kpi__label">Sua comissão</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__num" id="wallet">—</div>
+        <div class="kpi__label">ID da carteira</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__num">D+7</div>
+        <div class="kpi__label">Liberação</div>
+      </div>
+    </div>
+  </section>
+</section>
+<section id="view-profile" class="view">
+  <section class="card">
+    <h1>Meus Dados</h1>
+    <p class="sub">Estes são os dados básicos do seu cadastro.</p>
+
+    <div class="sep"></div>
+
+    <div class="kv mt-8">
+      <div>Nome:</div><div id="pf_name" class="muted">—</div>
+      <div>E-mail:</div><div id="pf_email" class="muted">—</div>
+      <div>Tipo de pessoa:</div><div id="pf_ptype" class="muted">—</div>
+      <div>Nascimento:</div><div id="pf_birth" class="muted">—</div>
+    </div>
+  </section>
+</section>
+
+        <!-- VIEW: MARKETING -->
+        <section id="view-materials" class="view">
+          <section class="card">
+            <h1>Marketing</h1>
+            <p class="sub">Materiais comerciais disponibilizados pela equipe.</p>
+
+            <div class="marketing-filters">
+              <select id="marketingProduct" class="input">
+                <option value="">Todos os produtos</option>
+              </select>
+
+              <select id="marketingCategory" class="input">
+                <option value="">Todas categorias</option>
+              </select>
+
+              <select id="marketingType" class="input">
+                <option value="">Todos os tipos</option>
+              </select>
+
+              <input id="marketingSearch" class="input" placeholder="Pesquisar material..." />
+
+              <button class="btn secondary" id="btnReloadMarketing">Atualizar</button>
+            </div>
+
+            <div id="marketingCards" class="marketing-grid">
+              <p class="muted">Carregando materiais...</p>
+            </div>
+          </section>
+        </section>
 
 <section id="view-sales" class="view">
   <section class="card">
@@ -296,22 +252,10 @@
 <div class="sep"></div>
 
 
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Pedido</th>
-            <th>Valor</th>
-            <th>Status</th>
-            <th>Comissão</th>
-            <th>Gateway</th>
-          </tr>
-        </thead>
-        <tbody id="salesRows">
-          <tr><td colspan="6" class="muted">Carregando…</td></tr>
-        </tbody>
-      </table>
+    <div class="sales-cards-wrap mt-12">
+      <div id="salesCards" class="sales-cards">
+        <div class="muted">Carregando…</div>
+      </div>
     </div>
 
     <div class="row mt-12 pager">

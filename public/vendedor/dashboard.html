@@ -20,8 +20,16 @@
        <a href="#links" class="nav-link" data-target="#view-links">Meus Links</a>
 <a href="#afiliados" class="nav-link" data-target="#view-team">Afiliados</a>
 <a href="#vendas" class="nav-link" data-target="#view-sales">Vendas</a>
-<a href="#materiais" class="nav-link" data-target="#view-materials">Materiais</a>
-<a href="#treinamento" class="nav-link" data-target="#view-training">Treinamento</a>
+<a href="#marketing" class="nav-link" data-target="#view-materials">
+Marketing
+</a>
+<a
+    href="#treinamento"
+    class="nav-link"
+    data-target="#view-training"
+    style="display:none;">
+    Treinamento
+</a>
 <a href="#cadastro" class="nav-link" data-target="#view-profile">Cadastro</a>
         <div class="sep"></div>
         <a href="#suporte"     class="nav-link" data-target="#view-support">Suporte</a>
@@ -42,69 +50,33 @@
 
         <!-- VIEW: INÍCIO -->
         <section id="view-home" class="view active">
-          <section class="card">
-            <h1>Bem-vindo(a)!</h1>
-            <p class="sub">Acompanhe a <strong>verificação da conta</strong> e comece a vender com seu link pessoal (30%) ou criar links para seus afiliados.</p>
-            <div class="sep"></div>
+          <section class="vendor-home-hero" id="heroMarketing">
 
-            <h3>Status da sua conta</h3>
-            <div class="kv mt-8">
-              <div>Identidade:</div><div id="stIdentityHome" class="muted">—</div>
-              <div>Dados para receber:</div><div id="stPayoutHome" class="muted">—</div>
-              <div>Links liberados:</div><div id="stLinksHome" class="muted">—</div>
-            </div>
+    <img
+        src="/assets/onboarding/hero-vendedor.png"
+        alt="Canva Espiritual">
 
-            <div class="row mt-12">
-              <a class="btn" href="#verificacao" data-target="#view-verify" title="Enviar documentos e definir PIX/conta">Configurar verificação</a>
-              <button class="btn secondary" id="btnRefreshFromHome">Atualizar status</button>
-            </div>
-          </section>
+</section>
 
-          <section class="card mt-24">
-            <h2>Seus números</h2>
-            <div class="kpis">
-              <div class="kpi">
-                <div class="kpi__num" id="kpiTodayPaid">—</div>
-                <div class="kpi__label">Pagos • Hoje</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi__num" id="kpi7dPaid">—</div>
-                <div class="kpi__label">Pagos • 7 dias</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi__num" id="kpi30dPaid">—</div>
-                <div class="kpi__label">Pagos • 30 dias</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi__num" id="kpiGoalBar">—</div>
-                <div class="kpi__label">Meta do mês</div>
-              </div>
-            </div>
-          </section>
+<section class="vendor-home-alert">
+  <img src="/assets/onboarding/alerta-asaas.png" alt="Ative sua conta Asaas para receber suas comissões" />
+</section>
 
-          <section class="card mt-24" id="homePersonalLink" style="display:none;">
-            <h2>Seu link pessoal (30% fixos)</h2>
-            <p class="sub">Use para suas próprias vendas diretas. <span class="muted">(Comissão do vendedor é fixa em 30% neste link.)</span></p>
-            <div class="grid-2">
-              <div>
-                <div class="link-box"><span id="vendorPersonalLink">—</span></div>
-                <div class="row mt-12">
-                  <button class="btn" id="btnCopyPersonal">Copiar</button>
-                  <a class="btn secondary" id="btnOpenPersonal" target="_blank" rel="noopener">Abrir</a>
-                </div>
-              </div>
-              <div><div id="qrPersonal" class="qr" title="QR do link pessoal">QR</div></div>
-            </div>
-          </section>
+<section class="card mt-24">
+  <h2>Status da sua conta</h2>
+  <p class="sub">Acompanhe sua verificação e liberação dos links.</p>
 
-          <section class="card mt-24">
-            <h2>Como funciona?</h2>
-            <p class="sub">Assista ao vídeo de 2 minutos: verificação, link pessoal (30%), links de afiliados (35–50%) e meta de 50 vendas/dia.</p>
-            <div style="aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
-              <iframe id="videoIntro" src="" title="Apresentação para Vendedores"
-                      style="width:100%;height:100%;border:0;"></iframe>
-            </div>
-          </section>
+  <div class="kv mt-8">
+    <div>Identidade:</div><div id="stIdentityHome" class="muted">—</div>
+       <div>Links liberados:</div><div id="stLinksHome" class="muted">—</div>
+  </div>
+
+ 
+</section>
+
+          
+
+          
         </section>
 
         <!-- VIEW: VERIFICAÇÃO & RECEBIMENTO -->
@@ -189,7 +161,7 @@
         <section id="view-links" class="view">
           <section class="card">
             <h1>Meus Links</h1>
-            <p class="sub">Você tem dois tipos: <strong>pessoal (30%)</strong> e <strong>para afiliados</strong> (35–50% para o afiliado, sua % é calculada automaticamente respeitando o teto de 55%).</p>
+            <p class="sub">Você tem dois tipos: <strong>pessoal (70%)</strong> e <strong>para afiliados</strong> (35–60% para o afiliado, sua % é calculada automaticamente respeitando o teto de 70%).</p>
           </section>
 
           <!-- Link Pessoal -->
@@ -354,41 +326,52 @@
         <!-- VIEW: MATERIAIS -->
         <section id="view-materials" class="view">
           <section class="card">
-            <h1>Materiais</h1>
-            <p class="sub">Baixe o kit digital, gere QR Codes dos seus links e veja sugestões de arte.</p>
 
-            <div class="row mt-12">
-              <a class="btn" id="btnDownloadKit" href="/afiliado/kit.zip">Baixar kit (ZIP)</a>
-              <button class="btn secondary" id="btnRefreshMat">Atualizar</button>
+            <h1>Marketing</h1>
+
+            <p class="sub">
+            Materiais comerciais disponibilizados pela equipe.
+            </p>
+
+            <div class="marketing-filters">
+
+            <select id="marketingProduct" class="input">
+            <option value="">Todos os produtos</option>
+            </select>
+
+            <select id="marketingCategory" class="input">
+            <option value="">Todas categorias</option>
+            </select>
+
+            <select id="marketingType" class="input">
+            <option value="">Todos os tipos</option>
+            </select>
+
+            <input
+            id="marketingSearch"
+            class="input"
+            placeholder="Pesquisar material..."
+            >
+
+            <button
+            class="btn secondary"
+            id="btnReloadMarketing">
+            Atualizar
+            </button>
+
             </div>
 
-            <div class="sep"></div>
-            <h3>QR Code do seu link pessoal</h3>
-            <div class="row mt-12">
-              <div id="qrMaterialsPersonal" class="qr">QR</div>
-              <div>
-                <p class="muted">Use este QR para vendas diretas. Comissão fixa de 30%.</p>
-                <button class="btn" id="btnCopyPersonalMat">Copiar link pessoal</button>
-              </div>
+            <div
+            id="marketingCards"
+            class="marketing-grid">
+
+            <p class="muted">
+            Carregando materiais...
+            </p>
+
             </div>
 
-            <div class="sep"></div>
-            <h3>Banners sugeridos</h3>
-            <div class="grid-materials" id="materialsGrid">
-              <div class="material">
-                <img src="/materials/banner1.jpg" alt="Banner 1"/>
-                <div class="p"><span>Banner 1</span><a class="btn secondary" href="/materials/banner1.jpg" download>Baixar</a></div>
-              </div>
-              <div class="material">
-                <img src="/materials/banner2.jpg" alt="Banner 2"/>
-                <div class="p"><span>Banner 2</span><a class="btn secondary" href="/materials/banner2.jpg" download>Baixar</a></div>
-              </div>
-              <div class="material">
-                <img src="/materials/banner3.jpg" alt="Banner 3"/>
-                <div class="p"><span>Banner 3</span><a class="btn secondary" href="/materials/banner3.jpg" download>Baixar</a></div>
-              </div>
-            </div>
-          </section>
+            </section>
         </section>
 
 
@@ -518,7 +501,7 @@
   </div>
 
   <!-- JS do painel do vendedor (navegação e preenchimento virão na próxima etapa) -->
-  <script src="/scripts/vendedor-dashboard.js?v=4" defer></script>
+  <script src="/scripts/vendedor-dashboard.js?v=7" defer></script>
 
 
 

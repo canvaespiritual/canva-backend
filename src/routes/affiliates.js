@@ -413,7 +413,7 @@ router.get("/me/overview", async (req, res) => {
       const QUIZ_PATH =
         rawPath.startsWith("/") ? rawPath : `/${rawPath}`;
       if (!/\/quiz\.html/i.test(String(effectiveLink || ""))) {
-        effectiveLink = `${PUBLIC_BASE}${QUIZ_PATH}/?ref=${base.id}`;
+        effectiveLink = `${PUBLIC_BASE}${QUIZ_PATH}?aff=${base.id}`;
       }
     }
     res.json({
@@ -634,7 +634,7 @@ router.post("/accept-invite", async (req, res) => {
     } else {
       // cria novo afiliado já com a comissão proposta
       const id = uuid();
-      const linkAfiliado = `${PUBLIC_BASE}${QUIZ_PATH}/?ref=${id}`;
+      const linkAfiliado = `${PUBLIC_BASE}${QUIZ_PATH}?aff=${id}`;
       await pool.query(`
         INSERT INTO affiliates (
           id, name, email, cpf_cnpj, phone, address, address_number, district, city, state, postal_code,

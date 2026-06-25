@@ -161,14 +161,29 @@ function routeFromHash(){
   if (h.indexOf("#links") === 0)       return showView("#view-links");
     if (h.indexOf("#cadastro") === 0)    return showView("#view-profile");
   if (h.indexOf("#afiliados") === 0) return showView("#view-team");
-  if (h.indexOf("#materiais") === 0)   return showView("#view-materials");
+  if (h.indexOf("#materiais") === 0 || h.indexOf("#marketing") === 0) {
+  return showView("#view-materials");
+}
   if (h.indexOf("#vendas") === 0)      return showView("#view-sales");
   if (h.indexOf("#treinamento") === 0) return showView("#view-training");
   if (h.indexOf("#suporte") === 0)     return showView("#view-support");
   if (h.indexOf("#sair") === 0)        return doLogout();
   return showView("#view-home");
 }
+// Banner inicial abre diretamente Marketing
+const heroMarketing = document.getElementById("heroMarketing");
 
+if (heroMarketing) {
+  heroMarketing.style.cursor = "pointer";
+
+  heroMarketing.addEventListener("click", () => {
+
+    location.hash = "#marketing";
+
+    showView("#view-materials");
+
+  });
+}
 /* =========================================================
  * mensagens
  * =======================================================*/
@@ -910,20 +925,306 @@ renderFilteredAffiliates();
 }
 
 /* =========================================================
- * materiais
+ * marketing / materiais comerciais
  * =======================================================*/
-function initMaterials(){
-  // já pinta os QRs do link pessoal
-  drawQR($("#qrMaterialsPersonal"), (APP.linkEnabled && APP.personalLink) ? APP.personalLink : "", 180);
-  const btnCopy = $("#btnCopyPersonalMat");
-  if (btnCopy) btnCopy.addEventListener("click", async () => {
-    if (!APP.personalLink) return;
-    await copyToClipboard(APP.personalLink);
-    alert("Link pessoal copiado!");
-  }, { once: true });
+const MARKETING = {
+  loaded: false,
+  items: [],
+};
 
-  const btnRef = $("#btnRefreshMat");
-  if (btnRef) btnRef.addEventListener("click", () => drawQR($("#qrMaterialsPersonal"), APP.personalLink, 180), { once: true });
+const MARKETING_TYPE_LABELS = {
+  image: "Imagem/Banner",
+  video: "Vídeo",
+  pdf: "PDF",
+  external_link: "Link externo",
+  message_template: "Template de mensagem",
+  playbook: "Playbook",
+};
+
+const MARKETING_PRODUCT_LABELS = {
+  geral: "Checkup Geral",
+  profissional: "Checkup Profissional",
+  social: "Checkup Social",
+  familiar: "Checkup Familiar",
+  prepago: "Checkup Pré-pago",
+};
+
+function marketingTypeLabel(type) {
+  return MARKETING_TYPE_LABELS[type] || type || "Material";
+}
+
+function marketingProductLabel(productKey) {
+  return MARKETING_PRODUCT_LABELS[productKey] || productKey || "Geral";
+}
+
+function marketingIcon(type) {
+  if (type === "image") return "🖼️";
+  if (type === "video") return "🎬";
+  if (type === "pdf") return "📄";
+  if (type === "message_template") return "💬";
+  if (type === "playbook") return "📘";
+  return "🔗";
+}
+
+function fillMarketingFilters(items) {
+  const productSelect = $("#marketingProduct");
+  const categorySelect = $("#marketingCategory");
+  const typeSelect = $("#marketingType");
+
+  if (!productSelect || !categorySelect || !typeSelect) return;
+
+  const products = [...new Set(items.map(i => i.product_key).filter(Boolean))];
+  const categories = [...new Set(items.map(i => i.category).filter(Boolean))];
+  const types = [...new Set(items.map(i => i.type).filter(Boolean))];
+
+  productSelect.innerHTML = `<option value="">Todos os produtos</option>`;
+  products.forEach(p => {
+    productSelect.innerHTML += `<option value="${p}">${marketingProductLabel(p)}</option>`;
+  });
+
+  categorySelect.innerHTML = `<option value="">Todas categorias</option>`;
+  categories.forEach(c => {
+    categorySelect.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+  typeSelect.innerHTML = `<option value="">Todos os tipos</option>`;
+  types.forEach(t => {
+    typeSelect.innerHTML += `<option value="${t}">${marketingTypeLabel(t)}</option>`;
+  });
+}
+
+function getFilteredMarketingItems() {
+  const product = $("#marketingProduct")?.value || "";
+  const category = $("#marketingCategory")?.value || "";
+  const type = $("#marketingType")?.value || "";
+  const search = ($("#marketingSearch")?.value || "").trim().toLowerCase();
+
+  return MARKETING.items.filter(item => {
+    const passProduct = !product || item.product_key === product;
+    const passCategory = !category || item.category === category;
+    const passType = !type || item.type === type;
+
+    const hay = [
+      item.title,
+      item.description,
+      item.category,
+      item.product_key,
+      item.type,
+    ].filter(Boolean).join(" ").toLowerCase();
+
+    const passSearch = !search || hay.includes(search);
+
+    return passProduct && passCategory && passType && passSearch;
+  });
+}
+
+function renderMarketingCards() {
+  const grid = $("#marketingCards");
+  if (!grid) return;
+
+  const items = getFilteredMarketingItems();
+
+  if (!items.length) {
+    grid.innerHTML = `
+      <div class="marketing-empty">
+        <h3>Nenhum material encontrado</h3>
+        <p class="muted">Tente trocar os filtros ou atualizar a página.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const inspirations = items.filter(i =>
+    String(i.category || "").toLowerCase().includes("ideias") ||
+    String(i.category || "").toLowerCase().includes("inspiração") ||
+    String(i.category || "").toLowerCase().includes("inspiracao")
+  );
+
+  const templates = items.filter(i =>
+    !inspirations.includes(i) &&
+    ["image", "external_link"].includes(i.type)
+  );
+
+  const videos = items.filter(i => i.type === "video");
+  const playbooks = items.filter(i => i.type === "playbook" || i.type === "pdf");
+  const messages = items.filter(i => i.type === "message_template");
+
+  grid.innerHTML = `
+    ${renderMarketingSection("✨ Inspire-se", "Ideias práticas para divulgar em lugares reais.", inspirations)}
+    ${renderMarketingSection("🎨 Templates e Banners", "Artes prontas para publicar, imprimir ou divulgar.", templates)}
+    ${renderMarketingSection("🎬 Vídeos", "Vídeos para assistir, baixar e usar em campanhas.", videos)}
+    ${renderMarketingSection("📘 Playbooks e PDFs", "Guias rápidos, argumentos e materiais de apoio.", playbooks)}
+    ${renderMarketingSection("💬 Mensagens prontas", "Textos para WhatsApp, Instagram e abordagem.", messages)}
+  `;
+
+  wireMarketingCardActions(grid);
+}
+function getMarketingFirstFile(item) {
+  return Array.isArray(item.files) && item.files.length ? item.files[0] : null;
+}
+
+function getMarketingThumb(item) {
+  const file = getMarketingFirstFile(item);
+  return (
+    item.cover_url ||
+    file?.thumbnail_url ||
+    (item.type === "image" ? file?.file_url : "") ||
+    ""
+  );
+}
+
+function getMarketingOpenUrl(item) {
+  const file = getMarketingFirstFile(item);
+  return file?.file_url || item.url || item.cover_url || "";
+}
+
+function getMarketingDownloadUrl(item) {
+  const file = getMarketingFirstFile(item);
+  return file?.download_url || file?.file_url || item.url || "";
+}
+
+function renderMarketingSection(title, subtitle, items) {
+  if (!items.length) return "";
+
+  return `
+    <section class="marketing-shelf">
+      <div class="marketing-shelf__head">
+        <div>
+          <h2>${title}</h2>
+          <p>${subtitle}</p>
+        </div>
+      </div>
+
+      <div class="marketing-shelf__row">
+        ${items.map(renderMarketingCard).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderMarketingCard(item) {
+  const thumb = getMarketingThumb(item);
+  const openUrl = getMarketingOpenUrl(item);
+  const downloadUrl = getMarketingDownloadUrl(item);
+
+  const isImage = item.type === "image";
+  const isVideo = item.type === "video";
+  const isTemplate = item.type === "message_template";
+
+  const primaryLabel = isVideo ? "Assistir" : isTemplate ? "Copiar" : "Visualizar";
+
+  return `
+    <article class="marketing-netflix-card">
+      <div class="marketing-netflix-thumb">
+        ${
+          thumb
+            ? `<img src="${thumb}" alt="${item.title}" loading="lazy">`
+            : `<div class="marketing-netflix-icon">${marketingIcon(item.type)}</div>`
+        }
+
+        <div class="marketing-netflix-overlay">
+          ${
+            openUrl
+              ? `<a class="btn" href="${openUrl}" target="_blank" rel="noopener">${primaryLabel}</a>`
+              : ""
+          }
+
+          ${
+            downloadUrl
+              ? `<a class="btn secondary" href="${downloadUrl}" target="_blank" rel="noopener" download>Baixar</a>`
+              : ""
+          }
+
+          ${
+            openUrl || downloadUrl
+              ? `<button class="btn secondary" data-marketing-copy="${downloadUrl || openUrl}">Copiar link</button>`
+              : ""
+          }
+        </div>
+      </div>
+
+      <div class="marketing-netflix-body">
+        <div class="marketing-card-tags">
+          <span>${marketingTypeLabel(item.type)}</span>
+          ${item.category ? `<span>${item.category}</span>` : ""}
+        </div>
+
+        <h3>${item.title}</h3>
+        ${item.description ? `<p>${item.description}</p>` : ""}
+      </div>
+    </article>
+  `;
+}
+
+function wireMarketingCardActions(root) {
+  root.querySelectorAll("[data-marketing-copy]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const text = btn.getAttribute("data-marketing-copy") || "";
+      if (!text) return;
+
+      await copyToClipboard(text);
+
+      const old = btn.textContent;
+      btn.textContent = "Copiado!";
+      setTimeout(() => {
+        btn.textContent = old;
+      }, 1400);
+    });
+  });
+}
+async function loadMarketing() {
+  const grid = $("#marketingCards");
+  if (grid) {
+    grid.innerHTML = `<p class="muted">Carregando materiais...</p>`;
+  }
+
+  try {
+    const r = await jfetch("/marketing-materials?audience=vendor");
+    MARKETING.items = Array.isArray(r.items) ? r.items : [];
+
+    fillMarketingFilters(MARKETING.items);
+    renderMarketingCards();
+
+    MARKETING.loaded = true;
+  } catch (e) {
+    if (grid) {
+      grid.innerHTML = `
+        <div class="card">
+          <p class="muted">Não foi possível carregar os materiais.</p>
+        </div>
+      `;
+    }
+  }
+}
+
+function wireMarketingFilters() {
+  ["marketingProduct", "marketingCategory", "marketingType", "marketingSearch"].forEach(id => {
+    const el = $("#" + id);
+    if (!el) return;
+
+    const eventName = el.tagName === "INPUT" ? "input" : "change";
+
+    el.addEventListener(eventName, () => {
+      renderMarketingCards();
+    });
+  });
+
+  const reload = $("#btnReloadMarketing");
+  if (reload) {
+    reload.addEventListener("click", () => {
+      loadMarketing().catch(() => {});
+    });
+  }
+}
+
+function initMaterials() {
+  wireMarketingFilters();
+
+  if (!MARKETING.loaded) {
+    loadMarketing().catch(() => {});
+  } else {
+    renderMarketingCards();
+  }
 }
 
 /* =========================================================

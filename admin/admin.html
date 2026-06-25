@@ -2,86 +2,182 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Painel Administrativo - Canva Espiritual</title>
-<link rel="stylesheet" href="/admin/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master - Canva Espiritual</title>
+  <link rel="stylesheet" href="/admin/style.css" />
 </head>
 <body>
-  <h1>🧠 Painel Administrativo - Canva Espiritual</h1>
+  <div class="master-layout">
+    <aside class="master-sidebar">
+      <h2>🧠 Master</h2>
 
-  <!-- 🎯 Filtros -->
-  <div class="filtros">
-    <label for="filtro">🎯 Tipo:</label>
-    <select id="filtro">
-      <option value="todos">Todos</option>
-      <option value="basico">Básico</option>
-      <option value="intermediario">Intermediário</option>
-      <option value="completo">Completo</option>
-    </select>
+      <button class="master-nav active" data-view="dashboard">Dashboard</button>
+      <button class="master-nav" data-view="relatorios">Relatórios Gerados</button>
+      <button class="master-nav" data-view="marketing">Marketing</button>
 
-    <label for="filtro-status">📋 Status:</label>
-    <select id="filtro-status">
-      <option value="todos">Todos</option>
-      <option value="pronto">📬 PDF Pronto</option>
-      <option value="respondido">⚠️ Respondido, mas não processado</option>
-      <option value="pendente">⏳ Aguardando PDF</option>
-      <option value="travado">🛑 Travado há +30min</option>
-      <option value="concluido">✅ PDF + E-mail enviado</option>
-    </select>
+      <a class="master-logout" href="/admin/logout">🚪 Sair</a>
+    </aside>
+    <div id="masterScrim" class="master-scrim"></div>
+    
 
-    <label for="busca">🔎 Buscar por e-mail ou nome:</label>
-    <input type="text" id="busca" placeholder="Digite para filtrar..." />
+    <main class="master-main">
+      <header class="master-topbar">
+  <button id="btnMasterMenu">☰</button>
+  <strong>Master</strong>
+</header>
+      <section id="view-dashboard" class="master-view active">
+        <h1>Dashboard Master</h1>
+        <p class="sub">Resumo geral da operação.</p>
+        <div id="painel-resumo" class="painel-estatisticas"></div>
+      </section>
 
-    <button onclick="carregarStatus()">🔄 Atualizar</button>
-    <button onclick="window.location.href='/admin/exportar-xlsx'">📥 Baixar Excel (.xlsx)</button>
-    <label for="itensPorPagina">📄 Itens por página:</label>
-    <select id="itensPorPagina">
-  <option value="10">10</option>
-  <option value="25" selected>25</option>
-  <option value="50">50</option>
-  <option value="100">100</option>
-    </select>
+      <section id="view-relatorios" class="master-view">
+        <h1>Relatórios Gerados</h1>
+        <p class="sub">Acompanhe pagamentos, PDFs, envios, erros e reprocessamentos.</p>
 
+        <div class="filtros">
+          <label for="filtro">Tipo:</label>
+          <select id="filtro">
+            <option value="todos">Todos</option>
+            <option value="basico">Básico</option>
+            <option value="intermediario">Intermediário</option>
+            <option value="completo">Completo</option>
+          </select>
+
+          <label for="filtro-status">Status:</label>
+          <select id="filtro-status">
+            <option value="todos">Todos</option>
+            <option value="pronto">📬 PDF Pronto</option>
+            <option value="respondido">⚠️ Respondido, mas não processado</option>
+            <option value="pendente">⏳ Aguardando PDF</option>
+            <option value="travado">🛑 Travado há +30min</option>
+            <option value="concluido">✅ PDF + E-mail enviado</option>
+          </select>
+
+          <input type="text" id="busca" placeholder="Buscar por e-mail, nome ou WhatsApp..." />
+
+          <button onclick="carregarStatus()">🔄 Atualizar</button>
+          <button onclick="window.location.href='/admin/exportar-xlsx'">📥 Baixar Excel</button>
+
+          <label for="itensPorPagina">Itens:</label>
+          <select id="itensPorPagina">
+            <option value="10">10</option>
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+
+        <div id="relatoriosCards" class="relatorios-cards">
+          <em>Carregando...</em>
+        </div>
+
+        <div id="paginacao" class="paginacao">
+          <button id="paginaAnterior">⏮ Anterior</button>
+          <span id="infoPaginacao">Página 1</span>
+          <button id="paginaProxima">Próxima ⏭</button>
+        </div>
+      </section>
+
+      <section id="view-marketing" class="master-view">
+  <h1>Marketing</h1>
+  <p class="sub">Central Master para cadastrar materiais, ideias, banners, vídeos e playbooks.</p>
+
+  <div class="marketing-toolbar">
+    <button id="btnNovoMaterial">+ Novo Material</button>
+    <button id="btnAtualizarMarketing">🔄 Atualizar</button>
   </div>
 
-  <!-- 📊 Painel de Estatísticas -->
-  <div id="painel-resumo" class="painel-estatisticas"></div>
+  <div id="marketingMsg" class="muted"></div>
 
-  <!-- 📋 Tabela -->
-  <table id="tabela">
- <thead>
-  <tr>
-    <th>Session ID</th>
-    <th>Nome</th>
-    <th>Email</th>
-    <th>WhatsApp</th>
-    <th>Tipo</th>
-    <th>Status</th>
-    <th>Espera</th>
-    <th onclick="ordenarPor('criado_em')">📥 Respondido ⬍</th>
-    <th onclick="ordenarPor('data_confirmacao')">💳 Pagamento ⬍</th>
-    <th onclick="ordenarPor('dataGeracao')">📄 PDF Gerado ⬍</th>
-    <th>📧 Enviado</th>
-    <th>📬 Entregue</th>
-    <th>👁️ Aberto</th>
-    <th>🔗 Clicado</th>
-    <th>⚠️ Erro</th>
-    <th>Ações</th>
-  </tr>
-</thead>
-    <tbody id="corpo-tabela">
-      <tr><td colspan="16"><em>Carregando...</em></td></tr>
-    </tbody>
-  </table>
-<div id="paginacao" class="paginacao">
-  <button id="paginaAnterior">⏮ Anterior</button>
-  <span id="infoPaginacao">Página 1</span>
-  <button id="paginaProxima">Próxima ⏭</button>
-</div>
+  <div id="marketingMasterGrid" class="marketing-master-grid">
+    <em>Carregando materiais...</em>
+  </div>
 
-  <script src="/admin/admin.js"></script>
-  <div style="text-align: right; margin: 20px;">
-  <a href="/admin/logout" style="color: red; text-decoration: none; font-weight: bold;">🚪 Sair</a>
-</div>
+  <div id="modalMaterial" class="modal-master hide">
+    <div class="modal-master-card">
+      <h2 id="modalMaterialTitle">Novo Material</h2>
 
+      <input type="hidden" id="materialId" />
+
+      <label>Título</label>
+      <input id="matTitle" class="master-input" />
+
+      <label>Descrição</label>
+      <textarea id="matDescription" class="master-input"></textarea>
+
+      <label>Categoria</label>
+      <select id="matCategory" class="master-input">
+        <option value="Ideias de Divulgação">Ideias de Divulgação</option>
+        <option value="Banners">Banners</option>
+        <option value="Vídeos">Vídeos</option>
+        <option value="Playbooks">Playbooks</option>
+        <option value="Templates WhatsApp">Templates WhatsApp</option>
+        <option value="Posts Instagram">Posts Instagram</option>
+        <option value="Criativos Meta">Criativos Meta</option>
+        <option value="PDFs">PDFs</option>
+        <option value="Treinamentos">Treinamentos</option>
+        <option value="Outros">Outros</option>
+      </select>
+
+      <label>Produto</label>
+      <select id="matProduct" class="master-input">
+        <option value="">Todos</option>
+        <option value="geral">Checkup Geral</option>
+        <option value="profissional">Profissional</option>
+        <option value="social">Social</option>
+        <option value="familiar">Familiar</option>
+        <option value="prepago">Pré-pago</option>
+      </select>
+
+      <label>Tipo</label>
+      <select id="matType" class="master-input">
+        <option value="image">Imagem/Banner</option>
+        <option value="video">Vídeo</option>
+        <option value="pdf">PDF</option>
+        <option value="external_link">Link externo</option>
+        <option value="message_template">Template de mensagem</option>
+        <option value="playbook">Playbook</option>
+      </select>
+
+      <label>Público</label>
+      <select id="matAudience" class="master-input">
+        <option value="both">Vendedor e Afiliado</option>
+        <option value="vendor">Somente Vendedor</option>
+        <option value="affiliate">Somente Afiliado</option>
+      </select>
+
+      <label>Status</label>
+      <select id="matStatus" class="master-input">
+        <option value="active">Ativo</option>
+        <option value="inactive">Inativo</option>
+      </select>
+
+      <label>Ordem</label>
+      <input id="matSort" class="master-input" type="number" value="0" />
+
+      <label>Capa / thumbnail URL opcional</label>
+      <input id="matCover" class="master-input" placeholder="https://..." />
+
+      <label>Arquivo para upload</label>
+      <input id="matFileUpload" class="master-input" type="file" />
+
+      <label>Ou URL principal do arquivo</label>
+      <input id="matFileUrl" class="master-input" placeholder="https://..." />
+
+      <label>URL de visualização opcional</label>
+      <input id="matPreviewUrl" class="master-input" placeholder="YouTube, Vimeo, Drive, página externa..." />
+
+      <div class="row mt-12">
+        <button id="btnSalvarMaterial">Salvar</button>
+        <button id="btnCancelarMaterial" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section>
+    </main>
+  </div>
+
+  <script src="/admin/admin.js?v=7"></script>
 </body>
 </html>

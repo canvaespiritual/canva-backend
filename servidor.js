@@ -45,6 +45,8 @@ const vendorsRoutes = require("./src/routes/vendors");
 const debugRoutes = require("./src/routes/debug"); // ← ADD
 const prepaidQuiz = require("./src/routes/prepaidQuiz");
 const prepaidCheckout = require("./src/routes/prepaidCheckout");
+const marketingMaterialsRoutes = require("./src/routes/marketingMaterials");
+const marketingUploadRoutes = require("./src/routes/marketingUpload");
 
 
 // ⬇️ adicione esta linha
@@ -479,7 +481,8 @@ app.get("/vendors/me", (req, res) => {
 //});
 
 app.use("/vendors", vendorsRoutes);
-
+app.use("/marketing-materials", marketingMaterialsRoutes);
+app.use("/marketing-upload", marketingUploadRoutes);
 
 // ---------------------------
 // 🔐 Área Administrativa

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Marketing Master - Canva Espiritual</title>
+  <link rel="stylesheet" href="/admin/style.css" />
+</head>
+<body>
+  <h1>📢 Marketing Master</h1>
+
+  <div class="filtros">
+    <button id="btnNovoMaterial">+ Novo Material</button>
+    <button id="btnAtualizar">🔄 Atualizar</button>
+    <a href="/admin/admin.html">← Voltar ao Admin</a>
+  </div>
+
+  <div id="msg" style="margin: 16px 0;"></div>
+
+  <div id="marketingGrid" class="marketing-master-grid">
+    <em>Carregando materiais...</em>
+  </div>
+
+  <div id="modalMaterial" class="modal-master hide">
+    <div class="modal-master-card">
+      <h2 id="modalTitle">Novo Material</h2>
+
+      <input type="hidden" id="materialId" />
+
+      <label>Título</label>
+      <input id="matTitle" />
+
+      <label>Descrição</label>
+      <textarea id="matDescription"></textarea>
+
+      <label>Categoria</label>
+      <select id="matCategory">
+        <option value="Ideias de Divulgação">Ideias de Divulgação</option>
+        <option value="Banners">Banners</option>
+        <option value="Vídeos">Vídeos</option>
+        <option value="Playbooks">Playbooks</option>
+        <option value="Templates WhatsApp">Templates WhatsApp</option>
+        <option value="Posts Instagram">Posts Instagram</option>
+        <option value="Criativos Meta">Criativos Meta</option>
+        <option value="PDFs">PDFs</option>
+        <option value="Treinamentos">Treinamentos</option>
+        <option value="Outros">Outros</option>
+      </select>
+
+      <label>Produto</label>
+      <select id="matProduct">
+        <option value="">Todos</option>
+        <option value="geral">Checkup Geral</option>
+        <option value="profissional">Profissional</option>
+        <option value="social">Social</option>
+        <option value="familiar">Familiar</option>
+        <option value="prepago">Pré-pago</option>
+      </select>
+
+      <label>Tipo</label>
+      <select id="matType">
+        <option value="image">Imagem/Banner</option>
+        <option value="video">Vídeo</option>
+        <option value="pdf">PDF</option>
+        <option value="external_link">Link externo</option>
+        <option value="message_template">Template de mensagem</option>
+        <option value="playbook">Playbook</option>
+      </select>
+
+      <label>Público</label>
+      <select id="matAudience">
+        <option value="both">Vendedor e Afiliado</option>
+        <option value="vendor">Somente Vendedor</option>
+        <option value="affiliate">Somente Afiliado</option>
+      </select>
+
+      <label>Status</label>
+      <select id="matStatus">
+        <option value="active">Ativo</option>
+        <option value="inactive">Inativo</option>
+      </select>
+
+      <label>Ordem</label>
+      <input id="matSort" type="number" value="0" />
+
+      <label>Capa / thumbnail URL opcional</label>
+      <input id="matCover" placeholder="https://..." />
+
+      <div class="row" style="margin-top: 16px;">
+        <button id="btnSalvarMaterial">Salvar</button>
+        <button id="btnCancelarMaterial">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin/marketing.js?v=1"></script>
+</body>
+</html>

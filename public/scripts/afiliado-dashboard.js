@@ -47,6 +47,43 @@ function drawQR(container, data, size = 180) {
 }
 
 const BRL = (v) => (isFinite(v) ? v : 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const PRODUCTS = [
+  {
+    key: "geral",
+    name: "Checkup Emocional Geral",
+    path: "/quiz-geral.html",
+    desc: "Diagnóstico emocional completo.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "profissional",
+    name: "Checkup Profissional",
+    path: "/quiz-profissional.html",
+    desc: "Trabalho, carreira e rotina.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "social",
+    name: "Checkup Social",
+    path: "/quiz-social.html",
+    desc: "Relações, convivência e vínculos.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "familiar",
+    name: "Checkup Familiar",
+    path: "/quiz-familiar.html",
+    desc: "Ciclos emocionais no ambiente familiar.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+  {
+    key: "prepago",
+    name: "Checkup Pré-pago",
+    path: "/landing-prepago.html",
+    desc: "Pagamento antes do diagnóstico.",
+    logo: "/assets/branding/logo-checkup-emocional.webp",
+  },
+];
 const fmtDate = (s) => { try { return new Date(s).toLocaleString("pt-BR"); } catch { return s || "—"; } };
 
 function setText(el, text){ if (el) el.textContent = text; }
@@ -153,20 +190,32 @@ if (typeof ov.link_enabled !== "undefined") {
  * views / navegação
  * =======================================================*/
 function showView(sel){
-  $$(".view").forEach(v => v.classList.remove("active"));
+  $$(".view").forEach(v => {
+    v.classList.remove("active");
+    v.style.display = "none";
+  });
+
   const v = $(sel);
-  if (v) v.classList.add("active");
+  if (v) {
+    v.classList.add("active");
+    v.style.display = "block";
+  }
 
   $$(".nav a.nav-link").forEach(a => a.classList.remove("active"));
+
   const nav = $('.nav a.nav-link[data-target="'+sel+'"]');
   if (nav) nav.classList.add("active");
 
-if (sel === "#view-sales") {
-  loadSales(APP.sales.page).catch(()=>{});
-  loadTotalsAffiliate().catch(()=>{});
-}
+  if (sel === "#view-sales") {
+    loadSales(APP.sales.page).catch(()=>{});
+    loadTotalsAffiliate().catch(()=>{});
+  }
 
   if (sel === "#view-materials") initMaterials();
+
+  if (sel === "#view-link") renderAffiliateProductLinks();
+
+  if (sel === "#view-profile") loadMyProfile().catch(()=>{});
 }
 
 function routeFromHash(){
@@ -179,11 +228,22 @@ function routeFromHash(){
   }
   if (h.startsWith("#subconta"))   return showView("#view-sub");
   if (h.startsWith("#meu-link"))   return showView("#view-link");
-  if (h.startsWith("#materiais"))  return showView("#view-materials");
+  if (h.startsWith("#materiais") || h.startsWith("#marketing"))  return showView("#view-materials");
   if (h.startsWith("#vendas"))     return showView("#view-sales");
   if (h.startsWith("#suporte"))    return showView("#view-support");
   if (h.startsWith("#sair"))       return doLogout();
   return showView("#view-home");
+}
+
+// Banner inicial abre diretamente Marketing
+function wireHomeHero(){
+  const heroMarketing = document.getElementById("heroMarketing");
+  if (!heroMarketing) return;
+  heroMarketing.style.cursor = "pointer";
+  heroMarketing.addEventListener("click", () => {
+    location.hash = "#marketing";
+    showView("#view-materials");
+  });
 }
 
 /* =========================================================
@@ -302,8 +362,102 @@ function paintLinkAreas(){
 
   // wallet KPI
   setText($("#wallet"), APP.walletId || "—");
+renderAffiliateProductLinks();
+}
+function getAffiliateCodeFromLink() {
+  const link = APP.link || "";
+
+  try {
+    const url = new URL(link, location.origin);
+
+    return (
+      url.searchParams.get("aff") ||
+      url.searchParams.get("ref") ||
+      APP.me?.id ||
+      ""
+    );
+  } catch {
+    return APP.me?.id || "";
+  }
 }
 
+function buildAffiliateProductUrl(path) {
+  const code = getAffiliateCodeFromLink();
+
+  if (!code) return location.origin + path;
+
+  const url = new URL(path, location.origin);
+  url.searchParams.set("aff", code);
+
+  return url.toString();
+}
+
+function renderAffiliateProductLinks() {
+  const grid = $("#affiliateProductLinksGrid");
+  if (!grid) return;
+
+  const lock = $("#linkLockedNotice");
+
+  if (!APP.linkEnabled || !APP.link) {
+    if (lock) lock.style.display = "";
+    grid.innerHTML = `<p class="muted">Seus links serão exibidos quando sua conta estiver ativa.</p>`;
+    return;
+  }
+
+  if (lock) lock.style.display = "none";
+
+  grid.innerHTML = "";
+
+  PRODUCTS.forEach((p) => {
+    const url = buildAffiliateProductUrl(p.path);
+
+    const card = document.createElement("div");
+    card.className = "product-link-card";
+
+    card.innerHTML = `
+      <img src="${p.logo}" alt="${p.name}" class="product-logo" />
+
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+
+        <div class="link-box product-link-text">${url}</div>
+
+        <div class="row mt-12">
+          <button class="btn" data-copy="${url}">Copiar</button>
+          <a class="btn secondary" href="${url}" target="_blank" rel="noopener">Abrir</a>
+          <button class="btn secondary" data-qr="${url}">QR</button>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      await copyToClipboard(btn.getAttribute("data-copy"));
+      btn.textContent = "Copiado!";
+      setTimeout(() => btn.textContent = "Copiar", 1400);
+    });
+  });
+
+  grid.querySelectorAll("[data-qr]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const url = btn.getAttribute("data-qr");
+      const w = window.open("", "_blank", "width=380,height=440");
+
+      if (w) {
+        w.document.write(`
+          <title>QR Code</title>
+          <body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif"></body>
+        `);
+
+        drawQR(w.document.body, url, 320);
+      }
+    });
+  });
+}
 /* =========================================================
  * ações subconta
  * =======================================================*/
@@ -387,10 +541,10 @@ async function loadMyProfile(){
   try{
     const me  = await jfetch("/affiliates/me");         // { me: { name, email } }
     const pr  = await jfetch("/affiliates/me/profile"); // { person_type, birth_date }
-    $("#pf_name") && ($("#pf_name").value  = (me?.me?.name  || ""));
-    $("#pf_email") && ($("#pf_email").value = (me?.me?.email || ""));
-    $("#pf_ptype") && ($("#pf_ptype").value = (pr.person_type || "FISICA"));
-    $("#pf_birth") && ($("#pf_birth").value = (pr.birth_date || ""));
+    setText($("#pf_name"), me?.me?.name || "—");
+setText($("#pf_email"), me?.me?.email || "—");
+setText($("#pf_ptype"), pr.person_type || "FISICA");
+setText($("#pf_birth"), pr.birth_date || "—");
     jmsg("Dados carregados.", "muted");
   }catch(e){
     jmsg(e.message || "Falha ao carregar perfil.", "err");
@@ -413,71 +567,379 @@ async function saveMyProfile(){
 /* =========================================================
  * materiais
  * =======================================================*/
-function initMaterials(){
-  const canUse = !!(APP.linkEnabled && APP.link);
+/* =========================================================
+ * marketing / materiais comerciais
+ * =======================================================*/
+const MARKETING = {
+  loaded: false,
+  items: [],
+};
 
-  const box       = $("#view-materials");             // container da aba (p/ estilo "desabilitado")
-  const qr        = $("#qrMaterials");                // canvas/box do QR
-  const btnCopy   = $("#btnCopyLinkMat");             // botão "Copiar"
-  const btnRef    = $("#btnRefreshMat");              // botão "Atualizar QR"
-  const linkTxt   = $("#materialsLink");              // (opcional) span com link em texto, se houver
+const MARKETING_TYPE_LABELS = {
+  image: "Imagem/Banner",
+  video: "Vídeo",
+  pdf: "PDF",
+  external_link: "Link externo",
+  message_template: "Template de mensagem",
+  playbook: "Playbook",
+};
 
-  // QR só quando puder
-  drawQR(qr, canUse ? APP.link : "", 180);
+const MARKETING_PRODUCT_LABELS = {
+  geral: "Checkup Geral",
+  profissional: "Checkup Profissional",
+  social: "Checkup Social",
+  familiar: "Checkup Familiar",
+  prepago: "Checkup Pré-pago",
+};
 
-  // Texto do link (se existir um span para isso)
-  if (linkTxt) linkTxt.textContent = canUse ? (APP.link || "—")
-                                            : "Link disponível após aprovação da subconta.";
-
-  // Botão Copiar travado até liberar
-  if (btnCopy) {
-    btnCopy.disabled = !canUse;
-    btnCopy.title = canUse ? "" : "Disponível após aprovação da subconta e dados de recebimento.";
-    btnCopy.onclick = async () => {
-      if (!canUse) return;
-      await copyToClipboard(APP.link);
-      alert("Link copiado!");
-    };
-  }
-
-  // Atualizar QR respeitando o gating
-  if (btnRef) {
-    btnRef.onclick = () => drawQR(qr, canUse ? APP.link : "", 180);
-  }
-
-  // (opcional) aplica classe visual de bloqueio
-  if (box) box.classList.toggle("disabled", !canUse);
+function marketingTypeLabel(type) {
+  return MARKETING_TYPE_LABELS[type] || type || "Material";
 }
 
+function marketingProductLabel(productKey) {
+  return MARKETING_PRODUCT_LABELS[productKey] || productKey || "Geral";
+}
+
+function marketingIcon(type) {
+  if (type === "image") return "🖼️";
+  if (type === "video") return "🎬";
+  if (type === "pdf") return "📄";
+  if (type === "message_template") return "💬";
+  if (type === "playbook") return "📘";
+  return "🔗";
+}
+
+function fillMarketingFilters(items) {
+  const productSelect = $("#marketingProduct");
+  const categorySelect = $("#marketingCategory");
+  const typeSelect = $("#marketingType");
+
+  if (!productSelect || !categorySelect || !typeSelect) return;
+
+  const currentProduct = productSelect.value || "";
+  const currentCategory = categorySelect.value || "";
+  const currentType = typeSelect.value || "";
+
+  const products = [...new Set(items.map(i => i.product_key).filter(Boolean))];
+  const categories = [...new Set(items.map(i => i.category).filter(Boolean))];
+  const types = [...new Set(items.map(i => i.type).filter(Boolean))];
+
+  productSelect.innerHTML = `<option value="">Todos os produtos</option>`;
+  products.forEach(p => {
+    productSelect.innerHTML += `<option value="${p}">${marketingProductLabel(p)}</option>`;
+  });
+  productSelect.value = currentProduct;
+
+  categorySelect.innerHTML = `<option value="">Todas categorias</option>`;
+  categories.forEach(c => {
+    categorySelect.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+  categorySelect.value = currentCategory;
+
+  typeSelect.innerHTML = `<option value="">Todos os tipos</option>`;
+  types.forEach(t => {
+    typeSelect.innerHTML += `<option value="${t}">${marketingTypeLabel(t)}</option>`;
+  });
+  typeSelect.value = currentType;
+}
+
+function getFilteredMarketingItems() {
+  const product = $("#marketingProduct")?.value || "";
+  const category = $("#marketingCategory")?.value || "";
+  const type = $("#marketingType")?.value || "";
+  const search = ($("#marketingSearch")?.value || "").trim().toLowerCase();
+
+  return MARKETING.items.filter(item => {
+    const passProduct = !product || item.product_key === product;
+    const passCategory = !category || item.category === category;
+    const passType = !type || item.type === type;
+
+    const hay = [
+      item.title,
+      item.description,
+      item.category,
+      item.product_key,
+      item.type,
+    ].filter(Boolean).join(" ").toLowerCase();
+
+    const passSearch = !search || hay.includes(search);
+
+    return passProduct && passCategory && passType && passSearch;
+  });
+}
+
+function renderMarketingCards() {
+  const grid = $("#marketingCards");
+  if (!grid) return;
+
+  const items = getFilteredMarketingItems();
+
+  if (!items.length) {
+    grid.innerHTML = `
+      <div class="marketing-empty">
+        <h3>Nenhum material encontrado</h3>
+        <p class="muted">Tente trocar os filtros ou atualizar a página.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const inspirations = items.filter(i =>
+    String(i.category || "").toLowerCase().includes("ideias") ||
+    String(i.category || "").toLowerCase().includes("inspiração") ||
+    String(i.category || "").toLowerCase().includes("inspiracao")
+  );
+
+  const templates = items.filter(i =>
+    !inspirations.includes(i) &&
+    ["image", "external_link"].includes(i.type)
+  );
+
+  const videos = items.filter(i => i.type === "video");
+  const playbooks = items.filter(i => i.type === "playbook" || i.type === "pdf");
+  const messages = items.filter(i => i.type === "message_template");
+
+  grid.innerHTML = `
+    ${renderMarketingSection("✨ Inspire-se", "Ideias práticas para divulgar em lugares reais.", inspirations)}
+    ${renderMarketingSection("🎨 Templates e Banners", "Artes prontas para publicar, imprimir ou divulgar.", templates)}
+    ${renderMarketingSection("🎬 Vídeos", "Vídeos para assistir, baixar e usar em campanhas.", videos)}
+    ${renderMarketingSection("📘 Playbooks e PDFs", "Guias rápidos, argumentos e materiais de apoio.", playbooks)}
+    ${renderMarketingSection("💬 Mensagens prontas", "Textos para WhatsApp, Instagram e abordagem.", messages)}
+  `;
+
+  wireMarketingCardActions(grid);
+}
+
+function getMarketingFirstFile(item) {
+  return Array.isArray(item.files) && item.files.length ? item.files[0] : null;
+}
+
+function getMarketingThumb(item) {
+  const file = getMarketingFirstFile(item);
+  return (
+    item.cover_url ||
+    file?.thumbnail_url ||
+    (item.type === "image" ? file?.file_url : "") ||
+    ""
+  );
+}
+
+function getMarketingOpenUrl(item) {
+  const file = getMarketingFirstFile(item);
+  return file?.file_url || item.url || item.cover_url || "";
+}
+
+function getMarketingDownloadUrl(item) {
+  const file = getMarketingFirstFile(item);
+  return file?.download_url || file?.file_url || item.url || "";
+}
+
+function renderMarketingSection(title, subtitle, items) {
+  if (!items.length) return "";
+
+  return `
+    <section class="marketing-shelf">
+      <div class="marketing-shelf__head">
+        <div>
+          <h2>${title}</h2>
+          <p>${subtitle}</p>
+        </div>
+      </div>
+
+      <div class="marketing-shelf__row">
+        ${items.map(renderMarketingCard).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderMarketingCard(item) {
+  const thumb = getMarketingThumb(item);
+  const openUrl = getMarketingOpenUrl(item);
+  const downloadUrl = getMarketingDownloadUrl(item);
+
+  const isVideo = item.type === "video";
+  const isTemplate = item.type === "message_template";
+
+  const primaryLabel = isVideo ? "Assistir" : isTemplate ? "Copiar" : "Visualizar";
+
+  return `
+    <article class="marketing-netflix-card">
+      <div class="marketing-netflix-thumb">
+        ${
+          thumb
+            ? `<img src="${thumb}" alt="${item.title}" loading="lazy">`
+            : `<div class="marketing-netflix-icon">${marketingIcon(item.type)}</div>`
+        }
+
+        <div class="marketing-netflix-overlay">
+          ${
+            openUrl
+              ? `<a class="btn" href="${openUrl}" target="_blank" rel="noopener">${primaryLabel}</a>`
+              : ""
+          }
+
+          ${
+            downloadUrl
+              ? `<a class="btn secondary" href="${downloadUrl}" target="_blank" rel="noopener" download>Baixar</a>`
+              : ""
+          }
+
+          ${
+            openUrl || downloadUrl
+              ? `<button class="btn secondary" data-marketing-copy="${downloadUrl || openUrl}">Copiar link</button>`
+              : ""
+          }
+        </div>
+      </div>
+
+      <div class="marketing-netflix-body">
+        <div class="marketing-card-tags">
+          <span>${marketingTypeLabel(item.type)}</span>
+          ${item.category ? `<span>${item.category}</span>` : ""}
+        </div>
+
+        <h3>${item.title}</h3>
+        ${item.description ? `<p>${item.description}</p>` : ""}
+      </div>
+    </article>
+  `;
+}
+
+function wireMarketingCardActions(root) {
+  root.querySelectorAll("[data-marketing-copy]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const text = btn.getAttribute("data-marketing-copy") || "";
+      if (!text) return;
+
+      await copyToClipboard(text);
+
+      const old = btn.textContent;
+      btn.textContent = "Copiado!";
+      setTimeout(() => {
+        btn.textContent = old;
+      }, 1400);
+    });
+  });
+}
+
+async function loadMarketing() {
+  const grid = $("#marketingCards");
+  if (grid) {
+    grid.innerHTML = `<p class="muted">Carregando materiais...</p>`;
+  }
+
+  try {
+    const r = await jfetch("/marketing-materials?audience=affiliate");
+    MARKETING.items = Array.isArray(r.items) ? r.items : [];
+
+    fillMarketingFilters(MARKETING.items);
+    renderMarketingCards();
+
+    MARKETING.loaded = true;
+  } catch (e) {
+    if (grid) {
+      grid.innerHTML = `
+        <div class="card">
+          <p class="muted">Não foi possível carregar os materiais.</p>
+        </div>
+      `;
+    }
+  }
+}
+
+function wireMarketingFilters() {
+  ["marketingProduct", "marketingCategory", "marketingType", "marketingSearch"].forEach(id => {
+    const el = $("#" + id);
+    if (!el || el.dataset.wired === "1") return;
+
+    const eventName = el.tagName === "INPUT" ? "input" : "change";
+
+    el.addEventListener(eventName, () => {
+      renderMarketingCards();
+    });
+
+    el.dataset.wired = "1";
+  });
+
+  const reload = $("#btnReloadMarketing");
+  if (reload && reload.dataset.wired !== "1") {
+    reload.addEventListener("click", () => {
+      loadMarketing().catch(() => {});
+    });
+    reload.dataset.wired = "1";
+  }
+}
+
+function initMaterials(){
+  wireMarketingFilters();
+
+  if (!MARKETING.loaded) {
+    loadMarketing().catch(() => {});
+  } else {
+    renderMarketingCards();
+  }
+}
 
 /* =========================================================
  * vendas
  * =======================================================*/
 function renderSales(items){
-  const tbody = $("#salesRows");
-  const msg   = $("#salesMsg");
-  if (!tbody) return;
+  const container = $("#salesCards");
+  const msg = $("#salesMsg");
 
-  tbody.innerHTML = "";
+  if (!container) return;
+
+  container.innerHTML = "";
+
   if (!items || !items.length) {
-    tbody.innerHTML = '<tr><td colspan="6" class="muted">Nenhuma venda encontrada.</td></tr>';
+    container.innerHTML = `
+      <div class="sale-card">
+        <div class="muted">Nenhuma venda encontrada.</div>
+      </div>
+    `;
     if (msg) msg.textContent = "";
     return;
   }
+
   items.forEach(it => {
-    const pct = isFinite(it.commission_percent) ? it.commission_percent : 30;
-    const amt = isFinite(it.amount) ? (it.amount * pct / 100) : 0;
-    const tr = document.createElement("tr");
-    tr.innerHTML =
-      "<td>"+fmtDate(it.created_at)+"</td>" +
-      "<td>"+(it.gateway_payment_id || "—")+"</td>" +
-      "<td>"+BRL(it.amount)+"</td>" +
-      "<td>"+(it.status || "—")+"</td>" +
-      "<td>"+pct+"% · "+BRL(amt)+"</td>" +
-      "<td>"+((it.gateway || "").toUpperCase())+"</td>" +
-     "<td>"+(it.buyer_name || "—")+"<br><small class=\"muted\">"+(it.buyer_email || "")+"</small></td>";
-    tbody.appendChild(tr);
+    const pct = isFinite(Number(it.commission_percent)) ? Number(it.commission_percent) : 30;
+    const saleAmount = Number(it.amount || 0);
+    const commission = isFinite(saleAmount) ? (saleAmount * pct / 100) : 0;
+
+    const card = document.createElement("div");
+    card.className = "sale-card";
+
+    card.innerHTML = `
+      <div class="sale-header">
+        <div>
+          <div class="sale-product">Checkup Emocional</div>
+          <div class="sale-type direct">MINHA VENDA</div>
+        </div>
+
+        <div>
+          <div class="sale-amount">${BRL(commission)}</div>
+          <div style="font-size:12px;color:#94a3b8;text-align:right;">
+            Sua comissão
+          </div>
+        </div>
+      </div>
+
+      <div class="sale-affiliate">
+        Comprador: <strong>${it.buyer_name || "—"}</strong>
+        ${it.buyer_email ? `<br><small class="muted">${it.buyer_email}</small>` : ""}
+      </div>
+
+      <div class="sale-footer">
+        <div>Valor da venda: ${BRL(saleAmount)}</div>
+        <div>Comissão: ${pct}%</div>
+        <div>${fmtDate(it.created_at)}</div>
+      </div>
+    `;
+
+    container.appendChild(card);
   });
+
   if (msg) msg.textContent = "";
 }
 // ===== SALDO (disponível / pendente) =====
@@ -574,6 +1036,25 @@ function wireSidebarMobile(){
   if (scrim) scrim.addEventListener("click", close);
   $$(".nav a.nav-link").forEach(a => a.addEventListener("click", close));
 }
+function wireNavLinks(){
+  $$(".nav a.nav-link[data-target]").forEach((a) => {
+    if (a.dataset.wired === "1") return;
+
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const target = a.getAttribute("data-target");
+      const href = a.getAttribute("href");
+
+      if (href) history.pushState(null, "", href);
+      if (target) showView(target);
+
+      document.body.classList.remove("sidebar-open");
+    });
+
+    a.dataset.wired = "1";
+  });
+}
 async function loadTotalsAffiliate(){
   try {
     const r = await jfetch("/affiliates/me/summary");
@@ -599,6 +1080,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // rotas
   window.addEventListener("hashchange", routeFromHash);
   routeFromHash();
+  wireHomeHero();
 // Aviso de saque (Asaas)
 try {
   const me = await jfetch("/affiliates/me");
@@ -619,6 +1101,7 @@ $("#btnWithdraw")?.addEventListener("click", requestWithdraw);
 
   // sidebar mobile
   wireSidebarMobile();
+  wireNavLinks();
 
   // logout
   wireLogout();

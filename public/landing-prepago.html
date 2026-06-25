@@ -72,7 +72,14 @@
 (function(){
 
 const qs = new URLSearchParams(location.search);
-const ref = (qs.get("ref") || qs.get("aff") || "").trim();
+const ref = (
+  qs.get("ref") ||
+  qs.get("aff") ||
+  qs.get("vend") ||
+  qs.get("vendor_ref") ||
+  ""
+).trim();
+
 const hasAffiliate = !!ref;
 
 const nomeEl = document.getElementById("nome");

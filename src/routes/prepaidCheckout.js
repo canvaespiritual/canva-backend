@@ -289,7 +289,13 @@ router.post("/start", async (req, res) => {
     const email = normalizeEmail(req.body?.email);
     const valor = clampValor(req.body?.valor);
 const baseSplit = baseComissionavel(valor);
-const ref = String(req.body?.ref || req.body?.aff || "").trim();
+const ref = String(
+  req.body?.ref ||
+  req.body?.aff ||
+  req.body?.vend ||
+  req.body?.vendor_ref ||
+  ""
+).trim();
 
     if (!email) {
       return res.status(400).json({
