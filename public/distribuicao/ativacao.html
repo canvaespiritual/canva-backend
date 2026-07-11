@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Resultado e Ativação | Canva Espiritual</title>
+
+  <meta
+    name="description"
+    content=""
+  >
+
+  <style>
+    :root {
+      --background: #080b10;
+      --surface: #111721;
+      --text: #f7f8fa;
+      --muted: #aab3c2;
+      --primary: #f4c44e;
+      --primary-hover: #ffd66b;
+      --primary-text: #17130a;
+      --border: rgba(255, 255, 255, 0.09);
+      --shadow: rgba(0, 0, 0, 0.42);
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      margin: 0;
+      scroll-behavior: smooth;
+      background: var(--background);
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(244, 196, 78, 0.08),
+          transparent 34%
+        ),
+        var(--background);
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a,
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding:
+        max(18px, env(safe-area-inset-top))
+        14px
+        max(34px, env(safe-area-inset-bottom));
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .header {
+      max-width: 760px;
+      margin: 0 auto 18px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(23px, 5.8vw, 38px);
+      line-height: 1.15;
+      font-weight: 850;
+      letter-spacing: -0.025em;
+    }
+
+    .subtitle {
+      max-width: 660px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      font-size: clamp(14px, 3.8vw, 17px);
+      line-height: 1.55;
+    }
+
+    /*
+      Player vertical 9:16.
+
+      No celular ocupa praticamente toda a largura.
+      No desktop permanece centralizado.
+    */
+    .player-shell {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: 0 20px 60px var(--shadow);
+    }
+
+    .player-box {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #000;
+    }
+
+    .player-box vturb-smartplayer {
+      display: block;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 auto;
+    }
+
+    /*
+      Elementos com esta classe começam ocultos.
+
+      O próprio player da Vturb removerá a ocultação
+      no segundo configurado.
+    */
+    .esconder {
+      display: none !important;
+    }
+
+    .cta-area {
+      width: 100%;
+      max-width: 680px;
+      margin: 24px auto 0;
+      padding: 24px 18px;
+      border: 1px solid rgba(244, 196, 78, 0.24);
+      border-radius: 18px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(244, 196, 78, 0.11),
+          rgba(255, 255, 255, 0.025)
+        ),
+        var(--surface);
+      text-align: center;
+      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
+      animation: revealCta 0.5s ease both;
+    }
+
+    .cta-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      padding: 7px 12px;
+      border: 1px solid rgba(244, 196, 78, 0.25);
+      border-radius: 999px;
+      background: rgba(244, 196, 78, 0.08);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .cta-title {
+      margin: 0;
+      font-size: clamp(22px, 5vw, 30px);
+      line-height: 1.2;
+      font-weight: 850;
+    }
+
+    .cta-description {
+      max-width: 570px;
+      margin: 11px auto 20px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .cta-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 60px;
+      padding: 15px 22px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--primary);
+      color: var(--primary-text);
+      font-size: clamp(15px, 4vw, 17px);
+      font-weight: 850;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(244, 196, 78, 0.24);
+      transition:
+        transform 0.18s ease,
+        background-color 0.18s ease,
+        box-shadow 0.18s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cta-button:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 13px 34px rgba(244, 196, 78, 0.32);
+      transform: translateY(-2px);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .cta-button:focus-visible {
+      outline: 3px solid rgba(244, 196, 78, 0.4);
+      outline-offset: 4px;
+    }
+
+    .new-tab-note {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .footer {
+      margin: 32px 0 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @keyframes revealCta {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding-top: 28px;
+      }
+
+      .header {
+        margin-bottom: 22px;
+      }
+
+      .cta-area {
+        padding: 30px;
+      }
+
+      .cta-button {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .header {
+        padding: 0 6px;
+      }
+
+      .player-shell {
+        padding: 3px;
+        border-radius: 15px;
+      }
+
+      .player-box {
+        border-radius: 12px;
+      }
+
+      .cta-area {
+        margin-top: 18px;
+        padding: 22px 14px;
+        border-radius: 15px;
+      }
+
+      .cta-button {
+        min-height: 58px;
+        padding: 14px 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .cta-area {
+        animation: none;
+      }
+
+      .cta-button {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="container">
+
+      <header class="header">
+        <p class="eyebrow">
+          Resultado e ativação
+        </p>
+
+        <h1 class="title">
+          
+        </h1>
+
+        <p class="subtitle">
+          
+        </p>
+      </header>
+
+      <section
+        class="player-shell"
+        aria-label="Vídeo de resultado e ativação"
+      >
+        <div class="player-box">
+
+          <!-- Smartplayer Vturb — VSL parte 2 -->
+          <vturb-smartplayer
+            id="vid-6a5242e92bdc03f9d565885c"
+            style="
+              display: block;
+              margin: 0 auto;
+              width: 100%;
+              max-width: 400px;
+            "
+          >
+            <div
+              class="vturb-player-placeholder"
+              style="
+                position: relative;
+                width: 100%;
+                padding: 177.77777777777777% 0 0;
+                z-index: 0;
+                background-color: black;
+              "
+            ></div>
+          </vturb-smartplayer>
+
+          <script type="text/javascript">
+            (function loadVturbPlayer() {
+              var script = document.createElement("script");
+
+              script.src =
+                "https://scripts.converteai.net/" +
+                "ab0d5dbd-353e-4147-a5c6-52ab96121828/" +
+                "players/6a5242e92bdc03f9d565885c/v4/player.js";
+
+              script.async = true;
+
+              document.head.appendChild(script);
+            })();
+          </script>
+
+        </div>
+      </section>
+
+      <!--
+        A Vturb exibirá este bloco no segundo definido.
+      -->
+      <section
+        id="ctaArea"
+        class="cta-area esconder"
+        aria-live="polite"
+      >
+        <span class="cta-badge">
+          Próximo passo
+        </span>
+
+        <h2 class="cta-title">
+          Faça agora sua ativação
+        </h2>
+
+        <p class="cta-description">
+          Abra seu cadastro, conclua sua ativação e receba seus links
+          para começar a distribuir o Check-up Emocional.
+        </p>
+
+        <a
+          id="cadastroButton"
+          class="cta-button"
+          href="https://api.canvaspiritual.com/vendedor/cadastro.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          FAZER MEU CADASTRO E ATIVAR
+        </a>
+
+        <p class="new-tab-note">
+          
+        </p>
+      </section>
+
+      <footer class="footer">
+        © Canva Espiritual
+      </footer>
+
+    </div>
+  </main>
+
+  <script>
+    (function configurarLiberacaoDoCadastro() {
+      "use strict";
+
+      /*
+        TEMPO PARA O BOTÃO APARECER.
+
+        Para teste:
+        10 segundos = 10
+
+        Exemplos:
+        5 minutos = 300
+        8 minutos e 30 segundos = 510
+        10 minutos = 600
+      */
+      const REVEAL_AT_SECONDS = 670;
+
+      const player = document.querySelector(
+        "vturb-smartplayer"
+      );
+
+      if (!player) {
+        console.error(
+          "Smartplayer do Vturb não encontrado."
+        );
+
+        return;
+      }
+
+      /*
+        Método oficial do smartplayer V4.
+
+        - conta pelo tempo real do vídeo;
+        - respeita play e pause;
+        - não começa apenas com a página aberta;
+        - persist:true mantém o CTA liberado quando
+          a pessoa atualiza ou volta depois.
+      */
+      player.addEventListener(
+        "player:ready",
+        function liberarCadastroNoTempoCerto() {
+          player.displayHiddenElements(
+            REVEAL_AT_SECONDS,
+            [".esconder"],
+            {
+              persist: true
+            }
+          );
+        }
+      );
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Check-up Emocional — Experiência Prática</title>
+
+  <meta
+    name="description"
+    content="Faça uma experiência prática com o Check-up Emocional."
+  >
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){
+        (c[a].q=c[a].q||[]).push(arguments)
+      };
+
+      t=l.createElement(r);
+      t.async=1;
+      t.src="https://www.clarity.ms/tag/"+i;
+
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tg0bonz3au");
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;
+
+      n=f.fbq=function(){
+        n.callMethod
+          ? n.callMethod.apply(n,arguments)
+          : n.queue.push(arguments)
+      };
+
+      if(!f._fbq)f._fbq=n;
+
+      n.push=n;
+      n.loaded=!0;
+      n.version="2.0";
+      n.queue=[];
+
+      t=b.createElement(e);
+      t.async=!0;
+      t.src=v;
+
+      s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s);
+    }(
+      window,
+      document,
+      "script",
+      "https://connect.facebook.net/en_US/fbevents.js"
+    );
+
+    fbq("init", "734281049586138");
+    fbq("track", "PageView");
+
+    fbq("track", "ViewContent", {
+      content_name: "Check-up Emocional - Simulação da Distribuição",
+      content_category: "quiz_simulacao"
+    });
+  </script>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"
+      alt=""
+    >
+  </noscript>
+
+  <!-- GA4 + Google Ads -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"
+  ></script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag(){
+      dataLayer.push(arguments);
+    }
+
+    gtag("js", new Date());
+    gtag("config", "G-9QDEN04CQM");
+    gtag("config", "AW-936695843");
+
+    gtag("event", "view_item", {
+      currency: "BRL",
+      value: 0,
+      items: [{
+        item_id: "quiz-simulacao-distribuicao",
+        item_name: "Check-up Emocional - Simulação",
+        item_category: "quiz_simulacao"
+      }]
+    });
+
+    function quizStart(){
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "QuizStart", {
+          step: "start",
+          content_category: "quiz_simulacao",
+          protocolo: "geral"
+        });
+      }
+
+      if (typeof gtag === "function") {
+        gtag("event", "start_quiz", {
+          content_category: "quiz_simulacao",
+          protocolo: "geral"
+        });
+      }
+    }
+  </script>
+
+  <style>
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
+      background: #ffffff;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      padding:
+        max(12px, env(safe-area-inset-top))
+        12px
+        max(32px, env(safe-area-inset-bottom));
+      background:
+        radial-gradient(circle at top, rgba(37, 99, 235, 0.055), transparent 32%),
+        #ffffff;
+    }
+
+    #quiz-container {
+      width: 100%;
+    }
+
+    #quiz-container section {
+      width: 100%;
+    }
+
+    .opcao {
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease;
+    }
+
+    .opcao:hover {
+      border-color: rgba(37, 99, 235, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .opcao:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.25);
+      outline-offset: 2px;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade {
+      animation: fade 260ms ease both;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding-top: 24px;
+      }
+
+      #quiz-container > section {
+        border: 1px solid rgba(15, 23, 42, 0.07);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 18px 55px rgba(15, 23, 42, 0.08);
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
+      #quiz-container > section {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .animate-fade {
+        animation: none;
+      }
+
+      .opcao {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="text-gray-800 font-sans">
+
+  <!-- Mantido porque o JavaScript original referencia este elemento. -->
+  <section id="intro" class="hidden"></section>
+
+  <div id="quiz-container"></div>
+
+  <!--
+    Reutiliza o arquivo de detalhes que já existe na raiz de public.
+    Como esta página fica em public/distribuicao, usamos ../
+  -->
+  <script src="../frutos-detalhes.js"></script>
+
+  <script src="./checkup.js"></script>
+
+  <audio id="musicaAmbiente" loop preload="none">
+    <source
+      src="../assets/audio/som-ambiente.mp3"
+      type="audio/mpeg"
+    >
+  </audio>
+
+  <div
+    id="controleSom"
+    class="fixed bottom-4 right-4 z-50 opacity-0 transition-opacity duration-500"
+  >
+    <div class="relative flex items-center justify-center">
+      <input
+        type="range"
+        id="volumeSlider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.05"
+        aria-label="Volume do som ambiente"
+        class="hidden absolute bottom-[100px] w-24 h-2 rotate-[-90deg] origin-bottom bg-gray-300 rounded-full appearance-none cursor-pointer"
+      >
+
+      <button
+        type="button"
+        id="botaoSom"
+        aria-label="Controlar som ambiente"
+        class="bg-white bg-opacity-70 backdrop-blur-md shadow-lg p-3 rounded-full text-gray-700 hover:bg-opacity-100 transition"
+      >
+        🔊
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>
