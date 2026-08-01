@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
@@ -8,6 +9,9 @@ const KIWIFY_WEBHOOK_TOKEN = process.env.KIWIFY_WEBHOOK_TOKEN;
 
 const LIST_PRECHECKOUT = 8;
 const LIST_CLIENTES = 9;
+const {
+  notificarCentral,
+} = require("../utils/notificarCentral");
 
 function safeJsonParse(buf) {
   try {
@@ -192,7 +196,11 @@ router.post("/", async (req, res) => {
     paid,
     email,
   });
-
+const statusForDatabase =
+  status &&
+  String(status).toLowerCase() !== "unknown"
+    ? String(status)
+    : null;
   try {
     // 1) Log de evento
     if (eventId) {
@@ -226,18 +234,189 @@ router.post("/", async (req, res) => {
     }
 
     // 3) Marca lead como pago
-    if (paid && email) {
-      const r = await pool.query(
-        `UPDATE leads_precheckout
-         SET pago = TRUE,
-             pago_em = COALESCE(pago_em, NOW())
-         WHERE LOWER(email) = LOWER($1)`,
-        [email]
-      );
-      console.log("[kiwify] leads_precheckout updated", { email, rows: r.rowCount });
-    } else {
-      console.log("[kiwify] pulando update lead", { paid, email });
-    }
+    // 3) Atualiza o lead com os dados recebidos da Kiwify
+let updatedLead = null;
+
+if (email) {
+  const result = await pool.query(
+    `
+    UPDATE leads_precheckout
+
+    SET
+      kiwify_order_id = COALESCE(
+        $2,
+        kiwify_order_id
+      ),
+
+      kiwify_status = COALESCE(
+        $3,
+        kiwify_status
+      ),
+
+      pago = CASE
+        WHEN $4::boolean IS TRUE
+          THEN TRUE
+        ELSE pago
+      END,
+
+      pago_em = CASE
+        WHEN $4::boolean IS TRUE
+          THEN COALESCE(
+            pago_em,
+            NOW()
+          )
+        ELSE pago_em
+      END,
+
+      paid_at = CASE
+        WHEN $4::boolean IS TRUE
+          THEN COALESCE(
+            paid_at,
+            NOW()
+          )
+        ELSE paid_at
+      END,
+
+      updated_at = NOW()
+
+    WHERE LOWER(email) = LOWER($1)
+
+    RETURNING *
+    `,
+    [
+      email,
+      orderId
+        ? String(orderId)
+        : null,
+      statusForDatabase,
+      paid,
+    ],
+  );
+
+  updatedLead =
+    result.rows[0] || null;
+
+  console.log(
+    "[kiwify] leads_precheckout atualizado",
+    {
+      email,
+      rows: result.rowCount,
+      paid,
+      orderId,
+      status,
+    },
+  );
+
+  if (updatedLead) {
+    void notificarCentral({
+      eventType: paid
+        ? "payment_approved"
+        : "status_changed",
+
+      source: "kiwify_webhook",
+
+      checkoutLeadId:
+        updatedLead.id,
+
+      /*
+       * Impede que o reenvio do mesmo webhook
+       * gere notificações duplicadas.
+       */
+      externalEventId:
+        eventId
+          ? String(eventId)
+          : null,
+
+      providerEvent: {
+        eventName:
+          String(eventName),
+        eventId:
+          eventId
+            ? String(eventId)
+            : null,
+      },
+
+      customer: {
+        name:
+          updatedLead.name ||
+          name ||
+          "",
+
+        email:
+          updatedLead.email ||
+          email,
+
+        phone:
+          updatedLead.phone ||
+          phone ||
+          "",
+      },
+
+      checkout: {
+        status:
+          updatedLead.status,
+
+        paid:
+          updatedLead.pago === true,
+
+        kiwifyOrderId:
+          updatedLead
+            .kiwify_order_id ||
+          null,
+
+        kiwifyStatus:
+          updatedLead
+            .kiwify_status ||
+          null,
+
+        paidAt:
+          updatedLead.pago_em ||
+          updatedLead.paid_at ||
+          null,
+
+        createdAt:
+          updatedLead.created_at,
+
+        updatedAt:
+          updatedLead.updated_at,
+      },
+
+      tracking: {
+        source:
+          updatedLead.utm_source,
+
+        medium:
+          updatedLead.utm_medium,
+
+        campaignId:
+          updatedLead.utm_campaign,
+
+        adId:
+          updatedLead.utm_content,
+
+        adsetId:
+          updatedLead.utm_term,
+
+        pageUrl:
+          updatedLead.page_url,
+
+        referrer:
+          updatedLead.referrer,
+      },
+    });
+  }
+} else {
+  console.log(
+    "[kiwify] email ausente; lead não atualizado",
+    {
+      eventName,
+      eventId,
+      orderId,
+      status,
+      paid,
+    },
+  );
+}
 
     // 4) Brevo
     if (email) {

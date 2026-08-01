@@ -4,6 +4,9 @@ const session = require("express-session");
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const {
+  notificarCentral,
+} = require("./src/utils/notificarCentral");
 
 const loginRoutes = require("./src/routes/loginRoutes");
 const painelAdmin = require("./admin/src/routes/painelAdmin");
@@ -136,41 +139,141 @@ app.post("/api/leads/precheckout", async (req, res) => {
     if (!phoneNorm.startsWith("55")) phoneNorm = "55" + phoneNorm;
 
     // ✅ salva no banco (DB first) sem apagar tracking com null
-    await pool.query(
-      `
-      INSERT INTO leads_precheckout
-        (name, email, phone, page_url, referrer, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
-      VALUES
-        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-      ON CONFLICT (email)
-      DO UPDATE SET
-        name = EXCLUDED.name,
-        phone = EXCLUDED.phone,
+    const precheckoutResult = await pool.query(
+  `
+  INSERT INTO leads_precheckout
+    (
+      name,
+      email,
+      phone,
+      page_url,
+      referrer,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term
+    )
+  VALUES
+    ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
 
-        page_url = COALESCE(EXCLUDED.page_url, leads_precheckout.page_url),
-        referrer = COALESCE(EXCLUDED.referrer, leads_precheckout.referrer),
+  ON CONFLICT (email)
+  DO UPDATE SET
+    name = EXCLUDED.name,
+    phone = EXCLUDED.phone,
 
-        utm_source   = COALESCE(EXCLUDED.utm_source, leads_precheckout.utm_source),
-        utm_medium   = COALESCE(EXCLUDED.utm_medium, leads_precheckout.utm_medium),
-        utm_campaign = COALESCE(EXCLUDED.utm_campaign, leads_precheckout.utm_campaign),
-        utm_content  = COALESCE(EXCLUDED.utm_content, leads_precheckout.utm_content),
-        utm_term     = COALESCE(EXCLUDED.utm_term, leads_precheckout.utm_term),
+    page_url = COALESCE(
+      EXCLUDED.page_url,
+      leads_precheckout.page_url
+    ),
 
-        updated_at = NOW()
-      `,
-      [
-        String(name).trim(),
-        emailNorm,
-        phoneNorm,
-        page_url || null,
-        referrer || null,
-        utm_source || null,
-        utm_medium || null,
-        utm_campaign || null,
-        utm_content || null,
-        utm_term || null,
-      ]
-    );
+    referrer = COALESCE(
+      EXCLUDED.referrer,
+      leads_precheckout.referrer
+    ),
+
+    utm_source = COALESCE(
+      EXCLUDED.utm_source,
+      leads_precheckout.utm_source
+    ),
+
+    utm_medium = COALESCE(
+      EXCLUDED.utm_medium,
+      leads_precheckout.utm_medium
+    ),
+
+    utm_campaign = COALESCE(
+      EXCLUDED.utm_campaign,
+      leads_precheckout.utm_campaign
+    ),
+
+    utm_content = COALESCE(
+      EXCLUDED.utm_content,
+      leads_precheckout.utm_content
+    ),
+
+    utm_term = COALESCE(
+      EXCLUDED.utm_term,
+      leads_precheckout.utm_term
+    ),
+
+    updated_at = NOW()
+
+  RETURNING
+    *,
+    (xmax = 0) AS inserted
+  `,
+  [
+    String(name).trim(),
+    emailNorm,
+    phoneNorm,
+    page_url || null,
+    referrer || null,
+    utm_source || null,
+    utm_medium || null,
+    utm_campaign || null,
+    utm_content || null,
+    utm_term || null,
+  ],
+);
+
+const savedLead =
+  precheckoutResult.rows[0];
+
+if (savedLead) {
+  await notificarCentral({
+    eventType: savedLead.inserted
+      ? "created"
+      : "updated",
+
+    source: "precheckout",
+
+    checkoutLeadId: savedLead.id,
+
+    externalEventId: null,
+
+    customer: {
+      name: savedLead.name,
+      email: savedLead.email,
+      phone: savedLead.phone,
+    },
+
+    checkout: {
+      status: savedLead.status,
+      paid: savedLead.pago === true,
+
+      kiwifyOrderId:
+        savedLead.kiwify_order_id ||
+        null,
+
+      kiwifyStatus:
+        savedLead.kiwify_status ||
+        null,
+
+      paidAt:
+        savedLead.pago_em ||
+        savedLead.paid_at ||
+        null,
+
+      createdAt:
+        savedLead.created_at,
+
+      updatedAt:
+        savedLead.updated_at,
+    },
+
+    tracking: {
+      source: savedLead.utm_source,
+      medium: savedLead.utm_medium,
+      campaignId:
+        savedLead.utm_campaign,
+      adId: savedLead.utm_content,
+      adsetId: savedLead.utm_term,
+      pageUrl: savedLead.page_url,
+      referrer: savedLead.referrer,
+    },
+  });
+}
 
     // ✅ envia pro Brevo (não pode quebrar o fluxo se falhar)
     try {
