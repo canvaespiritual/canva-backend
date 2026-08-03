@@ -347,7 +347,12 @@ lastTrackedAt = now;
   }
 
   window.addEventListener("message", (event) => {
-    try {
+  console.log("[vsl-analytics] mensagem recebida:", {
+    origin: event.origin,
+    data: event.data,
+  });
+
+  try {
       const data =
         typeof event.data === "string"
           ? JSON.parse(event.data)
