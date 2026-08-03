@@ -54,6 +54,8 @@ const marketingUploadRoutes = require("./src/routes/marketingUpload");
 
 // ⬇️ adicione esta linha
 const pool = require("./src/db");
+const analyticsRoutes =
+  require("./src/routes/analytics");
 const cookieParser = require('cookie-parser');
 
 
@@ -98,6 +100,8 @@ app.use("/webhooks/kiwify", express.raw({ type: "*/*" }), kiwifyWebhookRoutes);
 
 // JSON pro resto do app
 app.use(express.json());
+// Analytics próprio das páginas e VSLs
+app.use("/api/analytics", analyticsRoutes);
 
 
 
