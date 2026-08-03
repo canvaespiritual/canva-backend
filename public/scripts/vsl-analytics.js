@@ -346,25 +346,38 @@ lastTrackedAt = now;
     lastSecond = currentSecond;
   }
 
-  window.addEventListener("message", (event) => {
-  console.log("[vsl-analytics] mensagem recebida:", {
-    origin: event.origin,
-    data: event.data,
+  function startVturbTracking(attempt = 0) {
+  const player =
+    window.smartplayer?.instances?.[0];
+
+  if (!player?.video) {
+    if (attempt >= 30) {
+      console.warn(
+        "[vsl-analytics] player VTurb não encontrado"
+      );
+      return;
+    }
+
+    setTimeout(() => {
+      startVturbTracking(attempt + 1);
+    }, 500);
+
+    return;
+  }
+
+  player.on("timeupdate", () => {
+    const second =
+      Number(player.video.currentTime);
+
+    if (Number.isFinite(second)) {
+      handleVideoTime(second);
+    }
   });
 
-  try {
-      const data =
-        typeof event.data === "string"
-          ? JSON.parse(event.data)
-          : event.data;
-
-      const second = extractSeconds(data);
-
-      if (second !== null) {
-        handleVideoTime(second);
-      }
-    } catch (_) {}
-  });
+  console.log(
+    "[vsl-analytics] VTurb conectado"
+  );
+}
 
   window.addEventListener("beforeunload", () => {
     queueEvent("page_exit", {
@@ -409,5 +422,6 @@ lastTrackedAt = now;
     flushEvents(true);
   });
 
-  createSession();
+  startVturbTracking();
+createSession();
 })();
