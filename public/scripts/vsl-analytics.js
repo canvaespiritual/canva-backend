@@ -60,6 +60,10 @@
   let lastSecond = null;
   let maxReachedSecond = 0;
   let pitchSent = false;
+  let playSent = false;
+
+  let lastTrackedAt = 0;
+const TRACK_INTERVAL_MS = 2000;
 
   async function createSession() {
     const payload = {
@@ -134,14 +138,29 @@
     }
   }
 
-  function makeEvent(type, data = {}) {
-    return {
-      event_key: createId("event"),
-      event_type: type,
-      occurred_at: new Date().toISOString(),
-      ...data,
-    };
+ function createUuid() {
+  if (globalThis.crypto?.randomUUID) {
+    return globalThis.crypto.randomUUID();
   }
+
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    /[xy]/g,
+    function (char) {
+      const random = Math.floor(Math.random() * 16);
+      const value = char === "x" ? random : (random & 0x3) | 0x8;
+      return value.toString(16);
+    }
+  );
+}
+
+function makeEvent(type, data = {}) {
+  return {
+    event_key: createUuid(),
+    event_type: type,
+    occurred_at: new Date().toISOString(),
+    ...data,
+  };
+}
 
   function queueEvent(type, data = {}) {
     eventQueue.push(makeEvent(type, data));
@@ -249,7 +268,25 @@
 
     const currentSecond =
       Math.round(second * 1000) / 1000;
+      
+    if (!playSent) {
+  playSent = true;
 
+  queueEvent("play", {
+    current_second: currentSecond,
+    max_reached_second: currentSecond,
+  });
+}
+const now = Date.now();
+
+if (
+  lastSecond !== null &&
+  now - lastTrackedAt < TRACK_INTERVAL_MS
+) {
+  return;
+}
+
+lastTrackedAt = now;
     const previousSecond = lastSecond;
 
     if (currentSecond > maxReachedSecond) {
@@ -271,10 +308,10 @@
 
     const isNormalPlayback =
       delta > 0 &&
-      delta <= 3;
+      delta <= 6;
 
     const seekDetected =
-      Math.abs(delta) > 3;
+      Math.abs(delta) > 6;
 
     queueEvent("video_progress", {
       current_second: currentSecond,
@@ -342,9 +379,30 @@
     }
   );
 
-  setInterval(() => {
+    setInterval(() => {
     flushEvents();
   }, 10000);
+
+  const checkoutButton = document.getElementById("cta");
+  const checkoutForm = document.getElementById("accessForm");
+
+  checkoutButton?.addEventListener("click", () => {
+    queueEvent("checkout_open", {
+      current_second: lastSecond,
+      max_reached_second: maxReachedSecond,
+    });
+
+    flushEvents();
+  });
+
+  checkoutForm?.addEventListener("submit", () => {
+    queueEvent("checkout_click", {
+      current_second: lastSecond,
+      max_reached_second: maxReachedSecond,
+    });
+
+    flushEvents(true);
+  });
 
   createSession();
 })();
