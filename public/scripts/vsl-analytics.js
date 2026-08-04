@@ -62,6 +62,58 @@
   let pitchSent = false;
   let playSent = false;
 
+  const ga4Milestones = [30, 90, 180, 360, 800];
+
+const GA4_MILESTONES_KEY =
+  `ga4_video_milestones_${config.videoId}`;
+
+function loadGa4Milestones() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(GA4_MILESTONES_KEY) || "[]"
+    );
+
+    return new Set(
+      Array.isArray(saved) ? saved.map(Number) : []
+    );
+  } catch {
+    return new Set();
+  }
+}
+
+function saveGa4Milestones() {
+  try {
+    localStorage.setItem(
+      GA4_MILESTONES_KEY,
+      JSON.stringify([...ga4MilestonesSent])
+    );
+  } catch {}
+}
+
+const ga4MilestonesSent = loadGa4Milestones();
+
+function sendGa4Event(eventName, parameters = {}) {
+  if (typeof window.gtag !== "function") {
+    console.warn(
+      "[vsl-analytics] gtag indisponível:",
+      eventName
+    );
+    return;
+  }
+
+  window.gtag("event", eventName, {
+    video_id: config.videoId,
+    vsl_id: config.vslId,
+    product_id: config.productId,
+    ...parameters,
+  });
+
+  console.log(
+    "[vsl-analytics] GA4 enviado:",
+    eventName
+  );
+}
+
   let lastTrackedAt = 0;
 const TRACK_INTERVAL_MS = 2000;
 
@@ -276,7 +328,13 @@ function makeEvent(type, data = {}) {
     current_second: currentSecond,
     max_reached_second: currentSecond,
   });
+
+  sendGa4Event("video_start", {
+    current_second: currentSecond,
+  });
 }
+
+
 const now = Date.now();
 
 if (
@@ -292,6 +350,22 @@ lastTrackedAt = now;
     if (currentSecond > maxReachedSecond) {
       maxReachedSecond = currentSecond;
     }
+
+    for (const milestone of ga4Milestones) {
+  if (
+    currentSecond >= milestone &&
+    !ga4MilestonesSent.has(milestone)
+  ) {
+    ga4MilestonesSent.add(milestone);
+    saveGa4Milestones();
+
+    sendGa4Event(`video_${milestone}s`, {
+      current_second: currentSecond,
+      milestone_seconds: milestone,
+      max_reached_second: maxReachedSecond,
+    });
+  }
+}
 
     if (previousSecond === null) {
       lastSecond = currentSecond;
@@ -331,17 +405,23 @@ lastTrackedAt = now;
     });
 
     if (
-      config.pitchSecond > 0 &&
-      currentSecond >= config.pitchSecond &&
-      !pitchSent
-    ) {
-      pitchSent = true;
+  config.pitchSecond > 0 &&
+  currentSecond >= config.pitchSecond &&
+  !pitchSent
+) {
+  pitchSent = true;
 
-      queueEvent("pitch_reached", {
-        current_second: currentSecond,
-        max_reached_second: maxReachedSecond,
-      });
-    }
+  queueEvent("pitch_reached", {
+    current_second: currentSecond,
+    max_reached_second: maxReachedSecond,
+  });
+
+  sendGa4Event("video_pitch", {
+    current_second: currentSecond,
+    pitch_second: config.pitchSecond,
+    max_reached_second: maxReachedSecond,
+  });
+}
 
     lastSecond = currentSecond;
   }
@@ -414,13 +494,25 @@ lastTrackedAt = now;
   });
 
   checkoutForm?.addEventListener("submit", () => {
-    queueEvent("checkout_click", {
-      current_second: lastSecond,
-      max_reached_second: maxReachedSecond,
-    });
-
-    flushEvents(true);
+  queueEvent("checkout_click", {
+    current_second: lastSecond,
+    max_reached_second: maxReachedSecond,
   });
+
+  sendGa4Event("begin_checkout", {
+    currency: "BRL",
+    current_second: lastSecond,
+    max_reached_second: maxReachedSecond,
+    items: [
+      {
+        item_id: config.productId,
+        item_name: "Engenharia da Consciência",
+      },
+    ],
+  });
+
+  flushEvents(true);
+});
 
   startVturbTracking();
 createSession();
