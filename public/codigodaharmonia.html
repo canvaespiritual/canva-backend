@@ -120,9 +120,76 @@ fbq('track', 'ViewContent', {
     html,body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif }
     .wrap{ max-width:var(--maxw); margin:0 auto; padding:20px }
     .center{ text-align:center }
-    h1{ margin:16px 0 4px; font-size:30px; line-height:1.15; font-weight:800 }
-    .sub{ margin:0 0 12px; color:#e7e5e4; opacity:.95 }
+   h1{
+  max-width:820px;
+  margin:10px auto 10px;
+  font-size:clamp(28px,5vw,44px);
+  line-height:1.08;
+  font-weight:800;
+  letter-spacing:-.02em;
+}
 
+.sub{
+  max-width:760px;
+  margin:0 auto 18px;
+  color:#d6d3d1;
+  font-size:clamp(16px,2.5vw,20px);
+  line-height:1.45;
+}
+
+.sub strong{
+  color:var(--brand);
+  font-weight:750;
+}
+
+.author-mini{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  max-width:620px;
+  margin:16px auto 0;
+  padding:12px 14px;
+  border-top:1px solid #211e1b;
+  color:var(--muted);
+  text-align:left;
+}
+
+.author-mini img{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid #34302c;
+  flex:0 0 auto;
+}
+
+.author-mini p{
+  margin:0;
+  font-size:14px;
+  line-height:1.35;
+}
+
+.author-mini strong{
+  color:var(--fg);
+  font-size:15px;
+}
+
+@media (max-width:560px){
+  .wrap{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  header.wrap{
+    padding-top:14px;
+    padding-bottom:0;
+  }
+
+  .author-mini{
+    align-items:flex-start;
+  }
+}
     /* Player responsivo — iOS-safe (ajustado para 9:16) */
     .player-box{ position:relative; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.4) }
     .ratio{ height:0; padding-top:177.7777%; } /* 9:16 — se mudar pra 16:9 use 56.25% */
@@ -337,9 +404,14 @@ fbq('track', 'ViewContent', {
 </head>
 <body>
   <header class="wrap center">
-    <h1></h1>
-    <p class="sub"></p>
-  </header>
+  <h1>Conheça as 3 etapas da autocura emocional</h1>
+
+  <p class="sub">
+    Assista à aula e descubra como o <strong>Mapa da Alma</strong>,
+    o <strong>Autogoverno</strong> e a <strong>Autorealização</strong>
+    ajudam você a compreender e transformar padrões emocionais repetitivos. (TOC, depressão, ansiedade, compulsão, vicios)
+  </p>
+</header>
 
   <main class="wrap">
     <!-- PLAYER (agora com Web Component atualizado do VTurb) -->
@@ -356,7 +428,17 @@ fbq('track', 'ViewContent', {
 
       </div>
     </section>
+<section class="author-mini" aria-label="Sobre o autor">
+  <img
+    src="/img/depoimentos/gustavo.jpg"
+    alt="Gustavo Prado"
+  >
 
+  <p>
+    <strong>Apresentado por Gustavo Prado</strong><br>
+    Empresário, escritor e pesquisador do comportamento humano e da consciência.
+  </p>
+</section>
     <!-- CTA (um único botão → abre POPUP) -->
     <section class="cta-area center hidden" id="ctaBox">
       <button id="cta" class="btn">QUERO ATRAVESSAR O INVISÍVEL DA MINHA ALMA</button>
@@ -581,7 +663,7 @@ fbq('track', 'ViewContent', {
     <!-- BIO -->
     <section id="bio" class="card bio center hidden">
       <div class="bio-top-spacer"></div>
-      <img class="avatar" src="https://canvaspiritual.com/wp-content/uploads/2025/10/IMG_4316.jpg" alt="Gustavo Prado">
+      <img class="avatar"  src="/img/depoimentos/gustavo.jpg" alt="Gustavo Prado">
       <h3>Gustavo Prado</h3>
       <p><em>Engenheiro e Pesquisador</em></p>
       <div style="height:14px"></div>
@@ -590,7 +672,7 @@ fbq('track', 'ViewContent', {
       uma estrutura que transformou crises, remédios e vícios em propósito, cura e identidade.</p>
     </section>
 
-    <div class="footer">© Canva Espiritual — Engenharia da Consciência </div>
+    <div class="footer">Conteúdo educacional de desenvolvimento emocional e autoconhecimento. </div>
   </main>
     <!-- FAQ (aparece junto com o botão, começa escondida) -->
     
