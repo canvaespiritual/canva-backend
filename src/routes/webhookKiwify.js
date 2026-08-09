@@ -163,11 +163,13 @@ router.post("/", async (req, res) => {
     payload?.name ||
     null;
 
-  const phone =
-    payload?.Customer?.phone ||
-    payload?.customer?.phone ||
-    payload?.phone ||
-    null;
+ const phone =
+  payload?.Customer?.mobile ||
+  payload?.Customer?.phone ||
+  payload?.customer?.mobile ||
+  payload?.customer?.phone ||
+  payload?.phone ||
+  null;
 
   const orderId =
     payload?.order_id ||
@@ -417,8 +419,139 @@ if (email) {
     },
   );
 }
+// 4) Registra venda aprovada no financeiro
+if (paid && updatedLead && orderId) {
+  const commissions = payload?.Commissions || {};
+  const product = payload?.Product || {};
 
-    // 4) Brevo
+  const grossAmount =
+    commissions?.charge_amount != null
+      ? Number(commissions.charge_amount) / 100
+      : null;
+
+  const netAmount =
+    commissions?.my_commission != null
+      ? Number(commissions.my_commission) / 100
+      : null;
+
+  const kiwifyFee =
+    commissions?.kiwify_fee != null
+      ? Number(commissions.kiwify_fee) / 100
+      : null;
+
+  const installments =
+    payload?.installments != null
+      ? Number(payload.installments)
+      : 1;
+
+  const checkoutUrl =
+    payload?.checkout_link
+      ? `https://pay.kiwify.com.br/${payload.checkout_link}`
+      : null;
+
+  await pool.query(
+    `
+      INSERT INTO checkout_sales (
+        checkout_lead_id,
+        source,
+        status,
+
+        gross_amount,
+        net_amount,
+        currency,
+
+        payment_method,
+        installments,
+        sale_date,
+
+        kiwify_order_id,
+        kiwify_order_ref,
+        kiwify_fee,
+
+        product_id,
+        product_name,
+
+        checkout_url,
+        access_url,
+
+        raw_payload
+      )
+      VALUES (
+        $1,
+        'kiwify',
+        'paid',
+
+        $2,
+        $3,
+        $4,
+
+        $5,
+        $6,
+        COALESCE(
+          $7::timestamp AT TIME ZONE 'America/Sao_Paulo',
+          NOW()
+        ),
+
+        $8,
+        $9,
+        $10,
+
+        $11,
+        $12,
+
+        $13,
+        $14,
+
+        $15
+      )
+
+      ON CONFLICT (kiwify_order_id)
+      WHERE kiwify_order_id IS NOT NULL
+
+      DO UPDATE SET
+        status = EXCLUDED.status,
+        gross_amount = EXCLUDED.gross_amount,
+        net_amount = EXCLUDED.net_amount,
+        currency = EXCLUDED.currency,
+        payment_method = EXCLUDED.payment_method,
+        installments = EXCLUDED.installments,
+        kiwify_fee = EXCLUDED.kiwify_fee,
+        product_id = EXCLUDED.product_id,
+        product_name = EXCLUDED.product_name,
+        checkout_url = EXCLUDED.checkout_url,
+        access_url = EXCLUDED.access_url,
+        raw_payload = EXCLUDED.raw_payload,
+        updated_at = NOW()
+    `,
+    [
+      updatedLead.id,
+      grossAmount,
+      netAmount,
+      commissions?.currency || "BRL",
+      payload?.payment_method || null,
+      installments,
+      payload?.approved_date || null,
+      String(orderId),
+      payload?.order_ref || null,
+      kiwifyFee,
+      product?.product_id || null,
+      product?.product_name || null,
+      checkoutUrl,
+      payload?.access_url || null,
+      payload
+    ]
+  );
+
+  console.log("[kiwify] checkout_sales upsert ok", {
+    orderId,
+    checkoutLeadId: updatedLead.id,
+    grossAmount,
+    netAmount,
+    paymentMethod: payload?.payment_method || null,
+    installments
+  });
+}
+    // 5) Brevo
     if (email) {
       await brevoUpsertPaidContact({ email, name, phone, paid });
       console.log("[kiwify] brevo upsert ok", { email, paid });
