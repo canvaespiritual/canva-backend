@@ -102,8 +102,66 @@ app.use("/webhooks/kiwify", express.raw({ type: "*/*" }), kiwifyWebhookRoutes);
 app.use(express.json());
 // Analytics próprio das páginas e VSLs
 app.use("/api/analytics", analyticsRoutes);
+// Conteúdo dinâmico da landing page por campanha
+app.get("/api/landing-content/:campaignId", async (req, res) => {
+  try {
+    const campaignId = String(
+      req.params.campaignId || ""
+    ).trim();
 
+    if (!campaignId) {
+      return res.status(400).json({
+        ok: false,
+        error: "campaign_id_required",
+      });
+    }
 
+    const { rows } = await pool.query(
+      `
+        SELECT
+          campaign_id,
+          headline,
+          highlight_text,
+          subheadline
+        FROM campaign_landing_content
+        WHERE campaign_id = $1
+          AND active = TRUE
+        LIMIT 1
+      `,
+      [campaignId]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({
+        ok: false,
+        found: false,
+      });
+    }
+
+    const content = rows[0];
+
+    return res.status(200).json({
+      ok: true,
+      found: true,
+      content: {
+        campaignId: content.campaign_id,
+        headline: content.headline,
+        highlightText: content.highlight_text,
+        subheadline: content.subheadline,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "[landing-content] erro:",
+      error
+    );
+
+    return res.status(500).json({
+      ok: false,
+      found: false,
+    });
+  }
+});
 
 // ✅ Health check (pra testar no localhost e no deploy)
 app.get("/health", (req, res) => res.status(200).send("ok"));

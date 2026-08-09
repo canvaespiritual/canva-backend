@@ -142,6 +142,20 @@ fbq('track', 'ViewContent', {
   font-weight:750;
 }
 
+/* ===== HEADLINE DINÂMICA POR CAMPANHA ===== */
+
+#landingHeader{
+  visibility:hidden;
+}
+
+#landingHeader.landing-ready{
+  visibility:visible;
+}
+
+#landingHeadline .landing-highlight{
+  color:var(--brand);
+}
+
 .author-mini{
   display:flex;
   align-items:center;
@@ -404,9 +418,12 @@ fbq('track', 'ViewContent', {
 </head>
 <body>
   <header class="wrap center">
-  <h1>Conheça as 3 etapas da autocura emocional</h1>
+  <header class="wrap center" id="landingHeader">
+  <h1 id="landingHeadline">
+    Conheça as 3 etapas da autocura emocional
+  </h1>
 
-  <p class="sub">
+  <p class="sub" id="landingSubheadline">
     Assista à aula e descubra como o <strong>Mapa da Alma</strong>,
     o <strong>Autogoverno</strong> e a <strong>Autorealização</strong>
     ajudam você a compreender e transformar padrões emocionais repetitivos. (TOC, depressão, ansiedade, compulsão, vicios)
@@ -706,6 +723,231 @@ fbq('track', 'ViewContent', {
       </div>
     </div>
   </div>
+
+  <script>
+(function () {
+  const header =
+    document.getElementById("landingHeader");
+
+  const headlineEl =
+    document.getElementById("landingHeadline");
+
+  const subheadlineEl =
+    document.getElementById("landingSubheadline");
+
+  if (!header || !headlineEl || !subheadlineEl) {
+    return;
+  }
+
+  const fallbackHeadline =
+    headlineEl.textContent.trim();
+
+  const fallbackSubheadlineHtml =
+    subheadlineEl.innerHTML;
+
+  let resolved = false;
+
+  function revealFallback() {
+    if (resolved) {
+      return;
+    }
+
+    resolved = true;
+
+    headlineEl.textContent =
+      fallbackHeadline;
+
+    subheadlineEl.innerHTML =
+      fallbackSubheadlineHtml;
+
+    header.classList.add(
+      "landing-ready"
+    );
+  }
+
+  function renderHeadline(
+    headline,
+    highlightText
+  ) {
+    headlineEl.textContent = "";
+
+    const cleanHeadline =
+      String(headline || "").trim();
+
+    const cleanHighlight =
+      String(highlightText || "").trim();
+
+    if (!cleanHighlight) {
+      headlineEl.textContent =
+        cleanHeadline;
+
+      return;
+    }
+
+    const headlineLower =
+      cleanHeadline.toLocaleLowerCase(
+        "pt-BR"
+      );
+
+    const highlightLower =
+      cleanHighlight.toLocaleLowerCase(
+        "pt-BR"
+      );
+
+    const index =
+      headlineLower.indexOf(
+        highlightLower
+      );
+
+    if (index === -1) {
+      headlineEl.textContent =
+        cleanHeadline;
+
+      return;
+    }
+
+    const before =
+      cleanHeadline.slice(
+        0,
+        index
+      );
+
+    const highlighted =
+      cleanHeadline.slice(
+        index,
+        index + cleanHighlight.length
+      );
+
+    const after =
+      cleanHeadline.slice(
+        index + cleanHighlight.length
+      );
+
+    headlineEl.append(
+      document.createTextNode(before)
+    );
+
+    const highlightSpan =
+      document.createElement("span");
+
+    highlightSpan.className =
+      "landing-highlight";
+
+    highlightSpan.textContent =
+      highlighted;
+
+    headlineEl.append(
+      highlightSpan
+    );
+
+    headlineEl.append(
+      document.createTextNode(after)
+    );
+  }
+
+  function getCampaignId() {
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    return (
+      params.get("campaign_id") ||
+      params.get("utm_campaign") ||
+      ""
+    ).trim();
+  }
+
+  const campaignId =
+    getCampaignId();
+
+  /*
+   * Sem campanha identificada:
+   * mostra imediatamente o conteúdo padrão.
+   */
+  if (!campaignId) {
+    revealFallback();
+    return;
+  }
+
+  /*
+   * Segurança:
+   * se API demorar, falhar ou travar,
+   * revela o conteúdo padrão.
+   */
+  const fallbackTimer =
+    window.setTimeout(
+      revealFallback,
+      350
+    );
+
+  fetch(
+    `/api/landing-content/${encodeURIComponent(
+      campaignId
+    )}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json"
+      },
+      cache: "no-store"
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      if (
+        resolved ||
+        !data ||
+        data.ok !== true ||
+        data.found !== true ||
+        !data.content ||
+        !data.content.headline
+      ) {
+        return;
+      }
+
+      window.clearTimeout(
+        fallbackTimer
+      );
+
+      renderHeadline(
+        data.content.headline,
+        data.content.highlightText
+      );
+
+      if (
+        data.content.subheadline
+      ) {
+        subheadlineEl.textContent =
+          data.content.subheadline;
+      } else {
+        subheadlineEl.innerHTML =
+          fallbackSubheadlineHtml;
+      }
+
+      resolved = true;
+
+      header.classList.add(
+        "landing-ready"
+      );
+    })
+    .catch(() => {
+      window.clearTimeout(
+        fallbackTimer
+      );
+
+      revealFallback();
+    });
+})();
+</script>
 
   <script>
     /* ====== CONFIG GERAL ====== */
