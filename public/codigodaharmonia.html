@@ -845,7 +845,7 @@ fbq('track', 'ViewContent', {
     );
   }
 
-  function getCampaignId() {
+   function getCampaignId() {
     const params =
       new URLSearchParams(
         window.location.search
@@ -858,87 +858,208 @@ fbq('track', 'ViewContent', {
     ).trim();
   }
 
+  function getAdId() {
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    return (
+      params.get("ad_id") ||
+      params.get("utm_content") ||
+      ""
+    ).trim();
+  }
+
   const campaignId =
     getCampaignId();
 
+  const adId =
+    getAdId();
+
   /*
-   * Sem campanha identificada:
+   * Sem anúncio e sem campanha:
    * mostra imediatamente o conteúdo padrão.
    */
-  if (!campaignId) {
+  if (!adId && !campaignId) {
     revealFallback();
     return;
   }
 
   /*
    * Segurança:
-   * se API demorar, falhar ou travar,
-   * revela o conteúdo padrão.
+   * mantém o mesmo fallback rápido
+   * que já existia na página.
    */
   const fallbackTimer =
     window.setTimeout(
       revealFallback,
-      350
+      1000
     );
 
-  fetch(
-    `/api/landing-content/${encodeURIComponent(
-      campaignId
-    )}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json"
-      },
-      cache: "no-store"
-    }
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `HTTP ${response.status}`
+  /*
+   * Retorna o conteúdo válido da API
+   * ou null quando não houver personalização.
+   *
+   * 404, anúncio inativo ou erro de rede
+   * não interrompem o fallback.
+   */
+  async function fetchLandingContent(
+    url
+  ) {
+    try {
+      const response =
+        await fetch(
+          url,
+          {
+            method: "GET",
+            headers: {
+              Accept:
+                "application/json"
+            },
+            cache: "no-store"
+          }
         );
+
+      if (!response.ok) {
+        return null;
       }
 
-      return response.json();
-    })
-    .then((data) => {
+      const data =
+        await response.json();
+
       if (
-        resolved ||
         !data ||
         data.ok !== true ||
         data.found !== true ||
         !data.content ||
         !data.content.headline
       ) {
-        return;
+        return null;
       }
 
-      window.clearTimeout(
-        fallbackTimer
-      );
+      return data.content;
+    } catch (error) {
+      return null;
+    }
+  }
 
-      renderHeadline(
-        data.content.headline,
-        data.content.highlightText
-      );
+  function applyLandingContent(
+    content
+  ) {
+    if (
+      resolved ||
+      !content ||
+      !content.headline
+    ) {
+      return false;
+    }
 
-      if (
-        data.content.subheadline
-      ) {
-        subheadlineEl.textContent =
-          data.content.subheadline;
-      } else {
-        subheadlineEl.innerHTML =
-          fallbackSubheadlineHtml;
+    window.clearTimeout(
+      fallbackTimer
+    );
+
+    renderHeadline(
+      content.headline,
+      content.highlightText
+    );
+
+    if (content.subheadline) {
+      subheadlineEl.textContent =
+        content.subheadline;
+    } else {
+      subheadlineEl.innerHTML =
+        fallbackSubheadlineHtml;
+    }
+
+    resolved = true;
+
+    header.classList.add(
+      "landing-ready"
+    );
+
+    return true;
+  }
+
+  /*
+   * Busca anúncio e campanha em paralelo.
+   *
+   * A prioridade na aplicação continua:
+   *
+   * 1. anúncio
+   * 2. campanha
+   * 3. padrão do HTML
+   *
+   * O paralelo evita adicionar atraso
+   * ao mecanismo que já existia.
+   */
+  const adRequest =
+    adId
+      ? fetchLandingContent(
+          `/api/landing-content/ad/${encodeURIComponent(
+            adId
+          )}`
+        )
+      : Promise.resolve(null);
+
+  const campaignRequest =
+    campaignId
+      ? fetchLandingContent(
+          `/api/landing-content/${encodeURIComponent(
+            campaignId
+          )}`
+        )
+      : Promise.resolve(null);
+
+  Promise.all([
+    adRequest,
+    campaignRequest
+  ])
+    .then(
+      ([
+        adContent,
+        campaignContent
+      ]) => {
+        if (resolved) {
+          return;
+        }
+
+        /*
+         * Prioridade absoluta:
+         * anúncio ativo.
+         */
+        if (
+          applyLandingContent(
+            adContent
+          )
+        ) {
+          return;
+        }
+
+        /*
+         * Anúncio inexistente/inativo:
+         * mantém exatamente o mecanismo
+         * antigo da campanha.
+         */
+        if (
+          applyLandingContent(
+            campaignContent
+          )
+        ) {
+          return;
+        }
+
+        /*
+         * Nenhuma personalização válida:
+         * conteúdo original do HTML.
+         */
+        window.clearTimeout(
+          fallbackTimer
+        );
+
+        revealFallback();
       }
-
-      resolved = true;
-
-      header.classList.add(
-        "landing-ready"
-      );
-    })
+    )
     .catch(() => {
       window.clearTimeout(
         fallbackTimer

@@ -163,6 +163,67 @@ app.get("/api/landing-content/:campaignId", async (req, res) => {
   }
 });
 
+// Conteúdo dinâmico da landing page por anúncio
+app.get("/api/landing-content/ad/:adId", async (req, res) => {
+  try {
+    const adId = String(
+      req.params.adId || ""
+    ).trim();
+
+    if (!adId) {
+      return res.status(400).json({
+        ok: false,
+        error: "ad_id_required",
+      });
+    }
+
+    const { rows } = await pool.query(
+      `
+        SELECT
+          ad_id,
+          headline,
+          highlight_text,
+          subheadline
+        FROM ad_landing_content
+        WHERE ad_id = $1
+          AND active = TRUE
+        LIMIT 1
+      `,
+      [adId]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({
+        ok: false,
+        found: false,
+      });
+    }
+
+    const content = rows[0];
+
+    return res.status(200).json({
+      ok: true,
+      found: true,
+      content: {
+        adId: content.ad_id,
+        headline: content.headline,
+        highlightText: content.highlight_text,
+        subheadline: content.subheadline,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "[landing-content/ad] erro:",
+      error
+    );
+
+    return res.status(500).json({
+      ok: false,
+      found: false,
+    });
+  }
+});
+
 // ✅ Health check (pra testar no localhost e no deploy)
 app.get("/health", (req, res) => res.status(200).send("ok"));
 
