@@ -320,6 +320,12 @@ function makeEvent(type, data = {}) {
 
     const currentSecond =
       Math.round(second * 1000) / 1000;
+
+      /* Mantém os eventos legados de retenção do HTML
+   para Meta + GA4 exatamente como antes */
+if (typeof window.__fireMarksIfNeeded === "function") {
+  window.__fireMarksIfNeeded(currentSecond);
+}
       
     if (!playSent) {
   playSent = true;

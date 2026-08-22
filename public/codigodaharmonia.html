@@ -412,12 +412,92 @@ fbq('track', 'ViewContent', {
 .dep-feature{
   grid-column: 1 / -1;
 }
+.reward-wrap{
+  padding-top:0;
+  padding-bottom:10px;
+}
 
+.vsl-reward{
+  max-width:720px;
+  margin:0 auto;
+  color:#a8a29e;
+  font-size:14px;
+  line-height:1.45;
+}
+
+.vsl-reward strong{
+  color:#d6d3d1;
+}
+
+#rewardToday{
+  color:#eab308;
+  font-weight:700;
+}
+.pitch-hidden{
+  display:none;
+}
+
+.pitch-offer{
+  margin-top:28px;
+  padding:24px 18px;
+  border:1px solid rgba(234,179,8,.32);
+  border-radius:18px;
+  background:rgba(234,179,8,.055);
+}
+
+.pitch-badge{
+  display:inline-block;
+  margin-bottom:12px;
+  padding:6px 11px;
+  border-radius:999px;
+  background:rgba(234,179,8,.13);
+  color:#eab308;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.4px;
+}
+
+.pitch-offer h2{
+  max-width:720px;
+  margin:0 auto 12px;
+  font-size:clamp(24px,4vw,34px);
+  line-height:1.15;
+}
+
+.pitch-condition{
+  max-width:680px;
+  margin:0 auto 18px;
+  color:#d6d3d1;
+  font-size:17px;
+  line-height:1.5;
+}
+
+.pitch-condition strong{
+  color:#fff;
+}
+
+.pitch-reward{
+  max-width:680px;
+  margin:14px auto 0;
+  color:#d6d3d1;
+  font-size:15px;
+  line-height:1.5;
+}
+
+.pitch-reward strong{
+  color:#fff;
+}
+
+.pitch-note{
+  margin:8px auto 0;
+  color:#78716c;
+  font-size:12px;
+}
   </style>
 
 </head>
 <body>
-  <header class="wrap center">
+  
   <header class="wrap center" id="landingHeader">
   <h1 id="landingHeadline">
     Conheça as 3 etapas da autocura emocional
@@ -429,6 +509,14 @@ fbq('track', 'ViewContent', {
     ajudam você a compreender e transformar padrões emocionais repetitivos. (TOC, depressão, ansiedade, compulsão, vicios)
   </p>
 </header>
+
+<div class="wrap center reward-wrap">
+  <p class="vsl-reward">
+    🎁 Receba seu <strong>Checkup Emocional Personalizado</strong>
+    gratuitamente ao final desta breve apresentação.
+    <span id="rewardToday"></span>
+  </p>
+</div>
 
   <main class="wrap">
     <!-- PLAYER (agora com Web Component atualizado do VTurb) -->
@@ -457,9 +545,40 @@ fbq('track', 'ViewContent', {
   </p>
 </section>
     <!-- CTA (um único botão → abre POPUP) -->
-    <section class="cta-area center hidden" id="ctaBox">
-      <button id="cta" class="btn">QUERO ATRAVESSAR O INVISÍVEL DA MINHA ALMA</button>
+    <div id="pitchContent" class="pitch-hidden">
+
+  <section class="pitch-offer center">
+
+    <div class="pitch-badge">
+      CONDIÇÃO ADICIONAL LIBERADA
+    </div>
+
+    <h2>
+      Uma condição ainda melhor foi liberada
+    </h2>
+
+    <p class="pitch-condition">
+      <strong id="pitchToday"></strong> além do desconto apresentado na aula,
+      você recebe um <strong>desconto adicional</strong>.
+    </p>
+
+    <section class="cta-area center" id="ctaBox">
+      <button id="cta" class="btn">
+        QUERO VER MEU DESCONTO
+      </button>
     </section>
+
+    <p class="pitch-reward">
+      Clique no botão, verifique o desconto liberado para o curso
+      <strong>Engenharia da Consciência</strong> e receba gratuitamente seu
+      <strong>Checkup Emocional Personalizado — Mapa da Alma.</strong>
+    </p>
+
+    <p class="pitch-note">
+      O valor do desconto será exibido após você avançar para o checkout.
+    </p>
+
+  </section>
     <p class="hint" id="timerHint"></p>
     <!-- ===== DEPOIMENTOS (aparecem junto com CTA) ===== -->
 <section id="depoimentos" class="card depoimentos hidden">
@@ -497,7 +616,7 @@ fbq('track', 'ViewContent', {
   </div>
 </section>
 
-<section id="faqArea" class="card faq-area hidden">
+<section id="faqArea" class="card faq-area">
       <h3>Perguntas que sua alma faria agora:</h3>
 
       <details>
@@ -587,7 +706,7 @@ fbq('track', 'ViewContent', {
     </section>
   
 
-<section id="benefitsSection" class="beneficios-section hidden">
+<section id="benefitsSection" class="beneficios-section">
   <h3 class="beneficios-title">Por que a alfabetização emocional muda tudo na sua vida</h3>
 
   <div class="beneficios-wrap">
@@ -678,7 +797,7 @@ fbq('track', 'ViewContent', {
 </section>
 
     <!-- BIO -->
-    <section id="bio" class="card bio center hidden">
+    <section id="bio" class="card bio center">
       <div class="bio-top-spacer"></div>
       <img class="avatar"  src="/img/depoimentos/gustavo.jpg" alt="Gustavo Prado">
       <h3>Gustavo Prado</h3>
@@ -688,8 +807,8 @@ fbq('track', 'ViewContent', {
       Foram mais de 10 anos de estudos em comportamento humano, espiritualidade e engenharia emocional, até decifrar o código que revelo nesta aula —
       uma estrutura que transformou crises, remédios e vícios em propósito, cura e identidade.</p>
     </section>
-
-    <div class="footer">Conteúdo educacional de desenvolvimento emocional e autoconhecimento. </div>
+</div>
+    <div class="footer"> </div>
   </main>
     <!-- FAQ (aparece junto com o botão, começa escondida) -->
     
@@ -746,6 +865,30 @@ fbq('track', 'ViewContent', {
     subheadlineEl.innerHTML;
 
   let resolved = false;
+
+  function getTodayOfferText() {
+  return new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    timeZone: 'America/Sao_Paulo'
+  }).format(new Date());
+}
+
+const todayOfferText = getTodayOfferText();
+
+const rewardToday = document.getElementById('rewardToday');
+const pitchToday = document.getElementById('pitchToday');
+
+if (rewardToday) {
+  rewardToday.textContent =
+    ` Exclusivo para hoje, ${todayOfferText}.`;
+}
+
+if (pitchToday) {
+  pitchToday.textContent =
+    `Hoje, ${todayOfferText},`;
+}
 
   function revealFallback() {
     if (resolved) {
@@ -1073,8 +1216,8 @@ fbq('track', 'ViewContent', {
   <script>
     /* ====== CONFIG GERAL ====== */
     const VIDEO_ID = '6921af18929a71f0a170c388';
-    const REVEAL_AT_SECONDS = 1674; // 30:17 (timeline do vídeo)
-    const STORAGE_KEY = `vturb_progress_${VIDEO_ID}`;
+    const REVEAL_AT_SECONDS = 1670; // 30:17 (timeline do vídeo)
+   
 
     /* ====== CONFIG KIWIFY ====== */
     const KIWIFY_BASE = 'https://pay.kiwify.com.br/otZkPSG';
@@ -1180,85 +1323,33 @@ fbq('track', 'ViewContent', {
       window.location.href = url;
     });
 
-    /* ====== DELAY DO CTA POR TEMPO DE VÍDEO ====== */
-      function showCTA(){
-  if (ctaBox && ctaBox.classList.contains('hidden')){
-    ctaBox.classList.remove('hidden');
-    if (timerHint) timerHint.textContent = '';
-  }
-   // depoimentos OFF (reversível)
-  //  if (depoSection && depoSection.classList.contains('hidden')){
-   // depoSection.classList.remove('hidden');
-  //}
+    /* ====== DELAY OFICIAL VTURB ====== */
 
-  if (faqArea && faqArea.classList.contains('hidden')){
-    faqArea.classList.remove('hidden');
-  }
+const vturbPlayer = document.getElementById(
+  `vid-${VIDEO_ID}`
+);
 
-  // 👉 Tabela de benefícios entra junto com CTA/FAQ
-  if (benefitsSection && benefitsSection.classList.contains('hidden')){
-    benefitsSection.classList.remove('hidden');
-  }
-
-  // 👉 OPCIONAL: liberar a bio só aqui
-  if (bioSection && bioSection.classList.contains('hidden')){
-    bioSection.classList.remove('hidden');
-  }
-}
-
-
-    function saveProgress(sec){
-      try { localStorage.setItem(STORAGE_KEY, String(Math.floor(sec))); } catch(e){}
-    }
-    function getProgress(){
-      try { return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10); } catch(e){ return 0; }
-    }
-
-    // Desbloqueio imediato se já passou do tempo antes
-    if (getProgress() >= REVEAL_AT_SECONDS) showCTA();
-
-    // Ouvir o tempo do vídeo via postMessage
-    function extractSeconds(data){
-      if (!data || typeof data !== 'object') return null;
-      const keys = ['currentTime','time','seconds','position','current_time'];
-      for (const k of keys){ if (k in data && isFinite(Number(data[k]))) return Number(data[k]); }
-      if (data.payload && typeof data.payload === 'object'){
-        for (const k of keys){ if (k in data.payload && isFinite(Number(data.payload[k]))) return Number(data.payload[k]); }
-      }
-      return null;
-    }
-
-    window.addEventListener('message', (event)=>{
-      try{
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        const sec = extractSeconds(data);
-if (sec != null){
-  saveProgress(sec);
-  if (typeof __fireMarksIfNeeded === 'function') { __fireMarksIfNeeded(sec); }  // << ADICIONAR
-  if (sec >= REVEAL_AT_SECONDS) showCTA();
-
-
+if (vturbPlayer) {
+  vturbPlayer.addEventListener(
+    'player:ready',
+    function () {
+      vturbPlayer.displayHiddenElements(
+        REVEAL_AT_SECONDS,
+        ['#pitchContent'],
+        {
+          persist: true
         }
-      }catch(e){}
-    });
-
-    // Fallback gentil (se nenhum evento chegar)
-    setTimeout(()=>{
-      if (!ctaBox.classList.contains('hidden')) return;
-      let elapsed = getProgress();
-      const t = setInterval(()=>{
-        if (!ctaBox.classList.contains('hidden')) { clearInterval(t); return; }
-        elapsed += 1; saveProgress(elapsed);
-        if (elapsed >= REVEAL_AT_SECONDS){ clearInterval(t); showCTA(); }
-      }, 1000);
-    }, 5000);
+      );
+    }
+  );
+}
   </script>
   <script
   src="/scripts/vsl-analytics.js"
   data-video-id="6921af18929a71f0a170c388"
   data-vsl-id="codigo-da-harmonia"
   data-product-id="engenharia-da-consciencia"
-  data-pitch-second="1674">
+  data-pitch-second="1670">
 </script>
 </body>
 </html>
