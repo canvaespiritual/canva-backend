@@ -1,0 +1,2527 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  />
+
+  <title>
+    Receber Relatório — Mapa da Alma
+  </title>
+
+  <meta
+    name="description"
+    content="Assista à instrução breve e libere seu relatório personalizado do Mapa da Alma."
+  />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- =========================
+       MICROSOFT CLARITY
+  ========================== -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){
+        (c[a].q=c[a].q||[]).push(arguments)
+      };
+
+      t=l.createElement(r);
+      t.async=1;
+      t.src="https://www.clarity.ms/tag/"+i;
+
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+
+    })(
+      window,
+      document,
+      "clarity",
+      "script",
+      "tg0bonz3au"
+    );
+  </script>
+
+
+  <!-- =========================
+       META PIXEL
+  ========================== -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {
+      if(f.fbq)return;
+
+      n=f.fbq=function(){
+        n.callMethod
+          ? n.callMethod.apply(n,arguments)
+          : n.queue.push(arguments)
+      };
+
+      if(!f._fbq)f._fbq=n;
+
+      n.push=n;
+      n.loaded=!0;
+      n.version='2.0';
+      n.queue=[];
+
+      t=b.createElement(e);
+      t.async=!0;
+      t.src=v;
+
+      s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s);
+
+    }(
+      window,
+      document,
+      'script',
+      'https://connect.facebook.net/en_US/fbevents.js'
+    );
+
+    fbq(
+      'init',
+      '734281049586138'
+    );
+
+    fbq(
+      'track',
+      'PageView'
+    );
+
+    /*
+     * Mantemos o evento que já existia
+     * nesta etapa do funil.
+     */
+    fbq(
+      'track',
+      'Lead',
+      {
+        content_name:
+          'Checkout - Quiz',
+
+        content_category:
+          'quiz_checkout'
+      }
+    );
+  </script>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=734281049586138&ev=PageView&noscript=1"
+    />
+  </noscript>
+
+
+  <!-- =========================
+       GA4 + GOOGLE ADS
+  ========================== -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-9QDEN04CQM"
+  ></script>
+
+  <script>
+    window.dataLayer =
+      window.dataLayer || [];
+
+    function gtag(){
+      dataLayer.push(arguments);
+    }
+
+    gtag(
+      'js',
+      new Date()
+    );
+
+    gtag(
+      'config',
+      'G-9QDEN04CQM'
+    );
+
+    gtag(
+      'config',
+      'AW-936695843'
+    );
+
+    /*
+     * Conversão já usada
+     * nesta etapa do Quiz.
+     */
+    gtag(
+      'event',
+      'conversion',
+      {
+        send_to:
+          'AW-936695843/rusXCK68ipcbEKOw074D'
+      }
+    );
+  </script>
+
+
+  <style>
+
+    :root {
+      --bg:#0b0b0c;
+      --fg:#f5f5f5;
+      --muted:#9ca3af;
+      --brand:#143d59;
+      --card:#131316;
+      --ok:#16a34a;
+      --maxw:960px;
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    html,
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+
+      font:
+        16px/1.6
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        Inter,
+        Arial,
+        sans-serif;
+    }
+
+    .wrap {
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:20px 14px;
+    }
+
+    .center {
+      text-align:center;
+    }
+
+    .hint {
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .hidden {
+      display:none !important;
+    }
+
+    .card {
+      background:var(--card);
+      border:1px solid #1f2126;
+      border-radius:14px;
+      padding:18px;
+    }
+
+
+    /* =========================
+       PLAYER
+    ========================== */
+
+    .player-box {
+      position:relative;
+      background:#000;
+
+      border-radius:14px;
+      overflow:hidden;
+
+      box-shadow:
+        0 14px 36px
+        rgba(0,0,0,.45);
+    }
+
+    .ratio {
+      height:0;
+      padding-top:177.7777%;
+    }
+
+    .player-abs {
+      position:absolute;
+      inset:0;
+    }
+
+    .player-abs vturb-smartplayer {
+      position:absolute;
+      inset:0;
+
+      width:100%;
+      height:100%;
+
+      display:block;
+    }
+
+    @media (min-width:1024px) {
+
+      .player-box {
+        max-height:650px;
+      }
+
+      .ratio {
+        padding-top:90% !important;
+      }
+
+      #solidario {
+        margin-top:20px !important;
+      }
+    }
+
+
+    /* =========================
+       CHECKOUT
+    ========================== */
+
+    .checkout-shell {
+      max-width:540px;
+      margin:24px auto 0;
+      padding:0 12px;
+    }
+
+    .checkout-box {
+      background:#ffffff;
+      color:#111827;
+
+      border-radius:22px;
+      border:1px solid #e5e7eb;
+
+      box-shadow:
+        0 24px 70px
+        rgba(0,0,0,.35);
+
+      overflow:hidden;
+    }
+
+    .checkout-header {
+      padding:20px 20px 14px;
+      border-bottom:1px solid #eef2f7;
+    }
+
+    .checkout-body {
+      padding:18px 20px 20px;
+    }
+
+    .payment-safe {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+
+      color:#0f766e;
+      font-weight:800;
+      font-size:12px;
+    }
+
+    .payment-dot {
+      width:8px;
+      height:8px;
+
+      border-radius:999px;
+      background:#10b981;
+    }
+
+    .chips-grid {
+      display:grid;
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap:10px;
+      margin:14px 0;
+    }
+
+    .chip {
+      padding:13px;
+
+      border-radius:14px;
+      border:1px solid #d1d5db;
+
+      background:#f8fafc;
+      color:#111827;
+
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .chip.is-selected {
+      background:#143d59;
+      color:white;
+      border-color:#143d59;
+    }
+
+    .amount-wrap {
+      display:flex;
+      align-items:center;
+
+      border:
+        1px solid #e5e7eb;
+
+      border-radius:14px;
+      overflow:hidden;
+
+      background:#fff;
+      margin-bottom:8px;
+    }
+
+    .amount-prefix {
+      padding:12px;
+
+      color:#6b7280;
+
+      font-weight:900;
+
+      border-right:
+        1px solid #eef2f7;
+    }
+
+    .amount-input {
+      width:100%;
+      padding:12px;
+
+      border:0;
+      outline:0;
+
+      text-align:center;
+
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .main-cta {
+      width:100%;
+
+      appearance:none;
+      border:0;
+
+      border-radius:14px;
+
+      padding:15px 16px;
+
+      cursor:pointer;
+
+      background:#16a34a;
+      color:white;
+
+      font-size:16px;
+      font-weight:900;
+
+      box-shadow:
+        0 16px 40px
+        rgba(22,163,74,.25);
+    }
+
+    .main-cta:hover {
+      background:#15803d;
+    }
+
+
+    /* =========================
+       MODAL ASAAS
+    ========================== */
+
+    #asaasModal {
+      backdrop-filter:
+        blur(3px);
+    }
+/* Campos do checkout Asaas */
+#asaasNome,
+#asaasEmail,
+#asaasCpf,
+#pixCopiaCola {
+  color: #0f172a !important;
+  caret-color: #0f172a;
+  -webkit-text-fill-color: #0f172a !important;
+  opacity: 1 !important;
+}
+
+/* Nome e e-mail vêm preenchidos pelo Quiz */
+#asaasNome[readonly],
+#asaasEmail[readonly] {
+  color: #334155 !important;
+  -webkit-text-fill-color: #334155 !important;
+  background: #f8fafc !important;
+  opacity: 1 !important;
+}
+
+/* CPF */
+#asaasCpf::placeholder {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+
+/* Código PIX copia e cola */
+#pixCopiaCola {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+  </style>
+</head>
+
+
+<body>
+
+<main class="wrap">
+
+  <!-- =========================
+       TOPO
+  ========================== -->
+
+  <header
+    class="center"
+    style="margin:6px 0 16px"
+  >
+
+    <h1
+      id="titleH1"
+      style="
+        margin:0 0 4px;
+        font-size:22px;
+        line-height:1.2;
+      "
+    >
+      Seu relatório está quase pronto
+    </h1>
+
+    <p
+      class="hint"
+      id="topHint"
+    >
+      Assista à breve apresentação para liberar seu Checkup Emocional personalizado.
+    </p>
+
+    <p
+      id="personalHint"
+      class="hint"
+      style="
+        margin:6px 0 0;
+        display:none;
+      "
+    >
+      ✅ Diagnóstico personalizado gerado com base nas suas respostas.
+    </p>
+
+  </header>
+
+
+  <!-- =========================
+       PLAYER VTURB
+  ========================== -->
+
+  <section class="player-box">
+
+    <div
+      class="ratio"
+      id="ratioBox"
+    ></div>
+
+    <div
+      class="player-abs"
+      id="vturbMount"
+    ></div>
+
+  </section>
+
+
+  <!-- =========================
+       CHECKOUT
+       ESCONDIDO ATÉ O PITCH
+  ========================== -->
+
+  <section
+    id="solidario"
+    class="checkout-shell hidden"
+  >
+
+    <div class="checkout-box">
+
+
+      <div class="checkout-header">
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+          "
+        >
+
+          <h3
+            style="
+              margin:0;
+              font-size:18px;
+              font-weight:900;
+            "
+          >
+            Liberar Checkup Emocional
+          </h3>
+
+
+          <span class="payment-safe">
+
+            <span
+              class="payment-dot"
+            ></span>
+
+            Pagamento seguro
+
+          </span>
+
+        </div>
+
+
+        <p
+          style="
+            margin:9px 0 0;
+            color:#6b7280;
+            font-size:13px;
+          "
+        >
+          Seu diagnóstico completo já está preparado. Escolha abaixo o valor da sua contribuição.
+        </p>
+
+      </div>
+
+
+      <div class="checkout-body">
+
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            margin-bottom:8px;
+          "
+        >
+
+          <img
+            src="./assets/branding/logo-checkup-emocional.webp"
+            alt="Checkup Emocional"
+            style="
+              width:260px;
+              max-width:100%;
+            "
+          />
+
+        </div>
+
+
+        <p
+          style="
+            color:#111827;
+            text-align:center;
+            font-weight:900;
+            font-size:14px;
+            margin:8px 0 4px;
+          "
+        >
+          Qualquer valor libera o mesmo Checkup Emocional completo.
+        </p>
+
+
+        <p
+          style="
+            color:#6b7280;
+            text-align:center;
+            font-size:12px;
+            margin:0 0 12px;
+          "
+        >
+          Valor mínimo de R$12.
+        </p>
+
+
+        <div class="chips-grid">
+
+          <button
+            class="chip is-selected"
+            data-v="12"
+          >
+            R$12
+          </button>
+
+          <button
+            class="chip"
+            data-v="20"
+          >
+            R$20
+          </button>
+
+          <button
+            class="chip"
+            data-v="35"
+          >
+            R$35
+          </button>
+
+          <button
+            class="chip"
+            data-v="50"
+          >
+            R$50
+          </button>
+
+        </div>
+
+
+        <div class="amount-wrap">
+
+          <span class="amount-prefix">
+            R$
+          </span>
+
+          <input
+            id="valorSolidario"
+            class="amount-input"
+            type="number"
+            min="12"
+            step="1"
+            value="12"
+          />
+
+        </div>
+
+
+        <p
+          style="
+            margin:5px 0 16px;
+            text-align:center;
+            color:#6b7280;
+            font-size:12px;
+          "
+        >
+          PIX ou cartão • Liberação automática após confirmação
+        </p>
+
+
+        <button
+          id="solidarioBtn"
+          class="main-cta"
+        >
+          Liberar meu Checkup Emocional →
+        </button>
+
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            margin-top:15px;
+          "
+        >
+
+          <img
+            src="./assets/branding/selo-pagamento-seguro.webp"
+            alt="Pagamento Seguro"
+            style="
+              width:170px;
+              max-width:100%;
+            "
+          />
+
+        </div>
+
+
+        <p
+          style="
+            margin:10px 0 0;
+            color:#6b7280;
+            font-size:12px;
+            text-align:center;
+          "
+        >
+          Pagamento processado com segurança pelo Asaas.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CREDIBILIDADE
+  ========================== -->
+
+  <section
+    id="credibilidadeMetodo"
+    class="hidden"
+    style="
+      max-width:720px;
+      margin:14px auto 0;
+      padding:0 12px;
+    "
+  >
+
+    <div
+      style="
+        background:#0f1115;
+        border:1px solid #1f2430;
+        border-radius:14px;
+        padding:14px 16px;
+      "
+    >
+
+      <p
+        style="
+          margin:0;
+          color:#e5e7eb;
+          font-size:14px;
+          line-height:1.55;
+        "
+      >
+        Esta experiência integra um
+        <strong>
+          método estruturado de autodiagnóstico emocional e espiritual
+        </strong>,
+        organizando seus padrões em escalas e zonas para oferecer uma leitura personalizada.
+      </p>
+
+
+      <p
+        style="
+          margin:10px 0 0;
+          color:#94a3b8;
+          font-size:13px;
+          line-height:1.5;
+        "
+      >
+        O objetivo é oferecer clareza estruturada para reflexão, consciência emocional e desenvolvimento pessoal.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       O QUE RECEBE
+  ========================== -->
+
+  <section
+    id="receiveBlock"
+    class="card hidden"
+    style="
+      max-width:720px;
+      margin:22px auto 0;
+    "
+  >
+
+    <p
+      id="fraseLiberacao"
+      class="hidden"
+      style="
+        margin:0 0 14px;
+        text-align:center;
+        font-size:15px;
+        color:#eab308;
+        font-weight:700;
+      "
+    >
+      Seu Checkup já está disponível para liberação no botão acima.
+    </p>
+
+
+    <h3
+      style="
+        margin:0 0 10px;
+        font-size:18px;
+        font-weight:800;
+      "
+    >
+      Você vai receber
+    </h3>
+
+
+    <ul
+      style="
+        margin:0 0 8px 18px;
+        line-height:1.55;
+      "
+    >
+
+      <li>
+        🧭 Diagnóstico Corpo–Mente–Espírito
+      </li>
+
+      <li>
+        ✔️ Espelho da alma
+      </li>
+
+      <li>
+        ✔️ Reflexos familiar, social e profissional
+      </li>
+
+      <li>
+        ✔️ Arquétipo dominante
+      </li>
+
+      <li>
+        ✔️ Exercício personalizado de elevação
+      </li>
+
+      <li>
+        🔓 Mapa da Alma completo
+      </li>
+
+      <li>
+        🔓 Reflexão espiritual personalizada
+      </li>
+
+      <li>
+        🔓 Protocolo geral de elevação
+      </li>
+
+    </ul>
+
+  </section>
+
+
+  <!-- =========================
+       FAQ
+  ========================== -->
+
+  <section
+    id="faq"
+    class="card hidden"
+    style="
+      max-width:720px;
+      margin:14px auto 0;
+    "
+  >
+
+    <h3
+      style="
+        margin:0 0 10px;
+        font-size:18px;
+        font-weight:800;
+      "
+    >
+      FAQ rápido
+    </h3>
+
+
+    <div
+      style="
+        display:grid;
+        gap:10px;
+      "
+    >
+
+
+      <div
+        style="
+          border:1px solid #1f2126;
+          border-radius:14px;
+          padding:12px;
+          background:#0f1114;
+        "
+      >
+
+        <div style="font-weight:800">
+          Como vou receber o relatório?
+        </div>
+
+        <div class="hint">
+          Após o pagamento, a liberação acontece automaticamente.
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          border:1px solid #1f2126;
+          border-radius:14px;
+          padding:12px;
+          background:#0f1114;
+        "
+      >
+
+        <div style="font-weight:800">
+          Posso pagar no PIX?
+        </div>
+
+        <div class="hint">
+          Sim. Você pode pagar com PIX ou cartão através do Asaas.
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          border:1px solid #1f2126;
+          border-radius:14px;
+          padding:12px;
+          background:#0f1114;
+        "
+      >
+
+        <div style="font-weight:800">
+          Isso é personalizado mesmo?
+        </div>
+
+        <div class="hint">
+          Sim. O relatório é gerado com base nas respostas que você marcou no quiz.
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          border:1px solid #1f2126;
+          border-radius:14px;
+          padding:12px;
+          background:#0f1114;
+        "
+      >
+
+        <div style="font-weight:800">
+          E se eu fechar esta página?
+        </div>
+
+        <div class="hint">
+          Seu progresso de liberação fica salvo neste navegador.
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =================================================
+     MODAL ASAAS
+================================================== -->
+
+<div
+  id="asaasModal"
+  class="
+    fixed inset-0
+    bg-black/60
+    hidden
+    items-center
+    justify-center
+    z-50
+    px-4
+  "
+>
+
+  <div
+    class="
+      bg-white
+      rounded-3xl
+      shadow-xl
+      w-full
+      max-w-md
+      p-6
+      relative
+      max-h-[90vh]
+      overflow-y-auto
+    "
+  >
+
+    <button
+      id="fecharModal"
+      class="
+        absolute
+        right-4
+        top-3
+        text-slate-400
+        text-2xl
+      "
+    >
+      &times;
+    </button>
+
+
+    <h2
+      class="
+        text-xl
+        font-bold
+        text-center
+        text-slate-800
+        mb-2
+      "
+    >
+      Liberar Checkup Emocional
+    </h2>
+
+
+    <p
+      class="
+        text-center
+        text-sm
+        text-slate-500
+        mb-5
+      "
+    >
+      Pagamento seguro pelo Asaas.
+    </p>
+
+
+    <label
+      class="
+        text-sm
+        font-semibold
+        text-slate-700
+      "
+    >
+      Nome
+    </label>
+
+    <input
+      id="asaasNome"
+      class="
+        w-full
+        border
+        rounded-xl
+        p-3
+        mb-3
+        bg-slate-50
+      "
+      readonly
+    />
+
+
+    <label
+      class="
+        text-sm
+        font-semibold
+        text-slate-700
+      "
+    >
+      E-mail
+    </label>
+
+    <input
+      id="asaasEmail"
+      class="
+        w-full
+        border
+        rounded-xl
+        p-3
+        mb-3
+        bg-slate-50
+      "
+      readonly
+    />
+
+
+    <label
+      class="
+        text-sm
+        font-semibold
+        text-slate-700
+      "
+    >
+      CPF
+    </label>
+
+    <input
+      id="asaasCpf"
+      class="
+        w-full
+        border
+        rounded-xl
+        p-3
+        mb-2
+      "
+      placeholder="Digite seu CPF"
+      inputmode="numeric"
+      autocomplete="off"
+    />
+
+
+    <p
+      id="cpfErro"
+      class="
+        hidden
+        text-red-600
+        text-sm
+        mb-3
+      "
+    >
+      Para gerar o PIX, informe seu CPF.
+    </p>
+
+
+    <div
+      id="resumoPagamento"
+      class="
+        bg-slate-50
+        border
+        rounded-xl
+        p-3
+        text-sm
+        text-slate-600
+        mb-3
+      "
+    ></div>
+
+
+    <button
+      id="gerarPixBtn"
+      class="
+        w-full
+        bg-[#143d59]
+        text-white
+        py-3
+        rounded-xl
+        font-semibold
+        mb-3
+      "
+    >
+      Gerar PIX
+    </button>
+
+
+    <button
+      id="cartaoAsaasBtn"
+      class="
+        w-full
+        bg-slate-700
+        text-white
+        py-3
+        rounded-xl
+        font-semibold
+        mb-4
+      "
+    >
+      Pagar com cartão
+    </button>
+
+
+    <div
+      id="pixArea"
+      class="
+        hidden
+        text-center
+      "
+    >
+
+      <img
+        id="pixQrImg"
+        class="
+          mx-auto
+          w-60
+          h-60
+          border
+          rounded-xl
+          mb-3
+        "
+        alt="QR Code PIX"
+      />
+
+
+      <p
+        class="
+          text-sm
+          text-slate-600
+          mb-2
+        "
+      >
+        Escaneie o QR Code ou copie o código PIX:
+      </p>
+
+
+      <textarea
+        id="pixCopiaCola"
+        readonly
+        class="
+          w-full
+          border
+          rounded-xl
+          p-3
+          text-xs
+          h-24
+          mb-3
+        "
+      ></textarea>
+
+
+      <button
+        id="copiarPixBtn"
+        class="
+          w-full
+          bg-green-600
+          text-white
+          py-3
+          rounded-xl
+          font-semibold
+        "
+      >
+        Copiar código PIX
+      </button>
+
+    </div>
+
+
+    <p
+      id="asaasStatus"
+      class="
+        text-center
+        text-sm
+        text-slate-500
+        mt-4
+      "
+    ></p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =================================================
+   CONFIGURAÇÃO
+================================================= */
+
+const VTURB_ACCOUNT_ID =
+  'ab0d5dbd-353e-4147-a5c6-52ab96121828';
+
+const VTURB_PLAYER_ID =
+  '691f47676d14c557287d325a';
+
+const ASPECT_RATIO =
+  '9:16';
+
+/*
+ * Mantive EXATAMENTE o tempo que
+ * o pagar-mini atual está usando:
+ *
+ * 600 segundos.
+ */
+const UNLOCK_SECONDS =
+  20;
+
+const STORAGE_KEY =
+  'vsl_unlocked_quiz_asaas_v1';
+
+
+/* =================================================
+   PLAYER
+================================================= */
+
+(function setRatio(){
+
+  const rb =
+    document.getElementById(
+      'ratioBox'
+    );
+
+  if (!rb) return;
+
+  rb.style.paddingTop =
+    ASPECT_RATIO === '16:9'
+      ? '56.25%'
+      : '177.7777%';
+
+})();
+
+
+(function mountVturb(){
+
+  const mount =
+    document.getElementById(
+      'vturbMount'
+    );
+
+  if (!mount) return;
+
+
+  const tag =
+    document.createElement(
+      'vturb-smartplayer'
+    );
+
+  tag.id =
+    'vid-' +
+    VTURB_PLAYER_ID;
+
+  tag.style.cssText =
+    'display:block;' +
+    'margin:0 auto;' +
+    'width:100%;' +
+    'max-width:480px;' +
+    'height:100%;';
+
+  mount.appendChild(tag);
+
+
+  const s =
+    document.createElement(
+      'script'
+    );
+
+  s.src =
+    `https://scripts.converteai.net/${VTURB_ACCOUNT_ID}/players/${VTURB_PLAYER_ID}/v4/player.js`;
+
+  s.async =
+    true;
+
+  document.head.appendChild(s);
+
+})();
+
+
+/* =================================================
+   DESBLOQUEIO DA OFERTA
+================================================= */
+
+(function gateByTime(){
+
+  const contrib =
+    document.getElementById(
+      'solidario'
+    );
+
+  const metodo =
+    document.getElementById(
+      'credibilidadeMetodo'
+    );
+
+  const receive =
+    document.getElementById(
+      'receiveBlock'
+    );
+
+  const faq =
+    document.getElementById(
+      'faq'
+    );
+
+  const frase =
+    document.getElementById(
+      'fraseLiberacao'
+    );
+
+
+  function liberar(){
+
+    contrib?.classList.remove(
+      'hidden'
+    );
+
+    metodo?.classList.remove(
+      'hidden'
+    );
+
+    receive?.classList.remove(
+      'hidden'
+    );
+
+    faq?.classList.remove(
+      'hidden'
+    );
+
+    frase?.classList.remove(
+      'hidden'
+    );
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        '1'
+      );
+    } catch(e){}
+  }
+
+
+  try {
+
+    if (
+      localStorage.getItem(
+        STORAGE_KEY
+      ) === '1'
+    ) {
+
+      liberar();
+      return;
+    }
+
+  } catch(e){}
+
+
+  /*
+   * Mantemos a dinâmica que
+   * já estava validada no mini:
+   * contagem desde a abertura
+   * da página.
+   */
+  let seconds =
+    0;
+
+  const timer =
+    setInterval(() => {
+
+      seconds++;
+
+      if (
+        seconds >=
+        UNLOCK_SECONDS
+      ) {
+
+        clearInterval(
+          timer
+        );
+
+        liberar();
+      }
+
+    },1000);
+
+})();
+
+
+/* =================================================
+   CHECKOUT
+================================================= */
+
+(function checkout(){
+
+  const MIN =
+    12;
+
+  const TAXA_OPERACIONAL =
+    2.99;
+
+
+  const qs =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  /*
+   * PARCEIRO
+   *
+   * ref / aff = afiliado
+   * vend      = vendedor
+   */
+  const ref =
+    (
+      qs.get('ref') ||
+      qs.get('aff') ||
+      ''
+    ).trim();
+
+  const vend =
+    (
+      qs.get('vend') ||
+      ''
+    ).trim();
+
+  const hasPartner =
+    Boolean(
+      ref ||
+      vend
+    );
+
+
+  /*
+   * Sessão:
+   * prioridade absoluta para a URL.
+   */
+  let session_id =
+    (
+      qs.get(
+        'session_id'
+      ) ||
+      localStorage.getItem(
+        'session_id'
+      ) ||
+      ''
+    ).trim();
+
+
+  if (!session_id) {
+
+    session_id =
+      `sessao-${Date.now()}`;
+
+  }
+
+
+  localStorage.setItem(
+    'session_id',
+    session_id
+  );
+
+
+  let dadosQuiz =
+    {};
+
+
+  try {
+
+    const raw =
+      localStorage.getItem(
+        'dadosQuiz'
+      );
+
+    if (raw) {
+
+      dadosQuiz =
+        JSON.parse(raw);
+
+    }
+
+  } catch(e){}
+
+
+  /*
+   * Personalização do título.
+   */
+  if (
+    dadosQuiz.nome
+  ) {
+
+    const primeiroNome =
+      String(
+        dadosQuiz.nome
+      )
+      .trim()
+      .split(' ')[0]
+      .replace(/[<>]/g,'');
+
+
+    const title =
+      document.getElementById(
+        'titleH1'
+      );
+
+    const personal =
+      document.getElementById(
+        'personalHint'
+      );
+
+
+    if (title) {
+
+      title.textContent =
+        `${primeiroNome}, seu relatório está quase pronto`;
+
+    }
+
+
+    if (personal) {
+
+      personal.style.display =
+        'block';
+
+    }
+  }
+
+
+  const input =
+    document.getElementById(
+      'valorSolidario'
+    );
+
+  const btn =
+    document.getElementById(
+      'solidarioBtn'
+    );
+
+  const chips =
+    Array.from(
+      document.querySelectorAll(
+        '.chip'
+      )
+    );
+
+
+  function aplicarMinimo(){
+
+    let valor =
+      parseFloat(
+        String(
+          input.value || ''
+        ).replace(
+          ',',
+          '.'
+        )
+      );
+
+
+    if (
+      !Number.isFinite(valor) ||
+      valor < MIN
+    ) {
+
+      valor =
+        MIN;
+
+    }
+
+
+    valor =
+      Math.round(
+        valor
+      );
+
+
+    input.value =
+      valor;
+
+
+    return valor;
+  }
+
+
+  /*
+   * Preserva a mesma regra
+   * do checkout-solidario:
+   *
+   * R$12 → soma R$2,99
+   * acima de R$12 → taxa incluída.
+   */
+  function valorCobrado(
+    valorProduto
+  ) {
+
+    const v =
+      Number(
+        valorProduto ||
+        0
+      );
+
+
+    if (
+      v <= MIN
+    ) {
+
+      return Math.round(
+        (
+          v +
+          TAXA_OPERACIONAL
+        ) *
+        100
+      ) / 100;
+
+    }
+
+
+    return v;
+  }
+
+
+  function atualizarResumoPagamento(){
+
+    const produto =
+      aplicarMinimo();
+
+    const total =
+      valorCobrado(
+        produto
+      );
+
+    const el =
+      document.getElementById(
+        'resumoPagamento'
+      );
+
+
+    if (!el) return;
+
+
+    if (
+      produto <= MIN
+    ) {
+
+      el.innerHTML = `
+        <div class="flex justify-between">
+          <span>Checkup Emocional</span>
+          <strong>R$12,00</strong>
+        </div>
+
+        <div class="flex justify-between">
+          <span>Processamento seguro</span>
+          <strong>R$2,99</strong>
+        </div>
+
+        <hr class="my-2">
+
+        <div class="flex justify-between text-slate-800">
+          <span>Total</span>
+
+          <strong>
+            R$${total
+              .toFixed(2)
+              .replace('.',',')}
+          </strong>
+        </div>
+      `;
+
+    } else {
+
+      el.innerHTML = `
+        <div class="flex justify-between">
+          <span>Checkup Emocional</span>
+
+          <strong>
+            R$${produto
+              .toFixed(2)
+              .replace('.',',')}
+          </strong>
+        </div>
+
+        <div class="flex justify-between">
+          <span>Processamento seguro</span>
+          <strong>Incluso</strong>
+        </div>
+
+        <hr class="my-2">
+
+        <div class="flex justify-between text-slate-800">
+          <span>Total</span>
+
+          <strong>
+            R$${total
+              .toFixed(2)
+              .replace('.',',')}
+          </strong>
+        </div>
+      `;
+
+    }
+  }
+
+
+  chips.forEach(
+    chip => {
+
+      chip.addEventListener(
+        'click',
+        () => {
+
+          chips.forEach(
+            c =>
+              c.classList.remove(
+                'is-selected'
+              )
+          );
+
+          chip.classList.add(
+            'is-selected'
+          );
+
+          input.value =
+            chip.dataset.v;
+
+        }
+      );
+    }
+  );
+
+
+  input.addEventListener(
+    'blur',
+    aplicarMinimo
+  );
+
+
+  /*
+   * MODAL
+   */
+  const modal =
+    document.getElementById(
+      'asaasModal'
+    );
+
+  const fecharModal =
+    document.getElementById(
+      'fecharModal'
+    );
+
+  const asaasNome =
+    document.getElementById(
+      'asaasNome'
+    );
+
+  const asaasEmail =
+    document.getElementById(
+      'asaasEmail'
+    );
+
+  const asaasCpf =
+    document.getElementById(
+      'asaasCpf'
+    );
+
+  const cpfErro =
+    document.getElementById(
+      'cpfErro'
+    );
+
+  const gerarPixBtn =
+    document.getElementById(
+      'gerarPixBtn'
+    );
+
+  const cartaoBtn =
+    document.getElementById(
+      'cartaoAsaasBtn'
+    );
+
+  const asaasStatus =
+    document.getElementById(
+      'asaasStatus'
+    );
+
+  const pixArea =
+    document.getElementById(
+      'pixArea'
+    );
+
+  const pixQrImg =
+    document.getElementById(
+      'pixQrImg'
+    );
+
+  const pixCopiaCola =
+    document.getElementById(
+      'pixCopiaCola'
+    );
+
+  const copiarPixBtn =
+    document.getElementById(
+      'copiarPixBtn'
+    );
+
+
+  function onlyDigits(v){
+
+    return String(
+      v || ''
+    ).replace(
+      /\D/g,
+      ''
+    );
+  }
+
+
+  function abrirModal(){
+
+    atualizarResumoPagamento();
+
+
+    asaasNome.value =
+      dadosQuiz.nome ||
+      '';
+
+    asaasEmail.value =
+      dadosQuiz.email ||
+      '';
+
+
+    asaasCpf.value =
+      '';
+
+
+    cpfErro.classList.add(
+      'hidden'
+    );
+
+    pixArea.classList.add(
+      'hidden'
+    );
+
+    asaasStatus.textContent =
+      '';
+
+
+    modal.classList.remove(
+      'hidden'
+    );
+
+    modal.classList.add(
+      'flex'
+    );
+  }
+
+
+  function fechar(){
+
+    modal.classList.add(
+      'hidden'
+    );
+
+    modal.classList.remove(
+      'flex'
+    );
+  }
+
+
+  fecharModal.onclick =
+    fechar;
+
+
+  modal.addEventListener(
+    'click',
+    e => {
+
+      if (
+        e.target ===
+        modal
+      ) {
+
+        fechar();
+
+      }
+    }
+  );
+
+
+  /*
+   * Clique principal:
+   * agora SEMPRE abre Asaas.
+   */
+  btn.onclick =
+    () => {
+
+      const valor =
+        aplicarMinimo();
+
+
+      try {
+
+        if (
+          typeof fbq ===
+          'function'
+        ) {
+
+          fbq(
+            'track',
+            'InitiateCheckout',
+            {
+              value:
+                valor,
+
+              currency:
+                'BRL',
+
+              content_name:
+                'Checkout - Quiz PT',
+
+              content_category:
+                'quiz_checkout'
+            }
+          );
+        }
+
+      } catch(e){}
+
+
+      try {
+
+        if (
+          typeof gtag ===
+          'function'
+        ) {
+
+          gtag(
+            'event',
+            'begin_checkout',
+            {
+              currency:
+                'BRL',
+
+              value:
+                valor,
+
+              items:[
+                {
+                  item_id:
+                    'quiz_plan_pt',
+
+                  item_name:
+                    'Checkup Emocional',
+
+                  item_category:
+                    'checkout'
+                }
+              ]
+            }
+          );
+        }
+
+      } catch(e){}
+
+
+      abrirModal();
+    };
+
+
+  /* =================================================
+     PIX
+  ================================================= */
+
+  gerarPixBtn.onclick =
+    async () => {
+
+      const produto =
+        aplicarMinimo();
+
+      const valor =
+        valorCobrado(
+          produto
+        );
+
+      const cpf =
+        onlyDigits(
+          asaasCpf.value
+        );
+
+
+      if (!cpf) {
+
+        cpfErro.classList.remove(
+          'hidden'
+        );
+
+        asaasCpf.focus();
+
+        return;
+      }
+
+
+      cpfErro.classList.add(
+        'hidden'
+      );
+
+
+      gerarPixBtn.disabled =
+        true;
+
+      gerarPixBtn.textContent =
+        'Gerando PIX...';
+
+      asaasStatus.textContent =
+        'Preparando seu pagamento seguro...';
+
+
+      try {
+
+        let url;
+
+
+        /*
+         * COM parceiro:
+         * fluxo split já validado.
+         */
+        if (hasPartner) {
+
+          url =
+            `/pagamento/asaas/criar-pix-split/completo/${encodeURIComponent(
+              session_id
+            )}` +
+
+            `?valor=${encodeURIComponent(
+              valor
+            )}` +
+
+            (
+              ref
+                ? `&ref=${encodeURIComponent(ref)}`
+                : ''
+            ) +
+
+            (
+              vend
+                ? `&vend=${encodeURIComponent(vend)}`
+                : ''
+            ) +
+
+            `&cpf=${encodeURIComponent(
+              cpf
+            )}`;
+
+
+        /*
+         * SEM parceiro:
+         * nova rota direta.
+         */
+        } else {
+
+          url =
+            `/pagamento/asaas-direto/criar-pix/completo/${encodeURIComponent(
+              session_id
+            )}` +
+
+            `?valor=${encodeURIComponent(
+              valor
+            )}` +
+
+            `&cpf=${encodeURIComponent(
+              cpf
+            )}`;
+        }
+
+
+        const resp =
+          await fetch(
+            url
+          );
+
+
+        const data =
+          await resp.json();
+
+
+        if (!resp.ok) {
+
+          throw new Error(
+            data?.erro ||
+            data?.error ||
+            data?.detalhe ||
+            'Erro ao gerar PIX.'
+          );
+        }
+
+
+        if (
+          data.alreadyPaid &&
+          data.redirect
+        ) {
+
+          window.location.href =
+            data.redirect;
+
+          return;
+        }
+
+
+        if (
+          data.qr_code_base64
+        ) {
+
+          pixQrImg.src =
+            `data:image/png;base64,${data.qr_code_base64}`;
+
+        }
+
+
+        pixCopiaCola.value =
+          data.qr_code ||
+          '';
+
+
+        pixArea.classList.remove(
+          'hidden'
+        );
+
+
+        asaasStatus.textContent =
+          'PIX gerado. Após o pagamento, seu relatório será liberado automaticamente.';
+
+
+        monitorarStatusSessao(
+          session_id
+        );
+
+
+      } catch(e) {
+
+        console.error(
+          e
+        );
+
+
+        asaasStatus.textContent =
+          'Não foi possível gerar o PIX. Confira o CPF e tente novamente.';
+
+
+      } finally {
+
+        gerarPixBtn.disabled =
+          false;
+
+        gerarPixBtn.textContent =
+          'Gerar PIX';
+
+      }
+    };
+
+
+  copiarPixBtn.onclick =
+    async () => {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          pixCopiaCola.value
+        );
+
+        copiarPixBtn.textContent =
+          'Código copiado!';
+
+
+        setTimeout(
+          () => {
+
+            copiarPixBtn.textContent =
+              'Copiar código PIX';
+
+          },
+          1800
+        );
+
+
+      } catch(e) {
+
+        pixCopiaCola.select();
+
+        document.execCommand(
+          'copy'
+        );
+      }
+    };
+
+
+  /* =================================================
+     CARTÃO
+  ================================================= */
+
+  cartaoBtn.onclick =
+    async () => {
+
+      const produto =
+        aplicarMinimo();
+
+      const valor =
+        valorCobrado(
+          produto
+        );
+
+
+      cartaoBtn.disabled =
+        true;
+
+      cartaoBtn.textContent =
+        'Abrindo checkout...';
+
+      asaasStatus.textContent =
+        'Abrindo pagamento seguro do Asaas...';
+
+
+      try {
+
+        let endpoint;
+        let body;
+
+
+        /*
+         * COM PARCEIRO:
+         * pagamentoStart existente.
+         */
+        if (hasPartner) {
+
+          endpoint =
+            '/pagamento/start';
+
+          body = {
+            tipo:
+              'completo',
+
+            session_id,
+
+            ref:
+              ref || null,
+
+            vend:
+              vend || null,
+
+            valor,
+
+            strictAsaas:
+              true
+          };
+
+
+        /*
+         * SEM PARCEIRO:
+         * rota nova, direta.
+         */
+        } else {
+
+          endpoint =
+            '/pagamento/asaas-direto/criar-checkout';
+
+          body = {
+            tipo:
+              'completo',
+
+            session_id,
+
+            valor
+          };
+        }
+
+
+        const resp =
+          await fetch(
+            endpoint,
+            {
+              method:'POST',
+
+              headers:{
+                'Content-Type':
+                  'application/json'
+              },
+
+              body:
+                JSON.stringify(
+                  body
+                )
+            }
+          );
+
+
+        const data =
+          await resp.json();
+
+
+        /*
+         * Sessão já paga.
+         */
+        if (
+          data.alreadyPaid &&
+          data.redirect
+        ) {
+
+          window.location.href =
+            data.redirect;
+
+          return;
+        }
+
+
+        if (
+          !resp.ok ||
+          data.gateway !==
+            'asaas' ||
+          !data.checkout_url
+        ) {
+
+          throw new Error(
+            data.error ||
+            data.detalhe ||
+            'Não foi possível abrir o checkout.'
+          );
+        }
+
+
+        window.location.href =
+          data.checkout_url;
+
+
+      } catch(e) {
+
+        console.error(
+          e
+        );
+
+
+        asaasStatus.textContent =
+          'Não foi possível abrir o pagamento com cartão agora.';
+
+
+        cartaoBtn.disabled =
+          false;
+
+        cartaoBtn.textContent =
+          'Pagar com cartão';
+      }
+    };
+
+
+  /* =================================================
+     STATUS DO PIX
+  ================================================= */
+
+  function monitorarStatusSessao(
+    sessionId
+  ) {
+
+    const it =
+      setInterval(
+        async () => {
+
+          try {
+
+            const r =
+              await fetch(
+                `/pagamento/status-por-sessao/${encodeURIComponent(
+                  sessionId
+                )}`
+              );
+
+
+            const j =
+              await r.json();
+
+
+            if (
+              j?.aprovado
+            ) {
+
+              clearInterval(
+                it
+              );
+
+
+              localStorage.setItem(
+                'pagamento_confirmado',
+                'true'
+              );
+
+
+              asaasStatus.textContent =
+                'Pagamento aprovado! Gerando seu relatório...';
+
+
+              setTimeout(
+                () => {
+
+                  window.location.href =
+                    `/aguarde.html?session_id=${encodeURIComponent(
+                      sessionId
+                    )}`;
+
+                },
+                1200
+              );
+            }
+
+          } catch(e){}
+
+        },
+        4000
+      );
+  }
+
+
+  atualizarResumoPagamento();
+
+})();
+
+</script>
+
+</body>
+</html>

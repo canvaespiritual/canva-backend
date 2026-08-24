@@ -5,7 +5,7 @@ const IORedis = require("ioredis");
 const pool = require("./src/db"); // ajuste o caminho, se necessário
 
 async function main() {
-  const session_id = "sessao-1784038742311";
+  const session_id = "sessao-1787438057370";
 
   const connection = new IORedis(process.env.REDIS_URL, {
     maxRetriesPerRequest: null

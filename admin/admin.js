@@ -157,12 +157,48 @@ function renderizarTabela() {
 
   dadosPagina.forEach((item) => {
     let botoes = "";
-    if (item.pronto) botoes += `<button onclick="reenviar('${item.sessionId}')">📤 Reenviar</button>`;
-    if (item.travado && item.pendente) {
-      botoes += `<button onclick="reprocessar('${item.sessionId}')">♻️ Reprocessar</button>`;
-      botoes += `<button onclick="reembolsar('${item.sessionId}')">💸 Reembolsar</button>`;
-    }
-    if (!botoes) botoes = `<span class="muted">Sem ações</span>`;
+
+// Já tem relatório
+if (item.pronto) {
+  botoes += `
+    <button onclick="reenviar('${item.sessionId}')">
+      📤 Reenviar
+    </button>
+  `;
+}
+
+// Lead respondeu, não pagou e ainda não possui PDF
+if (
+  item.respondido &&
+  !item.pronto &&
+  !item.data_confirmacao &&
+  !item.pendente
+) {
+  botoes += `
+    <button onclick="gerarCortesia('${item.sessionId}', '${(item.nome || "").replace(/'/g, "\\'")}')">
+      🎁 Gerar cortesia
+    </button>
+  `;
+}
+
+// Pagou mas houve problema de processamento
+if (item.travado && item.pendente) {
+  botoes += `
+    <button onclick="reprocessar('${item.sessionId}')">
+      ♻️ Reprocessar
+    </button>
+  `;
+
+  botoes += `
+    <button onclick="reembolsar('${item.sessionId}')">
+      💸 Reembolsar
+    </button>
+  `;
+}
+
+if (!botoes) {
+  botoes = `<span class="muted">Sem ações</span>`;
+}
 
     const card = document.createElement("article");
     card.className = item.travado ? "relatorio-card travado" : "relatorio-card";
@@ -235,6 +271,48 @@ function renderizarTabela() {
     paginaAtual++;
     renderizarTabela();
   });
+
+window.gerarCortesia = async (sessionId, nome) => {
+  const pessoa = nome || sessionId;
+
+  const confirmar = confirm(
+    `Gerar gratuitamente o relatório COMPLETO para ${pessoa}?\n\n` +
+    `Esta ação será tratada como cortesia e não como pagamento.`
+  );
+
+  if (!confirmar) return;
+
+  try {
+    const resposta = await fetch(
+      `/admin/gerar-cortesia/${encodeURIComponent(sessionId)}`,
+      {
+        method: "POST"
+      }
+    );
+
+    const mensagem = await resposta.text();
+
+    if (!resposta.ok) {
+      alert(mensagem || "Erro ao gerar cortesia.");
+      return;
+    }
+
+    alert(mensagem);
+
+    // Recarrega os cards para aparecer o PDF
+    await carregarStatus();
+
+  } catch (erro) {
+    console.error(
+      "Erro ao gerar cortesia:",
+      erro
+    );
+
+    alert(
+      "Erro de comunicação ao gerar a cortesia."
+    );
+  }
+};
 
   window.reenviar = async (sessionId) => {
     if (!confirm(`Deseja reenviar o relatório da sessão ${sessionId}?`)) return;
