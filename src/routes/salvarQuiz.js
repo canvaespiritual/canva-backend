@@ -6,6 +6,7 @@ const pool = require("../db"); // ajuste o caminho conforme sua estrutura
 const router = express.Router();
 const cadastrarLeadNoBrevo = require("../utils/cadastrarLeadNoBrevo");
 const enviarEmailSimplesViaBrevo = require("../utils/enviarEmailSimplesViaBrevo");
+const { notificarCentralQuiz } = require("../utils/notificarCentralQuiz");
 
 
 // Função para calcular média
@@ -181,6 +182,31 @@ try {
 }
 
         // Só grava o JSON após sucesso no banco
+    /*
+     * Notifica a Central Operacional sobre o novo lead do Quiz.
+     * Best effort: falha na Central nao interrompe o salvamento.
+     */
+    void notificarCentralQuiz({
+      eventType: "quiz_completed",
+      source: "quiz",
+      sessionId: dadosCompletos.session_id,
+      externalEventId: String(dadosCompletos.session_id),
+
+      customer: {
+        name: dadosCompletos.nome || "",
+        email: dadosCompletos.email || "",
+        phone: dadosCompletos.telefone || "",
+      },
+
+      quiz: {
+        createdAt: dadosCompletos.criado_em,
+        language: idioma,
+        affiliateRef: dadosCompletos.affiliate_ref || null,
+        mediaVibracional: dadosCompletos.media_vibracional,
+        zonaPredominante: dadosCompletos.zona_predominante,
+        codigoArquetipo: dadosCompletos.codigo_arquetipo,
+      },
+    });
     await fs.promises.writeFile(
       caminho,
       JSON.stringify(dadosCompletos, null, 2),
@@ -287,3 +313,7 @@ try {
 });
 
 module.exports = router;
+
+
+
+
