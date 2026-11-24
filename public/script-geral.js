@@ -32,7 +32,10 @@ const perguntas = [
     ];
 
 // Índices originais que vamos manter (0-based): 0,2,4,6,8,10,12
-const OPT_IDX = [0, 2, 4, 6, 8, 9, 11,];
+const quizTemplo = window.quizTemploNovaAfrica;
+const OPT_IDX = quizTemplo
+  ? quizTemplo.niveis.map(nivel => nivel - 1)
+  : [0, 2, 4, 6, 8, 9, 11];
 
 // Aplica o filtro em TODAS as 12 perguntas, sem alterar códigos nem ordem
 for (let i = 0; i < perguntas.length; i++) {
@@ -112,7 +115,7 @@ function mostrarPergunta(index) {
   }
 
   // 🎧 Mostra o aviso de som na primeira pergunta
-  if (index === 0) {
+  if (index === 0 && !quizTemplo) {
     const aviso = document.createElement('div');
     aviso.id = "avisoSom";
     aviso.className = "fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-white bg-opacity-90 px-4 py-2 rounded shadow text-sm text-gray-800 animate-fade";
@@ -602,6 +605,11 @@ async function finalizarPrePago(prepaidEmail) {
   }
 }
 function mostrarFormulario() {
+  if (quizTemplo) {
+    quizTemplo.mostrarFormulario(respostas);
+    return;
+  }
+
   const container = document.getElementById('quiz-container');
   container.classList.remove('hidden');
   container.innerHTML = "";

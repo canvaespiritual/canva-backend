@@ -101,6 +101,7 @@ app.use("/webhooks/kiwify", express.raw({ type: "*/*" }), kiwifyWebhookRoutes);
 
 // JSON pro resto do app
 app.use(express.json());
+app.use(require("./src/routes/quizTemploNovaAfrica"));
 // Analytics próprio das páginas e VSLs
 app.use("/api/analytics", analyticsRoutes);
 // Conteúdo dinâmico da landing page por campanha

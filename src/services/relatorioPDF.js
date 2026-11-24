@@ -810,6 +810,16 @@ async function gerarTabelaMapaEspiritual(isEn = false) {
   };
 
   const langCode = isEn ? 'en' : 'pt';
+  const estadosPt = new Map();
+  if (!isEn) {
+    const { rows } = await pool.query(
+      'SELECT codigo, polaridade, nivel_estado FROM mapa_espiritual WHERE polaridade = ANY($1)',
+      [Object.keys(polaridades)]
+    );
+    for (const row of rows) {
+      estadosPt.set(row.polaridade + ':' + row.codigo, row.nivel_estado);
+    }
+  }
 
   let html = `
     <div style="transform: scale(0.80); transform-origin: top left; width: 122%; margin: 20px 0 60px 0;">
@@ -845,16 +855,12 @@ async function gerarTabelaMapaEspiritual(isEn = false) {
             AND TRIM(LOWER(me.polaridade)) = TRIM(LOWER($2))
           LIMIT 1
         `, [codigo, polaridade, langCode]);
-      } else {
-        // PT: mesma query antiga
-        resultado = await pool.query(`
-          SELECT nivel_estado FROM mapa_espiritual
-          WHERE codigo = $1 AND polaridade = $2
-          LIMIT 1
-        `, [codigo, polaridade]);
       }
 
-      const valor = resultado.rows[0]?.nivel_estado || '—';
+      const nivelEstado = isEn
+        ? resultado.rows[0]?.nivel_estado
+        : estadosPt.get(polaridade + ':' + codigo);
+      const valor = nivelEstado || '—';
       html += `<td>${valor}</td>`;
     }
 
@@ -990,7 +996,7 @@ function blocoUpsell(titulo, explicacao = '') {
   `;
 
 }
-async function createPdfFromHtml(data, tipo = 'essencial') {
+async function renderReportHtml(data, tipo = 'essencial') {
   console.log("🚀 Tipo de relatório solicitado:", tipo);
 
   // 🔤 1) detecta idioma e escolhe sufixo de template
@@ -1466,6 +1472,11 @@ html = html.replace('{{nome}}', data.nome);
     }
   });
 
+  return html;
+}
+
+async function createPdfFromHtml(data, tipo = 'essencial') {
+  let html = await renderReportHtml(data, tipo);
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -1504,4 +1515,4 @@ html = twemoji.parse(html, {
   return buffer;
 }
 
-module.exports = { createPdfFromHtml };
+module.exports = { createPdfFromHtml, renderReportHtml };
