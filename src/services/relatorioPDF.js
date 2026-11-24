@@ -795,7 +795,7 @@ async function gerarHtmlReflexoEspiritual(mediaPercentual, isEn = false) {
 }
 
 
-async function gerarTabelaMapaEspiritual(isEn = false) {
+async function gerarTabelaMapaEspiritual(isEn = false, consultarEmLote = false) {
   const polaridades = {
     "Benção x maldição": "BC",
     "escravidao x servidão ao propósito": "SE",
@@ -811,7 +811,7 @@ async function gerarTabelaMapaEspiritual(isEn = false) {
 
   const langCode = isEn ? 'en' : 'pt';
   const estadosPt = new Map();
-  if (!isEn) {
+  if (!isEn && consultarEmLote) {
     const { rows } = await pool.query(
       'SELECT codigo, polaridade, nivel_estado FROM mapa_espiritual WHERE polaridade = ANY($1)',
       [Object.keys(polaridades)]
@@ -855,9 +855,14 @@ async function gerarTabelaMapaEspiritual(isEn = false) {
             AND TRIM(LOWER(me.polaridade)) = TRIM(LOWER($2))
           LIMIT 1
         `, [codigo, polaridade, langCode]);
+      } else if (!consultarEmLote) {
+        resultado = await pool.query(
+          'SELECT nivel_estado FROM mapa_espiritual WHERE codigo = $1 AND polaridade = $2 LIMIT 1',
+          [codigo, polaridade]
+        );
       }
 
-      const nivelEstado = isEn
+      const nivelEstado = resultado
         ? resultado.rows[0]?.nivel_estado
         : estadosPt.get(polaridade + ':' + codigo);
       const valor = nivelEstado || '—';
@@ -996,7 +1001,7 @@ function blocoUpsell(titulo, explicacao = '') {
   `;
 
 }
-async function renderReportHtml(data, tipo = 'essencial') {
+async function renderReportHtml(data, tipo = 'essencial', { consultarEmLote = false } = {}) {
   console.log("🚀 Tipo de relatório solicitado:", tipo);
 
   // 🔤 1) detecta idioma e escolhe sufixo de template
@@ -1234,7 +1239,7 @@ if (tipo === 'premium' || tipo === 'completo') {
 
 // Só gera o mapa espiritual e as predisposições no completo
 if (tipo === 'completo') {
-  tabelaEspiritualHtml = await gerarTabelaMapaEspiritual(isEn);
+  tabelaEspiritualHtml = await gerarTabelaMapaEspiritual(isEn, consultarEmLote);
 
   let predisposicoesQuery;
 

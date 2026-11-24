@@ -64,7 +64,7 @@ router.post(pagina + "/relatorio", verificarAcesso, async (req, res) => {
       tipoRelatorio: "completo",
       respostas_codificadas: respostas,
       codigo_arquetipo: `R${degradantes}Y${neutras}B${virtuosas}`
-    }, "completo");
+    }, "completo", { consultarEmLote: true });
 
     if (emailLimpo || telefoneLimpo) {
       await pool.query(
